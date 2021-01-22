@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>test2 | aobamoka</title>
+  <title>搭建个人博客时遇到的问题分享 | aobamoka</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="test2">
+  <meta name="description" content="10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，仓库里没有html文件，github page自然也没有内容显示。今天在跟群友闲聊时又讨论到博客的问题，于是经过研究与上网查阅资料成功解决了上述问题。问题的根本原因在于github将主分支的名字由master改成了main，但是hexo貌似并没有对此进行更新，导致每次clean再进行dep">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test2">
-<meta property="og:url" content="http://example.com/2021/01/12/test2/index.html">
+<meta property="og:title" content="搭建个人博客时遇到的问题分享">
+<meta property="og:url" content="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/index.html">
 <meta property="og:site_name" content="aobamoka">
-<meta property="og:description" content="test2">
+<meta property="og:description" content="10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，仓库里没有html文件，github page自然也没有内容显示。今天在跟群友闲聊时又讨论到博客的问题，于是经过研究与上网查阅资料成功解决了上述问题。问题的根本原因在于github将主分支的名字由master改成了main，但是hexo貌似并没有对此进行更新，导致每次clean再进行dep">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-01-12T07:19:53.000Z">
-<meta property="article:modified_time" content="2021-01-12T07:20:07.286Z">
+<meta property="article:published_time" content="2021-01-22T13:23:27.000Z">
+<meta property="article:modified_time" content="2021-01-22T13:31:53.992Z">
 <meta property="article:author" content="aoba moka">
 <meta name="twitter:card" content="summary">
   
@@ -73,10 +73,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-test2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-搭建个人博客时遇到的问题分享" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2021/01/12/test2/" class="article-date">
-  <time class="dt-published" datetime="2021-01-12T07:19:53.000Z" itemprop="datePublished">2021-01-12</time>
+    <a href="/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" class="article-date">
+  <time class="dt-published" datetime="2021-01-22T13:23:27.000Z" itemprop="datePublished">2021-01-22</time>
 </a>
     
   </div>
@@ -87,7 +87,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      test2
+      搭建个人博客时遇到的问题分享
     </h1>
   
 
@@ -95,12 +95,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>test2</p>
+        <p>10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，<strong>仓库里没有html文件，github page自然也没有内容显示</strong>。<br>今天在跟群友闲聊时又讨论到博客的问题，于是经过研究与上网查阅资料成功解决了上述问题。<br>问题的根本原因在于<strong>github将主分支的名字由master改成了main</strong>，但是hexo貌似并没有对此进行更新，导致每次clean再进行deploy的时候，如果没有指定分支名称，总是新建一个名为“master”的分支并将内容push到该分支上，而并不是push到我们以为的“master”分支上（实际上名称已经变成了“main”）。<br>弄清楚问题原因后，解决方法也很简单了，<strong>在_config.yml的deploy字段后面指定分支名字即可解决</strong>。<br><code>  branch: main</code><br>之后clean+g+d，成功显示！</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/test2/" data-id="ckk81igyg0002oguvcxps9r9c" data-title="test2" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckk8bpfed000018uvd2gm55q3" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
       
       
       
@@ -111,9 +111,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2021/01/12/test/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/01/12/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">test</div>
+      <div class="article-nav-title">Hello World</div>
     </a>
   
 </nav>
@@ -151,11 +151,7 @@
       <ul>
         
           <li>
-            <a href="/2021/01/12/test2/">test2</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/12/test/">test</a>
+            <a href="/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/">搭建个人博客时遇到的问题分享</a>
           </li>
         
           <li>
