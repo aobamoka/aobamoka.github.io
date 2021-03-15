@@ -93,7 +93,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="leetcode-master学习笔记-链表"><a href="#leetcode-master学习笔记-链表" class="headerlink" title="leetcode-master学习笔记-链表"></a>leetcode-master学习笔记-链表</h1><h2 id="一、一些简单的知识"><a href="#一、一些简单的知识" class="headerlink" title="一、一些简单的知识"></a>一、一些简单的知识</h2><ul>
+        <h2 id="一、一些简单的知识"><a href="#一、一些简单的知识" class="headerlink" title="一、一些简单的知识"></a>一、一些简单的知识</h2><ul>
 <li>链表在内存中的存储位置并不连续</li>
 <li>链表的长度不是固定的，且插入与删除操作（不计算找到元素的时间）为常数时间，而查找元素的时间为O(n)，因而比数组更适合增删元素操作较多的场合</li>
 <li>想到什么再来加</li>
@@ -107,7 +107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckma8kg8i0001xcuv4p2l12tx" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckma8n9rk0001usuvg3ycb18r" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
       
       
       
@@ -133,7 +133,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记--数组</a>
+      <a class="p-name article-title" href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记-数组</a>
     </h1>
   
 
@@ -141,7 +141,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="leetcode-master学习笔记–数组"><a href="#leetcode-master学习笔记–数组" class="headerlink" title="leetcode-master学习笔记–数组"></a>leetcode-master学习笔记–数组</h1><p>在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。<br>链接地址：<a target="_blank" rel="noopener" href="https://github.com/youngyangyang04/leetcode-master">https://github.com/youngyangyang04/leetcode-master</a></p>
+        <p>在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。<br>链接地址：<a target="_blank" rel="noopener" href="https://github.com/youngyangyang04/leetcode-master">https://github.com/youngyangyang04/leetcode-master</a></p>
 <h2 id="1、二分查找"><a href="#1、二分查找" class="headerlink" title="1、二分查找"></a>1、二分查找</h2><p>对于left&lt;=right还是left&lt;right，以及left=mid还是left=mid+1的问题。这个问题在我之前的刷题过程中出现的次数还挺多的，之前主要靠输出来一个个情况试进行解决。教程作者给出的方法是坚持<font color=red>“循环不变量”</font>.这里的循环不变量指，如果你设置的区间为闭区间，那么就一直使用闭区间对应的计算方法来计算值，而不使用半开半闭区间的计算方法。</p>
 <h3 id="第一种情况：区间为-left-right"><a href="#第一种情况：区间为-left-right" class="headerlink" title="第一种情况：区间为[left, right]"></a>第一种情况：区间为[left, right]</h3><p>① 这种情况下，如果结束条件为left&lt;right，区间里还会剩下两个元素无法处理，因此结束条件应该为left&lt;right；<br>② left与right这种边界所代表的元素也包含在区间内，因此区间缩小时应该写为left=mid+1与right=mid-1。</p>
 <h3 id="第二种情况：区间为-left-right"><a href="#第二种情况：区间为-left-right" class="headerlink" title="第二种情况：区间为[left, right)"></a>第二种情况：区间为[left, right)</h3><p>① 这种情况下，结束条件为left&lt;right时，区间内只剩下一个元素；反之如果加上=则区间内没有元素，因此应该选用left&amp;&lt;right；<br>② left包含在区间内，而right没有，因此区间缩小的表达式为left=mid+1与right=mid。</p>
@@ -163,7 +163,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckma8kg8k0002xcuv2hk9hurz" data-title="leetcode-master学习笔记--数组" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckma8n9rm0002usuv0z6zeqcu" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
       
       
       
@@ -213,7 +213,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckma8kg8p0005xcuv3bln4a74" data-title="理解kmp算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckma8n9rr0005usuvetnd63qw" data-title="理解kmp算法" class="article-share-link">Share</a>
       
       
       
@@ -275,7 +275,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckma8kg8l0003xcuvbr286eef" data-title="单调栈的应用" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckma8n9ro0003usuvej2ec67u" data-title="单调栈的应用" class="article-share-link">Share</a>
       
       
       
@@ -319,7 +319,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckma8kg8n0004xcuv5gpr4r9t" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckma8n9rp0004usuvh0k0arok" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
       
       
       
@@ -366,7 +366,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckma8kg8d0000xcuv64hi8c07" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckma8n9rf0000usuvdjx8gwv6" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
@@ -413,7 +413,7 @@
           </li>
         
           <li>
-            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记--数组</a>
+            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记-数组</a>
           </li>
         
           <li>
