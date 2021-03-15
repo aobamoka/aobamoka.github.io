@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>leetcode-master学习笔记-哈希表 | aobamoka</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、简单知识哈希表又称散列表，主要用途是能在近乎常数的时间内判断某元素是否出现在该集合里  哈希函数：用于将键值转化为哈希表内部结构中的下标或地址 哈希碰撞：可能会将多个键值映射到同一个下标或者地址之中，这种情况称为哈希碰撞。主要解决方法为拉链法与线性探查法。 拉链法：在哈希表每个位置改为建立一个链表，映射到相同位置的键值都作为链表中的节点 线性探查法：使用一个新的哈希函数，从当前位置再寻找一个映">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode-master学习笔记-哈希表">
+<meta property="og:url" content="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/index.html">
+<meta property="og:site_name" content="aobamoka">
+<meta property="og:description" content="一、简单知识哈希表又称散列表，主要用途是能在近乎常数的时间内判断某元素是否出现在该集合里  哈希函数：用于将键值转化为哈希表内部结构中的下标或地址 哈希碰撞：可能会将多个键值映射到同一个下标或者地址之中，这种情况称为哈希碰撞。主要解决方法为拉链法与线性探查法。 拉链法：在哈希表每个位置改为建立一个链表，映射到相同位置的键值都作为链表中的节点 线性探查法：使用一个新的哈希函数，从当前位置再寻找一个映">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-15T07:10:59.000Z">
+<meta property="article:modified_time" content="2021-03-15T08:27:59.286Z">
+<meta property="article:author" content="aoba moka">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aobamoka</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="title-leetcode-master学习笔记-哈希表" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" class="article-date">
+  <time class="dt-published" datetime="2021-03-15T07:10:59.000Z" itemprop="datePublished">2021-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      leetcode-master学习笔记-哈希表
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一、简单知识"><a href="#一、简单知识" class="headerlink" title="一、简单知识"></a>一、简单知识</h2><p>哈希表又称散列表，主要用途是能在近乎常数的时间内判断某元素是否出现在该集合里</p>
+<ul>
+<li>哈希函数：用于将键值转化为哈希表内部结构中的下标或地址</li>
+<li>哈希碰撞：可能会将多个键值映射到同一个下标或者地址之中，这种情况称为哈希碰撞。主要解决方法为拉链法与线性探查法。</li>
+<li>拉链法：在哈希表每个位置改为建立一个链表，映射到相同位置的键值都作为链表中的节点</li>
+<li>线性探查法：使用一个新的哈希函数，从当前位置再寻找一个映射的下标或地址。</li>
+<li>一般将哈希表的大小设置为质数，以减少冲突的出现</li>
+</ul>
+<p>实现哈希表的一般为三种结构：数组、set与map，这里引用大佬的表格。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>底层实现</th>
+<th>是否有序</th>
+<th>数值是否可以重复</th>
+<th>能否更改数值</th>
+<th>查询效率</th>
+<th>增删效率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>set</td>
+<td>红黑树</td>
+<td>有序</td>
+<td>否</td>
+<td>否</td>
+<td>O(logn)</td>
+<td>O(logn)</td>
+</tr>
+<tr>
+<td>multiset</td>
+<td>红黑树</td>
+<td>有序</td>
+<td>是</td>
+<td>否</td>
+<td>O(logn)</td>
+<td>O(logn)</td>
+</tr>
+<tr>
+<td>unordered_set</td>
+<td>哈希表</td>
+<td>无序</td>
+<td>否</td>
+<td>否</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>map</td>
+<td>红黑树</td>
+<td>key有序</td>
+<td>key不可重复</td>
+<td>key不可修改</td>
+<td>O(logn)</td>
+<td>O(logn)</td>
+</tr>
+<tr>
+<td>multimap</td>
+<td>红黑树</td>
+<td>key有序</td>
+<td>key可重复</td>
+<td>key不可修改</td>
+<td>O(logn)</td>
+<td>O(logn)</td>
+</tr>
+<tr>
+<td>unordered_map</td>
+<td>哈希表</td>
+<td>key无序</td>
+<td>key不可重复</td>
+<td>key不可修改</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<p>set是只存储value，而map存储了key-value对，所以如果只需判断元素是否存在，使用unordered_set较好，而如果需要通过键值来判断，需要用unordered_map。<br>set、multiset 使用了哈希函数来做映射，只不过底层的符号表使用了红黑树来存储数据，所以使用这些数据结构来解决映射问题的方法，我们依然称之为哈希法。</p>
+<h2 id="二、容量较小的哈希表"><a href="#二、容量较小的哈希表" class="headerlink" title="二、容量较小的哈希表"></a>二、容量较小的哈希表</h2><p>如果题目中对元素的限定为一个较小的范围，或者数据分布极为密集，例如只包含小写字母/大写字母/数字等，且要求的问题与计数有关，那么可以直接设置一个定长数组，来存储每个字符的出现次数。</p>
+<h2 id="三、不易想到的哈希表"><a href="#三、不易想到的哈希表" class="headerlink" title="三、不易想到的哈希表"></a>三、不易想到的哈希表</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum-ii/">leetcode 454：四数相加II</a> \</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">给定四个包含整数的数组列表 A , B , C , D ,计算有多少个元组 (i, j, k, l) ，使得 A[i] + B[j] + C[k] + D[l] &#x3D; 0。</span><br><span class="line"></span><br><span class="line">为了使问题简单化，所有的 A, B, C, D 具有相同的长度 N，且 0 ≤ N ≤ 500 。所有整数的范围在 -228 到 228 - 1 之间，最终结果不会超过 231 - 1 。</span><br><span class="line"></span><br><span class="line">例如:</span><br><span class="line"></span><br><span class="line">输入:</span><br><span class="line">A &#x3D; [ 1, 2]</span><br><span class="line">B &#x3D; [-2,-1]</span><br><span class="line">C &#x3D; [-1, 2]</span><br><span class="line">D &#x3D; [ 0, 2]</span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">解释:</span><br><span class="line">两个元组如下:</span><br><span class="line">1. (0, 0, 0, 1) -&gt; A[0] + B[0] + C[0] + D[1] &#x3D; 1 + (-2) + (-1) + 2 &#x3D; 0</span><br><span class="line">2. (1, 1, 0, 0) -&gt; A[1] + B[1] + C[0] + D[0] &#x3D; 2 + (-1) + (-1) + 0 &#x3D; 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这道题乍一看有点像在一个数组内寻找到n个数，使其相加之和为定值这种题，但是不一样。在同一数组内是使用多层循环+滑动窗口解题，而本题则更为简单。</p>
+<p>思路：用ans初始化为0记录结果，将四个数组分为两两一组，对其中一组的元素两两相加，并用unordered_map作为hash存储下所有和以及出现的次数，之后对另一组元素同样两两相加，求出0与其和的差值，并在hash表中查询是否存在：如果存在，则将ans加上hash表中存储的该和出现的次数。最后返回ans。</p>
+<h2 id="四、简单总结"><a href="#四、简单总结" class="headerlink" title="四、简单总结"></a>四、简单总结</h2><p>哈希表的一般应用场合：快速判断一个元素是否出现在集合里。</p>
+<p>实现哈希表的数据结构有三种：数组、unordered_set与unordered_map，适用的场合有所不同：</p>
+<ul>
+<li>数组：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ransom-note/">leetcode 383：赎金信</a>。一般为集合大小受限时使用，说明只存在小写字母、数字时，暗示做题人用数组作为哈希表。</li>
+<li>unordered_set：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/intersection-of-two-arrays/">leetcode 349：两个数组的交集</a>。没有对集合大小进行限制，因此若使用数组无法判断该去多大，以及可能会溢出，且集合元素可能较为分散，浪费空间。但是set除了记录其存在外，不能附加额外的信息。要想附加额外的信息，就需要使用map。</li>
+<li>unordered_map：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/two-sum/">leetcode 1：两数之和</a>。除了记录元素的存在外，还在value中记录额外的信息。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmabsb440002ukuv6dnjf23g" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">leetcode-master学习笔记-链表</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/">leetcode-master学习笔记-哈希表</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/">leetcode-master学习笔记-链表</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记-数组</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/">理解kmp算法</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/">单调栈的应用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 aoba moka<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
