@@ -71,6 +71,62 @@
       <div class="outer">
         <section id="main">
   
+    <article id="title-leetcode-master学习笔记（大概会持续更新）" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2021-03-15T02:09:48.000Z" itemprop="datePublished">2021-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记--数组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="leetcode-master学习笔记–数组"><a href="#leetcode-master学习笔记–数组" class="headerlink" title="leetcode-master学习笔记–数组"></a>leetcode-master学习笔记–数组</h1><p>在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。<br>链接地址：<a target="_blank" rel="noopener" href="https://github.com/youngyangyang04/leetcode-master">https://github.com/youngyangyang04/leetcode-master</a></p>
+<h2 id="1、二分查找"><a href="#1、二分查找" class="headerlink" title="1、二分查找"></a>1、二分查找</h2><p>对于left&lt;=right还是left&lt;right，以及left=mid还是left=mid+1的问题。这个问题在我之前的刷题过程中出现的次数还挺多的，之前主要靠输出来一个个情况试进行解决。教程作者给出的方法是坚持<font color=red>“循环不变量”</font>.这里的循环不变量指，如果你设置的区间为闭区间，那么就一直使用闭区间对应的计算方法来计算值，而不使用半开半闭区间的计算方法。</p>
+<h3 id="第一种情况：区间为-left-right"><a href="#第一种情况：区间为-left-right" class="headerlink" title="第一种情况：区间为[left, right]"></a>第一种情况：区间为[left, right]</h3><p>① 这种情况下，如果结束条件为left&lt;right，区间里还会剩下两个元素无法处理，因此结束条件应该为left&lt;right；<br>② left与right这种边界所代表的元素也包含在区间内，因此区间缩小时应该写为left=mid+1与right=mid-1。</p>
+<h3 id="第二种情况：区间为-left-right"><a href="#第二种情况：区间为-left-right" class="headerlink" title="第二种情况：区间为[left, right)"></a>第二种情况：区间为[left, right)</h3><p>① 这种情况下，结束条件为left&lt;right时，区间内只剩下一个元素；反之如果加上=则区间内没有元素，因此应该选用left&amp;&lt;right；<br>② left包含在区间内，而right没有，因此区间缩小的表达式为left=mid+1与right=mid。</p>
+<h2 id="2、双指针法"><a href="#2、双指针法" class="headerlink" title="2、双指针法"></a>2、双指针法</h2><p>之前学习的双指针法主要应用于判断环、快排与二分，通过<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-element/">leetcode 27：移除元素</a>这道题（虽然是简单难度但我还是想了一会）学习了双指针在删除元素的用法。</p>
+<h3 id="判断链表是否有环"><a href="#判断链表是否有环" class="headerlink" title="判断链表是否有环"></a>判断链表是否有环</h3><p>我们熟知的解法为快慢双指针，当其相遇则链表中有环。但是在知道有环之后怎么求环的位置呢？<br>我们设链表起点到环的入口距离为x，环的入口到相遇点距离为y，相遇点继续向前走到环的入口距离为z，由于快指针移动速度为慢指针的两倍，有如下方程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x+y+z+y&#x3D;2*(x+y)</span><br></pre></td></tr></table></figure>
+<p>解得z=x，这意味着链表头到环的入口的距离与相遇点到环的入口的距离相等。所以我们再设置一个从头开始的指针，它与相遇点的指针同步移动，这两个指针相遇的新相遇点即为环的入口。</p>
+<h2 id="3、滑动窗口"><a href="#3、滑动窗口" class="headerlink" title="3、滑动窗口"></a>3、滑动窗口</h2><p>求连续子数组时可以尝试用这种方法</p>
+<h2 id="4、循环矩阵"><a href="#4、循环矩阵" class="headerlink" title="4、循环矩阵"></a>4、循环矩阵</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/spiral-matrix-ii/">leetcode 59：螺旋矩阵II</a> <br>一道很好的实践“循环不变量”理论的题目，做法也很简单，常见的对问题中行为的模拟。我的做法是每一层深度分为四个行列进行添加，在对每一行列进行添加时坚持不加最右元素与不加最下元素（否则会导致重复添加）。</p>
+<h2 id="5、总结篇"><a href="#5、总结篇" class="headerlink" title="5、总结篇"></a>5、总结篇</h2><p>介绍了关于数组的基本概念，总结如下：</p>
+<ul>
+<li>数组是存放在连续内存空间上的相同类型数据的集合</li>
+<li>数组下标都是从0开始的</li>
+<li>数组内存空间的地址是连续的</li>
+<li>数组的元素是不能删的，只能覆盖</li>
+<li>二维数据在内存中不是m*n的连续地址空间，而是m条连续的地址空间组成</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckma7g7lp0001o8uvfwqd43kc" data-title="leetcode-master学习笔记--数组" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="title-理解kmp算法" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" class="article-date">
@@ -109,7 +165,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckm9whp61000368uv9e0sh9yd" data-title="理解kmp算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckma7g7ly0004o8uv1jp49u1c" data-title="理解kmp算法" class="article-share-link">Share</a>
       
       
       
@@ -171,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckm9whp5w000168uvdvcd8inv" data-title="单调栈的应用" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckma7g7lu0002o8uv7h8c3dmp" data-title="单调栈的应用" class="article-share-link">Share</a>
       
       
       
@@ -215,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckm9whp5y000268uvdiln78y8" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckma7g7lv0003o8uvcguqcbte" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
       
       
       
@@ -262,7 +318,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckm9whp5r000068uv7ls3809g" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckma7g7lc0000o8uv3tbc0ga1" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
@@ -303,6 +359,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记--数组</a>
+          </li>
         
           <li>
             <a href="/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/">理解kmp算法</a>
