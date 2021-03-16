@@ -71,6 +71,61 @@
       <div class="outer">
         <section id="main">
   
+    <article id="title-leetcode-master学习笔记-栈与队列" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" class="article-date">
+  <time class="dt-published" datetime="2021-03-16T02:20:54.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/">leetcode-master学习笔记-栈与队列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一、基础知识"><a href="#一、基础知识" class="headerlink" title="一、基础知识"></a>一、基础知识</h2><p>我们目前使用的c++STL，一般为SGI STL版本。</p>
+<p>STL之中栈与队列往往不被归为容器，而被归为容器适配器。因为我们可以控制用何种容器来实现栈与队列的功能。(这也意味着无法确定栈与队列中的元素是否连续分布，但deque中的元素不是连续分布的)</p>
+<p>SGI STL中 栈与队列底层实现缺省情况下使用deque实现的。</p>
+<h2 id="二、栈实现队列"><a href="#二、栈实现队列" class="headerlink" title="二、栈实现队列"></a>二、栈实现队列</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-queue-using-stacks/">leetcode 232：用栈实现队列</a></p>
+<p>经典题目，懂得都懂。</p>
+<h2 id="三、队列实现栈"><a href="#三、队列实现栈" class="headerlink" title="三、队列实现栈"></a>三、队列实现栈</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-stack-using-queues/">leetcode 225：用队列实现栈</a></p>
+<p>别想太复杂了，就是单纯的用一个队列备份数据，每次pop都把所有元素复制一遍罢了。</p>
+<h2 id="四、栈解决问题"><a href="#四、栈解决问题" class="headerlink" title="四、栈解决问题"></a>四、栈解决问题</h2><p>递归的底层实现就是通过栈，每一次递归调用将函数的局部变量、参数与返回值等压入函数调用栈之中，供被调用函数使用，同时返回时也将返回值放在栈中，并将被调用函数弹出栈，就能直接回到调用函数。</p>
+<p>栈一般可以用来解决匹配问题。</p>
+<p>逆波兰表达式。</p>
+<h2 id="五、经典单调队列"><a href="#五、经典单调队列" class="headerlink" title="五、经典单调队列"></a>五、经典单调队列</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sliding-window-maximum/">leetcode 239：滑动窗口最大值</a></p>
+<p>双端队列实现单调队列，来维持滑动窗口中的最大值计算。</p>
+<h2 id="六、优先级队列priority-queue"><a href="#六、优先级队列priority-queue" class="headerlink" title="六、优先级队列priority_queue"></a>六、优先级队列priority_queue</h2><p>几个需要注意的点</p>
+<h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>在优先级队列中重载比较方法必须为一个结构类型或者为一个类，然后在其中重载public的()操作符来进行比较，且如果想得到递减的优先级队列，返回时应该返回&lt;的形式；递增的优先级队列则相反。</p>
+<p>举个例子，我想得到自定义的pair排序，且为递减优先级队列时应该写的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct Cmp&#123;</span><br><span class="line">    bool operator()(pair&lt;int, int&gt; a, pair&lt;int, int&gt; b)&#123;</span><br><span class="line">        return a.second&lt;b.second;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>priority_queue的底层实现与堆类似，且没有迭代器。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmbh1slm0003fsuvgkvz1k3t" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="title-leetcode-master学习笔记-字符串" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="article-date">
@@ -112,7 +167,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmbdoa370002acuv1sw5flbj" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmbh1sll0002fsuvaris64uz" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
       
       
       
@@ -239,7 +294,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmbdoa340001acuv5yfc6y9e" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmbh1slj0001fsuv9osc3l6q" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
       
       
       
@@ -287,7 +342,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmbdoa3c0006acuvhc6f2k5h" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmbh1sln0004fsuv4k8f5dui" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
       
       
       
@@ -343,7 +398,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmbdoa380003acuva1wm801i" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmbh1slo0005fsuvc9t682gx" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
       
       
       
@@ -393,7 +448,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckmbdoa3h0007acuv3sz00pjv" data-title="理解kmp算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckmbh1slt0008fsuv4zxo3ufz" data-title="理解kmp算法" class="article-share-link">Share</a>
       
       
       
@@ -455,7 +510,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckmbdoa3a0004acuvbg6b2pb0" data-title="单调栈的应用" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckmbh1slp0006fsuvgfa009hg" data-title="单调栈的应用" class="article-share-link">Share</a>
       
       
       
@@ -499,7 +554,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckmbdoa3b0005acuvey93amq5" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckmbh1slq0007fsuvdy74bx98" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
       
       
       
@@ -546,7 +601,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmbdoa2n0000acuv2az37i5o" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmbh1sle0000fsuv6fdadblv" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
@@ -589,6 +644,10 @@
       <ul>
         
           <li>
+            <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/">leetcode-master学习笔记-栈与队列</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/">leetcode-master学习笔记-字符串</a>
           </li>
         
@@ -602,10 +661,6 @@
         
           <li>
             <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记-数组</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/">理解kmp算法</a>
           </li>
         
       </ul>
