@@ -71,6 +71,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="title-leetcode-master学习笔记-二叉树" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-date">
+  <time class="dt-published" datetime="2021-03-16T06:11:18.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/">leetcode-master学习笔记-二叉树1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一、简单知识"><a href="#一、简单知识" class="headerlink" title="一、简单知识"></a>一、简单知识</h2><p>一些概念：满二叉树、完全二叉树、二叉搜索树、平衡二叉搜索树</p>
+<p>C++中map、set、multimap，multiset的底层实现都是平衡二叉搜索树（红黑树）</p>
+<p>存储方式：链式存储、数组存储（一般用于堆中）</p>
+<p>遍历：DFS（前序遍历、中序遍历、后序遍历）、BFS</p>
+<h2 id="二、递归步骤"><a href="#二、递归步骤" class="headerlink" title="二、递归步骤"></a>二、递归步骤</h2><h3 id="①「确定递归函数的参数和返回值：」"><a href="#①「确定递归函数的参数和返回值：」" class="headerlink" title="①「确定递归函数的参数和返回值：」"></a>①「确定递归函数的参数和返回值：」</h3><p>递归过程中要用到哪些变量，就加入到参数中；递归希望得到的是什么，就加入到返回值。如果同时需要这些，可以设为全局变量。</p>
+<h3 id="②「确定终止条件：」"><a href="#②「确定终止条件：」" class="headerlink" title="②「确定终止条件：」"></a>②「确定终止条件：」</h3><p>注意边界条件，如nullptr或者0等情况，避免死循环。</p>
+<h3 id="③「确定单层递归的逻辑：」"><a href="#③「确定单层递归的逻辑：」" class="headerlink" title="③「确定单层递归的逻辑：」"></a>③「确定单层递归的逻辑：」</h3><p>确定每一层递归需要处理的信息。在这里也就会重复调用自己来实现递归的过程。</p>
+<h2 id="三、三序遍历"><a href="#三、三序遍历" class="headerlink" title="三、三序遍历"></a>三、三序遍历</h2><h3 id="三序遍历的迭代形式需要熟练"><a href="#三序遍历的迭代形式需要熟练" class="headerlink" title="三序遍历的迭代形式需要熟练"></a>三序遍历的迭代形式需要熟练</h3><p>前序：每次取栈首节点并弹出栈，如果为空则直接略过，否则输出其值，并将左右子节点压入栈中（因为要先左后右，所以先压右节点）。</p>
+<p>中序：一直搜索当前节点的左子节点同时将当前节点压栈，直到为nullptr。之后从栈中弹出当前节点并输出，再令当前节点为当前节点的右节点，继续循环。</p>
+<p>后序：<font color=blue>后序为左右中，而前序为中左右，所以将前序遍历的压栈顺序进行调整，使输出中右左，并在输出完毕之后对输出序列进行reverse，即可得到后序遍历的序列。</font></p>
+<h3 id="统一风格的迭代三序遍历代码"><a href="#统一风格的迭代三序遍历代码" class="headerlink" title="统一风格的迭代三序遍历代码"></a>统一风格的迭代三序遍历代码</h3><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/WKg0Ty1_3SZkztpHubZPRg">https://mp.weixin.qq.com/s/WKg0Ty1_3SZkztpHubZPRg</a></p>
+<p>在中间节点push后紧接着push一个nullptr节点来做标记。</p>
+<h2 id="四、层次遍历"><a href="#四、层次遍历" class="headerlink" title="四、层次遍历"></a>四、层次遍历</h2><p>之前一直搞不太清该怎么算每一层的个数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode* root) &#123;</span><br><span class="line">    queue&lt;TreeNode*&gt; q;</span><br><span class="line">    vector&lt;vector&lt;int&gt;&gt; ans;</span><br><span class="line">    q.push(root);</span><br><span class="line">    while(!q.empty())&#123;</span><br><span class="line">        vector&lt;int&gt; tmp;</span><br><span class="line">        int n&#x3D;q.size();</span><br><span class="line">        for(int i&#x3D;0;i&lt;n;i++)&#123;</span><br><span class="line">            auto j&#x3D;q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            if(j)&#123;</span><br><span class="line">                tmp.push_back(j-&gt;val);</span><br><span class="line">                q.push(j-&gt;left);</span><br><span class="line">                q.push(j-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if(tmp.size())ans.push_back(tmp);</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>层序遍历模板的应用：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal/">leetcode 102：二叉树的层序遍历</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/">leetcode 107：二叉树的层次遍历II</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-right-side-view/">leetcode 199：二叉树的右视图</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/">leetcode 637：二叉树的层平均值</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/">leetcode 589：N叉树的前序遍历</a></li>
+</ul>
+<p><del>得看毕业设计了，那么今天的二叉树就学到这里吧！</del></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckmbpl2rd00018guv5uo7cgcl" data-title="leetcode-master学习笔记-二叉树1" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="title-leetcode-master学习笔记-栈与队列" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" class="article-date">
@@ -114,7 +175,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmbh1slm0003fsuvgkvz1k3t" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmbpl2ri00048guv2pi7dzej" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
       
       
       
@@ -167,7 +228,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmbh1sll0002fsuvaris64uz" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmbpl2rh00038guvg6xjd01t" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
       
       
       
@@ -294,7 +355,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmbh1slj0001fsuv9osc3l6q" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmbpl2rg00028guv4ij4703q" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
       
       
       
@@ -342,7 +403,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmbh1sln0004fsuv4k8f5dui" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmbpl2rk00058guvf33269fa" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
       
       
       
@@ -398,7 +459,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmbh1slo0005fsuvc9t682gx" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmbpl2rl00068guv0lls7rpq" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
       
       
       
@@ -448,7 +509,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckmbh1slt0008fsuv4zxo3ufz" data-title="理解kmp算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckmbpl2rp00098guv6va15g97" data-title="理解kmp算法" class="article-share-link">Share</a>
       
       
       
@@ -510,7 +571,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckmbh1slp0006fsuvgfa009hg" data-title="单调栈的应用" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckmbpl2rm00078guvhbeh87sp" data-title="单调栈的应用" class="article-share-link">Share</a>
       
       
       
@@ -554,7 +615,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckmbh1slq0007fsuvdy74bx98" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckmbpl2rm00088guvgmvpbdpa" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
       
       
       
@@ -601,7 +662,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmbh1sle0000fsuv6fdadblv" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmbpl2r000008guvdj559g3r" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
@@ -644,6 +705,10 @@
       <ul>
         
           <li>
+            <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/">leetcode-master学习笔记-二叉树1</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/">leetcode-master学习笔记-栈与队列</a>
           </li>
         
@@ -657,10 +722,6 @@
         
           <li>
             <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/">leetcode-master学习笔记-链表</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">leetcode-master学习笔记-数组</a>
           </li>
         
       </ul>
