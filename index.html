@@ -71,6 +71,59 @@
       <div class="outer">
         <section id="main">
   
+    <article id="title-leetcode-master学习笔记-字符串" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="article-date">
+  <time class="dt-published" datetime="2021-03-16T00:49:44.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/">leetcode-master学习笔记-字符串</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一、字符串反转"><a href="#一、字符串反转" class="headerlink" title="一、字符串反转"></a>一、字符串反转</h2><p>学会利用reverse函数：传入迭代器的起点与终点，对迭代器中元素排列进行翻转。reverse的参数为左闭右开区间，因此迭代器终点应该为<font color=red>所求区间的下一个元素</font>。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/">剑指offer 58.左旋转字符串</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串&quot;abcdefg&quot;和数字2，该函数将返回左旋转两位得到的结果&quot;cdefgab&quot;。</span><br><span class="line"></span><br><span class="line">示例 1：</span><br><span class="line"></span><br><span class="line">输入: s &#x3D; &quot;abcdefg&quot;, k &#x3D; 2</span><br><span class="line">输出: &quot;cdefgab&quot;</span><br><span class="line">示例 2：</span><br><span class="line"></span><br><span class="line">输入: s &#x3D; &quot;lrloseumgh&quot;, k &#x3D; 6</span><br><span class="line">输出: &quot;umghlrlose&quot;</span><br></pre></td></tr></table></figure>
+<p>原地翻转分为三步：</p>
+<ul>
+<li>翻转前k个字符</li>
+<li>翻转后面的字符</li>
+<li>翻转整个字符串</li>
+</ul>
+<h2 id="二、字符串填充"><a href="#二、字符串填充" class="headerlink" title="二、字符串填充"></a>二、字符串填充</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/">剑指offer 05.替换空格</a></p>
+<p>实现空间复杂度为O(1)的原地填充算法，可以考虑先计算出填充后的大小，然后将数组扩容并使用双指针，从后向前填充。</p>
+<h2 id="三、kmp"><a href="#三、kmp" class="headerlink" title="三、kmp"></a>三、kmp</h2><p>一定要对这个算法的过程多加理解，特别是求解next数组。</p>
+<p>特别的，为了保证前缀表回溯时不陷入循环，有两种next数组的处理方式</p>
+<h3 id="①-整个next数组的值-1。例如，如果在下标为5的位置，最大匹配前缀长度为3，那么next-5-为3-1-2。"><a href="#①-整个next数组的值-1。例如，如果在下标为5的位置，最大匹配前缀长度为3，那么next-5-为3-1-2。" class="headerlink" title="① 整个next数组的值-1。例如，如果在下标为5的位置，最大匹配前缀长度为3，那么next[5]为3-1=2。"></a>① 整个next数组的值-1。例如，如果在下标为5的位置，最大匹配前缀长度为3，那么next[5]为3-1=2。</h3><p>实现代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void getNext(int* next, const string&amp; s) &#123;</span><br><span class="line">    int j &#x3D; -1;</span><br><span class="line">    next[0] &#x3D; j;&#x2F;&#x2F;此处初始化0位置为-1</span><br><span class="line">    for(int i &#x3D; 1; i &lt; s.size(); i++) &#123; &#x2F;&#x2F; 注意i从1开始</span><br><span class="line">        while (j &gt;&#x3D; 0 &amp;&amp; s[i] !&#x3D; s[j + 1]) &#123; &#x2F;&#x2F; 前后缀不相同了</span><br><span class="line">            j &#x3D; next[j]; &#x2F;&#x2F; 向前回溯</span><br><span class="line">        &#125;</span><br><span class="line">        if (s[i] &#x3D;&#x3D; s[j + 1]) &#123; &#x2F;&#x2F; 找到相同的前后缀</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        next[i] &#x3D; j; &#x2F;&#x2F; 将j（前缀的长度）赋给next[i]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="②-回溯时取j-1进行回退。在进行匹配时也需取j-1来回退。（这种方式有点疑问）"><a href="#②-回溯时取j-1进行回退。在进行匹配时也需取j-1来回退。（这种方式有点疑问）" class="headerlink" title="② 回溯时取j-1进行回退。在进行匹配时也需取j-1来回退。（这种方式有点疑问）"></a>② 回溯时取j-1进行回退。在进行匹配时也需取j-1来回退。（这种方式有点疑问）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void getNext(int* next, const string&amp; s) &#123;</span><br><span class="line">        int j &#x3D; 0;</span><br><span class="line">        next[0] &#x3D; 0;&#x2F;&#x2F;此处初始化0位置为0</span><br><span class="line">        for(int i &#x3D; 1; i &lt; s.size(); i++) &#123;</span><br><span class="line">            while (j &gt; 0 &amp;&amp; s[i] !&#x3D; s[j]) &#123; &#x2F;&#x2F; j要保证大于0，因为下面有取j-1作为数组下表的操作</span><br><span class="line">                j &#x3D; next[j - 1]; &#x2F;&#x2F; 注意这里，是要找前一位的对应的回退位置了</span><br><span class="line">            &#125;</span><br><span class="line">            if (s[i] &#x3D;&#x3D; s[j]) &#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            next[i] &#x3D; j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmbdoa370002acuv1sw5flbj" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="title-leetcode-master学习笔记-哈希表" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" class="article-date">
@@ -186,7 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmabsb440002ukuv6dnjf23g" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmbdoa340001acuv5yfc6y9e" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
       
       
       
@@ -234,7 +287,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmabsb420001ukuv8zr61vqb" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmbdoa3c0006acuvhc6f2k5h" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
       
       
       
@@ -290,7 +343,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmabsb450003ukuv52sjb5a7" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmbdoa380003acuva1wm801i" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
       
       
       
@@ -340,7 +393,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckmabsb4a0006ukuvaqsv6jw4" data-title="理解kmp算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" data-id="ckmbdoa3h0007acuv3sz00pjv" data-title="理解kmp算法" class="article-share-link">Share</a>
       
       
       
@@ -402,7 +455,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckmabsb460004ukuv7yak3sis" data-title="单调栈的应用" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckmbdoa3a0004acuvbg6b2pb0" data-title="单调栈的应用" class="article-share-link">Share</a>
       
       
       
@@ -446,7 +499,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckmabsb480005ukuvaf7l8uf8" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckmbdoa3b0005acuvey93amq5" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
       
       
       
@@ -493,7 +546,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmabsb3w0000ukuv59tpg2fx" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmbdoa2n0000acuv2az37i5o" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
@@ -536,6 +589,10 @@
       <ul>
         
           <li>
+            <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/">leetcode-master学习笔记-字符串</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/">leetcode-master学习笔记-哈希表</a>
           </li>
         
@@ -549,10 +606,6 @@
         
           <li>
             <a href="/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/">理解kmp算法</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/">单调栈的应用</a>
           </li>
         
       </ul>
