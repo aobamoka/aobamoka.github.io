@@ -71,6 +71,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-搭建个人博客时遇到的问题分享" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" class="article-date">
+  <time class="dt-published" datetime="2021-01-22T13:23:27.000Z" itemprop="datePublished">2021-01-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/">搭建个人博客时遇到的问题分享</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，<strong>仓库里没有html文件，github page自然也没有内容显示</strong>。</p>
+<p>今天在跟群友闲聊时又讨论到博客的问题，于是经过研究与上网查阅资料成功解决了上述问题。</p>
+<p>问题的根本原因在于<strong>github将主分支的名字由master改成了main</strong>，但是hexo貌似并没有对此进行更新，导致每次clean再进行deploy的时候，如果没有指定分支名称，总是新建一个名为“master”的分支并将内容push到该分支上，而并不是push到我们以为的“master”分支上（实际上名称已经变成了“main”）。</p>
+<p>弄清楚问题原因后，解决方法也很简单了，<strong>在_config.yml的deploy字段后面指定分支名字即可解决</strong>。</p>
+<p><code>  branch: main</code></p>
+<p>之后clean+g+d，成功显示！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" data-id="ckmeslnc30007souv65s3d52b" data-title="搭建个人博客时遇到的问题分享" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/01/12/hello-world/" class="article-date">
@@ -106,7 +150,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmd75kmq0000zcuvd19418gg" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmeslnba0000souv6r1ugst8" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
@@ -154,6 +198,10 @@
       <ul>
         
           <li>
+            <a href="/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/">leetcode-master学习笔记-回溯</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/">leetcode-master学习笔记-二叉树2</a>
           </li>
         
@@ -167,10 +215,6 @@
         
           <li>
             <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/">leetcode-master学习笔记-字符串</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/">leetcode-master学习笔记-哈希表</a>
           </li>
         
       </ul>
