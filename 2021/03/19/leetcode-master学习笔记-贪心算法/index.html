@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>Hello World | aobamoka</title>
+  <title>leetcode-master学习笔记-贪心算法 | aobamoka</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="一、前驱贪心与动态规划的使用区别： 贪心要求局部最优解能够推出全局最优解，而动态规划解决的问题一般无法通过局部最优解推出全局最优解。 简单的例子为：有一摞各种面值的钞票，要求从其中抽出10张且面值总和最大。我们通过常识就知道，只要抽出的每一张都是当前钞票堆里最大的那一张，抽出的10张面值总和肯定是最大的。这就是局部最优解推出全局最优解，所以可以用贪心算法解决这道题。 而以背包问题为例，假设背包大小">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2021/01/12/hello-world/index.html">
+<meta property="og:title" content="leetcode-master学习笔记-贪心算法">
+<meta property="og:url" content="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="aobamoka">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="一、前驱贪心与动态规划的使用区别： 贪心要求局部最优解能够推出全局最优解，而动态规划解决的问题一般无法通过局部最优解推出全局最优解。 简单的例子为：有一摞各种面值的钞票，要求从其中抽出10张且面值总和最大。我们通过常识就知道，只要抽出的每一张都是当前钞票堆里最大的那一张，抽出的10张面值总和肯定是最大的。这就是局部最优解推出全局最优解，所以可以用贪心算法解决这道题。 而以背包问题为例，假设背包大小">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-01-12T05:37:47.589Z">
-<meta property="article:modified_time" content="2021-01-12T05:37:47.589Z">
+<meta property="article:published_time" content="2021-03-19T00:21:15.000Z">
+<meta property="article:modified_time" content="2021-03-19T02:49:40.040Z">
 <meta property="article:author" content="aoba moka">
 <meta name="twitter:card" content="summary">
   
@@ -73,10 +73,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="title-leetcode-master学习笔记-贪心算法" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2021/01/12/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2021-01-12T05:37:47.589Z" itemprop="datePublished">2021-01-12</time>
+    <a href="/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-03-19T00:21:15.000Z" itemprop="datePublished">2021-03-19</time>
 </a>
     
   </div>
@@ -87,7 +87,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      Hello World
+      leetcode-master学习笔记-贪心算法
     </h1>
   
 
@@ -95,20 +95,18 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h2 id="一、前驱"><a href="#一、前驱" class="headerlink" title="一、前驱"></a>一、前驱</h2><p>贪心与动态规划的使用区别：</p>
+<p>贪心要求局部最优解能够推出全局最优解，而动态规划解决的问题一般无法通过局部最优解推出全局最优解。</p>
+<p>简单的例子为：有一摞各种面值的钞票，要求从其中抽出10张且面值总和最大。我们通过常识就知道，只要抽出的每一张都是当前钞票堆里最大的那一张，抽出的10张面值总和肯定是最大的。这就是局部最优解推出全局最优解，所以可以用贪心算法解决这道题。</p>
+<p>而以背包问题为例，假设背包大小为10，物品的体积为{8,5,4}。显然可以看出第一次取物品的局部最优解是8，但是全局最优解则是5+4=9&gt;8。这种情况就应该用动态规划。</p>
+<p>由于贪心问题上述的特点，其解法一般也为，先将全局问题分解为若干子问题，选用合适的贪心策略求解子问题最优解，再综合为全局问题最优解。</p>
+<p>感觉做了两三道题还是拿不准什么时候该用贪心算法，<del>大概只能多刷凭感觉了吧</del>。</p>
+<h2 id="二、调用c-函数-模板类时的自定义比较函数"><a href="#二、调用c-函数-模板类时的自定义比较函数" class="headerlink" title="二、调用c++函数/模板类时的自定义比较函数"></a>二、调用c++函数/模板类时的自定义比较函数</h2><p>感觉还是挺重要的，所以单独发了一篇博客讲这个，这里就当插个眼吧。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/hello-world/" data-id="ckmfpguk20000pouvcdus98tt" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" data-id="ckmfpgukn0006pouvckud94oh" data-title="leetcode-master学习笔记-贪心算法" class="article-share-link">Share</a>
       
       
       
@@ -118,15 +116,20 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          搭建个人博客时遇到的问题分享
+          sort与priority_queue中的自定义排序
         
       </div>
     </a>
   
+  
+    <a href="/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">leetcode-master学习笔记-回溯</div>
+    </a>
   
 </nav>
 
