@@ -119,7 +119,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" data-id="ckmfpgukt000apouvhurggc7f" data-title="sort与priority_queue中的自定义排序" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" data-id="ckmfqzet3000al0uv39odg73t" data-title="sort与priority_queue中的自定义排序" class="article-share-link">Share</a>
       
       
       
@@ -160,11 +160,23 @@
 <p>由于贪心问题上述的特点，其解法一般也为，先将全局问题分解为若干子问题，选用合适的贪心策略求解子问题最优解，再综合为全局问题最优解。</p>
 <p>感觉做了两三道题还是拿不准什么时候该用贪心算法，<del>大概只能多刷凭感觉了吧</del>。</p>
 <h2 id="二、调用c-函数-模板类时的自定义比较函数"><a href="#二、调用c-函数-模板类时的自定义比较函数" class="headerlink" title="二、调用c++函数/模板类时的自定义比较函数"></a>二、调用c++函数/模板类时的自定义比较函数</h2><p>感觉还是挺重要的，所以单独发了一篇博客讲这个，这里就当插个眼吧。</p>
+<p><a target="_blank" rel="noopener" href="https://aobamoka.github.io/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/">sort与priority_queue中的自定义排序</a></p>
+<h2 id="三、加油站"><a href="#三、加油站" class="headerlink" title="三、加油站"></a>三、加油站</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/gas-station/">leetcode 134：加油站</a></p>
+<p>代码随想录给了两种方法：</p>
+<ul>
+<li>先计算总加油-总耗油是否大于0，并记录从0往前走的过程中最小的累加值。之后从后往前遍历，寻找到能填平这个累加值的第一个节点。</li>
+<li>同样先计算总加油-总耗油大于0，之后从0开始遍历并进行累加。如果出现之前的累加值小于0，就从当前遍历到点作为起点继续往后累加。</li>
+</ul>
+<p>我一开始想到的是第二种方法，但是并不清楚该如何解释它的正确性。其实，由于已经计算过总加油是大于总耗油的，所以如果之前存在小于0的净加油量，则之后一定会存在大于0的净加油量，且其绝对值大于之前的绝对值，所以从当前遍历到的点开始是合理的。</p>
+<h2 id="四、分糖果"><a href="#四、分糖果" class="headerlink" title="四、分糖果"></a>四、分糖果</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/candy/">leetcode 135：分糖果</a></p>
+<p>不会做。</p>
+<p>大致思想是遍历两遍，从左到右只考虑右边比左边评分高，从右到左则相反。</p>
+<p>官方的题解有种常数空间复杂度的算法，有时间再看看吧，学贪心为主。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" data-id="ckmfpgukn0006pouvckud94oh" data-title="leetcode-master学习笔记-贪心算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" data-id="ckmfqzet10007l0uve454evs7" data-title="leetcode-master学习笔记-贪心算法" class="article-share-link">Share</a>
       
       
       
@@ -243,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" data-id="ckmfpgukj0003pouvcd751q1m" data-title="leetcode-master学习笔记-回溯" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" data-id="ckmfqzesz0004l0uvh4kr6yb1" data-title="leetcode-master学习笔记-回溯" class="article-share-link">Share</a>
       
       
       
@@ -314,7 +326,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" data-id="ckmfpguki0002pouv92a34pqp" data-title="leetcode-master学习笔记-二叉树2" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" data-id="ckmfqzesx0002l0uvfgid9s0t" data-title="leetcode-master学习笔记-二叉树2" class="article-share-link">Share</a>
       
       
       
@@ -375,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckmfpguke0001pouvdvzl1ae9" data-title="leetcode-master学习笔记-二叉树1" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckmfqzesv0001l0uv1ejbd1ke" data-title="leetcode-master学习笔记-二叉树1" class="article-share-link">Share</a>
       
       
       
@@ -430,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmfpgukm0005pouvevq98so3" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmfqzet00006l0uv2kx7g6ez" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
       
       
       
@@ -483,7 +495,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmfpgukl0004pouvbjws0yw3" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmfqzesz0005l0uvgw5cbnvf" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
       
       
       
@@ -610,7 +622,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmfpgukr0009pouv94es3at8" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmfqzesy0003l0uvbbx67121" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
       
       
       
@@ -658,7 +670,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmfpgukp0007pouvbgpx9m5q" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" data-id="ckmfqzet20008l0uv1s2matta" data-title="leetcode-master学习笔记-链表" class="article-share-link">Share</a>
       
       
       
@@ -714,7 +726,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmfpgukq0008pouvh66igjei" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmfqzet30009l0uvdn19252j" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
       
       
       
