@@ -93,12 +93,27 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="一、主要思想"><a href="#一、主要思想" class="headerlink" title="一、主要思想"></a>一、主要思想</h2><p>利用大多数dp问题往往具有：根据上一个或者上几个状态来决定当前状态，的特点</p>
+        <h2 id="一、主要思想"><a href="#一、主要思想" class="headerlink" title="一、主要思想"></a>一、主要思想</h2><p>利用大多数dp问题往往具有：根据上一个或者上几个状态来决定当前状态，的特点，而只针对这几个状态进行存储，不断地用新生成的数据覆盖不使用的旧数据空间，以达到降低空间利用的目的。</p>
+<h2 id="二、举例说明"><a href="#二、举例说明" class="headerlink" title="二、举例说明"></a>二、举例说明</h2><p>以经典的01背包问题为例，dp[n][m]为动态规划数组dp，n代表物品的编号，m代表当前总共占的体积大小，而dp的值则代表了当前情况下所能获得的最大价值。<br>由于上面对dp数组与下标的定义，可以知道边界条件的初始化值：</p>
+<ul>
+<li>dp[0][j]代表了取第0件物品时所能产生的最大价值。显然当j大于等于第0件物品的体积时，dp[0][j]即为第0件物品的价值，否则为0。</li>
+<li>dp[i][0]代表了背包为空时能产生的最大价值，显然背包为空时不能放入任何物品，最大价值为0。</li>
+</ul>
+<p>接下来确认递推关系，对于某位置dp[i][j]：</p>
+<ul>
+<li>我们可以不取第i号物品（或者已经放不下了），此时dp[i][j]=dp[i-1][j]。</li>
+<li>我们也可以取第i号物品，此时dp[i][j]=dp[i-1][j-weight[i]]+value[i]。</li>
+</ul>
+<p>得到递推关系dp[i][j]=max(dp[i-1][j],dp[i-1][j-weight[i]]+value[i])。</p>
+<p>从中我们可以看出的是，对于i这一层关系来说，dp[i]只与dp[i-1]的状态有关，也就意味着，在做dp[i-1]行到dp[i]行的状态转移时，i-2、……、0行的状态都是不被需要的。所以我们可以在状态转移时只用一维数组dp[j]记录状态，不断用新的值来覆盖旧的值。</p>
+<h2 id="三、第二维j的遍历方向问题"><a href="#三、第二维j的遍历方向问题" class="headerlink" title="三、第二维j的遍历方向问题"></a>三、第二维j的遍历方向问题</h2><p>对于01背包问题来说，假设我们通过正序来遍历j，利用dp[4][9]得到了dp[5][10]的值，而下一步我们又需要利用到dp[4][10]的值，但是这个时候它的值已经被dp[5][10]覆盖了，所以无法再取到它的值。</p>
+<p>而如果采用j倒序的方式来遍历，当某个位置的值将要更新时，它只会依靠位于其前面的位置的值来更新，而此时它的前面位置的值还处于上一层未被更新，它的后面位置的值均已被更新，但是在这一层不会被调用到，所以可以解决覆盖问题。</p>
+<p>对于完全背包问题，由于物品可以取无限多次，所以可以采用正序进行遍历。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/" data-id="ckmiiykgl000bn8vzcay17x30" data-title="动态规划中的滚动数组思想" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/" data-id="ckmiizqzh000d34vz0ow4098w" data-title="动态规划中的滚动数组思想" class="article-share-link">Share</a>
       
       
       
@@ -149,7 +164,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/20/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckmiiykgc0002n8vz6ynpdl2d" data-title="leetcode-master学习笔记-动态规划" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/20/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckmiizqz8000334vzfsaphbjn" data-title="leetcode-master学习笔记-动态规划" class="article-share-link">Share</a>
       
       
       
@@ -209,7 +224,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" data-id="ckmiiykgo000cn8vzcsjd4bj9" data-title="sort与priority_queue中的自定义排序" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" data-id="ckmiizqzf000b34vz6u4f8hw5" data-title="sort与priority_queue中的自定义排序" class="article-share-link">Share</a>
       
       
       
@@ -293,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" data-id="ckmiiykgi0008n8vz412q36t0" data-title="leetcode-master学习笔记-贪心算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" data-id="ckmiizqzd000834vzblt918ge" data-title="leetcode-master学习笔记-贪心算法" class="article-share-link">Share</a>
       
       
       
@@ -372,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" data-id="ckmiiykge0004n8vz862s4oh6" data-title="leetcode-master学习笔记-回溯" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" data-id="ckmiizqza000534vzaha69xp0" data-title="leetcode-master学习笔记-回溯" class="article-share-link">Share</a>
       
       
       
@@ -443,7 +458,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" data-id="ckmiiykgd0003n8vz97xceugs" data-title="leetcode-master学习笔记-二叉树2" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" data-id="ckmiizqz8000234vz51dv1x3k" data-title="leetcode-master学习笔记-二叉树2" class="article-share-link">Share</a>
       
       
       
@@ -504,7 +519,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckmiiykg80001n8vz0rxmhhan" data-title="leetcode-master学习笔记-二叉树1" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckmiizqz5000134vz0k1yeyig" data-title="leetcode-master学习笔记-二叉树1" class="article-share-link">Share</a>
       
       
       
@@ -559,7 +574,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmiiykgh0007n8vz105l2khq" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmiizqzc000734vz546ob3yf" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
       
       
       
@@ -612,7 +627,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmiiykgg0006n8vz9zzyc7s0" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmiizqzb000634vzhfwic20a" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
       
       
       
@@ -739,7 +754,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmiiykgf0005n8vzeo7zgnf8" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmiizqz9000434vz5bxv2ien" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
       
       
       
