@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="title-动态规划中的滚动数组思想" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="title-动态规划中的背包问题与滚动数组思想" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/" class="article-date">
+    <a href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%8E%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/" class="article-date">
   <time class="dt-published" datetime="2021-03-20T05:58:42.000Z" itemprop="datePublished">2021-03-20</time>
 </a>
     
@@ -85,7 +85,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/">动态规划中的滚动数组思想</a>
+      <a class="p-name article-title" href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%8E%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/">动态规划中的背包问题与滚动数组思想</a>
     </h1>
   
 
@@ -109,11 +109,47 @@
 <h2 id="三、第二维j的遍历方向问题"><a href="#三、第二维j的遍历方向问题" class="headerlink" title="三、第二维j的遍历方向问题"></a>三、第二维j的遍历方向问题</h2><p>对于01背包问题来说，假设我们通过正序来遍历j，利用dp[4][9]得到了dp[5][10]的值，而下一步我们又需要利用到dp[4][10]的值，但是这个时候它的值已经被dp[5][10]覆盖了，所以无法再取到它的值。</p>
 <p>而如果采用j倒序的方式来遍历，当某个位置的值将要更新时，它只会依靠位于其前面的位置的值来更新，而此时它的前面位置的值还处于上一层未被更新，它的后面位置的值均已被更新，但是在这一层不会被调用到，所以可以解决覆盖问题。</p>
 <p>对于完全背包问题，由于物品可以取无限多次，所以可以采用正序进行遍历。</p>
+<h2 id="四、求方式数"><a href="#四、求方式数" class="headerlink" title="四、求方式数"></a>四、求方式数</h2><p>在求装满背包有几种方法的情况下，递推公式一般为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j] +&#x3D; dp[j - nums[i]];</span><br></pre></td></tr></table></figure>
+<h2 id="五、两层循环嵌套顺序能否互换"><a href="#五、两层循环嵌套顺序能否互换" class="headerlink" title="五、两层循环嵌套顺序能否互换"></a>五、两层循环嵌套顺序能否互换</h2><p>01背包问题与完全背包问题都是可以替换的，因为在递推过程中，当前位置的值永远只会依赖当前位置左上方向上的值，而这些值无论以哪种循环嵌套顺序，都是先于当前位置被计算。一般为外层遍历物品，内层遍历背包</p>
+<p>如果不是求组合数，而是需要求排列数，即{1,5}与{5,1}算作两种解答，这时候需要外层遍历背包，内层遍历物品。</p>
+<h2 id="六、知识点总结"><a href="#六、知识点总结" class="headerlink" title="六、知识点总结"></a>六、知识点总结</h2><p>拿到动态规划问题的步骤：</p>
+<ol>
+<li>分析是否为背包问题</li>
+<li>分析是哪种背包问题（下列三种分类）</li>
+<li>分析是01还是完全</li>
+<li>分析要求的答案是组合还是排列，即元素之间的顺序关系 </li>
+</ol>
+<p>常见背包问题分类</p>
+<h3 id="①-组合问题："><a href="#①-组合问题：" class="headerlink" title="① 组合问题："></a>① 组合问题：</h3><ol>
+<li>  377.组合总和 Ⅳ</li>
+<li>  494.目标和</li>
+<li>  518.零钱兑换 II</li>
+</ol>
+<p>通用公式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j]+&#x3D;dp[j-weight[i]]</span><br></pre></td></tr></table></figure>
+<h3 id="②-True与False问题："><a href="#②-True与False问题：" class="headerlink" title="② True与False问题："></a>② True与False问题：</h3><ol>
+<li>  139.组合总和 Ⅳ</li>
+<li>  416.目标和</li>
+</ol>
+<p>通用公式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j]&#x3D;dp[j]|dp[j-weight[i]]</span><br></pre></td></tr></table></figure>
+<h3 id="③-最大最小问题"><a href="#③-最大最小问题" class="headerlink" title="③ 最大最小问题"></a>③ 最大最小问题</h3><ol>
+<li>  474.一和零</li>
+<li>  322.零钱兑换</li>
+</ol>
+<p>通用公式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j]&#x3D;max&#x2F;min(dp[j],dp[j-weight[i]]+value[i])</span><br></pre></td></tr></table></figure>
+<p>再分类</p>
+<h3 id="①-01背包问题"><a href="#①-01背包问题" class="headerlink" title="① 01背包问题"></a>① 01背包问题</h3><p>数组中的元素不可重复使用，应该将物品放在外侧循环，体积放在内侧循环，并且对体积倒序遍历。</p>
+<h3 id="②-完全背包问题"><a href="#②-完全背包问题" class="headerlink" title="② 完全背包问题"></a>② 完全背包问题</h3><p>数组中的元素可重复使用，应该将物品放在外侧循环，体积放在内侧循环，并且对体积正序遍历。</p>
+<h3 id="③-需要考虑元素间的顺序"><a href="#③-需要考虑元素间的顺序" class="headerlink" title="③ 需要考虑元素间的顺序"></a>③ 需要考虑元素间的顺序</h3><p>应该将体积放在外侧循环，物品放在内侧循环。如果出现这种情况，在内侧循环赋值时记得将下标与体积进行比较，避免数组越界。</p>
+<p>以上总结参考自：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-iv/solution/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/">https://leetcode-cn.com/problems/combination-sum-iv/solution/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/" data-id="ckmiizqzh000d34vz0ow4098w" data-title="动态规划中的滚动数组思想" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%8E%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/" data-id="ckmiyg452000ce8vzb2dz5x58" data-title="动态规划中的背包问题与滚动数组思想" class="article-share-link">Share</a>
       
       
       
@@ -160,11 +196,26 @@
 <h2 id="三、不同的二叉搜索树"><a href="#三、不同的二叉搜索树" class="headerlink" title="三、不同的二叉搜索树"></a>三、不同的二叉搜索树</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/unique-binary-search-trees/">leetcode 96：不同的二叉搜索树</a></p>
 <p>这道题的难点在于递推公式的推导。当节点数为i时，除了根节点左右两边节点的总和为i-1，而因为左右子树是节点数小于i的二叉树，其可能出现的情况已经在之前推导出来，根据乘法原则与加法原则即可推导出递推公式。</p>
 <h2 id="四、滚动数组思想"><a href="#四、滚动数组思想" class="headerlink" title="四、滚动数组思想"></a>四、滚动数组思想</h2><p>利用dp问题具有空间局部性的思想，将空间复杂度降低一个或多个量级。</p>
+<p><a target="_blank" rel="noopener" href="https://aobamoka.github.io/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/">动态规划中的滚动数组思想</a></p>
+<h2 id="五、01背包问题"><a href="#五、01背包问题" class="headerlink" title="五、01背包问题"></a>五、01背包问题</h2><p>难点在于如何把已知问题的各个参数转化为01背包问题中的参数，以及确定最终的返回值。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/partition-equal-subset-sum/">leetcode 416：分割等和子集</a>：物品的重量和价值都是数的大小。由于dp[i]是一定小于i的，其最大值也只能为i，所以最终返回值为dp[n] (n为总和的一半)。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/last-stone-weight-ii/">leetcode 1049：最后一块石头的重量</a>：物品的重量和价值都是石头的重量。由于转化方式跟416一样，dp[i]仍是小于i的，我们的目的是将石头分为两组，让两组之间相撞，最后得到最小的差值即为结果，因此最终返回值为sum-dp[n]-dp[n]。</p>
+<h2 id="六、爬楼梯的拓展"><a href="#六、爬楼梯的拓展" class="headerlink" title="六、爬楼梯的拓展"></a>六、爬楼梯的拓展</h2><p>爬楼梯问题不放链接都能背出来了吧。那么如果改成一次最多可以爬m个台阶，爬到第n个台阶有多少种方法呢？</p>
+<p>① 为求组合方法数问题，通用公式为dp[j]+=dp[j-weight[i]]。</p>
+<p>② 由于可以爬多个一层，所以为完全背包问题。</p>
+<p>③ 如果爬到三层，先爬一层再爬两层与先爬两层再爬一层是两种不同的方案，所以是排列问题，应该将体积放在外侧循环（此题中为目标台阶数n），物品放在内侧循环（此题中为一次攀爬可选的台阶数1~m）。</p>
+<p>做完这三个判断，问题便迎刃而解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int climbStairs(int n, int m) &#123;</span><br><span class="line">        vector&lt;int&gt; dp(n+1,0);</span><br><span class="line">        dp[0]&#x3D;1;</span><br><span class="line">        for(int i&#x3D;0;i&lt;&#x3D;n;i++)&#123;</span><br><span class="line">            for(int j&#x3D;1;j&lt;&#x3D;m;j++)&#123;</span><br><span class="line">                if(i&gt;j)dp[i]+&#x3D;dp[i-j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="七、多重背包简介"><a href="#七、多重背包简介" class="headerlink" title="七、多重背包简介"></a>七、多重背包简介</h2><p>多重背包问题就是在01背包问题的基础上由最多一件相同物品变成了最多k件相同物品。其处理方式有两种：</p>
+<ul>
+<li>将k-1件物品放进物品选择列表中，这样就变成了01背包问题。</li>
+<li>再嵌套一层循环，遍历单个物品的个数。</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/20/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckmiizqz8000334vzfsaphbjn" data-title="leetcode-master学习笔记-动态规划" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/20/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckmiyg44v0003e8vzed49ew5a" data-title="leetcode-master学习笔记-动态规划" class="article-share-link">Share</a>
       
       
       
@@ -224,7 +275,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" data-id="ckmiizqzf000b34vz6u4f8hw5" data-title="sort与priority_queue中的自定义排序" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" data-id="ckmiyg451000be8vz9ekrgzzn" data-title="sort与priority_queue中的自定义排序" class="article-share-link">Share</a>
       
       
       
@@ -308,7 +359,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" data-id="ckmiizqzd000834vzblt918ge" data-title="leetcode-master学习笔记-贪心算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" data-id="ckmiyg44z0008e8vzbag2bkwr" data-title="leetcode-master学习笔记-贪心算法" class="article-share-link">Share</a>
       
       
       
@@ -387,7 +438,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" data-id="ckmiizqza000534vzaha69xp0" data-title="leetcode-master学习笔记-回溯" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" data-id="ckmiyg44w0005e8vzfawlhdqv" data-title="leetcode-master学习笔记-回溯" class="article-share-link">Share</a>
       
       
       
@@ -458,7 +509,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" data-id="ckmiizqz8000234vz51dv1x3k" data-title="leetcode-master学习笔记-二叉树2" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" data-id="ckmiyg44u0002e8vzh3cz4jhz" data-title="leetcode-master学习笔记-二叉树2" class="article-share-link">Share</a>
       
       
       
@@ -519,7 +570,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckmiizqz5000134vz0k1yeyig" data-title="leetcode-master学习笔记-二叉树1" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckmiyg44r0001e8vz7ikbeyrz" data-title="leetcode-master学习笔记-二叉树1" class="article-share-link">Share</a>
       
       
       
@@ -574,7 +625,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmiizqzc000734vz546ob3yf" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97/" data-id="ckmiyg44y0007e8vz48wi577q" data-title="leetcode-master学习笔记-栈与队列" class="article-share-link">Share</a>
       
       
       
@@ -627,7 +678,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmiizqzb000634vzhfwic20a" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AD%97%E7%AC%A6%E4%B8%B2/" data-id="ckmiyg44x0006e8vzciwcearz" data-title="leetcode-master学习笔记-字符串" class="article-share-link">Share</a>
       
       
       
@@ -754,7 +805,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmiizqz9000434vz5bxv2ien" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="ckmiyg44v0004e8vz74s8a1g7" data-title="leetcode-master学习笔记-哈希表" class="article-share-link">Share</a>
       
       
       
@@ -802,7 +853,7 @@
       <ul>
         
           <li>
-            <a href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/">动态规划中的滚动数组思想</a>
+            <a href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%8E%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/">动态规划中的背包问题与滚动数组思想</a>
           </li>
         
           <li>
