@@ -1,101 +1,108 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>leetcode-master学习笔记-数组 | aobamoka</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。链接地址：https:&#x2F;&#x2F;github.com&#x2F;youngyangyang04&#x2F;leetcode-master 1、二分查找对于left&lt;&#x3D;right还是left&lt;right，以及left&#x3D;mid还是left&#x3D;mid+1的问题">
-<meta property="og:type" content="article">
-<meta property="og:title" content="leetcode-master学习笔记-数组">
-<meta property="og:url" content="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/index.html">
-<meta property="og:site_name" content="aobamoka">
-<meta property="og:description" content="在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。链接地址：https:&#x2F;&#x2F;github.com&#x2F;youngyangyang04&#x2F;leetcode-master 1、二分查找对于left&lt;&#x3D;right还是left&lt;right，以及left&#x3D;mid还是left&#x3D;mid+1的问题">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-03-15T02:09:48.000Z">
-<meta property="article:modified_time" content="2021-03-22T07:34:57.926Z">
-<meta property="article:author" content="aoba moka">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>leetcode-master学习笔记-数组 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+<link rel="stylesheet" href="/styles/cold-stone.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
 
-  
+  <body>
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">aobamoka</a>
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
       </h1>
-      
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
       </div>
-    </div>
-  </div>
+    
+  </nav>
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="title-leetcode-master学习笔记（大概会持续更新）" class="h-entry article article-type-title" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" class="article-date">
-  <time class="dt-published" datetime="2021-03-15T02:09:48.000Z" itemprop="datePublished">2021-03-15</time>
-</a>
-    
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
   </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
       leetcode-master学习笔记-数组
     </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。<br>链接地址：<a target="_blank" rel="noopener" href="https://github.com/youngyangyang04/leetcode-master">https://github.com/youngyangyang04/leetcode-master</a></p>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2021-03-22">2021-03-22</time>
+        </span>
+        <span>Reading Time&#58; 3 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><p>在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。<br>链接地址：<a target="_blank" rel="noopener" href="https://github.com/youngyangyang04/leetcode-master">https://github.com/youngyangyang04/leetcode-master</a></p>
 <h2 id="1、二分查找"><a href="#1、二分查找" class="headerlink" title="1、二分查找"></a>1、二分查找</h2><p>对于left&lt;=right还是left&lt;right，以及left=mid还是left=mid+1的问题。这个问题在我之前的刷题过程中出现的次数还挺多的，之前主要靠输出来一个个情况试进行解决。教程作者给出的方法是坚持<font color=red>“循环不变量”</font>.这里的循环不变量指，如果你设置的区间为闭区间，那么就一直使用闭区间对应的计算方法来计算值，而不使用半开半闭区间的计算方法。</p>
 <h3 id="第一种情况：区间为-left-right"><a href="#第一种情况：区间为-left-right" class="headerlink" title="第一种情况：区间为[left, right]"></a>第一种情况：区间为[left, right]</h3><p>① 这种情况下，如果结束条件为left&lt;right，区间里还会剩下两个元素无法处理，因此结束条件应该为left&lt;=right；</p>
 <p>② left与right这种边界所代表的元素也包含在区间内，因此区间缩小时应该写为left=mid+1与right=mid-1。</p>
@@ -115,135 +122,79 @@
 <li>数组的元素是不能删的，只能覆盖</li>
 <li>二维数据在内存中不是m*n的连续地址空间，而是m条连续的地址空间组成</li>
 </ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%A7%E6%A6%82%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="ckmkbuwxd000ak0vzfo3a2y7p" data-title="leetcode-master学习笔记-数组" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2021/03/15/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E9%93%BE%E8%A1%A8/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          leetcode-master学习笔记-链表
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">理解kmp算法</div>
-    </a>
-  
-</nav>
-
-  
+</section>
 </article>
 
-
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2021/03/15/leetcode-master学习笔记之链表/" class="link prev" title="leetcode-master学习笔记-链表">
+			<span class="hover-underline-animation">&larr; leetcode-master学习笔记-链表</span>
+		</a>
+	
+	
+		<a href="/2021/03/09/理解kmp算法/" class="link next" title="理解kmp算法">
+			<span class="hover-underline-animation">理解kmp算法 &rarr;</span>
+		</a>
+	
 </section>
-        
-          <aside id="sidebar">
-  
-    
 
-  
-    
 
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
-    </div>
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="toc-text">1、二分查找</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%9A%E5%8C%BA%E9%97%B4%E4%B8%BA-left-right"><span class="toc-text">第一种情况：区间为[left, right]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%9A%E5%8C%BA%E9%97%B4%E4%B8%BA-left-right"><span class="toc-text">第二种情况：区间为[left, right)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%8F%8C%E6%8C%87%E9%92%88%E6%B3%95"><span class="toc-text">2、双指针法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E9%93%BE%E8%A1%A8%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF"><span class="toc-text">判断链表是否有环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">3、滑动窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E5%BE%AA%E7%8E%AF%E7%9F%A9%E9%98%B5"><span class="toc-text">4、循环矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E6%80%BB%E7%BB%93%E7%AF%87"><span class="toc-text">5、总结篇</span></a></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
   </div>
 
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%8E%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/">动态规划中的背包问题与滚动数组思想</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/20/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">leetcode-master学习笔记-动态规划</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/">sort与priority_queue中的自定义排序</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">leetcode-master学习笔记-贪心算法</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/">leetcode-master学习笔记-回溯</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
 
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 aoba moka<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
 
 
 
 
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
 
-  </div>
-</body>
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
 </html>

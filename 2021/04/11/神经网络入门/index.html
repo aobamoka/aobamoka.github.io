@@ -12,7 +12,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="keyword"  content="">
     <meta name="description" content="">
-    <title>搭建个人博客时遇到的问题分享 - 青叶摩卡的博客</title>
+    <title>神经网络入门 - 青叶摩卡的博客</title>
     <base href="/">
     <link rel="preconnect" href="//cdn.bootcss.com">
     <link rel="manifest" href="/manifest.json">
@@ -88,13 +88,13 @@
     <main class="main wrapper"><article class="article slide-in-right uk-article">
   <section class="article-header">
     <h1 class="article-title uk-article-title">
-      搭建个人博客时遇到的问题分享
+      神经网络入门
     </h1>
     <p class="article-meta uk-article-meta">
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2021-01-22">2021-01-22</time>
+            datetime="2021-04-11">2021-04-11</time>
         </span>
         <span>Reading Time&#58; 1 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
@@ -102,24 +102,33 @@
       </span>
     </p>
   </section>
-  <section class="article-content"><p>10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，<strong>仓库里没有html文件，github page自然也没有内容显示</strong>。</p>
-<p>今天在跟群友闲聊时又讨论到博客的问题，于是经过研究与上网查阅资料成功解决了上述问题。</p>
-<p>问题的根本原因在于<strong>github将主分支的名字由master改成了main</strong>，但是hexo貌似并没有对此进行更新，导致每次clean再进行deploy的时候，如果没有指定分支名称，总是新建一个名为“master”的分支并将内容push到该分支上，而并不是push到我们以为的“master”分支上（实际上名称已经变成了“main”）。</p>
-<p>弄清楚问题原因后，解决方法也很简单了，<strong>在_config.yml的deploy字段后面指定分支名字即可解决</strong>。</p>
-<p><code>  branch: main</code></p>
-<p>之后clean+g+d，成功显示！</p>
+  <section class="article-content"><p>参考博客：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/65472471">https://zhuanlan.zhihu.com/p/65472471</a></p>
+<p>输入层：接受输入。</p>
+<p>隐藏层：对上一层传输的信息进行加工处理，并传递给下一层。</p>
+<p>输出层：给出计算机对于输入得到的输出结果。</p>
+<p>激活层：为矩阵的运算结果添加非线性</p>
+<ul>
+<li>阶跃函数：输入小于等于0输出0；否则输出1。</li>
+<li>Sigmoid：输入趋近于正无穷/负无穷时，输出无限接近1/0。</li>
+<li>ReLU：当输入小于0输出0；输入大于0时输出等于输入。</li>
+<li>每个隐藏层进行矩阵线性运算后都要添加一层激活层。</li>
+</ul>
+<p>Softmax层：对输出进行处理使其正规化，将矩阵转换为概率。</p>
+<ul>
+<li>分为三步进行：以e为底对所有元素求指数幂；将所有指数幂求和；分别将这些指数幂与该和做商。这样求得的结果，所有元素和为1，且每个元素可代表概率值。</li>
+</ul>
+<p>交叉熵损失：对Softmax层输出的好坏程度进行量化。常用求对数的负数的方法进行量化，该结果被称为“交叉熵损失”，其越接近于0，说明结果越准确。训练神经网络的目的，就是尽可能减少交叉熵损失。</p>
+<p>反向传播与参数优化：根据交叉熵损失（通俗来说，即计算机给出的预测结果与期望结果之前的差距），来对隐藏层中各项参数进行调整，以使其更符合期望。</p>
 </section>
 </article>
 
 <section class="prev-next card slide-in-right">
 	
-		<a href="/2021/02/17/单调栈的应用/" class="link prev" title="单调栈的应用">
-			<span class="hover-underline-animation">&larr; 单调栈的应用</span>
-		</a>
+		<a class="link-disabled prev link">&larr; Not More</a>
 	
 	
-		<a href="/2021/01/12/hello-world/" class="link next" title="Hello World">
-			<span class="hover-underline-animation">Hello World &rarr;</span>
+		<a href="/2021/03/20/动态规划中的背包问题与滚动数组思想/" class="link next" title="动态规划中的背包问题与滚动数组思想">
+			<span class="hover-underline-animation">动态规划中的背包问题与滚动数组思想 &rarr;</span>
 		</a>
 	
 </section>

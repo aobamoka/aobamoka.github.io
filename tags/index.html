@@ -12,7 +12,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="keyword"  content="">
     <meta name="description" content="">
-    <title>搭建个人博客时遇到的问题分享 - 青叶摩卡的博客</title>
+    <title>tags - 青叶摩卡的博客</title>
     <base href="/">
     <link rel="preconnect" href="//cdn.bootcss.com">
     <link rel="manifest" href="/manifest.json">
@@ -65,7 +65,7 @@
     </div>
 
     
-      <div class="uk-navbar-right translate-x">
+      <div class="uk-navbar-right">
         <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
       </div>
     
@@ -88,13 +88,13 @@
     <main class="main wrapper"><article class="article slide-in-right uk-article">
   <section class="article-header">
     <h1 class="article-title uk-article-title">
-      搭建个人博客时遇到的问题分享
+      tags
     </h1>
     <p class="article-meta uk-article-meta">
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2021-01-22">2021-01-22</time>
+            datetime="2021-04-26">2021-04-26</time>
         </span>
         <span>Reading Time&#58; 1 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
@@ -102,32 +102,23 @@
       </span>
     </p>
   </section>
-  <section class="article-content"><p>10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，<strong>仓库里没有html文件，github page自然也没有内容显示</strong>。</p>
-<p>今天在跟群友闲聊时又讨论到博客的问题，于是经过研究与上网查阅资料成功解决了上述问题。</p>
-<p>问题的根本原因在于<strong>github将主分支的名字由master改成了main</strong>，但是hexo貌似并没有对此进行更新，导致每次clean再进行deploy的时候，如果没有指定分支名称，总是新建一个名为“master”的分支并将内容push到该分支上，而并不是push到我们以为的“master”分支上（实际上名称已经变成了“main”）。</p>
-<p>弄清楚问题原因后，解决方法也很简单了，<strong>在_config.yml的deploy字段后面指定分支名字即可解决</strong>。</p>
-<p><code>  branch: main</code></p>
-<p>之后clean+g+d，成功显示！</p>
-</section>
+  <section class="article-content"><hr>
+<h2 id="layout-tags"><a href="#layout-tags" class="headerlink" title="layout: tags"></a>layout: tags</h2></section>
 </article>
 
 <section class="prev-next card slide-in-right">
 	
-		<a href="/2021/02/17/单调栈的应用/" class="link prev" title="单调栈的应用">
-			<span class="hover-underline-animation">&larr; 单调栈的应用</span>
-		</a>
+		<a class="link-disabled prev link">&larr; Not More</a>
 	
 	
-		<a href="/2021/01/12/hello-world/" class="link next" title="Hello World">
-			<span class="hover-underline-animation">Hello World &rarr;</span>
-		</a>
+		<a class="link-disabled link next">Not More &rarr;</a>
 	
 </section>
 
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#layout-tags"><span class="toc-text">layout: tags</span></a></li></ol>
   </div>
 </section>
 
@@ -147,6 +138,48 @@
 </main>
 
     
+      <footer class="footer">
+  <svg class="wave" id="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#fff" fill-opacity="1"
+      d="M0,96L24,117.3C48,139,96,181,144,197.3C192,213,240,203,288,213.3C336,224,384,256,432,240C480,224,528,160,576,133.3C624,107,672,117,720,106.7C768,96,816,64,864,85.3C912,107,960,181,1008,202.7C1056,224,1104,192,1152,181.3C1200,171,1248,181,1296,154.7C1344,128,1392,64,1416,32L1440,0L1440,320L1416,320C1392,320,1344,320,1296,320C1248,320,1200,320,1152,320C1104,320,1056,320,1008,320C960,320,912,320,864,320C816,320,768,320,720,320C672,320,624,320,576,320C528,320,480,320,432,320C384,320,336,320,288,320C240,320,192,320,144,320C96,320,48,320,24,320L0,320Z">
+    </path>
+  </svg>
+
+  <div class="footer-content wrapper">
+    <div class="footer-toggle">
+      <button class="menu-button dark-btn" data-theme="dark" aria-label="Switch to dark mode"
+        title="Switch to dark mode"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="feather feather-moon undefined">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <button class="menu-button light-btn" data-theme="light" aria-label="Switch to light mode"
+        title="Switch to light mode"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="feather feather-sun undefined">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+
+    <p>Copyright &copy; 2019 &nbsp;</p>
+    <a class="theme-link" rel="noopener" href="https://github.com/xrr2016/hexo-theme-cold-stone" target="_blank">
+      Theme Cold Stone
+    </a>
+  </div>
+</footer>
+
+    
 
     <script>
 	window.COLD_STONE = {
@@ -159,9 +192,6 @@
 
 
 
-
-	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
-	<script>hljs.initHighlightingOnLoad()</script>
 
 
 <script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>

@@ -1,101 +1,108 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>单调栈的应用 | aobamoka</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="学习单调栈是是因为刷到了下面这个题目： 907. 子数组的最小值之和 给定一个整数数组 arr，找到 min(b) 的总和，其中 b 的范围为 arr 的每个（连续）子数组。由于答案可能很大，因此 返回答案模 10^9 + 7 。 我的思路是： 对于数组中某个元素，根据它在数组中的位置，可以同时向左或向右扩展，包含若干个大于它的元素。 由于这样扩展得到的每个子数组都是以该元素为最小值，所以可以保证">
-<meta property="og:type" content="article">
-<meta property="og:title" content="单调栈的应用">
-<meta property="og:url" content="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
-<meta property="og:site_name" content="aobamoka">
-<meta property="og:description" content="学习单调栈是是因为刷到了下面这个题目： 907. 子数组的最小值之和 给定一个整数数组 arr，找到 min(b) 的总和，其中 b 的范围为 arr 的每个（连续）子数组。由于答案可能很大，因此 返回答案模 10^9 + 7 。 我的思路是： 对于数组中某个元素，根据它在数组中的位置，可以同时向左或向右扩展，包含若干个大于它的元素。 由于这样扩展得到的每个子数组都是以该元素为最小值，所以可以保证">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-02-17T05:02:07.000Z">
-<meta property="article:modified_time" content="2021-03-15T01:20:52.902Z">
-<meta property="article:author" content="aoba moka">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>单调栈的应用 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+<link rel="stylesheet" href="/styles/cold-stone.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
 
-  
+  <body>
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">aobamoka</a>
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
       </h1>
-      
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
       </div>
-    </div>
-  </div>
+    
+  </nav>
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="post-单调栈的应用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" class="article-date">
-  <time class="dt-published" datetime="2021-02-17T05:02:07.000Z" itemprop="datePublished">2021-02-17</time>
-</a>
-    
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
   </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
       单调栈的应用
     </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>学习单调栈是是因为刷到了下面这个题目：</p>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2021-03-15">2021-03-15</time>
+        </span>
+        <span>Reading Time&#58; 4 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><p>学习单调栈是是因为刷到了下面这个题目：</p>
 <p><font color=blue>907. 子数组的最小值之和</font></p>
 <pre><code>给定一个整数数组 arr，找到 min(b) 的总和，其中 b 的范围为 arr 的每个（连续）子数组。由于答案可能很大，因此 返回答案模 10^9 + 7 。</code></pre>
 <p>我的思路是：</p>
@@ -119,135 +126,79 @@
 <p>得到右边第一个小于的元素位置也是类似处理，最终的解答如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">sumSubarrayMins</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m=<span class="built_in">pow</span>(<span class="number">10</span>,<span class="number">9</span>)+<span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> n=arr.size();</span><br><span class="line">        vector&lt;int&gt; dpl(n,-1), dpr(n,n);</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> ans=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; l,r;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(l.empty())&#123;</span><br><span class="line">                l.push(i);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(arr[i]&gt;=arr[l.top()])&#123;</span><br><span class="line">                dpl[i]=l.top();</span><br><span class="line">                l.push(i);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(!l.empty()&amp;&amp;arr[i]&lt;arr[l.top()])l.pop();</span><br><span class="line">                <span class="keyword">if</span>(!l.empty())&#123;</span><br><span class="line">                    dpl[i]=l.top();</span><br><span class="line">                &#125;</span><br><span class="line">                l.push(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(r.empty())&#123;</span><br><span class="line">                r.push(i);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(arr[i]&gt;=arr[r.top()])&#123;</span><br><span class="line">                r.push(i);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(!r.empty()&amp;&amp;arr[i]&lt;arr[r.top()])&#123;</span><br><span class="line">                    dpr[r.top()]=i;</span><br><span class="line">                    r.pop();</span><br><span class="line">                &#125;</span><br><span class="line">                r.push(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!r.empty())&#123;</span><br><span class="line">            dpr[r.top()]=n;</span><br><span class="line">            r.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            ans+=(<span class="keyword">long</span> <span class="keyword">long</span>)arr[i]*(i-dpl[i])%m*(dpr[i]-i)%m;</span><br><span class="line">            ans%=m;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>当然，一定存在时间、空间的优化算法，使得该类解法可通过一遍遍历完成，也不需要开辟这么多容器来进行记录。该代码仅作提供解题思路用。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/17/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="ckmkbuwxg000dk0vzd6nk4niy" data-title="单调栈的应用" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2021/03/09/%E7%90%86%E8%A7%A3kmp%E7%AE%97%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          理解kmp算法
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">搭建个人博客时遇到的问题分享</div>
-    </a>
-  
-</nav>
-
-  
+</section>
 </article>
 
-
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2021/03/09/理解kmp算法/" class="link prev" title="理解kmp算法">
+			<span class="hover-underline-animation">&larr; 理解kmp算法</span>
+		</a>
+	
+	
+		<a href="/2021/01/22/搭建个人博客时遇到的问题分享/" class="link next" title="搭建个人博客时遇到的问题分享">
+			<span class="hover-underline-animation">搭建个人博客时遇到的问题分享 &rarr;</span>
+		</a>
+	
 </section>
-        
-          <aside id="sidebar">
-  
-    
 
-  
-    
 
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
-    </div>
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%90%E4%B8%AA%E7%89%B9%E5%AE%9A%E7%9A%84%E5%85%83%E7%B4%A0%EF%BC%8C%E6%B1%82%E5%85%B6%E5%B7%A6%E8%BE%B9-%E5%8F%B3%E8%BE%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%B0%8F%E4%BA%8E%E5%AE%83%E7%9A%84%E5%85%83%E7%B4%A0%E4%BD%8D%E7%BD%AE"><span class="toc-text">对于数组中某个特定的元素，求其左边&#x2F;右边第一个小于它的元素位置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E8%B0%83%E6%A0%88"><span class="toc-text">单调栈</span></a>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
   </div>
 
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/03/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%8E%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E6%80%9D%E6%83%B3/">动态规划中的背包问题与滚动数组思想</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/20/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">leetcode-master学习笔记-动态规划</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/19/sort%E4%B8%8Epriority-queue%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/">sort与priority_queue中的自定义排序</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/19/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">leetcode-master学习笔记-贪心算法</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/">leetcode-master学习笔记-回溯</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
 
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 aoba moka<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
 
 
 
 
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
 
-  </div>
-</body>
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
 </html>
