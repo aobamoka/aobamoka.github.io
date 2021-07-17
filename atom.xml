@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-04-10T17:14:47.129Z</updated>
+  <updated>2021-07-16T07:03:33.942Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>kframework学习笔记1</title>
+    <link href="http://example.com/2021/07/16/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/"/>
+    <id>http://example.com/2021/07/16/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</id>
+    <published>2021-07-16T01:46:39.000Z</published>
+    <updated>2021-07-16T07:03:33.942Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;暑假跟着导师提前做项目，需要学个这东西。因为官方tutorial很多东西讲得很隐晦（并且作者用的纯正的罗马尼亚口音英语根本听不懂），所以开个学习笔记防止自己忘了。&lt;/p&gt;
+&lt;h1 id=&quot;kframework基本概念&quot;&gt;&lt;a href=&quot;#kframework基本概念&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>流畅的python阅读笔记</title>
+    <link href="http://example.com/2021/04/27/%E6%B5%81%E7%95%85%E7%9A%84python%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/2021/04/27/%E6%B5%81%E7%95%85%E7%9A%84python%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</id>
+    <published>2021-04-26T16:09:48.000Z</published>
+    <updated>2021-04-26T16:28:13.183Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;考研尘埃落定，毕设大部分时间也都是等炼丹结果，所以闲着无事，开始学习。之前就听学长提起过《流畅的python》这本书，所以正好借此机会学习一下。&lt;/p&gt;
+&lt;h1 id=&quot;第一章-Python数据模型&quot;&gt;&lt;a href=&quot;#第一章-Python数据模型&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>神经网络入门</title>

@@ -12,7 +12,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="keyword"  content="">
     <meta name="description" content="">
-    <title>神经网络入门 - 青叶摩卡的博客</title>
+    <title>流畅的python阅读笔记 - 青叶摩卡的博客</title>
     <base href="/">
     <link rel="preconnect" href="//cdn.bootcss.com">
     <link rel="manifest" href="/manifest.json">
@@ -88,13 +88,13 @@
     <main class="main wrapper"><article class="article slide-in-right uk-article">
   <section class="article-header">
     <h1 class="article-title uk-article-title">
-      神经网络入门
+      流畅的python阅读笔记
     </h1>
     <p class="article-meta uk-article-meta">
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2021-04-11">2021-04-11</time>
+            datetime="2021-04-27">2021-04-27</time>
         </span>
         <span>Reading Time&#58; 1 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
@@ -102,35 +102,29 @@
       </span>
     </p>
   </section>
-  <section class="article-content"><p>参考博客：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/65472471">https://zhuanlan.zhihu.com/p/65472471</a></p>
-<p>输入层：接受输入。</p>
-<p>隐藏层：对上一层传输的信息进行加工处理，并传递给下一层。</p>
-<p>输出层：给出计算机对于输入得到的输出结果。</p>
-<p>激活层：为矩阵的运算结果添加非线性</p>
+  <section class="article-content"><p>考研尘埃落定，毕设大部分时间也都是等炼丹结果，所以闲着无事，开始学习。之前就听学长提起过《流畅的python》这本书，所以正好借此机会学习一下。</p>
+<h1 id="第一章-Python数据模型"><a href="#第一章-Python数据模型" class="headerlink" title="第一章 Python数据模型"></a>第一章 Python数据模型</h1><h2 id="1-1-Python的特殊方法"><a href="#1-1-Python的特殊方法" class="headerlink" title="1.1 Python的特殊方法"></a>1.1 Python的特殊方法</h2><p>跟c++类的重载操作符与关键字有些类似，一般形如”__xxx__“这样的类的成员函数，都是为了重载某些方法。</p>
+<p>特殊方法一览：</p>
 <ul>
-<li>阶跃函数：输入小于等于0输出0；否则输出1。</li>
-<li>Sigmoid：输入趋近于正无穷/负无穷时，输出无限接近1/0。</li>
-<li>ReLU：当输入小于0输出0；输入大于0时输出等于输入。</li>
-<li>每个隐藏层进行矩阵线性运算后都要添加一层激活层。</li>
+<li>__getitem__(self, position)：实现按下标取元素（即该类可获得列表的性质，如可迭代、切片等）</li>
+<li>__len__(self)：重载len()方法</li>
+<li>__add__(self)等方法：运算</li>
+<li>__bool__(self)：默认情况下，我们自定义的类的实例总被认为是真，除非我们重载bool或len。x.__bool__()将会被调用，如果不存在该方法，则尝试调用x.__len__()。若返回0，bool返回false，否则返回true</li>
+<li>__repr__(self)：调试和记录日志</li>
+<li>__str__(self)：显示给终端用户</li>
 </ul>
-<p>Softmax层：对输出进行处理使其正规化，将矩阵转换为概率。</p>
-<ul>
-<li>分为三步进行：以e为底对所有元素求指数幂；将所有指数幂求和；分别将这些指数幂与该和做商。这样求得的结果，所有元素和为1，且每个元素可代表概率值。</li>
-</ul>
-<p>交叉熵损失：对Softmax层输出的好坏程度进行量化。常用求对数的负数的方法进行量化，该结果被称为“交叉熵损失”，其越接近于0，说明结果越准确。训练神经网络的目的，就是尽可能减少交叉熵损失。</p>
-<p>反向传播与参数优化：根据交叉熵损失（通俗来说，即计算机给出的预测结果与期望结果之前的差距），来对隐藏层中各项参数进行调整，以使其更符合期望。</p>
 </section>
 </article>
 
 <section class="prev-next card slide-in-right">
 	
-		<a href="/2021/04/27/流畅的python阅读笔记/" class="link prev" title="流畅的python阅读笔记">
-			<span class="hover-underline-animation">&larr; 流畅的python阅读笔记</span>
+		<a href="/2021/07/16/kframework学习笔记1/" class="link prev" title="kframework学习笔记1">
+			<span class="hover-underline-animation">&larr; kframework学习笔记1</span>
 		</a>
 	
 	
-		<a href="/2021/03/20/动态规划中的背包问题与滚动数组思想/" class="link next" title="动态规划中的背包问题与滚动数组思想">
-			<span class="hover-underline-animation">动态规划中的背包问题与滚动数组思想 &rarr;</span>
+		<a href="/2021/04/11/神经网络入门/" class="link next" title="神经网络入门">
+			<span class="hover-underline-animation">神经网络入门 &rarr;</span>
 		</a>
 	
 </section>
@@ -138,7 +132,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-Python%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-text">第一章 Python数据模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Python%E7%9A%84%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 Python的特殊方法</span></a></li></ol></li></ol>
   </div>
 </section>
 
