@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-07-16T07:03:33.942Z</updated>
+  <updated>2021-07-18T03:18:55.170Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>kramework学习笔记2</title>
+    <link href="http://example.com/2021/07/17/kramework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/"/>
+    <id>http://example.com/2021/07/17/kramework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</id>
+    <published>2021-07-17T02:16:56.000Z</published>
+    <updated>2021-07-18T03:18:55.170Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本笔记开始于tutorial lesson 1-5.&lt;/p&gt;
+&lt;h1 id=&quot;添加整数、布尔值运算与条件操作&quot;&gt;&lt;a href=&quot;#添加整数、布尔值运算与条件操作&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>kframework学习笔记1</title>
