@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-07-18T03:18:55.170Z</updated>
+  <updated>2021-09-18T09:34:35.978Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java学习笔记1</title>
+    <link href="http://example.com/2021/09/18/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/"/>
+    <id>http://example.com/2021/09/18/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</id>
+    <published>2021-09-18T08:23:53.000Z</published>
+    <updated>2021-09-18T09:34:35.978Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;软件分析课程需要，提前熟悉下java，也不知道学多久太监。&lt;/p&gt;
+&lt;h2 id=&quot;基本结构与类型&quot;&gt;&lt;a href=&quot;#基本结构与类型&quot; class=&quot;headerlink&quot; title=&quot;基本结构与类型&quot;&gt;&lt;/a&gt;基本结构与类型&lt;/h2&gt;&lt;h3 id=&quot;类&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>kframework学习笔记3</title>
+    <link href="http://example.com/2021/07/18/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/"/>
+    <id>http://example.com/2021/07/18/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</id>
+    <published>2021-07-18T06:17:16.000Z</published>
+    <updated>2021-07-18T07:05:34.574Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本学习笔记从tutorial 2-1开始记录。&lt;/p&gt;
+&lt;h1 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>kramework学习笔记2</title>
@@ -391,48 +435,6 @@
     <summary type="html">&lt;p&gt;学习单调栈是是因为刷到了下面这个题目：&lt;/p&gt;
 &lt;p&gt;&lt;font color=blue&gt;907. 子数组的最小值之和&lt;/font&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;给定一个整数数组 arr，找到 min(b) 的总和，其中 b 的范围为 arr</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>搭建个人博客时遇到的问题分享</title>
-    <link href="http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/"/>
-    <id>http://example.com/2021/01/22/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E4%BA%AB/</id>
-    <published>2021-01-22T13:23:27.000Z</published>
-    <updated>2021-01-22T13:35:19.812Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，&lt;strong&gt;仓库里没有html文件，github</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://example.com/2021/01/12/hello-world/"/>
-    <id>http://example.com/2021/01/12/hello-world/</id>
-    <published>2021-01-12T05:37:47.589Z</published>
-    <updated>2021-01-12T05:37:47.589Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
         
       
     

@@ -12,7 +12,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="keyword"  content="">
     <meta name="description" content="">
-    <title>kramework学习笔记2 - 青叶摩卡的博客</title>
+    <title>kframework学习笔记3 - 青叶摩卡的博客</title>
     <base href="/">
     <link rel="preconnect" href="//cdn.bootcss.com">
     <link rel="manifest" href="/manifest.json">
@@ -88,7 +88,7 @@
     <main class="main wrapper"><article class="article slide-in-right uk-article">
   <section class="article-header">
     <h1 class="article-title uk-article-title">
-      kramework学习笔记2
+      kframework学习笔记3
     </h1>
     <p class="article-meta uk-article-meta">
       <span class="meta-info">
@@ -96,63 +96,36 @@
           Last Update&#58;<time class="post-time"
             datetime="2021-07-18">2021-07-18</time>
         </span>
-        <span>Reading Time&#58; 2 min</span>
+        <span>Reading Time&#58; 1 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
     </p>
   </section>
-  <section class="article-content"><p>本笔记开始于tutorial lesson 1-5.</p>
-<h1 id="添加整数、布尔值运算与条件操作"><a href="#添加整数、布尔值运算与条件操作" class="headerlink" title="添加整数、布尔值运算与条件操作"></a>添加整数、布尔值运算与条件操作</h1><p>新增操作符<code>&gt;</code>，表示该符号前面的语法比后面的语法绑定更为紧密。</p>
-<p>添加方式：通过syntax定义运算的语法，并通过rule将syntax定义的语法替换为k语言的内置Int四则运算语法。</p>
-<h1 id="添加条件运算"><a href="#添加条件运算" class="headerlink" title="添加条件运算"></a>添加条件运算</h1><p>添加方式与上文类似。</p>
-<h1 id="structural-rules-结构化规则"><a href="#structural-rules-结构化规则" class="headerlink" title="structural rules 结构化规则"></a>structural rules 结构化规则</h1><p>与宏类似？</p>
-<h1 id="递归-letrec"><a href="#递归-letrec" class="headerlink" title="递归 ( letrec )"></a>递归 ( letrec )</h1><p>lambda 不动点定理：对所有lambda项f，都存在一个不动点fix f，使得fix f = f (fix f)。</p>
-<p>在定义递归函数的语法时，不能像编写c++程序一样，在其未定义完成之前就进行使用，因此需要引入不动点fix。</p>
-<p>fix对于任意函数都是一样的</p>
-<pre><code>let fix = lambda f . (
-        (lambda x . (f (lambda y . (x x y))))
-        (lambda x . (f (lambda y . (x x y))))
-)
-in let f = fix (lambda f . lambda x .
-                (if x &lt;= 1 then 1 else (x * (f (x + -1)))))
-    in (f 10)</code></pre>
-<p>将其改为使用letrec定义规则，可以得到如下形式：</p>
-<pre><code>syntax KVar ::= &quot;$x&quot; [token] | &quot;$y&quot; [token]
-rule letrec F:KVar X:KVar = E in E&#39;
-    =&gt; let F = 
-        (lambda $x . ((lambda F . lambda X . E)(lambda $y . ($x $x $y))))
-        (lambda $x . ((lambda F . lambda X . E)(lambda $y . ($x $x $y))))
-    in E&#39;</code></pre>
-<p>之后在.lambda文件中，使用如下的简单格式即可编写递归函数</p>
-<pre><code>letrec f x = if x &lt;= 1 then 1 else (x * (f (x + -1)))
-in (f 10)</code></pre>
-<h1 id="递归-mu"><a href="#递归-mu" class="headerlink" title="递归 ( mu )"></a>递归 ( mu )</h1><p>关键词<code>mu</code>语法规则与<code>lambda</code>一致，只需要将所有<code>lambda</code>替换为<code>mu</code>即可。</p>
-<p>编写<code>mu</code>的rule为</p>
-<pre><code>mu X . E =&gt; E[(mu X . E) / X]</code></pre>
-<p>与beta-归约类似，将E中所有的X替换为mu X . E。</p>
-<p>.lambda文件中的语句编写如下</p>
-<pre><code>(mu f . lambda x . if x &lt;=1 then x else ((f (x + -1)) + (f (x + -2)))) 7</code></pre>
-<h1 id="在k定义中添加注释"><a href="#在k定义中添加注释" class="headerlink" title="在k定义中添加注释"></a>在k定义中添加注释</h1><ul>
-<li><p>普通注释：<code>//</code>与<code>/* ... */</code>。这类注释会被完全忽略。</p>
+  <section class="article-content"><p>本学习笔记从tutorial 2-1开始记录。</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ul>
+<li><p>关键词<code>configuration</code>：编写配置（作用类似于帮你标识语句块中的各种属性，并划分为一个个单元？）。</p>
 </li>
-<li><p>文档注释：在<code>//</code>或<code>/*</code>后面使用<code>@</code>。</p>
-</li>
-<li><p>头部注释：在<code>//</code>或<code>/*</code>后面使用<code>!</code>。</p>
+<li><p><code>$PGM:Pgm</code>；捕获经过.k文件中的语法解释后的语句。</p>
 </li>
 </ul>
+<p>此外，还可以通过html形式来设置各单元的字符颜色等。</p>
+<pre><code>configuration &lt;T color=&quot;yellow&quot;&gt;
+                &lt;k color=&quot;green&quot;&gt; $PGM:Pgm &lt;/k&gt;
+                &lt;state color=&quot;red&quot;&gt; .Map &lt;/state&gt;
+            &lt;/T&gt;</code></pre>
 </section>
 </article>
 
 <section class="prev-next card slide-in-right">
 	
-		<a href="/2021/07/18/kframework学习笔记3/" class="link prev" title="kframework学习笔记3">
-			<span class="hover-underline-animation">&larr; kframework学习笔记3</span>
+		<a href="/2021/09/18/java学习笔记1/" class="link prev" title="java学习笔记1">
+			<span class="hover-underline-animation">&larr; java学习笔记1</span>
 		</a>
 	
 	
-		<a href="/2021/07/16/kframework学习笔记1/" class="link next" title="kframework学习笔记1">
-			<span class="hover-underline-animation">kframework学习笔记1 &rarr;</span>
+		<a href="/2021/07/17/kramework学习笔记2/" class="link next" title="kramework学习笔记2">
+			<span class="hover-underline-animation">kramework学习笔记2 &rarr;</span>
 		</a>
 	
 </section>
@@ -160,7 +133,7 @@ in (f 10)</code></pre>
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%95%B4%E6%95%B0%E3%80%81%E5%B8%83%E5%B0%94%E5%80%BC%E8%BF%90%E7%AE%97%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">添加整数、布尔值运算与条件操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97"><span class="toc-text">添加条件运算</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#structural-rules-%E7%BB%93%E6%9E%84%E5%8C%96%E8%A7%84%E5%88%99"><span class="toc-text">structural rules 结构化规则</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%92%E5%BD%92-letrec"><span class="toc-text">递归 ( letrec )</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%92%E5%BD%92-mu"><span class="toc-text">递归 ( mu )</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8k%E5%AE%9A%E4%B9%89%E4%B8%AD%E6%B7%BB%E5%8A%A0%E6%B3%A8%E9%87%8A"><span class="toc-text">在k定义中添加注释</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a></li></ol>
   </div>
 </section>
 
