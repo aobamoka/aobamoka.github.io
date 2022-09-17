@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2022-09-12">2022-09-12</time>
+        </span>
+        <span>Reading Time&#58; 2 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="网络是怎样连接的-读书笔记2"><a href="#网络是怎样连接的-读书笔记2" class="headerlink" title="网络是怎样连接的 读书笔记2"></a>网络是怎样连接的 读书笔记2</h1><p>还是决定一章一个文件了，不然太大了看着很散，这个文件讲的是第二章的内容，关于协议栈内部如何跟服务器通讯的。</p>
+<h2 id="2-1-套接字创建"><a href="#2-1-套接字创建" class="headerlink" title="2.1 套接字创建"></a>2.1 套接字创建</h2><h3 id="2-1-1-协议栈的层次"><a href="#2-1-1-协议栈的层次" class="headerlink" title="2.1.1 协议栈的层次"></a>2.1.1 协议栈的层次</h3><p>与TCP/IP五层一致。最上层的是应用层，应用层上层包含各种网络应用程序，下层为Socket库，包含向DNS服务器发出查询的解析器等。</p>
+<p>协议栈在应用层下面的操作系统内部层，分为两个部分。上半部分分为两块，分别用TCP协议与UDP协议收发数据。下半部分用IP协议控制网络包收发操作。</p>
+<p>IP下方为网卡驱动程序，负责控制网卡硬件。</p>
+<p>最下方的网卡负责完成实际的收发操作，即对网线中的信号执行发送和接收操作。</p>
+<h3 id="2-1-2-套接字的实体"><a href="#2-1-2-套接字的实体" class="headerlink" title="2.1.2 套接字的实体"></a>2.1.2 套接字的实体</h3><p>协议栈内部存放了控制信息，记录通信对象的IP地址、端口号、通信操作的运行状态等，套接字实际上只是一个概念，其实体可视为存放了这些控制信息的内存空间。</p>
+<p>协议栈根据套接字中记录的控制信息来进行工作。</p>
+<h3 id="2-1-3-调用socket的操作"><a href="#2-1-3-调用socket的操作" class="headerlink" title="2.1.3 调用socket的操作"></a>2.1.3 调用socket的操作</h3><p>协议栈分配存放一个套接字所需的内存空间，并写入初始状态的控制信息，并将描述符告知应用程序。</p>
+<h2 id="2-2-连接服务器"><a href="#2-2-连接服务器" class="headerlink" title="2.2 连接服务器"></a>2.2 连接服务器</h2><h3 id="2-2-1-连接"><a href="#2-2-1-连接" class="headerlink" title="2.2.1 连接"></a>2.2.1 连接</h3><p>连接实际上是通信双方交换控制信息，在套接字中记录必要信息并准备数据收发的一系列操作。</p>
+<h3 id="2-2-2-头部"><a href="#2-2-2-头部" class="headerlink" title="2.2.2 头部"></a>2.2.2 头部</h3><p>控制信息大体上分为两类</p>
+<p>1）客户端和服务器互相联络交换的控制信息：位于网络包开头，被称为头部。</p>
+<p>2）保存在套接字中用来控制协议栈操作的信息。</p>
+<h3 id="2-2-3-实际的连接操作"><a href="#2-2-3-实际的连接操作" class="headerlink" title="2.2.3 实际的连接操作"></a>2.2.3 实际的连接操作</h3><p>1）创建TCP头部，设置发送端、接收端的端口号、SYN=1等信息。通过TCP头部发送方和接收方的端口号可以找到要连接的套接字。</p>
+<p>2）将信息传递给IP模块委托发送，随着网络到达服务器，并由服务器的IP模块传递给TCP模块。</p>
+<p>3）服务器的TCP模块根据TCP头部信息找到对应的套接字，套接字写入信息，并将状态改为正在连接。</p>
+<p>4）服务器的TCP模块按照1）中所示创建头部，同时设置ACK=1表示已收到网络包，并委托IP模块发送。</p>
+<p>5）客户端的TCP模块根据头部信息确认SYN=1表示连接成功，向套接字中写入服务器的IP、端口号等信息，同时将状态改为连接完毕，并按照4）中所示发送包回服务器告诉服务器已收到，完成连接。</p>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a class="link-disabled prev link">&larr; Not More</a>
+	
+	
+		<a href="/2022/07/14/网络是怎样连接的读书笔记1/" class="link next" title="">
+			<span class="hover-underline-animation"> &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02"><span class="toc-text">网络是怎样连接的 读书笔记2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%A5%97%E6%8E%A5%E5%AD%97%E5%88%9B%E5%BB%BA"><span class="toc-text">2.1 套接字创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="toc-text">2.1.1 协议栈的层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="toc-text">2.1.2 套接字的实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-%E8%B0%83%E7%94%A8socket%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">2.1.3 调用socket的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2.2 连接服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.1 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%A4%B4%E9%83%A8"><span class="toc-text">2.2.2 头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%AE%9E%E9%99%85%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">2.2.3 实际的连接操作</span></a></li></ol></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

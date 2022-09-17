@@ -12,7 +12,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="keyword"  content="">
     <meta name="description" content="">
-    <title>搭建个人博客时遇到的问题分享 - 青叶摩卡的博客</title>
+    <title>java学习笔记4 - 青叶摩卡的博客</title>
     <base href="/">
     <link rel="preconnect" href="//cdn.bootcss.com">
     <link rel="manifest" href="/manifest.json">
@@ -88,13 +88,13 @@
     <main class="main wrapper"><article class="article slide-in-right uk-article">
   <section class="article-header">
     <h1 class="article-title uk-article-title">
-      搭建个人博客时遇到的问题分享
+      java学习笔记4
     </h1>
     <p class="article-meta uk-article-meta">
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2021-01-22">2021-01-22</time>
+            datetime="2021-09-20">2021-09-20</time>
         </span>
         <span>Reading Time&#58; 1 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
@@ -102,30 +102,32 @@
       </span>
     </p>
   </section>
-  <section class="article-content"><p>10天前大致搭建好了个人博客，localhost也能正常显示，但是上传到github page上时出现了问题，<strong>仓库里没有html文件，github page自然也没有内容显示</strong>。</p>
-<p>今天在跟群友闲聊时又讨论到博客的问题，于是经过研究与上网查阅资料成功解决了上述问题。</p>
-<p>问题的根本原因在于<strong>github将主分支的名字由master改成了main</strong>，但是hexo貌似并没有对此进行更新，导致每次clean再进行deploy的时候，如果没有指定分支名称，总是新建一个名为“master”的分支并将内容push到该分支上，而并不是push到我们以为的“master”分支上（实际上名称已经变成了“main”）。</p>
-<p>弄清楚问题原因后，解决方法也很简单了，<strong>在_config.yml的deploy字段后面指定分支名字即可解决</strong>。</p>
-<p><code>  branch: main</code></p>
-<p>之后clean+g+d，成功显示！</p>
+  <section class="article-content"><p>这期学一学java核心类</p>
+<h2 id="字符串String"><a href="#字符串String" class="headerlink" title="字符串String"></a>字符串String</h2><h3 id="StringBuilder"><a href="#StringBuilder" class="headerlink" title="StringBuilder"></a>StringBuilder</h3><p>为了高效拼接字符串，防止直接使用临时对象导致的内存与效率浪费，使用StringBuilder类通过append与toString进行拼接。</p>
+<p>StringBuilder还能进行链式操作。</p>
+<h3 id="StringJoiner"><a href="#StringJoiner" class="headerlink" title="StringJoiner"></a>StringJoiner</h3><p>用指定的分隔符、开头和结尾拼接字符串。</p>
+<h2 id="Record记录类"><a href="#Record记录类" class="headerlink" title="Record记录类"></a>Record记录类</h2><p>通过使用recoder关键字，除了用final修饰class以及每个字段外，编译器还自动为我们创建了构造方法，和字段名同名的方法，以及覆写toString()、equals()和hashCode()方法。</p>
+<p>也就是说，使用recoder可以自动生成不变类。</p>
 </section>
 </article>
 
 <section class="prev-next card slide-in-right">
 	
-		<a href="/2021/02/17/单调栈的应用/" class="link prev" title="单调栈的应用">
-			<span class="hover-underline-animation">&larr; 单调栈的应用</span>
+		<a href="/2022/02/17/hello-world/" class="link prev" title="Hello World">
+			<span class="hover-underline-animation">&larr; Hello World</span>
 		</a>
 	
 	
-		<a class="link-disabled link next">Not More &rarr;</a>
+		<a href="/2021/09/19/java学习笔记3/" class="link next" title="java学习笔记3">
+			<span class="hover-underline-animation">java学习笔记3 &rarr;</span>
+		</a>
 	
 </section>
 
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2String"><span class="toc-text">字符串String</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#StringBuilder"><span class="toc-text">StringBuilder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StringJoiner"><span class="toc-text">StringJoiner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Record%E8%AE%B0%E5%BD%95%E7%B1%BB"><span class="toc-text">Record记录类</span></a></li></ol>
   </div>
 </section>
 
