@@ -96,7 +96,7 @@
           Last Update&#58;<time class="post-time"
             datetime="2022-09-17">2022-09-17</time>
         </span>
-        <span>Reading Time&#58; 3 min</span>
+        <span>Reading Time&#58; 6 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -120,7 +120,24 @@
 <p>4）服务器的TCP模块按照1）中所示创建头部，同时设置ACK=1表示已收到网络包，并委托IP模块发送。</p>
 <p>5）客户端的TCP模块根据头部信息确认SYN=1表示连接成功，向套接字中写入服务器的IP、端口号等信息，同时将状态改为连接完毕，并按照4）中所示发送包回服务器告诉服务器已收到，完成连接。</p>
 <h2 id="2-3-收发数据"><a href="#2-3-收发数据" class="headerlink" title="2.3 收发数据"></a>2.3 收发数据</h2><h3 id="2-3-1-协议栈的收发控制"><a href="#2-3-1-协议栈的收发控制" class="headerlink" title="2.3.1 协议栈的收发控制"></a>2.3.1 协议栈的收发控制</h3><p>协议栈将应用程序委托发送的数据存储到缓冲区，根据数据大小和时间两个要素来决定什么时候发送：</p>
-<p>1）数据大小：MTU代表一个数据包最大长度，在以太网中一般为1500字节，MSS为去除头部后一个网络包能容纳的最大数据长度</p>
+<p>1）数据大小：MTU代表一个数据包最大长度，在以太网中一般为1500字节，MSS为去除头部后一个网络包能容纳的最大数据长度.</p>
+<p>2）时间：只考虑数据大小可能使得小包等待时间过长，并且某些数据包也有快速发送的需求。</p>
+<p>两者的权衡是由协议栈的开发者设置的，应用程序也可以通过设置某些字段来控制发送方式。</p>
+<h3 id="2-3-2-拆分数据"><a href="#2-3-2-拆分数据" class="headerlink" title="2.3.2 拆分数据"></a>2.3.2 拆分数据</h3><p>如果数据的总长度超过了MSS，协议栈就会对数据进行拆分，在每一块数据前加上头部并交由IP模块发送。</p>
+<h3 id="2-3-3-ACK"><a href="#2-3-3-ACK" class="headerlink" title="2.3.3 ACK"></a>2.3.3 ACK</h3><p>1）客户端计算出随机ACK初始值发送给服务端。</p>
+<p>2）服务端根据客户端的初始值计算出ACK号并返回给客户端以确认收到；同时，服务端计算另一个随机ACK初始值发送给客户端。</p>
+<p>3）客户端根据服务端的初始值计算出ACK号并返回给服务端以确认收到。</p>
+<p>4）客户端和服务端可以进入数据收发阶段了。以客户端到服务端为例，客户端向服务端发送数据包，记录了数据包序号与总长度，服务端收到后确认序号是否为上次的ACK号。如果确认成功，服务器根据本次数据包序号与总长度计算出下一次期望的数据包序号，作为ACK号返回客户端。</p>
+<p>TCP根据这种方式保证通信双方能收到数据。因此，网卡、集线器与路由器都没有错误补偿机制，一旦检测到错误就直接丢弃相应的包。</p>
+<p>但是，如果重传几次都无效，TCP会强制结束通信并向应用程序报错。</p>
+<h3 id="2-3-4-ACK等待时间"><a href="#2-3-4-ACK等待时间" class="headerlink" title="2.3.4 ACK等待时间"></a>2.3.4 ACK等待时间</h3><p>即为等待ACK号返回的时间，如果超过时间则重传。</p>
+<p>TCP采用动态调整方法，在发送数据过程中持续测量等待时间，如果ACK号返回变慢说明网络拥挤，则延长等待时间；反之亦然。</p>
+<h3 id="2-3-5-滑动窗口"><a href="#2-3-5-滑动窗口" class="headerlink" title="2.3.5 滑动窗口"></a>2.3.5 滑动窗口</h3><p>发送数据时实际上不等待ACK返回连续发送。</p>
+<p>接收方存在数据缓冲区，在发送数据之前告诉发送方自己的缓冲区大小，并在每次数据处理完毕后都告知发送方当前缓冲区大小，发送方计算窗口大小，并在窗口大小为0时停止发送，直到接收到接收方的窗口大小通信。</p>
+<h3 id="2-3-6-ACK与接收窗口"><a href="#2-3-6-ACK与接收窗口" class="headerlink" title="2.3.6 ACK与接收窗口"></a>2.3.6 ACK与接收窗口</h3><p>更新窗口大小的时机：接收方从缓冲区取出数据并传递给应用程序。</p>
+<p>ACK确认时机：接收方接收到数据并确认无误。</p>
+<p>如果单独发送，则数据包太多，因此在发送ACK号和更新窗口时，都会等待一段时间，如果出现了其他的通知操作就合并在一个包里发送。也可以连续发送多个ACK号时，只发送最后一个ACK号，以报告在这之前的数据都成功收到了。</p>
+<h3 id="2-3-7-接收消息"><a href="#2-3-7-接收消息" class="headerlink" title="2.3.7 接收消息"></a>2.3.7 接收消息</h3><p>浏览器委托协议栈读取返回信息，如果响应消息尚未到达，则委托会被暂时挂起，并在收到信息时，根据上述接收方的操作还原数据，将数据交由应用程序。</p>
 </section>
 </article>
 
@@ -138,7 +155,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02"><span class="toc-text">网络是怎样连接的 读书笔记2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%A5%97%E6%8E%A5%E5%AD%97%E5%88%9B%E5%BB%BA"><span class="toc-text">2.1 套接字创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="toc-text">2.1.1 协议栈的层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="toc-text">2.1.2 套接字的实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-%E8%B0%83%E7%94%A8socket%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">2.1.3 调用socket的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2.2 连接服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.1 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%A4%B4%E9%83%A8"><span class="toc-text">2.2.2 头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%AE%9E%E9%99%85%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">2.2.3 实际的连接操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3 收发数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E6%94%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">2.3.1 协议栈的收发控制</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02"><span class="toc-text">网络是怎样连接的 读书笔记2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%A5%97%E6%8E%A5%E5%AD%97%E5%88%9B%E5%BB%BA"><span class="toc-text">2.1 套接字创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="toc-text">2.1.1 协议栈的层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="toc-text">2.1.2 套接字的实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-%E8%B0%83%E7%94%A8socket%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">2.1.3 调用socket的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2.2 连接服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.1 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%A4%B4%E9%83%A8"><span class="toc-text">2.2.2 头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%AE%9E%E9%99%85%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">2.2.3 实际的连接操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3 收发数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E6%94%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">2.3.1 协议栈的收发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E6%8B%86%E5%88%86%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3.2 拆分数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-ACK"><span class="toc-text">2.3.3 ACK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-ACK%E7%AD%89%E5%BE%85%E6%97%B6%E9%97%B4"><span class="toc-text">2.3.4 ACK等待时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-5-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.5 滑动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-6-ACK%E4%B8%8E%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.6 ACK与接收窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-7-%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="toc-text">2.3.7 接收消息</span></a></li></ol></li></ol></li></ol>
   </div>
 </section>
 
