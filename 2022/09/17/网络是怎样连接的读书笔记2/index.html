@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-09-18">2022-09-18</time>
+            datetime="2022-09-24">2022-09-24</time>
         </span>
-        <span>Reading Time&#58; 6 min</span>
+        <span>Reading Time&#58; 10 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -147,6 +147,46 @@
 <p>2）确认连接。</p>
 <p>3）数据收发。</p>
 <p>4）断开连接。</p>
+<h2 id="2-5-IP与以太网的收发"><a href="#2-5-IP与以太网的收发" class="headerlink" title="2.5 IP与以太网的收发"></a>2.5 IP与以太网的收发</h2><h3 id="2-5-1-包的基本知识"><a href="#2-5-1-包的基本知识" class="headerlink" title="2.5.1 包的基本知识"></a>2.5.1 包的基本知识</h3><p>路由器根据目标地址判断下一个路由器的位置。</p>
+<p>集线器在子网中将网络包传输到下一个路由。</p>
+<h3 id="2-5-2-包的收发操作"><a href="#2-5-2-包的收发操作" class="headerlink" title="2.5.2 包的收发操作"></a>2.5.2 包的收发操作</h3><p>1）TCP将网络包传递给IP模块，指定接收方并委托IP模块传输。</p>
+<p>2）IP加上IP头部与MAC头部进行封装。</p>
+<p>3）将封装好的包传递给网卡。</p>
+<p>4）网卡将数字信息转化为电信号或光信号，通过网线或光纤发送出去。</p>
+<h3 id="2-5-3-IP头部"><a href="#2-5-3-IP头部" class="headerlink" title="2.5.3 IP头部"></a>2.5.3 IP头部</h3><p>发送方IP地址需要判断发送所使用的网卡，并填写对应网卡的IP地址。</p>
+<p>根据路由表判断交给的网卡，根据要到达的目标地址与子网掩码来查找下一跳的网关。</p>
+<h3 id="2-5-4-MAC头部"><a href="#2-5-4-MAC头部" class="headerlink" title="2.5.4 MAC头部"></a>2.5.4 MAC头部</h3><p>MAC头部由接收方MAC地址、发送方MAC地址与以太类型（与IP头部中的协议号类似）三部分组成。</p>
+<h3 id="2-5-5-ARP"><a href="#2-5-5-ARP" class="headerlink" title="2.5.5 ARP"></a>2.5.5 ARP</h3><p>ARP向同一以太网中的所有设备广播查询接收方的IP地址所对应的MAC地址，并在查询到之后写入ARP缓存之中，后续如果要向同一MAC地址发送就不需要发送ARP了。</p>
+<h3 id="2-5-6-以太网"><a href="#2-5-6-以太网" class="headerlink" title="2.5.6 以太网"></a>2.5.6 以太网</h3><p>以太网三个性质：</p>
+<p>1）将包发送到MAC头部的接收方MAC地址代表的目的地。</p>
+<p>2）用发送方MAC地址识别发送方。</p>
+<p>3）用以太类型识别包的内容。</p>
+<h3 id="2-5-7-网卡"><a href="#2-5-7-网卡" class="headerlink" title="2.5.7 网卡"></a>2.5.7 网卡</h3><p>网卡组成部分</p>
+<ul>
+<li>缓冲区：用于临时保存要收发的包的内存空间。</li>
+<li>ROM：存放唯一MAC地址。</li>
+<li>MAC：控制碰撞检测、重发等以太网收发操作的部分。</li>
+<li>PHY（MAU）：发送和接受信号的电路。</li>
+<li>RJ-45接口：连接网线的插座。</li>
+</ul>
+<h3 id="2-5-8-信号转换"><a href="#2-5-8-信号转换" class="headerlink" title="2.5.8 信号转换"></a>2.5.8 信号转换</h3><p>1）MAC模块将包从缓冲区取出，在开头加上报头和起始帧分界符，在末尾加上用于检测错误的FCS（帧校验序列）。</p>
+<p>2）为防止时钟信号传递太远时产生偏差，将数据信号与时钟信号叠加在一起。</p>
+<p>3）FCS用于检验在传递过程中因噪声导致的波形紊乱、传递错误。</p>
+<h3 id="2-5-9-向集线器发送网络包"><a href="#2-5-9-向集线器发送网络包" class="headerlink" title="2.5.9 向集线器发送网络包"></a>2.5.9 向集线器发送网络包</h3><p>发送信号分为半双工（发送信号与接收信号不能同时进行）与全双工（发送信号与接收信号可以同时进行）。</p>
+<p>在半双工模式下发送信号先要监听网线中是否有其他设备正在发送信号，以避免发生碰撞。</p>
+<p>PHY（MAU）接收MAC模块产生的信号，并再将其转换为网线上可以传输的形式。</p>
+<h3 id="2-5-10-接收返回包"><a href="#2-5-10-接收返回包" class="headerlink" title="2.5.10 接收返回包"></a>2.5.10 接收返回包</h3><p>1）在半双工模式中，接收网线中的全部信号。</p>
+<p>2）与之前步骤反过来进行信息转换，FCS校验是否发生错误，如果发生则丢弃。</p>
+<p>3）MAC判断MAC地址是否一致，如果不一致则丢弃，否则通知计算机收到了一个包。</p>
+<p>4）计算机接到中断信号，CPU挂起正在处理的任务，切换到操作系统的中断处理程序并控制网卡执行相应的接收操作。</p>
+<h3 id="2-5-11-IP到TCP"><a href="#2-5-11-IP到TCP" class="headerlink" title="2.5.11 IP到TCP"></a>2.5.11 IP到TCP</h3><p>如果接受到接收方IP地址不是自己的包，IP模块通过ICMP消息将错误告知发送方。</p>
+<p>如果接收到的包经过了分片，IP模块将其还原为完整的包，并交给TCP模块。</p>
+<h2 id="2-6-UDP"><a href="#2-6-UDP" class="headerlink" title="2.6 UDP"></a>2.6 UDP</h2><h3 id="2-6-1-适用情形"><a href="#2-6-1-适用情形" class="headerlink" title="2.6.1 适用情形"></a>2.6.1 适用情形</h3><p>TCP为了实现高效的传输，需要避免重发已送达的包，而只重发出错的或未送达的包，但是当数据很短时全部重发也没关系。</p>
+<p>可以将回复的数据当作确认包，就不需要额外的控制包了。</p>
+<h3 id="2-6-2-控制用的短数据"><a href="#2-6-2-控制用的短数据" class="headerlink" title="2.6.2 控制用的短数据"></a>2.6.2 控制用的短数据</h3><p>DNS查询等交换控制信息的操作使用UDP。</p>
+<p>UDP没有接受确认、窗口等机制，在应用程序没有收到回复时就重发。</p>
+<p>UDP头部只有8字节大小。</p>
+<h3 id="2-6-3-音视频数据"><a href="#2-6-3-音视频数据" class="headerlink" title="2.6.3 音视频数据"></a>2.6.3 音视频数据</h3><p>音视频数据必须在规定时间内送达，否则会错过播放时机导致卡顿，并且缺少部分包不会导致太大问题，最多出现失真与卡顿。</p>
 </section>
 </article>
 
@@ -164,7 +204,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02"><span class="toc-text">网络是怎样连接的 读书笔记2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%A5%97%E6%8E%A5%E5%AD%97%E5%88%9B%E5%BB%BA"><span class="toc-text">2.1 套接字创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="toc-text">2.1.1 协议栈的层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="toc-text">2.1.2 套接字的实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-%E8%B0%83%E7%94%A8socket%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">2.1.3 调用socket的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2.2 连接服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.1 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%A4%B4%E9%83%A8"><span class="toc-text">2.2.2 头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%AE%9E%E9%99%85%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">2.2.3 实际的连接操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3 收发数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E6%94%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">2.3.1 协议栈的收发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E6%8B%86%E5%88%86%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3.2 拆分数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-ACK"><span class="toc-text">2.3.3 ACK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-ACK%E7%AD%89%E5%BE%85%E6%97%B6%E9%97%B4"><span class="toc-text">2.3.4 ACK等待时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-5-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.5 滑动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-6-ACK%E4%B8%8E%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.6 ACK与接收窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-7-%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="toc-text">2.3.7 接收消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.4 断开连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.4.1 断开连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E5%88%A0%E9%99%A4%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="toc-text">2.4.2 删除套接字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3-%E6%95%B0%E6%8D%AE%E6%94%B6%E5%8F%91%E5%B0%8F%E7%BB%93"><span class="toc-text">2.4.3 数据收发小结</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02"><span class="toc-text">网络是怎样连接的 读书笔记2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%A5%97%E6%8E%A5%E5%AD%97%E5%88%9B%E5%BB%BA"><span class="toc-text">2.1 套接字创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="toc-text">2.1.1 协议栈的层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="toc-text">2.1.2 套接字的实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-%E8%B0%83%E7%94%A8socket%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">2.1.3 调用socket的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2.2 连接服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.1 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%A4%B4%E9%83%A8"><span class="toc-text">2.2.2 头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%AE%9E%E9%99%85%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">2.2.3 实际的连接操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3 收发数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E6%94%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">2.3.1 协议栈的收发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E6%8B%86%E5%88%86%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3.2 拆分数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-ACK"><span class="toc-text">2.3.3 ACK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-ACK%E7%AD%89%E5%BE%85%E6%97%B6%E9%97%B4"><span class="toc-text">2.3.4 ACK等待时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-5-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.5 滑动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-6-ACK%E4%B8%8E%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.6 ACK与接收窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-7-%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="toc-text">2.3.7 接收消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.4 断开连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.4.1 断开连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E5%88%A0%E9%99%A4%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="toc-text">2.4.2 删除套接字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3-%E6%95%B0%E6%8D%AE%E6%94%B6%E5%8F%91%E5%B0%8F%E7%BB%93"><span class="toc-text">2.4.3 数据收发小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-IP%E4%B8%8E%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E6%94%B6%E5%8F%91"><span class="toc-text">2.5 IP与以太网的收发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-1-%E5%8C%85%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="toc-text">2.5.1 包的基本知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-2-%E5%8C%85%E7%9A%84%E6%94%B6%E5%8F%91%E6%93%8D%E4%BD%9C"><span class="toc-text">2.5.2 包的收发操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-3-IP%E5%A4%B4%E9%83%A8"><span class="toc-text">2.5.3 IP头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-4-MAC%E5%A4%B4%E9%83%A8"><span class="toc-text">2.5.4 MAC头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-5-ARP"><span class="toc-text">2.5.5 ARP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-6-%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-text">2.5.6 以太网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-7-%E7%BD%91%E5%8D%A1"><span class="toc-text">2.5.7 网卡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-8-%E4%BF%A1%E5%8F%B7%E8%BD%AC%E6%8D%A2"><span class="toc-text">2.5.8 信号转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-9-%E5%90%91%E9%9B%86%E7%BA%BF%E5%99%A8%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E5%8C%85"><span class="toc-text">2.5.9 向集线器发送网络包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-10-%E6%8E%A5%E6%94%B6%E8%BF%94%E5%9B%9E%E5%8C%85"><span class="toc-text">2.5.10 接收返回包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-11-IP%E5%88%B0TCP"><span class="toc-text">2.5.11 IP到TCP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-UDP"><span class="toc-text">2.6 UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-1-%E9%80%82%E7%94%A8%E6%83%85%E5%BD%A2"><span class="toc-text">2.6.1 适用情形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-2-%E6%8E%A7%E5%88%B6%E7%94%A8%E7%9A%84%E7%9F%AD%E6%95%B0%E6%8D%AE"><span class="toc-text">2.6.2 控制用的短数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-3-%E9%9F%B3%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.6.3 音视频数据</span></a></li></ol></li></ol></li></ol>
   </div>
 </section>
 
