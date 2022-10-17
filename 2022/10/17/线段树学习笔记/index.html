@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>线段树学习笔记 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      线段树学习笔记
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2022-10-17">2022-10-17</time>
+        </span>
+        <span>Reading Time&#58; 3 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="线段树-学习笔记"><a href="#线段树-学习笔记" class="headerlink" title="线段树 学习笔记"></a>线段树 学习笔记</h1><h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>树状数组无法满足求给定区间的最大最小值，或是将给定区间全部修改为某一个值的操作。</p>
+<p>思想：</p>
+<ul>
+<li>分治：某一段区间的问题可分割为更小区间的子问题求解。</li>
+<li>完全二叉树：子节点的下标可由父节点计算得到。</li>
+</ul>
+<p>以求区间和的线段树为例，代表区间 [l, r] 的结点 tree[i]，其左子结点 tree[2 * i] 表示区间 [l, (l + r) / 2)] 的区间和；其右子结点 tree[2 ∗ i + 1] 表示区间 [(l + r) / 2 + 1, r] 的区间和。</p>
+<h2 id="2-初始化-单点修改-区间查询"><a href="#2-初始化-单点修改-区间查询" class="headerlink" title="2. 初始化/单点修改/区间查询"></a>2. 初始化/单点修改/区间查询</h2><p>一般初始化为4 * n大小</p>
+<h3 id="2-1-单点修改"><a href="#2-1-单点修改" class="headerlink" title="2.1 单点修改"></a>2.1 单点修改</h3><p>总体为后序遍历。</p>
+<p>将要修改的值沿树一路传递下去，直到到达叶子节点实现单点修改。</p>
+<p>在返回值时，需要更新父节点的值为两个子节点的值的和。</p>
+<h3 id="2-2-区间查询"><a href="#2-2-区间查询" class="headerlink" title="2.2 区间查询"></a>2.2 区间查询</h3><p>如果目前找到的线段树表示的区间是待查询区间的子集，则直接返回当前节点的值。</p>
+<p>否则，将当前表示的区间折半分为两部分，分别对左区间与右区间递归查询，最后将递归查询的结果汇总。</p>
+<p>求区间和/区间最值时，只需要将父节点的更新行为更改成求和/求最值即可。</p>
+<p>同样是[LeetCode 307. 区间和检索-数组可修改](class NumArray { public:     vector<int> tree;     int n;      void pushUp(int i) {         tree[i] = tree[i * 2] + tree[i * 2 + 1];     }      NumArray(vector<int>&amp; nums) {         n = nums.size();         tree = vector<int>(4 * n, 0);         for (int i = 0; i &lt; n; i++) {             update(i, nums[i]);         }     }          void update2(int index, int val, int l, int r, int i) {         if (l == r) {             tree[i] = val;             return;         }         int mid = l + (r - l) / 2;         if (mid &gt;= index) update2(index, val, l, mid, i * 2);         else update2(index, val, mid + 1, r, i * 2 + 1);         pushUp(i);     }      void update(int index, int val) {         update2(index, val, 0, n - 1, 1);     }      int sumRange2(int left, int right, int l, int r, int i) {         if (left &lt;= l &amp;&amp; r &lt;= right) return tree[i];         int mid = l + (r - l) / 2, sum = 0;         if (left &lt;= mid) sum += sumRange2(left, right, l, mid, i * 2);         if (right &gt; mid) sum += sumRange2(left, right, mid + 1, r, i * 2 + 1);         return sum;     }          int sumRange(int left, int right) {         return sumRange2(left, right, 0, n - 1, 1);     } };  /**  * Your NumArray object will be instantiated and called as such:  * NumArray* obj = new NumArray(nums);  * obj-&gt;update(index,val);  * int param_2 = obj-&gt;sumRange(left,right);  */)</p>
+<h2 id="3-区间修改"><a href="#3-区间修改" class="headerlink" title="3. 区间修改"></a>3. 区间修改</h2><p>引入与线段树数组同等大小的<strong>懒惰标记</strong>数组。</p>
+<p>要修改某一区间时，按照区间查询那样分治到待查询区间的子集。</p>
+<p>按照该子集的大小修改当前线段树节点的值，并在该节点的子节点上打上懒惰标记，表示需要修改的值，暂时不作修改。</p>
+<p>在下次遍历到含有懒惰标记的节点时，同样修改当前节点的值并向下传递懒惰标记。</p>
+<h2 id="4-离散化"><a href="#4-离散化" class="headerlink" title="4. 离散化"></a>4. 离散化</h2><p>特征：数据范围过大，但是存在很多重复的点/无意义的点。</p>
+<p>做法：先遍历数据去重，并根据map建立映射。</p>
+<h2 id="5-动态开点"><a href="#5-动态开点" class="headerlink" title="5. 动态开点"></a>5. 动态开点</h2><p>结点数组法：将左右节点的下标记录在父节点中，而不是直接计算。</p>
+<p>结点引用法：直接按照二叉树那样建树。</p>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a class="link-disabled prev link">&larr; Not More</a>
+	
+	
+		<a href="/2022/10/16/树状数组学习笔记/" class="link next" title="树状数组学习笔记">
+			<span class="hover-underline-animation">树状数组学习笔记 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-text">线段树 学习笔记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%83%8C%E6%99%AF"><span class="toc-text">1. 背景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%8D%95%E7%82%B9%E4%BF%AE%E6%94%B9-%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2"><span class="toc-text">2. 初始化&#x2F;单点修改&#x2F;区间查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%8D%95%E7%82%B9%E4%BF%AE%E6%94%B9"><span class="toc-text">2.1 单点修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2"><span class="toc-text">2.2 区间查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8C%BA%E9%97%B4%E4%BF%AE%E6%94%B9"><span class="toc-text">3. 区间修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%A6%BB%E6%95%A3%E5%8C%96"><span class="toc-text">4. 离散化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9"><span class="toc-text">5. 动态开点</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>
