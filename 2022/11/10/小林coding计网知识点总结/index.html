@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>小林coding计网知识点总结 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      小林coding计网知识点总结
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2022-11-10">2022-11-10</time>
+        </span>
+        <span>Reading Time&#58; 4 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="小林coding计网总结"><a href="#小林coding计网总结" class="headerlink" title="小林coding计网总结"></a>小林coding计网总结</h1><p>主要记录一些自己之前不知道的或者重要的、易忘的知识点。根据小林的博客自己想到的面试高频题可能也会记录。</p>
+<h2 id="1-基础篇"><a href="#1-基础篇" class="headerlink" title="1. 基础篇"></a>1. 基础篇</h2><ol>
+<li>TCP不会为没有数据的ACK超时重传，所以如果ACK报文丢失，ACK的接收方会重传自己的报文给发送方，直到收到ACK发送方返回的ACK。</li>
+<li>不能两次握手：如果服务端的SYN+ACK报文丢失，会造成客户端与服务端的初始序列号无法达成一致。</li>
+<li>不四次握手：服务端的ACK与同步信号SYN明显可以合并</li>
+<li>不能三次挥手：要三次挥手只能将被动方的ACK与FIN合并，但是在被动方收到ACK时可能还有数据要传，这种情况下不能立刻断开连接。</li>
+<li>MTU：一个网络包的最大长度，以太网中一般为1500字节（IP头部）<br>MSS：网络包所能容纳TCP数据的最大长度（TCP的数据部分，不包括TCP头部）</li>
+<li>网卡会在网络包的头部添加报头和起始帧分界符，还会在帧的尾部添加FCS帧校验序列。</li>
+<li>linux中用内核态中的sk_buff维护待发送的包。因为TCP协议支持丢失重传，所以sk_buff只是拷贝发送，直到收到ACK才删除。<br>各个层数据包叫法不同但用同一个结构体维护的原因：多次拷贝降低CPU效率，所以通过调整sk_buff-&gt;data指针来添加与剥离头部。</li>
+</ol>
+<h2 id="2-HTTP"><a href="#2-HTTP" class="headerlink" title="2. HTTP"></a>2. HTTP</h2><ol>
+<li>content-length字段表明服务器回应的数据长度，是为了设置HTTP body的边界解决TCP粘包的问题。</li>
+<li>安全：请求方法不会破坏服务器上的资源。<br>幂等：多次执行相同的操作获得的结果相同。<br>GET操作是安全且幂等的，因此可以对其请求的数据做缓存。<br>POST操作既不安全也不幂等，因此浏览器一般不会缓存POST请求，也不能将其保存为书签。<br>如果不按照RFC规范定义语义实现GET与POST，那GET也可能实现增删，POST也可能实现查。</li>
+<li>HTTP缓存分为强制缓存与协商缓存。强制缓存通过判断HTTP响应头部中的Cache-Control（相对时间，优先级高）和Expires（绝对时间）两个字段决定是否使用本地缓存；协商缓存流程如图：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/network/http/http%E7%BC%93%E5%AD%98.png" alt="协商缓存"></li>
+<li>HTTP1.1：<ol>
+<li>优点：<ol>
+<li>简单：报文格式使用header+body，头部信息使用key-value，易于理解。</li>
+<li>可拓展性强：HTTP协议的每个组成部分都允许开发人员自定义，且允许第七层之下的层随意变化。</li>
+<li>应用广泛与跨平台。</li>
+</ol>
+</li>
+<li>双刃剑：<ol>
+<li>无状态：服务器不需要额外信息记录状态，减轻压力；如果完成有关联的操作时很麻烦，需要借助Cookie技术，在第一次相应时附加Cookie信息，之后根据接收报文的Cookie信息判断是否关联。</li>
+<li>明文传输导致的不安全：通信内容不完整、通信对象伪装、通信内容被窃听。</li>
+</ol>
+</li>
+<li>特点：<ol>
+<li>长连接/持久连接</li>
+<li>管道网络传输：允许连续发出报文而不必等待ACK；但是会造成队头阻塞，而且该功能默认关闭，实际上并没有使用。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>HTTPS<ol>
+<li>特点：在TCP与HTTP层之间加入了SSL/TLS安全协议，在三次握手后还需要进行SSL/TLS握手。HTTPS实现了信息加密（防窃听）、校验机制（防篡改）与身份证书（放伪造）。</li>
+<li>SSL/TLS安全协议：使用了对称加密与非对称加密的混合加密。<ol>
+<li>对称加密：双方用同一把密钥加密与解密。但是密钥会在交换过程中被窃取。</li>
+<li>非对称加密：接收方生成公钥与私钥，将公钥发给发送方。公钥加密的消息只有私钥能解密。但是速度慢。</li>
+<li>混合加密——保证信息加密：<ol>
+<li>接收方生成公钥a和私钥，并发送给发送方公钥a。</li>
+<li>发送方生成临时密钥公钥b作为对称加密的公钥，使用公钥b加密发送的信息，使用公钥a加密公钥b，并打包发送。</li>
+<li>接收方使用私钥解密得到公钥b，然后用公钥b解密得到信息。</li>
+</ol>
+</li>
+<li>摘要算法+数字签名——防篡改：<ol>
+<li>摘要算法：发送方计算内容的哈希值，加密并发送给接收方，接收方接收后计算内容的哈希值并与解密的内容对比是否一致。</li>
+<li>数字签名：使用非对称加密，私钥加密公钥解密，来确保发送者是私钥持有者。</li>
+</ol>
+</li>
+<li>数字证书——防伪造：<ol>
+<li>CA（数字证书认证机构）。CA的公钥已经事先设置在操作系统中</li>
+<li>流程：<ol>
+<li>服务器将自己的公钥上传到CA。</li>
+<li>CA用私钥给服务器的公钥签名并颁发数字证书。</li>
+<li>客户端接收到服务端的数字证书后，先用CA的公钥确认数字证书真实性，并获得服务器的公钥。</li>
+<li>客户端使用服务器的公钥加密发送。</li>
+<li>服务器解密。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a class="link-disabled prev link">&larr; Not More</a>
+	
+	
+		<a href="/2022/11/04/网络是怎样连接的读书笔记6/" class="link next" title="网络是怎样连接的读书笔记6">
+			<span class="hover-underline-animation">网络是怎样连接的读书笔记6 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E6%80%BB%E7%BB%93"><span class="toc-text">小林coding计网总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HTTP"><span class="toc-text">2. HTTP</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>
