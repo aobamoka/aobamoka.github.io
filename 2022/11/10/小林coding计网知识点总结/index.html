@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-11-11">2022-11-11</time>
+            datetime="2022-11-14">2022-11-14</time>
         </span>
-        <span>Reading Time&#58; 8 min</span>
+        <span>Reading Time&#58; 11 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -200,6 +200,59 @@
 <li>第三次：客户端验证证书确认是否可信。客户端同样发送Client Key Exchange给服务端。双方计算出x，并使用客户端随机数+服务器随机数+x生成会话密钥。后续与RSA相同。</li>
 <li>第四次：与RSA相同。</li>
 <li>不同：使用ECDHE算法，客户端可以不等服务端最后一次TLS握手就能提前发送加密的HTTP数据，节省了一个消息往返的时间。</li>
+</ol>
+</li>
+<li>HTTP1.1优化<ol>
+<li>硬件优化、软件优化：升级。</li>
+<li>TLS优化：升级到1.3。<ol>
+<li>把Hello和公钥交换合并成一个消息，将握手时间减少到1RTT。</li>
+<li>减少密码套件，废除不支持前向安全的RSA与DH算法，防止降级攻击。</li>
+</ol>
+</li>
+<li>证书优化：<ol>
+<li>传输：选择椭圆曲线（ECDSA）证书而不是RSA证书，因为在相同安全强度下ECC密钥长度远小于RSA。</li>
+<li>验证：<ol>
+<li>证书吊销列表CRL：CA定期更新维护被撤销信任的证书序号。实时性较差；随证书增多列表变大，下载速度变慢。</li>
+<li>在线证书状态协议OCSP：向CA发送查询请求证书的有效状态。受制于网络状态与CA服务器繁忙。</li>
+<li>OCSP Stapling：服务器向CA周期性查询正梳妆台，获得带有时间戳和签名的响应结果并缓存。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>会话复用：<ol>
+<li>Session ID：首次握手后用Session ID标识会话密钥。服务器内存压力大；客户端不一定连接到同一台服务器。</li>
+<li>Session Ticket：服务器加密会话密钥作为Ticket发送给客户端缓存。不具备前向安全性；应对重放攻击困难。</li>
+<li>Pre-shared Key：TLS1.3，只需要0RTT就能恢复会话。将Ticket与HTTP请求一同发送给服务端。</li>
+<li>应对重放攻击：设定合理的过期时间；只对安全的HTTP请求使用会话复用。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>HTTP2.0<ol>
+<li>头部压缩：<ol>
+<li>结构：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost4@main/%E7%BD%91%E7%BB%9C/http2/%E9%9D%99%E6%80%81%E5%A4%B4%E9%83%A8.png" alt="头部">。</li>
+<li>静态字典：为高频出现在头部的字符串和字段建立了一张静态表，使用huffman编码压缩。</li>
+<li>动态字典：为不在静态表范围内的头部字符串构建，在发送完某字段数据后，双方同步更新动态表，从index=62开始添加，这样在下次发送只需要发送1个字节的index号。</li>
+</ol>
+</li>
+<li>二进制帧：将响应报文划分为10种类型的帧，分为数据帧和控制帧，并采用二进制编码。<ol>
+<li>结构：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost4@main/%E7%BD%91%E7%BB%9C/http2/%E5%B8%A7%E6%A0%BC%E5%BC%8F.png" alt="帧"></li>
+<li>标志位携带简单的控制信息，如END_HEADERS表示头数据结束标志，END_Stream表示单方向数据发送结束，PRIORITY表示流的优先级。</li>
+<li>流标识符标识该Frame属于哪个stream。</li>
+<li>帧数据存放通过HPACK算法压缩过的HTTP头部和包体。</li>
+</ol>
+</li>
+<li>并发传输：多个Stream复用一条TCP连接达到并发。<ol>
+<li>结构：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost4@main/%E7%BD%91%E7%BB%9C/http2/stream.png" alt="Stream"></li>
+<li>一个TCP连接中有多个Stream，一个Stream里有多个message，相当于HTTP1中的请求或相应，由HTTP头部和包体构成，一条Message里包含多个Frame，它是HTTP2的最小单位，以二进制压缩格式存放HTTP1中的内容。</li>
+<li>同一个HTTP请求与响应跑在一个Stream中，一个Frame由多个TCP报文构成。</li>
+<li>不同帧可以乱序发送，由帧头部的流标识符区分并有序组装；同一Stream内部的帧必须严格有序。</li>
+<li>可以根据控制位对每个Stream设置不同优先级。</li>
+<li>双方都可以建立Stream，客户端建立的Stream必须是奇数号，而服务端必须是偶数号。</li>
+</ol>
+</li>
+<li>主动推送资源：客户端访问HTML时，服务器可以主动推送CSS文件。服务器通过PUSH_PROMISE帧传输HTTP头部，并通过Promised Stream ID字段告知客户端将会在哪个偶数号Stream中发送包体。</li>
+<li>缺点：HTTP2基于TCP协议传递数据，TCP是字节流协议，必须保证收到的字节数据完整且连续，当前一个字节数据没有到达时，后收到的字节数据都会放在内核缓冲区，存在队头阻塞问题。</li>
 </ol>
 </li>
 </ol>
