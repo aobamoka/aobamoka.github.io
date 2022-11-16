@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-11-14">2022-11-14</time>
+            datetime="2022-11-16">2022-11-16</time>
         </span>
-        <span>Reading Time&#58; 11 min</span>
+        <span>Reading Time&#58; 19 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -105,7 +105,7 @@
   <section class="article-content"><h1 id="小林coding计网总结"><a href="#小林coding计网总结" class="headerlink" title="小林coding计网总结"></a>小林coding计网总结</h1><p>主要记录一些自己之前不知道的或者重要的、易忘的知识点。根据小林的博客自己想到的面试高频题可能也会记录。</p>
 <h2 id="1-基础篇"><a href="#1-基础篇" class="headerlink" title="1. 基础篇"></a>1. 基础篇</h2><ol>
 <li>TCP不会为没有数据的ACK超时重传，所以如果ACK报文丢失，ACK的接收方会重传自己的报文给发送方，直到收到ACK发送方返回的ACK。</li>
-<li>不能两次握手：如果服务端的SYN+ACK报文丢失，会造成客户端与服务端的初始序列号无法达成一致。</li>
+<li>不能两次握手：无法阻止历史连接的建立，造成资源浪费；如果服务端的SYN+ACK报文丢失，会造成客户端与服务端的初始序列号无法同步。</li>
 <li>不四次握手：服务端的ACK与同步信号SYN明显可以合并</li>
 <li>不能三次挥手：要三次挥手只能将被动方的ACK与FIN合并，但是在被动方收到ACK时可能还有数据要传，这种情况下不能立刻断开连接。</li>
 <li>MTU：一个网络包的最大长度，以太网中一般为1500字节（IP头部）<br>MSS：网络包所能容纳TCP数据的最大长度（TCP的数据部分，不包括TCP头部）</li>
@@ -255,6 +255,133 @@
 <li>缺点：HTTP2基于TCP协议传递数据，TCP是字节流协议，必须保证收到的字节数据完整且连续，当前一个字节数据没有到达时，后收到的字节数据都会放在内核缓冲区，存在队头阻塞问题。</li>
 </ol>
 </li>
+<li>HTTP3.0<ol>
+<li>QUIC：基于UDP在应用层实现的协议。<ol>
+<li>无队头阻塞：Stream中的一个数据包丢失了，该流的其他数据包无法被HTTP3读取直到QUIC重传丢失的报文；其他流的数据报文可以正常被读取。</li>
+<li>更快的连接建立：QUIC内部包含TLS，在自己的帧里会携带TLS里的记录；QUIC使用的是TLS1.3，因此仅需1个RTT就可以同时完成连接建立与密钥协商；第二次连接时应用数据包可以和QUIC握手信息一起发送，达到0RTT。</li>
+<li>连接迁移：通过连接ID标记通信的两个端点，当移动设备网络变化时，只要仍保有上下文信息，就能无缝复用原连接，而不必像老版本一样再次握手以及慢启动。</li>
+</ol>
+</li>
+<li>HTTP层<ol>
+<li>帧头部：直接使用QUIC里的Stream，帧头部只有类型和长度两个字段。</li>
+<li>头部压缩算法：QPACK<ol>
+<li>静态表：扩大到９１项</li>
+<li>动态表：如果首次出现的请求丢包，后续收到请求时无法解码出HPACK头部；QUIC使用Encoder Stream与Decoder Stream两个特殊的单向流同步双方的动态表。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>远程过程调用RPC：本身并不是一种具体的协议，而是调用方式，例如在调用远程服务器的方法时屏蔽网络细节，像调用本地方法一样。<ol>
+<li>HTTP主要用于b(rowser)/s(erver)架构，而RPC主要用于c(lient)/s(erver)架构。因为之前的软件大部分作为客户端只需要跟自家的服务端建立连接，因此可以使用自家造的RPC协议，而浏览器需要访问不同公司的服务器，所以需要统一的标准，即HTTP。</li>
+<li>两者区别：<ol>
+<li>服务发现：找到服务对应的IP端口：RPC有专门的中间服务保存服务名和IP信息。</li>
+<li>底层连接形式：RPC一般有连接池，复用连接。</li>
+<li>传输消息：RPC采用体积更小的序列化协议保存结构体数据，因此性能比HTTP1.1更好一些。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>长轮询：用于手机扫网页端二维码等场景。打开二维码时发送的HTTP请求增大超时延迟，在超时延迟内服务器只要收到扫码请求就立即返回给客户端网页，因此可以实现及时响应。</li>
+<li>WebSocket：实现全双工连接。<ol>
+<li>建立：在完成TCP握手与一次HTTP通信后，如果想建立WebSocket连接，就在HTTP header头中表示想升级成WebSocket协议，并附带一段随机生成的base64码。如果服务器支持升级，就用base64码用某个公开算法变成另一段字符串，同时带上101状态码（协议切换）返回给浏览器。浏览器使用同样的公开算法转换base64码来验证是否一致。</li>
+<li>格式：<img src="https://img-blog.csdnimg.cn/img_convert/3a63a86e5d7e72a37b9828fc6e65c21f.png" alt="WebSocket"></li>
+<li>opcode：数据类型</li>
+<li>payload长度：先读最开始的7位，如果是0-125表示payload全部长度；如果是126表示长度在126-65535之间，还会读取16bit；如果长度是127还会再读64bit。</li>
+</ol>
+</li>
+</ol>
+<h2 id="3-TCP"><a href="#3-TCP" class="headerlink" title="3. TCP"></a>3. TCP</h2><ol>
+<li><p>三大特点：面向连接的（一对一）、可靠的（保证到达）、字节流（消息分组且有序）</p>
+</li>
+<li><p>第三次握手是可以携带数据的，而前两次不行。</p>
+</li>
+<li><p>必须三次握手的原因：</p>
+<ol>
+<li>防止历史连接初始化连接：如果有之前申请建立连接的报文由于网络拥堵未能到达，客户端再次发送建立连接的请求，但是之前的报文先到达，这就叫历史连接。第三次握手可以让客户端确认连接是否为历史连接，从而在历史连接到达时终止连接。</li>
+<li>同步双方初始序列号：双方发送的携带初始序列号的报文都需要得到应答，才能确保同步。四次握手的中间两次可以合并，而两次握手不能保证服务端的序列号得到应答。</li>
+<li>避免资源浪费：历史连接建立会成为冗余的连接，造成资源浪费。</li>
+</ol>
+</li>
+<li><p>TCP使用MSS而不用IP分片：IP层没有超时重传机制，如果一个IP分片丢失，整个IP报文的所有分片都得重传。</p>
+</li>
+<li><p>SYN攻击：攻击者伪造不同IP发送SYN报文给服务端，占满服务端的半连接队列。可增大半连接队列；改用cookie绕过半连接队列；减少SYN+ACK重传次数从而加快半连接断开。</p>
+</li>
+<li><p>主动断开连接的一方才有TIME_WAIT状态。</p>
+<ol>
+<li>TIME_WAIT时间为2MSL（报文最大生存时间），从客户端接收到FIN后发送ACK开始计时，在接到重发的FIN后会重新开始计时。</li>
+<li>为什么是2MSL：一般认为网络中可能还存在来自发送方的数据包，发送方接收到这些数据包的ACK时最长需要一来一回的时间。</li>
+<li>为什么需要TIME_WAIT状态：防止历史连接的数据被后续连接接收；等待足够时间，以确保被动关闭连接的另一方能被正确关闭。</li>
+<li>优化：<ol>
+<li>net.ipv4.tcp_tw_reuse与tcp_timestamps：复用处于TIME_WAIT的socket为新的连接，还需要时间戳的支持以判断过期的历史连接数据。</li>
+<li>net.ipv4.tcp_max_tw_bucket：处于最大TIME_WAIT连接数时重置后面的TIME_WAIT连接状态。</li>
+<li>SO_LINGER：设置socket选项来设置调用close关闭连接行为，比如直接发送RST异常关闭。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>建立连接后出现故障：</p>
+<ol>
+<li>客户端：保活机制。</li>
+<li>服务端：内核回收进程资源时会与客户端完成四次挥手。</li>
+</ol>
+</li>
+<li><p>socket网络编程：</p>
+<ol>
+<li>服务端接收到FIN报文后会在缓冲区后插入文件描述符EOF，应用程序在read到EOF时调用close关闭套接字，使服务器发出FIN包。</li>
+</ol>
+</li>
+<li><p>没有accept可以建立连接：accept只是从已建立的连接中取出一个可用的。</p>
+</li>
+<li><p>没有listen可以建立连接：客户端可以形成TCP自连接。</p>
+</li>
+<li><p>重传：</p>
+<ol>
+<li>超时重传：动态计算RTO</li>
+<li>快速重传：收到三个相同的ACK报文时重传丢失的报文段。</li>
+<li>SACK选择性确认：在TCP头部选项字段中加入SACK，将已收到的数据信息告知发送方。</li>
+<li>Duplicate SACK（D-SACK）：告知发送方哪些信息被重复接收。<ol>
+<li>让发送方知道使发出去的包丢了还是ACK丢了</li>
+<li>知道是不是发送方的数据包被网络延迟</li>
+<li>直到网络中是不是把发送方的数据包复制了</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>窗口：无需等待ACK而可以继续发送数据的最大值。接收方通过头部的Window字段告知接收窗口大小，发送方维护滑动窗口。</p>
+<ol>
+<li><p>发送方的滑动窗口：</p>
+<ol>
+<li>结构：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost2/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP-%E5%8F%AF%E9%9D%A0%E7%89%B9%E6%80%A7/16.jpg" alt="发送方滑动窗口"></li>
+<li>SND.WND：发送窗口的大小，由接收方指定</li>
+<li>SND.UNA：指向已发送但未确认的第一个字节的序列号</li>
+<li>SND.NXT：指向未发送但可发送的第一个字节序列号</li>
+<li>可用窗口大小=SND.WND - (SND.NXT - SND.UNA)</li>
+</ol>
+</li>
+<li><p>接收方的滑动窗口</p>
+<ol>
+<li>结构：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost2/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP-%E5%8F%AF%E9%9D%A0%E7%89%B9%E6%80%A7/20.jpg" alt="接收方的滑动窗口"></li>
+<li>RCV.WND：接收窗口大小，会告知发送方</li>
+<li>RCV.NXT：指向期望收到的下一个数据字节的序列号</li>
+</ol>
+</li>
+<li><p>接收窗口大小约等于发送窗口大小，但不完全相等。</p>
+</li>
+</ol>
+</li>
+<li><p>流量控制：发送方根据接收方的实际接收能力控制发送的数据量。</p>
+<ol>
+<li>应用程序读取能力不够时，会出现接收窗口收缩到0的死锁情况；如果操作系统直接减少接收缓冲区大小，甚至可能出现数据包丢失。TCP规定不允许同时减少缓存与收缩窗口，只能先收缩窗口。</li>
+<li>窗口关闭：TCP一方收到另一方的零窗口通知时启动持续计时器，在超时时发送窗口探测报文。如果多次探测还是0则发送RST报文中断连接。</li>
+<li>糊涂窗口综合症：TCP为了很少的数据发送报文。<ol>
+<li>接收方窗口大小小于min(MSS, 缓存空间/2)时发送零窗口通知</li>
+<li>（需要1满足）发送方使用Nagle算法，只有满足窗口大小&gt;=MSS且数据大小&gt;=MSS或收到之前发送数据的ACK时才发送数据，否则囤积数据。</li>
+</ol>
+</li>
+</ol>
+</li>
 </ol>
 </section>
 </article>
@@ -273,7 +400,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E6%80%BB%E7%BB%93"><span class="toc-text">小林coding计网总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HTTP"><span class="toc-text">2. HTTP</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E6%80%BB%E7%BB%93"><span class="toc-text">小林coding计网总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HTTP"><span class="toc-text">2. HTTP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-TCP"><span class="toc-text">3. TCP</span></a></li></ol></li></ol>
   </div>
 </section>
 
