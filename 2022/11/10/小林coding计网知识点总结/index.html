@@ -96,7 +96,7 @@
           Last Update&#58;<time class="post-time"
             datetime="2022-11-16">2022-11-16</time>
         </span>
-        <span>Reading Time&#58; 19 min</span>
+        <span>Reading Time&#58; 21 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -351,7 +351,7 @@
 </li>
 <li><p>窗口：无需等待ACK而可以继续发送数据的最大值。接收方通过头部的Window字段告知接收窗口大小，发送方维护滑动窗口。</p>
 <ol>
-<li><p>发送方的滑动窗口：</p>
+<li><p>发送方的滑动窗口swnd：</p>
 <ol>
 <li>结构：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost2/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP-%E5%8F%AF%E9%9D%A0%E7%89%B9%E6%80%A7/16.jpg" alt="发送方滑动窗口"></li>
 <li>SND.WND：发送窗口的大小，由接收方指定</li>
@@ -360,7 +360,7 @@
 <li>可用窗口大小=SND.WND - (SND.NXT - SND.UNA)</li>
 </ol>
 </li>
-<li><p>接收方的滑动窗口</p>
+<li><p>接收方的滑动窗口rwnd</p>
 <ol>
 <li>结构：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost2/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP-%E5%8F%AF%E9%9D%A0%E7%89%B9%E6%80%A7/20.jpg" alt="接收方的滑动窗口"></li>
 <li>RCV.WND：接收窗口大小，会告知发送方</li>
@@ -380,6 +380,47 @@
 <li>（需要1满足）发送方使用Nagle算法，只有满足窗口大小&gt;=MSS且数据大小&gt;=MSS或收到之前发送数据的ACK时才发送数据，否则囤积数据。</li>
 </ol>
 </li>
+</ol>
+</li>
+<li><p>拥塞控制：流量控制是避免发送方的数据填满接收方的缓冲区，而拥塞控制是避免发送方的数据填满整个网络。</p>
+<ol>
+<li>拥塞窗口cwnd=min(swnd, rwnd)</li>
+<li>慢启动：发送方每收到一个ACK，cwnd++。变化趋势：1-&gt;2-&gt;4-&gt;8-&gt;……，呈指数型增长。慢启动门限ssthresh（一般为65535）。当cwnd&gt;=ssthresh时改为拥塞避免算法</li>
+<li>拥塞避免：每收到一个ACK，cwnd+=1/cwnd。变成线性增长。网络慢慢进入拥塞，最终在出现丢包需要进行重传时进入拥塞发生。</li>
+<li>拥塞发生：<ol>
+<li>拥塞发生：触发超时重传时使用。ssthresh=cwnd/2，cwnd重置为初始值，重新开始慢启动。</li>
+<li>快速重传：触发快速重传时使用，是对拥塞发生的优化。cwnd/=2，ssthresh=cwnd，进入快速恢复算法。</li>
+</ol>
+</li>
+<li>快速回复：认为能连续收到3个重复ACK时网络状况并不那么糟糕，所以不需要像超时重传那样反应剧烈。<ol>
+<li>cwnd+=3（在快速重传的基础上），表示确认3个数据包被收到。</li>
+<li>重传丢失的数据包</li>
+<li>如果再收到重复的ACK，cwnd++。</li>
+<li>如果收到新数据的ACK，将cwnd设置为慢启动的ssthresh值（ACK确认新数据，说明重复ACK的数据都已经收到，恢复过程已经结束），进入拥塞避免状态。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>TCP挥手有时候是3次的原因：被动断开方没有数据要发送，且开启了TCP延迟确认机制，第二次与第三次挥手会合并。</p>
+</li>
+<li><p>第三次握手如果丢失：</p>
+<ol>
+<li>服务端一直重传SYN+ACK包，直到最大重传次数后断开连接。</li>
+<li>客户端如果没有发送数据，一直处于ESTABLISHED状态，然后经过很长一段时间后发现一个死亡连接，于是断开；如果发送数据，那么一直收不到ACK就会一直重传到最大次数，然后断开连接。</li>
+</ol>
+</li>
+<li><p>TCP Fast Open</p>
+<ol>
+<li>第一次建立连接时，服务端在第二次握手时产生一个加密Cookie与SYN+ACK包一起发送，客户端在第三次握手时将ACK与HTTP请求一起发送。</li>
+<li>下次请求时客户端在SYN包中带上Cookie，服务端能直接从Cookie获取TCP相关信息，跳过握手并返回SYN+ACK+数据，只需要一个RTT。</li>
+</ol>
+</li>
+<li><p>TCP延迟确认</p>
+<ol>
+<li>有响应数据发送时，ACK随响应数据一起发送</li>
+<li>没有响应数据发送时，ACK等待一段时间</li>
+<li>在等待期间对方第二个数据报文到达，则ACK立刻发送</li>
+<li>与Nagle算法冲突，一方没有发送数据等待下一个报文到达，一方等待当前报文的确认，会造成额外时延</li>
 </ol>
 </li>
 </ol>
