@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-11-16">2022-11-16</time>
+            datetime="2022-11-17">2022-11-17</time>
         </span>
-        <span>Reading Time&#58; 21 min</span>
+        <span>Reading Time&#58; 24 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -306,7 +306,12 @@
 </li>
 <li><p>TCP使用MSS而不用IP分片：IP层没有超时重传机制，如果一个IP分片丢失，整个IP报文的所有分片都得重传。</p>
 </li>
-<li><p>SYN攻击：攻击者伪造不同IP发送SYN报文给服务端，占满服务端的半连接队列。可增大半连接队列；改用cookie绕过半连接队列；减少SYN+ACK重传次数从而加快半连接断开。</p>
+<li><p>SYN攻击：攻击者伪造不同IP发送SYN报文给服务端，占满服务端的半连接队列。</p>
+<ol>
+<li>增大半连接队列。</li>
+<li>改用cookie绕过半连接队列。</li>
+<li>减少SYN+ACK重传次数从而加快半连接断开。</li>
+</ol>
 </li>
 <li><p>主动断开连接的一方才有TIME_WAIT状态。</p>
 <ol>
@@ -413,6 +418,7 @@
 <ol>
 <li>第一次建立连接时，服务端在第二次握手时产生一个加密Cookie与SYN+ACK包一起发送，客户端在第三次握手时将ACK与HTTP请求一起发送。</li>
 <li>下次请求时客户端在SYN包中带上Cookie，服务端能直接从Cookie获取TCP相关信息，跳过握手并返回SYN+ACK+数据，只需要一个RTT。</li>
+<li>需要双方同时支持。</li>
 </ol>
 </li>
 <li><p>TCP延迟确认</p>
@@ -422,6 +428,47 @@
 <li>在等待期间对方第二个数据报文到达，则ACK立刻发送</li>
 <li>与Nagle算法冲突，一方没有发送数据等待下一个报文到达，一方等待当前报文的确认，会造成额外时延</li>
 </ol>
+</li>
+<li><p>TCP全连接队列已满时，是否需要放弃连接：通过修改tcp_abort_on_overflow参数。</p>
+<ol>
+<li>0：如果队列已满，server扔掉client发过来的ack。</li>
+<li>1：如果队列已满，server发送RST包给client，表示废除握手过程和连接。</li>
+<li>一般应当设置为0，因为有时服务器只是短暂繁忙，当队列有空位时再次接收到ACK请求仍然能成功建立连接。</li>
+</ol>
+</li>
+<li><p>close与shutdown：</p>
+<ol>
+<li>close：完全断开连接，无法发送数据与传输数据，调用close一方的连接叫孤儿连接，进程名为空。</li>
+<li>shutdown：<ol>
+<li>SHUT_RD(0)：关闭连接的读方向。立即丢弃接收缓冲区的数据，并在之后有数据到来时返回ACK并丢弃。</li>
+<li>SHUT_WR(1)：关闭连接的写方向。立即发送发送缓冲区未发送的数据，并发送FIN报文。</li>
+<li>SHUT_RDWR(2)：1和2各执行一次。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>TCP连接双方同时关闭：两方发送FIN报文后等待ACK，都等来了FIN报文，因此都进入CLOSING状态，之后双方回复ACK确认对方发送通道关闭，进入TIME_WAIT状态。</p>
+</li>
+<li><p>如何理解TCP是面向字节流的协议，而UDP是面向报文的协议</p>
+<ol>
+<li>用户协议通过UDP协议传输时，操作系统不会对消息进行拆分，这意味着每个UDP报文代表一条完整的用户消息。</li>
+<li>用户协议通过TCP协议传输时，消息可能会被分成多个TCP报文，而拆分方式不固定，不能认为一个用户消息对应一个TCP报文。（TCP协议传输的数据粒度比报文更细）</li>
+<li>解决粘包：固定长度；特殊字符作为边界（如HTTP以回车+换行作为边界）；自定义消息结构（包头固定大小，在包头中记录数据大小）。</li>
+</ol>
+</li>
+<li><p>TCP时间戳：</p>
+<ol>
+<li>精确计算RTT</li>
+<li>防止序列号回绕（随机出相同的SYN）：判断新收到的数据包的时间戳是否在递增序列中，如果不在表示该数据包过期。</li>
+</ol>
+</li>
+<li><p>处于ESTABLISH状态的服务端收到了客户端的SYN报文：</p>
+<ol>
+<li>端口号与历史连接不同：服务端认为需要建立新的连接。旧连接如果发送了数据，会返回RST报文强制关闭，否则在TCP保活机制下释放。</li>
+<li>端口号与历史连接相同：服务端会回复一个携带了正确序列号和确认号的ACK（Challenge ACK）。客户端收到后发现序列号不是自己所期望的，就会返回RST报文。</li>
+</ol>
+</li>
+<li><p>挥手时被动关闭端的FIN报文比发送的数据更早到达另一方：FIN报文被当作乱序报文储存起来，等按顺序收到并处理完数据报文后，处理FIN报文再进入TIME_WAIT状态。</p>
 </li>
 </ol>
 </section>
