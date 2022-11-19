@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-11-17">2022-11-17</time>
+            datetime="2022-11-19">2022-11-19</time>
         </span>
-        <span>Reading Time&#58; 24 min</span>
+        <span>Reading Time&#58; 26 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -478,6 +478,35 @@
 </ol>
 </li>
 <li><p>进程崩溃时，内核会与该进程连接的对方进行挥手并回收资源，所以连接会正常关闭。如果是主机崩溃，且对方没有开启keepalive机制，那么对方的连接将一直是ESTABLISHED状态，直至对方内核重启。</p>
+</li>
+<li><p>tcp_timestamps：TCP时间戳（默认为1），开启后可开启如下两个功能</p>
+<ol>
+<li>tcp_tw_reuse：客户端在调用connect函数时，如果内核选择到的端口已被相同四元组的连接占用，且该连接处于TIME_WAIT状态超过1秒，那么就会重用该连接。<ol>
+<li>如果开启，有可能导致历史RST报文到达重用的连接，从而强制断开该连接。（正常情况下认为TIME_WAIT持续的时间足够让连接中的报文在网络中自然消失）</li>
+<li>如果第四次挥手的ACK丢失，可能被动关闭连接的一方无法正常关闭。</li>
+</ol>
+</li>
+<li>tcp_tw_recycle：允许处于TIME_WAIT状态的连接被快速回收。<ol>
+<li>如果开启，会开启per-host的PAWS机制。</li>
+<li>如果此时客户端环境使用了NAT网关，客户端环境的每一台机器通过NAT网关后都会是相同的IP地址</li>
+<li>如果服务器主动关闭与客户端A的连接后，同一环境的客户端B通过相同的NAT网关与服务器建立连接，且其timestamp比A的小，由于服务端的per-host的PAWS机制作用，服务端会丢弃B发来的SYN包。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>TCP keepalive与HTTP keep-alive</p>
+<ol>
+<li>HTTP keep-alive：HTTP长连接：HTTP使用同一个TCP连接来发送和接收多个HTTP请求应答。由应用程序实现。</li>
+<li>TCP keepalive：TCP保活机制：在没有数据交互时，内核的TCP协议栈会发送探测报文给对方，如果对方程序正常工作就会响应，TCP保活时间被重置；否则在达到保活探测次数后，TCP报告该连接已死亡。由内核实现。</li>
+</ol>
+</li>
+<li><p>TCP缺陷：</p>
+<ol>
+<li>升级困难：TCP在内核中实现，升级内核很麻烦。</li>
+<li>建立连接延迟</li>
+<li>队头阻塞：字节流协议。</li>
+<li>网络迁移需要重新建立TCP连接。</li>
+</ol>
 </li>
 </ol>
 </section>
