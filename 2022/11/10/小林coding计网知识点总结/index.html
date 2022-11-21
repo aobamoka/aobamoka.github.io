@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-11-19">2022-11-19</time>
+            datetime="2022-11-21">2022-11-21</time>
         </span>
-        <span>Reading Time&#58; 26 min</span>
+        <span>Reading Time&#58; 29 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -506,6 +506,79 @@
 <li>建立连接延迟</li>
 <li>队头阻塞：字节流协议。</li>
 <li>网络迁移需要重新建立TCP连接。</li>
+</ol>
+</li>
+<li><p>QUIC：基于UDP在应用层实现的可靠传输。</p>
+<ol>
+<li><p>三层Header：从外到内介绍</p>
+<ol>
+<li><p>Packet Header</p>
+<ol>
+<li>Long Packet Header用于首次建立连接，包含源连接ID和目标连接ID。</li>
+<li>Short Packet Header用于日常传输连接，包含目标连接ID、编号和负载数据。</li>
+<li>双方通过三次握手协商连接ID。编号严格递增（即使重传，编号也比丢失的要大）（为了去除TCP的ACK歧义，该ACK响应的是原始报文还是重传报文，从而避免RTT误判）</li>
+<li>支持乱序确认，后续报文不必阻塞在缓冲区。</li>
+</ol>
+</li>
+<li><p>QUIC Frame Header：一个Packet中可存放多个QUIC Frame。有包括Stream在内的多种类型</p>
+<ol>
+<li>通过该层的Stream ID+Offset字段信息确认重传报文与丢失报文的一致性。</li>
+</ol>
+</li>
+<li><p>HTTP3 Frame Header</p>
+</li>
+</ol>
+</li>
+<li><p>TCP队头阻塞问题的解决</p>
+<ol>
+<li>HTTP2的队头阻塞：多个Stream在一条TCP连接上传输，也意味着共用一个TCP滑动窗口，发生数据丢失会阻塞所有的HTTP请求。</li>
+<li>QUIC为每个Stream分配独立的滑动窗口。</li>
+</ol>
+</li>
+<li><p>实现UDP没有的流量控制</p>
+<ol>
+<li>Stream级别：每个Stream有独立的滑动窗口，所以每个Stream都能做流量控制。</li>
+<li>Connection流量控制：限制连接中所有Stream相加起来的总字节数。</li>
+</ol>
+</li>
+<li><p>改进TCP拥塞控制算法，还支持其他多种算法：QUIC处于应用层，因此可以随浏览器更新，迭代速度很快，并且可以针对不同应用设置不同的算法。</p>
+</li>
+<li><p>QUIC不用四元组绑定连接，而是通过连接ID标记通信双方断电，因此在移动设备网络变化是，只要仍保存上下文信息（连接ID、TLS密钥等），就能无缝复用连接。</p>
+</li>
+</ol>
+</li>
+<li><p>TCP与UDP可以绑定相同的端口：由主机根据Ip包头的协议号字段判断将信息送给哪个模块处理。</p>
+</li>
+<li><p>不使用listen建立TCP连接：TCP自连接或者两个客户端同时向对方请求建立连接。</p>
+<ol>
+<li>客户端在connect方法时，将自己的连接信息放入内核的一个全局hash表中，消息经过回环地址重新回到TCP传输层时，根据IP+端口信息从hash表中去除信息，成功建立连接。</li>
+</ol>
+</li>
+<li><p>全连接队列是链表，而半连接队列是哈希表</p>
+<ol>
+<li>accept前连接已经建立，accept只是从全连接队列中取出一条可用的连接。</li>
+<li>链表与哈希表的设置：全连接队列中都是建立完成的连接，我们不关心取到哪条；而半连接队列中的连接需要等待第三次握手时，将相应的连接取出来，为了方便查找特定的连接设置成哈希表。</li>
+</ol>
+</li>
+<li><p>tcp_abort_on_overflow：</p>
+<ol>
+<li>0：全连接队列满了后会丢弃第三次握手的ACK包，并开启定时器重传SYN+ACK包。如果次数超过限制还会把对应半连接队列里的连接删除。</li>
+<li>1：直接返回RST</li>
+</ol>
+</li>
+<li><p>cookies方案取代半连接队列：</p>
+<ol>
+<li>cookies信息实时计算，保存在TCP包头的seq里，所以如果信息丢失，服务器不会重发第二次握手信息。</li>
+<li>编码解码cookies耗费CPU，同样可能被利用攻击。</li>
+</ol>
+</li>
+<li><p>TCP只保证到传输层的可靠性，不保证应用层的可靠性，因此还是可能丢失信息，比如应用在读取接收缓冲区的信息时崩溃。这些需要应用程序自己实现逻辑保证。</p>
+</li>
+<li><p>两端通信引入第三端服务器：</p>
+<ol>
+<li>只需要跟服务器建立一个连接，耗费资源少</li>
+<li>方便进行鉴权校验，防止信息泄露</li>
+<li>软件版本兼容</li>
 </ol>
 </li>
 </ol>
