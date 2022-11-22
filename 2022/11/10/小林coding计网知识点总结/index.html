@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-11-21">2022-11-21</time>
+            datetime="2022-11-22">2022-11-22</time>
         </span>
-        <span>Reading Time&#58; 29 min</span>
+        <span>Reading Time&#58; 36 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -582,6 +582,103 @@
 </ol>
 </li>
 </ol>
+<h2 id="4-IP"><a href="#4-IP" class="headerlink" title="4. IP"></a>4. IP</h2><ol>
+<li>地址分类<ol>
+<li>A类地址：0.0.0.0 ~ 127.255.255.255。私有IP：10.0.0.0 ~ 10.255.255.255</li>
+<li>B类地址：128.0.0.0 ~ 191.255.255.255。私有IP：172.16.0.0 ~ 172.31.255.255</li>
+<li>C类地址：192.0.0.0 ~ 223.255.255.255。私有IP：192.168.0.0 ~ 192.168.255.255</li>
+<li>D类地址：224.0.0.0 ~ 239.255.255.255：没有主机号，常被用于多播</li>
+<li>E类地址：240.0.0.0 ~ 255.255.255.255：没有主机号，暂未使用</li>
+</ol>
+</li>
+<li>多播：将包发送给特定组内的所有主机，与广播不同，多播可以穿透路由器。</li>
+<li>环回地址：127.0.0.1/localhost主机名。使用该IP地址或主机名时，数据包不会流向网络。</li>
+<li>IPv6：<ol>
+<li>特点：<ol>
+<li>可分配地址大大增加</li>
+<li>可自动配置，即使没有DHCP服务器也可以自动分配IP地址</li>
+<li>包头长度固定４０字节，去掉包头校验和，简化首部结构，大大提高传输性能</li>
+<li>能应对伪造ＩＰ地址的网络安全功能以及防止线路窃听功能</li>
+</ol>
+</li>
+<li>首部改进：<ol>
+<li>取消了首部校验和字段（因为数据链路层和传输层都会校验）</li>
+<li>取消了分片重组相关字段</li>
+<li>取消选项字段从而固定头部长度，选项字段可能出现在IPv6首部的“下一个首部”指出的位置上</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>RARP协议：已知MAC地址求IP地址，通常需要架设RARP服务器，并在服务器上注册设备的MAC地址及其IP地址。</li>
+<li>DHCP协议：动态获取IP地址。客户端进程监听68号端口，服务端进程监听67号端口。<ol>
+<li>客户端发起DHCP DISCOVER的IP数据包，使用UDP广播通信，0.0.0.0作为源IP地址，广播地址作为目标地址。</li>
+<li>DHCP服务器用DHCP OFFER响应，广播地址作为目标地址，报文信息携带服务器提供的可租约IP地址、子网掩码、默认网关、DNS服务器以及IP地址租用期。</li>
+<li>客户端收到多个服务器的DHCP OFFER后选择一个，发送DHCP REQUEST回显配置的参数。</li>
+<li>服务端用DHCP ACK响应，应答要求的参数。</li>
+<li>租约的DHCP IP地址快到期时，客户端会发送DHCP请求报文<ol>
+<li>如果服务器同意继续租用，就回应DHCP ACK并延长租期</li>
+<li>如果服务器不同意，回应DHCP NACK，客户端停止使用IP地址</li>
+</ol>
+</li>
+<li>DHCP交互中全程使用UDP广播通信。为了解决DHCP服务器和客户端不在一个局域网内的问题，需要由DHCP中继代理交互。中继代理之间以及与服务器之间采用单播的方式。</li>
+</ol>
+</li>
+<li>NAT网络地址转换：网络地址与端口转换NAPT：将IP地址+端口号一起转换，这样可以只用一个全球IP地址。<ol>
+<li>缺点：<ol>
+<li>外部无法主动与NAT内部服务器建立连接</li>
+<li>转换表的生成与转换操作都会产生性能开销</li>
+<li>通信过程中如果NAT重启，所有TCP连接都会重置</li>
+</ol>
+</li>
+<li>解决：<ol>
+<li>改用IPv6，每台设备配置一个公有地址</li>
+<li>NAT穿透技术：应用程序主动获得NAT设备公有IP并建立端口映射条目，然后用该条目对外通信。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ICMP互联网控制报文协议：确认IP包是否成功送达目标地址、报告发送过程中IP包被废弃的原因和改善网络设置等。如果某个IP包未能达到目标地址，由ICMP负责通知。<ol>
+<li>查询报文类型：用于诊断的查询消息</li>
+<li>差错报文类型：通知出错原因的错误消息</li>
+</ol>
+</li>
+<li>IGMP因特网组管理协议：工作在主机（被组播对象）和最后一条路由之间<ol>
+<li>功能：向路由器申请加如何退出组播组，然后路由器就会记录IGMP路由器表。</li>
+<li>版本：IGMPv1、IGMPv2、IGMPv3.</li>
+<li>常规查询与响应工作机制：<ol>
+<li>路由器周期性发送目标地址为224.0.0.1（同一网段内所有主机和路由器）的IGMP常规查询报文</li>
+<li>主机收到查询，启动报告延迟计时器，超时后就发送IGMP成员关系报告报文（目标IP地址为组播地址）；如果超时前收到了同一组内其他成员的报告报文，就不再发送。</li>
+<li>路由器收到报告报文后在IGMP路由表中加入该组播组</li>
+</ol>
+</li>
+<li>离开组播组工作机制：<ol>
+<li>主机发送IGMPv2离组报文，目标地址224.0.0.2（网段内所有路由器）</li>
+<li>路由器收到后，以1s为间隔连续发送IGMP特定组查询报文，以确认该网络是否还有组的其他成员。</li>
+<li>如果还有主机是成员，则立即响应，路由器知道还有组后会继续转发组播数据包；否则不再转发。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ping：基于ICMP<ol>
+<li>查询报文类型：回送消息：类型0和8：可以向对端主机发送回送请求消息（8），也可以接收对端主机发回的回送应答消息（0）</li>
+<li>差错报文类型<ol>
+<li>目标不可达消息（3）：IP路由器无法将IP数据包发送给目标地址，同时在消息中显示不可达的具体原因<ol>
+<li>0：网络不可达；1；主机不可达；2：协议不可达；3：端口不可达；4：需要分片但设置了未分片</li>
+</ol>
+</li>
+<li>原点抑制消息（4）：当路由器向低速线路发送数据时，其发送队列的缓存变为0而无法发送出去，可以向IP包源地址发送一个ICMP原点抑制消息。收到包的主机了解在整个项目的某一处发生了拥堵，从而增大IP包传输间隔。可能引起不公平的网络通信。</li>
+<li>重定向消息（5）：路由器发现发送端主机使用了不是最优的路径发送数据，它会返回ICMP重定向消息，包含最合适的路由信息和源数据。</li>
+<li>超时消息（11）：TTL=0时路由器发送ICMP超时消息给发送端主机</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>traceroute<ol>
+<li>故意设置特殊TTL追踪去往目的地时沿途经过的路由器：利用TTL，从1开始按照递增顺序发送UDP包，强制接收ICMP超时消息；发送UDP包时会填入不可能的端口号33434，这样到达目的地时返回的就是“端口不可达”的ICMP。</li>
+<li>故意设置不分片从而确认路径MTU：每次收到ICMP就减少包的大小，来定位一个合适的MTU。</li>
+</ol>
+</li>
+</ol>
 </section>
 </article>
 
@@ -599,7 +696,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E6%80%BB%E7%BB%93"><span class="toc-text">小林coding计网总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HTTP"><span class="toc-text">2. HTTP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-TCP"><span class="toc-text">3. TCP</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E6%80%BB%E7%BB%93"><span class="toc-text">小林coding计网总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HTTP"><span class="toc-text">2. HTTP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-TCP"><span class="toc-text">3. TCP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-IP"><span class="toc-text">4. IP</span></a></li></ol></li></ol>
   </div>
 </section>
 
