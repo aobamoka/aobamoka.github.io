@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>小林codingMYSQL知识点总结 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      小林codingMYSQL知识点总结
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2022-11-24">2022-11-24</time>
+        </span>
+        <span>Reading Time&#58; 8 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h1><p>大三上的数据库课，而且讲的很浅，感觉没记下些啥，可能很基础的也会记上来。。。</p>
+<h2 id="1-基础篇"><a href="#1-基础篇" class="headerlink" title="1. 基础篇"></a>1. 基础篇</h2><ol>
+<li>MYSQL架构分为Server层和存储引擎层。存储引擎层只负责数据的存储和提取，其他所有功能都在Server层。InnoDB是MYSQL默认的存储引擎。</li>
+<li>MYSQL基于TCP传输。</li>
+<li>执行流程：<ol>
+<li>连接器：通过TCP握手连接MYSQL服务。</li>
+<li>查询缓存：查询Server层的k-v缓存（SQL查询语句-查询结果）。由于命中率很低且每更新数据库就需要清空，从MYSQL 8.0开始不用这个阶段。</li>
+<li>解析SQL：解析器进行词法分析和语法分析<ol>
+<li>词法分析：识别关键词，构建SQL语法树。</li>
+<li>语法分析：根据语法规则判断输入的SQL语句是否符合语法。</li>
+</ol>
+</li>
+<li>执行SQL：<ol>
+<li>预处理阶段：预处理器检查SQL查询语句中的表或字段是否存在；将select *中的*展开为表上所有列。</li>
+<li>优化阶段：优化器将SQL查询语句的执行方案确定下来。比如再表里有多个索引时，优化器基于查询成本决定选择哪个索引。</li>
+<li>执行阶段：执行器和存储引擎交互（以记录为单位）<ol>
+<li>主键索引查询：id = 1：查询条件用到了主键索引，而且是等值查询，同时主键id唯一。执行器将条件交给存储殷勤，让存储引擎查询记录，存储引擎将结果发回给执行器，执行器判断记录是否符合查询条件，如果符合发送给客户端，否则跳过，直到找不到或者返回-1表示已查询完。</li>
+<li>全表扫描：name = ‘xxx’：优化器选择访问类型为all。存储引擎从表中第一条记录读起，执行器判断是否符合条件，如果是则发给客户，否则跳过，直到存储引擎把表中所有记录读完并返回读取完毕。</li>
+<li>索引下推：age &gt; 20 and reward = 100000，且对age和reward建立了联合索引：执行器调用接口定位到满足查询条件的第一条二级索引记录(age &gt; 20)；存储器在定位到二级索引后先不执行回表操作，而是先判断reward列条件是否成立，如果不成立直接跳过该索引，成立则回表；执行器再判断其他条件是否成立并决定发给客户端，然后继续向存储引擎索要下一条记录。即将部分条件交给存储引擎直接判断。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>总体流程：<img src="https://cdn.xiaolincoding.com/gh/xiaolincoder/mysql/sql%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/mysql%E6%9F%A5%E8%AF%A2%E6%B5%81%E7%A8%8B.png" alt="MYSQL执行流程"></li>
+</ol>
+</li>
+</ol>
+<h2 id="2-索引篇"><a href="#2-索引篇" class="headerlink" title="2. 索引篇"></a>2. 索引篇</h2><ol>
+<li>InnoDB：<ol>
+<li>创建表的索引选择：<ol>
+<li>如果有主键，默认用主键作为聚簇索引的索引键</li>
+<li>如果没有主键，选择第一个不包含NULL值的唯一列作为聚簇索引的索引键</li>
+<li>如果都没有，InnoDB自动生成一个隐式自增id列作为聚簇索引的索引键</li>
+</ol>
+</li>
+<li>创建的主键索引和二级索引默认使用B+Tree索引<ol>
+<li>B+Tree是一种多叉树，叶子节点存放数据，非叶子节点存放索引，每个节点里的数据按主键顺序存放，每个叶子节点都指向下一个叶子节点，形成一个链表。</li>
+<li>二级索引：二级索引的叶子节点中存放的是主键，所以在二级索引查询到后主键值后，还需要根据主键去主键索引的B+Tree再查询一次，称为“回表”；如果查询的数据就在二级索引的叶子节点中（比如主键），就不用再查，称为“覆盖索引”。</li>
+<li>B+Tree的优势<ol>
+<li>B Tree：B树叶子节点也会存储数据，所以数据量相同的情况下，B+Tree能存放更多索引，导致比B树更“矮胖”，磁盘I/O次数更少；B+ Tree的叶子节点使用了双链表连接，适合范围查询。</li>
+<li>二叉树：二叉树每个节点的子节点只能是两个，因此平均检索次数比B+ Tree更多。</li>
+<li>Hash：哈希表不适合做范围查询</li>
+<li>此外，B Tree与二叉树在增删节点时变形麻烦。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>索引分类<ol>
+<li>按数据结构分类：<ol>
+<li>B+Tree索引</li>
+<li>HASH索引</li>
+<li>Full-Text索引：通过关键字匹配的方式进行全文过滤<ol>
+<li>想对词语进行全文索引，它的长度必须满足在一个区间内（配置文件指定）。</li>
+<li>自然语言的全文索引：计算每一个文档对象和查询的相关度，相关度是基于匹配的关键词的个数，以及关键词在文档中出现的次数。在整个索引中出现次数越少的词语，匹配时的相关度就越高。相反，非常常见的单词将不会被搜索。为了避免搜索语气词、助词这些没有意义的词。</li>
+<li>在布尔搜索中，我们可以在查询中自定义某个被搜索的词语的相关性。</li>
+<li>比like%快，但是精度比它低。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>按物理存储分类：<ol>
+<li>主键索引</li>
+<li>二级索引</li>
+</ol>
+</li>
+<li>按字段特性分类：<ol>
+<li>主键索引：一张表最多只有一个，索引列的值不允许有空值</li>
+<li>唯一索引：一张表可以有多个，索引列的值必须唯一，允许有空值</li>
+<li>普通索引</li>
+<li>前缀索引：对字符类型字段的前几个字符建立索引，可以建立在字段类型为char、varchar、binary、varbinary的列上</li>
+</ol>
+</li>
+<li>按字段个数分类；<ol>
+<li>单列索引</li>
+<li>联合索引：建立在多列上的索引。B+Tree先按照其中一列进行排序，相同时再按另一列排序。存在最左匹配原则，即按照最左优先的方式进行索引的匹配（以(a, b)建立联合索引，不能只查找where b = x）。<ol>
+<li>如 select * from table where a &gt; 1 and b = 2。联合索引先按照a字段的值排序，所以搜索时可以定位到符合a &gt; 1的第一条记录，然后会沿链表向后扫描直到结束，但是在符合a &gt; 1的记录中b是无序的，所以只能逐条判断b = 2是否成立。因此，这条语句只有a字段使用了联合索引进行索引查询，而b字段没用到。</li>
+<li>如果改成a &gt;= 1，则当a = 1时可以通过b = 2条件减少二级索引范围，当a &gt; 1时再逐条扫描所以这条语句a和b字段都用到了联合索引。</li>
+<li>如果改成name like ‘j%’，则当name = j时可以通过b = 2条件检索二级索引范围，当name更长时则需要逐条扫描，所以name和b都用到了联合索引。</li>
+<li>索引下推优化：可以在联合索引遍历过程中，先对联合索引包含的字段做判断，直接过滤掉不满足条件的记录，减少回表次数。</li>
+<li>索引区分度：某个字段不同值的个数除以表的总行数。<ol>
+<li>建立联合索引时，越靠前的字段被用于索引过滤的概率越高。如果索引区分度小且字段分布均匀，那么无论搜索哪个值都不能去掉很多数据。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>索引的适用场合：<ol>
+<li>需要：<ol>
+<li>字段唯一性限制：身份证</li>
+<li>经常用于WHERE</li>
+<li>经常用于GROUP BY和ORDER BY：无须再做一次排序</li>
+</ol>
+</li>
+<li>不需要：<ol>
+<li>上面三个关键字用不到的字段</li>
+<li>字段中存在大量重复数据</li>
+<li>表数据太少</li>
+<li>经常更新的字段：余额</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>优化方法<ol>
+<li>前缀索引优化：使用某个字段中字符串的前几个字符建立索引，从而减小索引字段大小。<ol>
+<li>order by无法使用前缀索引</li>
+<li>无法把前缀索引用作覆盖索引</li>
+</ol>
+</li>
+<li>覆盖索引优化：将经常查询的关联字段建立联合索引，使得索引中存在这些数据，从而避免回表</li>
+<li>主键索引最好是自增的（每次插入的都比当前最大值大）：插入新记录时都是追加操作，不需要重新移动数据；主键长度不要太大，因为二级索引存储的数据是主键值，主键长度小意味着二级索引的B+Tree耗费空间少。</li>
+<li>索引最好设置为NOT NULL：<ol>
+<li>索引列存在NULL使优化器做索引选择时更复杂</li>
+<li>NULL无意义但会占用物理空间</li>
+</ol>
+</li>
+<li>防止索引失效<ol>
+<li>索引失效<ol>
+<li>使用左或者左右模糊匹配</li>
+<li>对索引列做了计算、函数、类型转换等操作</li>
+<li>联合索引没有遵循最左匹配原则</li>
+<li>WHERE子句中在OR前的条件列是索引列，而OR后bushi</li>
+</ol>
+</li>
+<li>尽量避免全表扫描和全索引扫描</li>
+<li>extra字段<ol>
+<li>Using filesort：查询语句中包含group by而且无法利用索引完成排序，不得不选择算法排序。</li>
+<li>Using temporary：使用临时表保存中间结果，常见于order by与group by</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a class="link-disabled prev link">&larr; Not More</a>
+	
+	
+		<a href="/2022/11/10/小林coding计网知识点总结/" class="link next" title="小林coding计网知识点总结">
+			<span class="hover-underline-animation">小林coding计网知识点总结 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL"><span class="toc-text">MYSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E7%AF%87"><span class="toc-text">2. 索引篇</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>
