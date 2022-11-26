@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-11-25">2022-11-25</time>
+            datetime="2022-11-26">2022-11-26</time>
         </span>
-        <span>Reading Time&#58; 14 min</span>
+        <span>Reading Time&#58; 21 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -282,8 +282,8 @@
 </li>
 </ol>
 </li>
-<li><p>事务：</p>
-<ol>
+</ol>
+<h2 id="3-事务篇"><a href="#3-事务篇" class="headerlink" title="3. 事务篇"></a>3. 事务篇</h2><ol>
 <li>特点ACID<ol>
 <li>原子性：一个事务中的所有操作要么全部完成，要么全部不完成。如果事务在执行过程中发生错误，会回滚到十五开始前的状态。通过undo log（回滚日志）来保证。</li>
 <li>一致性：事务在操作前后，数据满足完整性约束，数据库保持一致性状态。通过持久性+原子性+隔离性来保证。</li>
@@ -307,7 +307,7 @@
 </li>
 <li>MYSQL InnoDB默认选择可重复读级别的原因：很大程度上避免了幻读，但并没有完全解决，为了避免性能受太大影响选择可重复读级别。<ol>
 <li>快照读（普通select语句，只需要读取Read View处）：通过MVCC方式解决幻读。事务执行过程中看到的数据跟启动时一致，即使中途有其他事务插入了数据也查询不到。</li>
-<li>当前读（select … for update、增删改等语句，需要读取到当前记录最新值）：通过next-key lock（记录锁+间隙锁）解决幻读。执行时会上查询范围内的next-key lock，其他事务在锁范围内插入记录时，插入语句会被阻塞。</li>
+<li>当前读（select … for update、增删改等语句，需要读取到当前记录最新值）：通过临键锁（记录锁+间隙锁）解决幻读。执行时会上查询范围内的next-key lock，其他事务在锁范围内插入记录时，插入语句会被阻塞。</li>
 <li>幻读仍可能发生：<ol>
 <li>其他事务插入并提交记录后，尽管当前事务看不到该条记录，但是仍然update该条记录，这样trx_id就会变成当前事务，当前事务也能利用Read View查询到该条记录。</li>
 <li>执行快照读select后插入记录，然后执行当前读select for update。</li>
@@ -355,8 +355,104 @@
 </ol>
 </li>
 </ol>
+<h2 id="4-锁篇"><a href="#4-锁篇" class="headerlink" title="4. 锁篇"></a>4. 锁篇</h2><ol>
+<li>锁分类<ol>
+<li>全局锁：flush tables with read lock。<ol>
+<li>作用：阻塞其他线程的增删改数据、更改表结构的操作。</li>
+<li>应用场景：全库逻辑备份。</li>
+<li>缺点：如果数据库过大，备份耗时过长，会造成业务停滞。</li>
+<li>改进：可重复读级的隔离级别可以在备份期间对数据操作。</li>
+</ol>
 </li>
-<li></li>
+<li>表级锁：表锁和行锁满足读读共享、读写互斥、写写互斥。<ol>
+<li>表锁：lock tables t_xxx read/write<ol>
+<li>作用：除了限制别的线程读写，也会限制本线程读写。会话退出时自动释放所有表锁。</li>
+</ol>
+</li>
+<li>元数据锁MDL：对数据库表进行操作时会自动添加，在事务提交后释放。CRUD操作时加MDL读锁，结构变更操作时加MDL写锁。<ol>
+<li>缺点：申请MDL锁的操作会形成队列，队列中写锁优先级高于读锁，导致一旦出现MDL写锁等待，会阻塞该表后续所有CRUD操作。</li>
+</ol>
+</li>
+<li>意向锁：<ol>
+<li>作用：快速判断表里是否有记录被加锁。</li>
+<li>应用场景：在使用InnoDB引擎的表里对某些记录加共享/独占锁前，需要先在表级别加上意向共享/独占锁。</li>
+<li>说明：意向共享/独占锁是表级锁，不会和行级的共享锁和独占锁发生冲突，而且意向锁之间也不会发生冲突，智慧和共享表锁和独占表锁之间发生冲突。由于在对记录加独占锁前会先加上表级别的意向独占锁，那么后续加独占锁时直接查该表是否有意向独占锁，就可以避免遍历表里的记录查看是否存在独占锁。</li>
+</ol>
+</li>
+<li>AUTO-INC锁：<ol>
+<li>作用：如果不指定主键，在插入数据时自动给主键赋值递增的数。</li>
+<li>应用场景：在插入数据时加一个表级别的AUTO-INC锁，然后为被AUTO_INCREMENT修饰的字段赋值递增的数，等插入语句执行完后释放锁。保证插入数据时不会有其他事务插入，从而使得主键连续递增。</li>
+<li>改进：给AUTO_INCREMENT赋值后立刻释放<ol>
+<li>问题：搭配binlog的日志格式是statement一起使用时，在主从复制的场景中会发生数据不一致的问题。线程A创建完表后，线程B创建一个相同结构的表，然后A插入新的数据，B则插入A的表中存在的数据。B插入的数据id会不连续。如果主库发生这种情况，同样的语句拿去从库执行，且从库按照顺序执行语句的话，主从库会发生数据不一致。</li>
+<li>解决：binlog_format = 2，在binlog里记录的是主库分配的自增值，拿去从库执行时自增值跟主库一样。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>行级锁：MyISAM不支持。查询时对记录枷锁会成为锁定读。select语句后添加lock in share mode加共享锁（S锁），添加for update加独占锁（X锁），S型锁间可兼容，其他都不兼容。<ol>
+<li>记录锁：<ol>
+<li>作用：锁住一条记录。</li>
+</ol>
+</li>
+<li>间隙锁：只存在于可重复读隔离级别<ol>
+<li>作用：锁住一个范围内的记录，解决可重复度级别下的幻读现象。</li>
+<li>说明：间隙锁的X锁与S锁都是兼容的，因为间隙锁是为了防止插入幻影记录。</li>
+</ol>
+</li>
+<li>临键锁：记录锁+间隙锁<ol>
+<li>作用：锁定一个范围，并且锁定记录本身，其他事务既不能在范围内插入记录，也不能修改范围内的记录。</li>
+<li>唯一索引等值查询：如果只使用其中一种锁就能避免幻读，临键锁就会退化成该种锁。<ol>
+<li>如果查询的记录存在，在索引树上定位到该条记录后，将该记录的索引中的临键锁退化成记录锁。<ol>
+<li>如果其他事务插入等值的索引，因为主键冲突导致无法插入。</li>
+<li>加了记录锁导致其他事务无法删除该记录。</li>
+</ol>
+</li>
+<li>如果查询的记录不存在，在索引树找到第一条大于该查询条件的记录后，将该记录的索引中的临键锁退化成间隙锁。<ol>
+<li>间隙锁的范围为第一条大于该查询条件的记录与该记录的上一条（开区间）。</li>
+<li>因为查询的记录不存在，所以不能对不存在的记录加记录锁。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>唯一索引范围查询：对每一个扫描到的索引加临键锁，范围为第一条大于该查询条件的记录与该记录的上一条（左开右闭）。<ol>
+<li>大于等于的范围查询，因为存在等值查询，所以等值查询的记录存在表中时就会退化成记录锁。</li>
+<li>小于或小于等于的范围查询<ol>
+<li>条件值的记录不在表中时，扫描到终止范围的查询记录（不满足条件的第一条记录）时，该记录的索引退化成间隙锁。</li>
+<li>条件值的记录在表中时，如果是小于的范围查询，扫描到终止范围的查询记录（不满足条件的第一条记录）时，该记录的索引退化成间隙锁。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>非唯一索引等值查询：同时对两个索引加锁，但是只对满足查询条件的记录的主键索引加锁。<ol>
+<li>查询的记录存在时，扫描到第一个不符合条件的二级索引记录。<ol>
+<li>在扫描过程中对扫描到的二级索引记录加临键锁。</li>
+<li>第一个不符合条件的二级索引记录退化成间隙锁：避免其他事务插入查询条件相同、主键大于当前查询记录的最大主键的记录，根据2.3的判断规则，如果没有这个间隙锁，是可以成功插入的，从而造成幻读。</li>
+<li>在符合查询条件的记录的主键索引上加记录锁。</li>
+</ol>
+</li>
+<li>查询的记录不存在时，扫描到第一个不符合条件的二级索引记录。<ol>
+<li>该二级索引退化成间隙锁，范围为相邻两条记录组成的条件存在的区间（开区间）。</li>
+<li>不存在满足查询条件的记录，所以不会对主键索引加锁。</li>
+<li>当其他事务需要插入记录时，需要考虑插入记录的主键值，以及插入位置的下一条记录是否有间隙锁，从而判断是否插入成功。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>非唯一索引范围查询：不会退化</li>
+<li>不加索引的查询：扫描时全表扫描，每一条记录的索引上都会加临键锁，相当于锁住全表</li>
+</ol>
+</li>
+<li>插入意向锁：<ol>
+<li>作用：判断插入位置是否被其他事务加了间隙锁，如果有则插入操作被阻塞直到拥有间隙锁的事务提交，在此期间生成插入意向锁，表明有事务想在区间内插入新记录，但是处于等待状态（锁状态为等待，只有锁状态为正常才代表事务成功获取到了锁）。</li>
+<li>说明：插入意向锁实际并不是意向锁，而是特殊的行级别间隙锁。相比间隙锁，插入意向锁只锁住一个点，且两个事务不能同时分别拥有一个区间的间隙锁与该间隙区间内的插入意向锁。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
 </ol>
 </section>
 </article>
@@ -375,7 +471,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL"><span class="toc-text">MYSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E7%AF%87"><span class="toc-text">2. 索引篇</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL"><span class="toc-text">MYSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E7%AF%87"><span class="toc-text">2. 索引篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BA%8B%E5%8A%A1%E7%AF%87"><span class="toc-text">3. 事务篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%94%81%E7%AF%87"><span class="toc-text">4. 锁篇</span></a></li></ol></li></ol>
   </div>
 </section>
 
