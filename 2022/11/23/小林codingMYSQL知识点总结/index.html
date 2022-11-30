@@ -96,7 +96,7 @@
           Last Update&#58;<time class="post-time"
             datetime="2022-11-30">2022-11-30</time>
         </span>
-        <span>Reading Time&#58; 23 min</span>
+        <span>Reading Time&#58; 24 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -490,6 +490,42 @@
 </ol>
 </li>
 </ol>
+<h2 id="5-日志篇"><a href="#5-日志篇" class="headerlink" title="5. 日志篇"></a>5. 日志篇</h2><ol>
+<li>日志类型：<ol>
+<li>undo log回滚日志：存储引擎层生成的日志，实现事务中的原子性，主要用于事务回滚和MVCC。</li>
+<li>redo log重做日志：存储引擎层生成的日志，实现事务的持久性，主要用于掉电等故障恢复。</li>
+<li>binlog归档日志：Server层生成的日志，主要用于数据备份和主从复制。</li>
+</ol>
+</li>
+<li>Undo log：<ol>
+<li>作用：MySQL会在执行每条语句时隐式开启事务，执行完毕自动提交。如果事务在执行过程中提交之前，MySQL崩溃，或者不打算提交了，就可以利用undo log进行回滚。</li>
+<li>记录中的结构：一条记录的每次更新操作产生的undo log格式都有一个roll_pointer指针和trx_id事务id，通过指针将undo log串成版本链。</li>
+<li>事务回滚工作方式：<ol>
+<li>插入一条记录时，记录其主键值，回滚时查找主键值对应的记录删除。</li>
+<li>删除一条记录时，记录该记录的内容，回滚时将这些内容组成的记录插入。</li>
+<li>更新一条记录时，记录被更新的列旧值，回滚时再更新为旧值。</li>
+</ol>
+</li>
+<li>MVCC（ReadView + undo log）：<ol>
+<li>事务通过对比Read View里的字段与trx_id的字段，如果不满足可见行，就顺着undo log的版本链向上找到满足可见性的记录。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Buffer Pool：<ol>
+<li>作用：<ol>
+<li>读取数据时如果数据在Buffer Pool中，客户端直接读取其中的数据。</li>
+<li>修改数据时如果数据在Buffer Pool中，直接修改Buffer Pool中数据所在的页，然后设置为脏页。</li>
+</ol>
+</li>
+<li>结构：MySQL启动时，InnoDB会为Buffer Pool申请一片连续的内存空间，按照默认16KB大小划分出一个个页，称为缓存页。<ol>
+<li>Undo页：开启事务后InnoDB层更新记录前要记录undo log，undo log写入Buffer Pool中的Undo页面。</li>
+</ol>
+</li>
+<li>跟操作系统类似，查询一条记录是将整个页面加载到Buffer Pool中。</li>
+</ol>
+</li>
+</ol>
 </section>
 </article>
 
@@ -507,7 +543,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL"><span class="toc-text">MYSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E7%AF%87"><span class="toc-text">2. 索引篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BA%8B%E5%8A%A1%E7%AF%87"><span class="toc-text">3. 事务篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%94%81%E7%AF%87"><span class="toc-text">4. 锁篇</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL"><span class="toc-text">MYSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E7%AF%87"><span class="toc-text">2. 索引篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BA%8B%E5%8A%A1%E7%AF%87"><span class="toc-text">3. 事务篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%94%81%E7%AF%87"><span class="toc-text">4. 锁篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%97%A5%E5%BF%97%E7%AF%87"><span class="toc-text">5. 日志篇</span></a></li></ol></li></ol>
   </div>
 </section>
 
