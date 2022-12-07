@@ -94,9 +94,9 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2022-12-04">2022-12-04</time>
+            datetime="2022-12-07">2022-12-07</time>
         </span>
-        <span>Reading Time&#58; 33 min</span>
+        <span>Reading Time&#58; 34 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
             id="busuanzi_value_page_pv"></span></span>
       </span>
@@ -689,6 +689,27 @@
 </ol>
 </li>
 </ol>
+<h2 id="6-内存篇"><a href="#6-内存篇" class="headerlink" title="6. 内存篇"></a>6. 内存篇</h2><ol>
+<li>Buffer Pool<ol>
+<li>默认配置为128MB，按页划分，每页大小默认16KB。在MySQL启动时，InnoDB会为Buffer Pool申请一片连续的内存空间并划分页，此时这些页都是空闲的，随着程序运行才有磁盘上的页被缓存。所以，MySQL刚启动时使用的虚拟内存很大，但是物理内存却很小，因为只有当这些虚拟内存被访问时，操作系统才会触发缺页中断，将虚拟地址与物理地址建立映射关系。</li>
+<li>缓存内容：数据页、索引页、插入缓存页、undo页、自适应哈希索引、锁信息。</li>
+<li>Buffer Pool为每一个缓存页创建了一个控制块，信息包括缓存页的表空间、页号、缓存页地址、链表节点等。控制块放在Buffer Pool最前面，之后有一块碎片空间（剩余的空间不足以分配一对控制块和缓存页），然后是缓存页。</li>
+<li>内存管理：<ol>
+<li>空闲页：将空闲缓存页的控制块作为链表节点连接，成为Free链表。Free链表有一个头节点，包含链表的头节点地址、尾节点地址以及链表中节点数量等信息。</li>
+<li>脏页：Flush链表。</li>
+<li>提高缓存命中率：young-old LRU算法+进入young区域条件判断。</li>
+<li>脏页刷新：<ol>
+<li>redo log日志满</li>
+<li>Buffer Pool空间不足时需要淘汰一部分数据页，如果淘汰到脏页</li>
+<li>MySQL认为空闲时后台线程定期将适量脏页刷新</li>
+<li>MySQL正常关闭前刷新所有脏页</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 </section>
 </article>
 
@@ -706,7 +727,7 @@
 
 <section class="article-toc">
   <div class="card uk-margin-remove-bottom">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL"><span class="toc-text">MYSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E7%AF%87"><span class="toc-text">2. 索引篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BA%8B%E5%8A%A1%E7%AF%87"><span class="toc-text">3. 事务篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%94%81%E7%AF%87"><span class="toc-text">4. 锁篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%97%A5%E5%BF%97%E7%AF%87"><span class="toc-text">5. 日志篇</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL"><span class="toc-text">MYSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E7%AF%87"><span class="toc-text">2. 索引篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BA%8B%E5%8A%A1%E7%AF%87"><span class="toc-text">3. 事务篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%94%81%E7%AF%87"><span class="toc-text">4. 锁篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%97%A5%E5%BF%97%E7%AF%87"><span class="toc-text">5. 日志篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%86%85%E5%AD%98%E7%AF%87"><span class="toc-text">6. 内存篇</span></a></li></ol></li></ol>
   </div>
 </section>
 
