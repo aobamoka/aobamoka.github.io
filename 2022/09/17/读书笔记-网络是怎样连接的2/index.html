@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>读书笔记-网络是怎样连接的2 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      读书笔记-网络是怎样连接的2
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-02-15">2023-02-15</time>
+        </span>
+        <span>Reading Time&#58; 10 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="网络是怎样连接的-读书笔记2"><a href="#网络是怎样连接的-读书笔记2" class="headerlink" title="网络是怎样连接的 读书笔记2"></a>网络是怎样连接的 读书笔记2</h1><p>还是决定一章一个文件了，不然太大了看着很散，这个文件讲的是第二章的内容，关于协议栈内部如何跟服务器通讯的。</p>
+<h2 id="2-1-套接字创建"><a href="#2-1-套接字创建" class="headerlink" title="2.1 套接字创建"></a>2.1 套接字创建</h2><h3 id="2-1-1-协议栈的层次"><a href="#2-1-1-协议栈的层次" class="headerlink" title="2.1.1 协议栈的层次"></a>2.1.1 协议栈的层次</h3><p>与TCP/IP五层一致。最上层的是应用层，应用层上层包含各种网络应用程序，下层为Socket库，包含向DNS服务器发出查询的解析器等。</p>
+<p>协议栈在应用层下面的操作系统内部层，分为两个部分。上半部分分为两块，分别用TCP协议与UDP协议收发数据。下半部分用IP协议控制网络包收发操作。</p>
+<p>IP下方为网卡驱动程序，负责控制网卡硬件。</p>
+<p>最下方的网卡负责完成实际的收发操作，即对网线中的信号执行发送和接收操作。</p>
+<h3 id="2-1-2-套接字的实体"><a href="#2-1-2-套接字的实体" class="headerlink" title="2.1.2 套接字的实体"></a>2.1.2 套接字的实体</h3><p>协议栈内部存放了控制信息，记录通信对象的IP地址、端口号、通信操作的运行状态等，套接字实际上只是一个概念，其实体可视为存放了这些控制信息的内存空间。</p>
+<p>协议栈根据套接字中记录的控制信息来进行工作。</p>
+<h3 id="2-1-3-调用socket的操作"><a href="#2-1-3-调用socket的操作" class="headerlink" title="2.1.3 调用socket的操作"></a>2.1.3 调用socket的操作</h3><p>协议栈分配存放一个套接字所需的内存空间，并写入初始状态的控制信息，并将描述符告知应用程序。</p>
+<h2 id="2-2-连接服务器"><a href="#2-2-连接服务器" class="headerlink" title="2.2 连接服务器"></a>2.2 连接服务器</h2><h3 id="2-2-1-连接"><a href="#2-2-1-连接" class="headerlink" title="2.2.1 连接"></a>2.2.1 连接</h3><p>连接实际上是通信双方交换控制信息，在套接字中记录必要信息并准备数据收发的一系列操作。</p>
+<h3 id="2-2-2-头部"><a href="#2-2-2-头部" class="headerlink" title="2.2.2 头部"></a>2.2.2 头部</h3><p>控制信息大体上分为两类</p>
+<p>1）客户端和服务器互相联络交换的控制信息：位于网络包开头，被称为头部。</p>
+<p>2）保存在套接字中用来控制协议栈操作的信息。</p>
+<h3 id="2-2-3-实际的连接操作"><a href="#2-2-3-实际的连接操作" class="headerlink" title="2.2.3 实际的连接操作"></a>2.2.3 实际的连接操作</h3><p>1）创建TCP头部，设置发送端、接收端的端口号、SYN=1等信息。通过TCP头部发送方和接收方的端口号可以找到要连接的套接字。</p>
+<p>2）将信息传递给IP模块委托发送，随着网络到达服务器，并由服务器的IP模块传递给TCP模块。</p>
+<p>3）服务器的TCP模块根据TCP头部信息找到对应的套接字，套接字写入信息，并将状态改为正在连接。</p>
+<p>4）服务器的TCP模块按照1）中所示创建头部，同时设置ACK=1表示已收到网络包，并委托IP模块发送。</p>
+<p>5）客户端的TCP模块根据头部信息确认SYN=1表示连接成功，向套接字中写入服务器的IP、端口号等信息，同时将状态改为连接完毕，并按照4）中所示发送包回服务器告诉服务器已收到，完成连接。</p>
+<h2 id="2-3-收发数据"><a href="#2-3-收发数据" class="headerlink" title="2.3 收发数据"></a>2.3 收发数据</h2><h3 id="2-3-1-协议栈的收发控制"><a href="#2-3-1-协议栈的收发控制" class="headerlink" title="2.3.1 协议栈的收发控制"></a>2.3.1 协议栈的收发控制</h3><p>协议栈将应用程序委托发送的数据存储到缓冲区，根据数据大小和时间两个要素来决定什么时候发送：</p>
+<p>1）数据大小：MTU代表一个数据包最大长度，在以太网中一般为1500字节，MSS为去除头部后一个网络包能容纳的最大数据长度.</p>
+<p>2）时间：只考虑数据大小可能使得小包等待时间过长，并且某些数据包也有快速发送的需求。</p>
+<p>两者的权衡是由协议栈的开发者设置的，应用程序也可以通过设置某些字段来控制发送方式。</p>
+<h3 id="2-3-2-拆分数据"><a href="#2-3-2-拆分数据" class="headerlink" title="2.3.2 拆分数据"></a>2.3.2 拆分数据</h3><p>如果数据的总长度超过了MSS，协议栈就会对数据进行拆分，在每一块数据前加上头部并交由IP模块发送。</p>
+<h3 id="2-3-3-ACK"><a href="#2-3-3-ACK" class="headerlink" title="2.3.3 ACK"></a>2.3.3 ACK</h3><p>1）客户端计算出随机ACK初始值发送给服务端。</p>
+<p>2）服务端根据客户端的初始值计算出ACK号并返回给客户端以确认收到；同时，服务端计算另一个随机ACK初始值发送给客户端。</p>
+<p>3）客户端根据服务端的初始值计算出ACK号并返回给服务端以确认收到。</p>
+<p>4）客户端和服务端可以进入数据收发阶段了。以客户端到服务端为例，客户端向服务端发送数据包，记录了数据包序号与总长度，服务端收到后确认序号是否为上次的ACK号。如果确认成功，服务器根据本次数据包序号与总长度计算出下一次期望的数据包序号，作为ACK号返回客户端。</p>
+<p>TCP根据这种方式保证通信双方能收到数据。因此，网卡、集线器与路由器都没有错误补偿机制，一旦检测到错误就直接丢弃相应的包。</p>
+<p>但是，如果重传几次都无效，TCP会强制结束通信并向应用程序报错。</p>
+<h3 id="2-3-4-ACK等待时间"><a href="#2-3-4-ACK等待时间" class="headerlink" title="2.3.4 ACK等待时间"></a>2.3.4 ACK等待时间</h3><p>即为等待ACK号返回的时间，如果超过时间则重传。</p>
+<p>TCP采用动态调整方法，在发送数据过程中持续测量等待时间，如果ACK号返回变慢说明网络拥挤，则延长等待时间；反之亦然。</p>
+<h3 id="2-3-5-滑动窗口"><a href="#2-3-5-滑动窗口" class="headerlink" title="2.3.5 滑动窗口"></a>2.3.5 滑动窗口</h3><p>发送数据时实际上不等待ACK返回连续发送。</p>
+<p>接收方存在数据缓冲区，在发送数据之前告诉发送方自己的缓冲区大小，并在每次数据处理完毕后都告知发送方当前缓冲区大小，发送方计算窗口大小，并在窗口大小为0时停止发送，直到接收到接收方的窗口大小通信。</p>
+<h3 id="2-3-6-ACK与接收窗口"><a href="#2-3-6-ACK与接收窗口" class="headerlink" title="2.3.6 ACK与接收窗口"></a>2.3.6 ACK与接收窗口</h3><p>更新窗口大小的时机：接收方从缓冲区取出数据并传递给应用程序。</p>
+<p>ACK确认时机：接收方接收到数据并确认无误。</p>
+<p>如果单独发送，则数据包太多，因此在发送ACK号和更新窗口时，都会等待一段时间，如果出现了其他的通知操作就合并在一个包里发送。也可以连续发送多个ACK号时，只发送最后一个ACK号，以报告在这之前的数据都成功收到了。</p>
+<h3 id="2-3-7-接收消息"><a href="#2-3-7-接收消息" class="headerlink" title="2.3.7 接收消息"></a>2.3.7 接收消息</h3><p>浏览器委托协议栈读取返回信息，如果响应消息尚未到达，则委托会被暂时挂起，并在收到信息时，根据上述接收方的操作还原数据，将数据交由应用程序。</p>
+<h2 id="2-4-断开连接"><a href="#2-4-断开连接" class="headerlink" title="2.4 断开连接"></a>2.4 断开连接</h2><h3 id="2-4-1-断开连接"><a href="#2-4-1-断开连接" class="headerlink" title="2.4.1 断开连接"></a>2.4.1 断开连接</h3><p>完成数据发送的一方会发起断开过程。服务器和客户端双方都可以主动断开。</p>
+<p>1）服务器生成含断开信息的TCP头部，将FIN比特设置为1，向客户端发送数据并在套接字中记录断开相关信息。</p>
+<p>2）客户端收到数据时，将套接字标记为进入断开操作状态，返回确认FIN=1的ACK包。</p>
+<p>3）应用程序在缓冲区取走数据后，客户端也生成FIN=1的包，服务器返回ACK包，通信结束。</p>
+<h3 id="2-4-2-删除套接字"><a href="#2-4-2-删除套接字" class="headerlink" title="2.4.2 删除套接字"></a>2.4.2 删除套接字</h3><p>通信结束后经过一段时间才会删除套接字，为了防止丢包之类的误操作。</p>
+<h3 id="2-4-3-数据收发小结"><a href="#2-4-3-数据收发小结" class="headerlink" title="2.4.3 数据收发小结"></a>2.4.3 数据收发小结</h3><p>1）创建套接字。</p>
+<p>2）确认连接。</p>
+<p>3）数据收发。</p>
+<p>4）断开连接。</p>
+<h2 id="2-5-IP与以太网的收发"><a href="#2-5-IP与以太网的收发" class="headerlink" title="2.5 IP与以太网的收发"></a>2.5 IP与以太网的收发</h2><h3 id="2-5-1-包的基本知识"><a href="#2-5-1-包的基本知识" class="headerlink" title="2.5.1 包的基本知识"></a>2.5.1 包的基本知识</h3><p>路由器根据目标地址判断下一个路由器的位置。</p>
+<p>集线器在子网中将网络包传输到下一个路由。</p>
+<h3 id="2-5-2-包的收发操作"><a href="#2-5-2-包的收发操作" class="headerlink" title="2.5.2 包的收发操作"></a>2.5.2 包的收发操作</h3><p>1）TCP将网络包传递给IP模块，指定接收方并委托IP模块传输。</p>
+<p>2）IP加上IP头部与MAC头部进行封装。</p>
+<p>3）将封装好的包传递给网卡。</p>
+<p>4）网卡将数字信息转化为电信号或光信号，通过网线或光纤发送出去。</p>
+<h3 id="2-5-3-IP头部"><a href="#2-5-3-IP头部" class="headerlink" title="2.5.3 IP头部"></a>2.5.3 IP头部</h3><p>发送方IP地址需要判断发送所使用的网卡，并填写对应网卡的IP地址。</p>
+<p>根据路由表判断交给的网卡，根据要到达的目标地址与子网掩码来查找下一跳的网关。</p>
+<h3 id="2-5-4-MAC头部"><a href="#2-5-4-MAC头部" class="headerlink" title="2.5.4 MAC头部"></a>2.5.4 MAC头部</h3><p>MAC头部由接收方MAC地址、发送方MAC地址与以太类型（与IP头部中的协议号类似）三部分组成。</p>
+<h3 id="2-5-5-ARP"><a href="#2-5-5-ARP" class="headerlink" title="2.5.5 ARP"></a>2.5.5 ARP</h3><p>ARP向同一以太网中的所有设备广播查询接收方的IP地址所对应的MAC地址，并在查询到之后写入ARP缓存之中，后续如果要向同一MAC地址发送就不需要发送ARP了。</p>
+<h3 id="2-5-6-以太网"><a href="#2-5-6-以太网" class="headerlink" title="2.5.6 以太网"></a>2.5.6 以太网</h3><p>以太网三个性质：</p>
+<p>1）将包发送到MAC头部的接收方MAC地址代表的目的地。</p>
+<p>2）用发送方MAC地址识别发送方。</p>
+<p>3）用以太类型识别包的内容。</p>
+<h3 id="2-5-7-网卡"><a href="#2-5-7-网卡" class="headerlink" title="2.5.7 网卡"></a>2.5.7 网卡</h3><p>网卡组成部分</p>
+<ul>
+<li>缓冲区：用于临时保存要收发的包的内存空间。</li>
+<li>ROM：存放唯一MAC地址。</li>
+<li>MAC：控制碰撞检测、重发等以太网收发操作的部分。</li>
+<li>PHY（MAU）：发送和接受信号的电路。</li>
+<li>RJ-45接口：连接网线的插座。</li>
+</ul>
+<h3 id="2-5-8-信号转换"><a href="#2-5-8-信号转换" class="headerlink" title="2.5.8 信号转换"></a>2.5.8 信号转换</h3><p>1）MAC模块将包从缓冲区取出，在开头加上报头和起始帧分界符，在末尾加上用于检测错误的FCS（帧校验序列）。</p>
+<p>2）为防止时钟信号传递太远时产生偏差，将数据信号与时钟信号叠加在一起。</p>
+<p>3）FCS用于检验在传递过程中因噪声导致的波形紊乱、传递错误。</p>
+<h3 id="2-5-9-向集线器发送网络包"><a href="#2-5-9-向集线器发送网络包" class="headerlink" title="2.5.9 向集线器发送网络包"></a>2.5.9 向集线器发送网络包</h3><p>发送信号分为半双工（发送信号与接收信号不能同时进行）与全双工（发送信号与接收信号可以同时进行）。</p>
+<p>在半双工模式下发送信号先要监听网线中是否有其他设备正在发送信号，以避免发生碰撞。</p>
+<p>PHY（MAU）接收MAC模块产生的信号，并再将其转换为网线上可以传输的形式。</p>
+<h3 id="2-5-10-接收返回包"><a href="#2-5-10-接收返回包" class="headerlink" title="2.5.10 接收返回包"></a>2.5.10 接收返回包</h3><p>1）在半双工模式中，接收网线中的全部信号。</p>
+<p>2）与之前步骤反过来进行信息转换，FCS校验是否发生错误，如果发生则丢弃。</p>
+<p>3）MAC判断MAC地址是否一致，如果不一致则丢弃，否则通知计算机收到了一个包。</p>
+<p>4）计算机接到中断信号，CPU挂起正在处理的任务，切换到操作系统的中断处理程序并控制网卡执行相应的接收操作。</p>
+<h3 id="2-5-11-IP到TCP"><a href="#2-5-11-IP到TCP" class="headerlink" title="2.5.11 IP到TCP"></a>2.5.11 IP到TCP</h3><p>如果接受到接收方IP地址不是自己的包，IP模块通过ICMP消息将错误告知发送方。</p>
+<p>如果接收到的包经过了分片，IP模块将其还原为完整的包，并交给TCP模块。</p>
+<h2 id="2-6-UDP"><a href="#2-6-UDP" class="headerlink" title="2.6 UDP"></a>2.6 UDP</h2><h3 id="2-6-1-适用情形"><a href="#2-6-1-适用情形" class="headerlink" title="2.6.1 适用情形"></a>2.6.1 适用情形</h3><p>TCP为了实现高效的传输，需要避免重发已送达的包，而只重发出错的或未送达的包，但是当数据很短时全部重发也没关系。</p>
+<p>可以将回复的数据当作确认包，就不需要额外的控制包了。</p>
+<h3 id="2-6-2-控制用的短数据"><a href="#2-6-2-控制用的短数据" class="headerlink" title="2.6.2 控制用的短数据"></a>2.6.2 控制用的短数据</h3><p>DNS查询等交换控制信息的操作使用UDP。</p>
+<p>UDP没有接受确认、窗口等机制，在应用程序没有收到回复时就重发。</p>
+<p>UDP头部只有8字节大小。</p>
+<h3 id="2-6-3-音视频数据"><a href="#2-6-3-音视频数据" class="headerlink" title="2.6.3 音视频数据"></a>2.6.3 音视频数据</h3><p>音视频数据必须在规定时间内送达，否则会错过播放时机导致卡顿，并且缺少部分包不会导致太大问题，最多出现失真与卡顿。</p>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2022/10/13/读书笔记-网络是怎样连接的3/" class="link prev" title="读书笔记-网络是怎样连接的3">
+			<span class="hover-underline-animation">&larr; 读书笔记-网络是怎样连接的3</span>
+		</a>
+	
+	
+		<a href="/2022/09/17/读书笔记-网络是怎样连接的1/" class="link next" title="读书笔记-网络是怎样连接的1">
+			<span class="hover-underline-animation">读书笔记-网络是怎样连接的1 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02"><span class="toc-text">网络是怎样连接的 读书笔记2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%A5%97%E6%8E%A5%E5%AD%97%E5%88%9B%E5%BB%BA"><span class="toc-text">2.1 套接字创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="toc-text">2.1.1 协议栈的层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="toc-text">2.1.2 套接字的实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-%E8%B0%83%E7%94%A8socket%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">2.1.3 调用socket的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2.2 连接服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.1 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%A4%B4%E9%83%A8"><span class="toc-text">2.2.2 头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%AE%9E%E9%99%85%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">2.2.3 实际的连接操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3 收发数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E6%94%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">2.3.1 协议栈的收发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E6%8B%86%E5%88%86%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3.2 拆分数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-ACK"><span class="toc-text">2.3.3 ACK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-ACK%E7%AD%89%E5%BE%85%E6%97%B6%E9%97%B4"><span class="toc-text">2.3.4 ACK等待时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-5-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.5 滑动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-6-ACK%E4%B8%8E%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3"><span class="toc-text">2.3.6 ACK与接收窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-7-%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="toc-text">2.3.7 接收消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.4 断开连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.4.1 断开连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E5%88%A0%E9%99%A4%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="toc-text">2.4.2 删除套接字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3-%E6%95%B0%E6%8D%AE%E6%94%B6%E5%8F%91%E5%B0%8F%E7%BB%93"><span class="toc-text">2.4.3 数据收发小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-IP%E4%B8%8E%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E6%94%B6%E5%8F%91"><span class="toc-text">2.5 IP与以太网的收发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-1-%E5%8C%85%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="toc-text">2.5.1 包的基本知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-2-%E5%8C%85%E7%9A%84%E6%94%B6%E5%8F%91%E6%93%8D%E4%BD%9C"><span class="toc-text">2.5.2 包的收发操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-3-IP%E5%A4%B4%E9%83%A8"><span class="toc-text">2.5.3 IP头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-4-MAC%E5%A4%B4%E9%83%A8"><span class="toc-text">2.5.4 MAC头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-5-ARP"><span class="toc-text">2.5.5 ARP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-6-%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-text">2.5.6 以太网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-7-%E7%BD%91%E5%8D%A1"><span class="toc-text">2.5.7 网卡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-8-%E4%BF%A1%E5%8F%B7%E8%BD%AC%E6%8D%A2"><span class="toc-text">2.5.8 信号转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-9-%E5%90%91%E9%9B%86%E7%BA%BF%E5%99%A8%E5%8F%91%E9%80%81%E7%BD%91%E7%BB%9C%E5%8C%85"><span class="toc-text">2.5.9 向集线器发送网络包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-10-%E6%8E%A5%E6%94%B6%E8%BF%94%E5%9B%9E%E5%8C%85"><span class="toc-text">2.5.10 接收返回包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-11-IP%E5%88%B0TCP"><span class="toc-text">2.5.11 IP到TCP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-UDP"><span class="toc-text">2.6 UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-1-%E9%80%82%E7%94%A8%E6%83%85%E5%BD%A2"><span class="toc-text">2.6.1 适用情形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-2-%E6%8E%A7%E5%88%B6%E7%94%A8%E7%9A%84%E7%9F%AD%E6%95%B0%E6%8D%AE"><span class="toc-text">2.6.2 控制用的短数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-3-%E9%9F%B3%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.6.3 音视频数据</span></a></li></ol></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

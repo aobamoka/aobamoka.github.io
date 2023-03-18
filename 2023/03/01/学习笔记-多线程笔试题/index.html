@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-多线程笔试题 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-多线程笔试题
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-14">2023-03-14</time>
+        </span>
+        <span>Reading Time&#58; 3 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>题目：编写一个程序，开启3个线程，这3个线程的ID分别为A、B、C，每个线程将自己的ID在屏幕上打印10遍，要求输出结果必须按ABC的顺序显示；如：ABCABC….依次递推。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">	unique_lock&lt;mutex&gt; ul;</span><br><span class="line">	cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> id == flag; &#125;);  </span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt;  <span class="string">&#x27;A&#x27;</span> + id &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	flag = (flag + <span class="number">1</span>) % <span class="number">3</span>;</span><br><span class="line">	<span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	cond.notify_all();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    thread b(print, 1), c(print, 2);</span><br><span class="line">    print(<span class="number">0</span>);</span><br><span class="line">    b.join();</span><br><span class="line">    c.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>题目：子线程循环 10 次，接着主线程循环 100 次，接着又回到子线程循环 10 次，接着再回到主线程又循环 100 次，如此循环50次，试写出代码</p>
+<p>子线程与主线程必有一个满足条件(flag == num),不满足条件的那个线程不可能获取unique_lock(会在wait中释放)，只有满足条件的线程才能获取锁，执行程序</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"><span class="keyword">int</span> flag = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; ++i) &#123;</span><br><span class="line">	<span class="function">unique_lock&lt;mutex&gt; <span class="title">ul</span><span class="params">(mtx)</span></span>;</span><br><span class="line">	cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> id == flag; &#125;);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; id; ++j);</span><br><span class="line">	flag = <span class="number">110</span> - id;</span><br><span class="line">	<span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	cond.notify_all();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">thread <span class="title">sub</span><span class="params">(loop, <span class="number">10</span>)</span></span>;</span><br><span class="line">    loop(<span class="number">100</span>);</span><br><span class="line">    sub.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><p>题目(google笔试题)：有四个线程1、2、3、4。线程1的功能就是输出1，线程2的功能就是输出2，以此类推………现在有四个文件ABCD。初始都为空。现要让四个文件呈如下格式：<br>A：1 2 3 4 1 2….<br>B：2 3 4 1 2 3….<br>C：3 4 1 2 3 4….</p>
+<p>D：4 1 2 3 4 1….</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> write_stat[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> turn = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">ofstream file[<span class="number">4</span>];</span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> turn)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; turn; ++i) &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">4</span>; ++j) &#123;</span><br><span class="line">	    <span class="function">unique_lock&lt;mutex&gt; <span class="title">ul</span><span class="params">(mtx)</span></span>;</span><br><span class="line">	    cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> write_stat[j] == id; &#125;);</span><br><span class="line">	    file[j] &lt;&lt; (id + <span class="number">1</span>);</span><br><span class="line">	    write_stat[j] = (write_stat[j] + <span class="number">1</span>) % <span class="number">4</span>; </span><br><span class="line">	    <span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	    cond.notify_all();</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) file[i] = ofstream(to_string(<span class="string">&#x27;A&#x27;</span> + i) + <span class="string">&quot;.txt&quot;</span>);</span><br><span class="line">    thread a(print, 1, turn), b(print, 2, turn), c(print, 3, turn);</span><br><span class="line">    print(<span class="number">0</span>, turn);</span><br><span class="line">    a.join();</span><br><span class="line">    b.join();</span><br><span class="line">    c.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) file[i].close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="4"><a href="#4" class="headerlink" title="4"></a>4</h1><p>题目：两个线程交替打印1~100。要求：同一个函数；不空转。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">1</span>, flag = <span class="number">1</span>;</span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (n &lt; <span class="number">100</span>) &#123;</span><br><span class="line">  	<span class="function">unique_lock&lt;mutex&gt; <span class="title">ul</span><span class="params">(mtx)</span></span>;</span><br><span class="line">	cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> id == flag; &#125;);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; n &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	++n;</span><br><span class="line">	flag = <span class="number">3</span> - flag;</span><br><span class="line">	<span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	cond.notify_one();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">thread <span class="title">a</span><span class="params">(print, <span class="number">2</span>)</span></span>;</span><br><span class="line">    print(<span class="number">1</span>);</span><br><span class="line">    a.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/03/07/面试记录-3-7-阿里云网络二面/" class="link prev" title="面试记录-3-7-阿里云网络二面">
+			<span class="hover-underline-animation">&larr; 面试记录-3-7-阿里云网络二面</span>
+		</a>
+	
+	
+		<a href="/2023/03/01/面试记录-3-1-阿里云PolarDB一面/" class="link next" title="面试记录-3-1-阿里云PolarDB一面">
+			<span class="hover-underline-animation">面试记录-3-1-阿里云PolarDB一面 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1"><span class="toc-text">1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2"><span class="toc-text">2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3"><span class="toc-text">3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4"><span class="toc-text">4</span></a></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

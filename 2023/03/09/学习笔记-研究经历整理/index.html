@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-研究经历整理 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-研究经历整理
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-12">2023-03-12</time>
+        </span>
+        <span>Reading Time&#58; 5 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="单元测试的意义"><a href="#单元测试的意义" class="headerlink" title="单元测试的意义"></a>单元测试的意义</h1><p>目的</p>
+<ul>
+<li>发现bug</li>
+<li>回归测试：修改旧代码后，用原来的测试用例测试程序行为是否变化</li>
+</ul>
+<p>量化衡量标准：目前只有覆盖率</p>
+<h1 id="覆盖率"><a href="#覆盖率" class="headerlink" title="覆盖率"></a>覆盖率</h1><p>代码行覆盖率：统计测试用例运行过的代码行数占总代码行数的比例</p>
+<p>分支覆盖率：每条语句为一个节点，语句之间的跳转为边。统计测试用例运行过的边数占总边数的比例</p>
+<p>检查覆盖率：传统测试用例添加了断言。统计断言相关的变量执行过的语句占总语句的比例</p>
+<h1 id="现有测试方法"><a href="#现有测试方法" class="headerlink" title="现有测试方法"></a>现有测试方法</h1><h2 id="Randoop"><a href="#Randoop" class="headerlink" title="Randoop"></a>Randoop</h2><p>反馈导向的随机测试生成。</p>
+<p>随机基本类型变量和自定义类型变量都从变量池里取，每过一轮随机添加一个。</p>
+<p>输入：</p>
+<ul>
+<li>待测单元</li>
+<li>限时</li>
+<li>一组约束（自定义或其他类自带）</li>
+</ul>
+<p>过程：</p>
+<ul>
+<li>用随机类方法、随机参数生成新语句，与正确语句序列集合中的一个序列组合</li>
+<li>查重</li>
+<li>执行并检查约束<ul>
+<li>违反某条约束：放入错误序列集合</li>
+<li>不违反：将检查的约束作为断言添加进序列，放入正确序列集合。放入前，还需要进行过滤，如检查其中的对象已经存在、为空指针、或是异常类，则抛弃。</li>
+<li>语法错误：丢弃</li>
+</ul>
+</li>
+</ul>
+<h2 id="EvoSuite-WholeSuite"><a href="#EvoSuite-WholeSuite" class="headerlink" title="EvoSuite/WholeSuite"></a>EvoSuite/WholeSuite</h2><p>朴素遗传算法</p>
+<p>适应度函数：总方法数-执行的方法数+各分支距离和。越低越好</p>
+<p>过程：</p>
+<ul>
+<li>初始化：随机生成的一组测试用例集合，作为初始种群</li>
+<li>初始种群中选出精英（适应度最低）</li>
+<li>随机选出两个双亲，按一定概率交叉生成子代，否则复制生成子代</li>
+<li>变异子代（增删语句、修改参数）</li>
+<li>计算子代与父代的适应度，如果子代更低或代码行数更少，加入精英，否则父代加入精英</li>
+<li>迭代直到精英大小等于初始种群大小</li>
+<li>将精英作为初始种群，再选出精英迭代几轮，直到资源耗尽或达到目标适应度</li>
+</ul>
+<h2 id="MOSA"><a href="#MOSA" class="headerlink" title="MOSA"></a>MOSA</h2><p>将分支覆盖重新表述为多目标优化问题，优化目标是待测类中所有分支的分支距离。一个测试用例的适应度是一个大小为m（分支数）的适应度向量。</p>
+<p>支配：对于测试用例x与y，x在所有分支适应度不差于y时，称x支配y，或x优于y。</p>
+<p>当测试用例x不受所有可能测试用例中任何其他测试用例支配时，称x为帕累托最优。</p>
+<p>档案（archive）：跟踪覆盖被测试程序每个分支的最佳测试用例</p>
+<p>MOSA的主体基于遗传算法。</p>
+<p>算法流程（优先级排序）</p>
+<ul>
+<li>输入候选测试用例集T。</li>
+<li>为每一个未覆盖分支b，在T中选择一个最低适应度的测试用例，加入F0之中。</li>
+<li>对剩余的测试用例，根据NSGAII非支配排序算法排序并从F1开始分配到相应等级集合中。</li>
+</ul>
+<p>算法流程（档案更新）</p>
+<ul>
+<li>输入候选测试用例集T。</li>
+<li>对所有已覆盖的分支，取分数为0且长度最短的测试用例存储在archive中。</li>
+</ul>
+<p>算法流程</p>
+<ul>
+<li>初始化当前群体与档案。</li>
+<li>产生后代放入当前群体中，并使用优先级排序。</li>
+<li>将优先级排序后的测试用例按等级由低到高放入下一代群体，直到群体数量达到要求。对每一个优先级等级，按照拥挤距离排序。</li>
+<li>使用新一代群体更新档案。</li>
+<li>重复迭代直到资源耗尽，将档案作为最终输出结果测试套件。</li>
+</ul>
+<h2 id="DynaMOSA"><a href="#DynaMOSA" class="headerlink" title="DynaMOSA"></a>DynaMOSA</h2><p>与MOSA的区别：</p>
+<ul>
+<li>在搜索开始时，仅选择没有嵌套最外层的目标作为初始目标集，该集合随每一次测试用例生成而更新。</li>
+<li>适应度计算、偏好排序和拥挤距离的计算都只考虑目标集中的目标。</li>
+<li>更新算法为：深度优先遍历，将已被覆盖的目标从目标集中去除，直到找到每条路径上第一个未覆盖的目标或已覆盖所有目标。</li>
+</ul>
+<h2 id="MIO"><a href="#MIO" class="headerlink" title="MIO"></a>MIO</h2><p>MIO使用进化算法作为框架，进化算法相较于遗传算法，比起交叉更注重变异的过程。</p>
+<p>MIO维护一个archive，对每个测试目标保留大小为n的测试群体。</p>
+<p>算法流程：</p>
+<p>1）在算法开始时，archive为空，随机采样一个新测试用例。</p>
+<p>2）随机采样或变异archive中的一个测试用例。在采样/变异新测试后，计算其适应度。对某一目标k，一旦得到改进，就更有可能被继续选择</p>
+<p>3）基本思想是，为每个目标保留一组候选的测试用例，但是当目标被覆盖时只需要保留最好的那个。</p>
+<p>4）采样/变异控制：算法最开始时，采样生成新的随机测试用例的概率较高，且每个目标的测试群体大小较高，这些值随着算法进行、时间推移而线性减少，即从探索逐渐转变为对原有数据的发掘，最终直到采样概率变为0，且每个目标测试群体大小变为1，退化为进化算法。此外，更关心在某一目标上突出的个体而不是均衡的个体。</p>
+<h1 id="Type4py"><a href="#Type4py" class="headerlink" title="Type4py"></a>Type4py</h1><p>现有的类型推断工具</p>
+<p>通过深度学习训练类型推断模型：标识符信息（标识符名称，通过自然语言处理获取可能存在的类型信息）、上下文信息（待推断的名称使用过的所有语句）、可见类型提示（通过import构建依赖关系图，区分不同类型），通过embedding生成词向量，然后训练。</p>
+<p>改进点：</p>
+<ul>
+<li>数据集：代码去重、手动增加类型注释、去除噪音</li>
+<li>类型建议：相较于top10，即10个较好的，更注重top1，即1个最好的的准确率</li>
+</ul>
+<h1 id="提出问题"><a href="#提出问题" class="headerlink" title="提出问题"></a>提出问题</h1><ul>
+<li>Python作为动态语言，能利用的类型信息不多，不像静态语言可以在类型信息的约束下随机生成</li>
+<li>尝试在测试中加入类型信息约束生成</li>
+</ul>
+<h1 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h1><ul>
+<li>输入：待测单元</li>
+<li>代码分析：Python模块、类型信息</li>
+<li>测试生成：将分析的结果（类、方法）与类型信息放入算法框架</li>
+</ul>
+<h1 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h1><ul>
+<li>阅读并理解框架代码</li>
+<li>结合测试生成框架与类型信息获取</li>
+<li>尝试改进现有的遗传算法</li>
+</ul>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/03/11/笔试记录-3-11-美团笔试/" class="link prev" title="笔试记录-3-11-美团笔试">
+			<span class="hover-underline-animation">&larr; 笔试记录-3-11-美团笔试</span>
+		</a>
+	
+	
+		<a href="/2023/03/07/面试记录-3-7-阿里云网络二面/" class="link next" title="面试记录-3-7-阿里云网络二面">
+			<span class="hover-underline-animation">面试记录-3-7-阿里云网络二面 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">单元测试的意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%86%E7%9B%96%E7%8E%87"><span class="toc-text">覆盖率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%B0%E6%9C%89%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-text">现有测试方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Randoop"><span class="toc-text">Randoop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EvoSuite-WholeSuite"><span class="toc-text">EvoSuite&#x2F;WholeSuite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MOSA"><span class="toc-text">MOSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DynaMOSA"><span class="toc-text">DynaMOSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MIO"><span class="toc-text">MIO</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Type4py"><span class="toc-text">Type4py</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%90%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-text">提出问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6"><span class="toc-text">框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C"><span class="toc-text">工作</span></a></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-几个小项目总结 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-几个小项目总结
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-15">2023-03-15</time>
+        </span>
+        <span>Reading Time&#58; 3 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-json-parse"><a href="#1-json-parse" class="headerlink" title="1. json_parse"></a>1. json_parse</h1><p>使用C++ 17标准的json解析器。</p>
+<p>variant管理json数据类型，string_view只读解析json字符流，optional提供异常处理。</p>
+<p>递归下降解析。一种自顶向下的递归分析方法。</p>
+<p>重载了[]操作符支持动态修改。</p>
+<p>知识点：</p>
+<h2 id="1-variant与union"><a href="#1-variant与union" class="headerlink" title="1. variant与union"></a>1. variant与union</h2><p>variant管理json的一个对象、数组或值，通过Node封装管理（重载对象/数组下标取值，以及为数组添加push_back方法）</p>
+<p>为什么用variant替代union：union在有有析构函数的成员时，生命结束时不会自动析构。</p>
+<p>variant的几个方法</p>
+<ul>
+<li><code>get&lt;type&gt;</code>：有该type则返回对应类型值，否则抛出异常。</li>
+<li><code>holds_alternative&lt;type&gt;</code>：有该type返回true，否则返回false。</li>
+<li><code>get_if&lt;type&gt;</code>：有该type返回对应类型指针，否则返回空指针。</li>
+</ul>
+<h2 id="2-optional"><a href="#2-optional" class="headerlink" title="2. optional"></a>2. optional</h2><p>解析成功时则返回正确的Value类型值，其他情况都返回nullopt</p>
+<p>用于处理非法的json字符流时，返回nullopt。</p>
+<p>方法：</p>
+<ul>
+<li><code>value()</code>：获得其中的值，为空时抛出异常。</li>
+<li><code>value_or(default)</code>：获得其中的值，为空时返回默认值。</li>
+<li><code>*/-&gt;</code>：重载了操作符获取值，为空时行为未定义。</li>
+<li><code>has_value()</code>：判断是否有值。</li>
+</ul>
+<p>C++23中有expected，可以用另一种类型代替nullopt</p>
+<h2 id="3-string-view"><a href="#3-string-view" class="headerlink" title="3. string_view"></a>3. string_view</h2><p>作为parser函数的参数，防止修改原本字符串，且不用拷贝字符串。</p>
+<p>优点：作为参数传递时，既能保证只读（引用、指针传递）又不需要拷贝完整字符串（值传递）</p>
+<p>只读、只保存指针和大小、不拷贝。</p>
+<h2 id="4-if-constexpr"><a href="#4-if-constexpr" class="headerlink" title="4. if-constexpr"></a>4. if-constexpr</h2><p>与is_same_v模板配合使用，防止编译器报错，让编译器在编译期判断if走向。</p>
+<h2 id="5-visit"><a href="#5-visit" class="headerlink" title="5. visit"></a>5. visit</h2><p>传入两个参数，将参数2作为参数传入参数1。</p>
+<p>类似于visitor模式</p>
+<h2 id="4-细节"><a href="#4-细节" class="headerlink" title="4. 细节"></a>4. 细节</h2><p>异常处理机制（没有转义的双引号、不符合格式的数字）：</p>
+<ul>
+<li>如果存在，string会被正常解析完毕，只是存储的值不符合期望；但是后续的解析程序会发现非法字符并返回nullopt。</li>
+</ul>
+<h1 id="2-跳表"><a href="#2-跳表" class="headerlink" title="2. 跳表"></a>2. 跳表</h1><p>用在WebServer里了</p>
+<p>实现与红黑树、AVL树相似。用于Redis的Zset实现。</p>
+<p>每个节点由key、value与level大小的指针数组组成。</p>
+<h2 id="1-层数"><a href="#1-层数" class="headerlink" title="1. 层数"></a>1. 层数</h2><p>每个节点都会随机到一个不同的层数x，该节点0~X所有层都是同一数据。</p>
+<p>计算方式：（Redis中p=1/4，MaxLevel=64，这种情况下一个节点平均有1.33个指针，低于二叉树）</p>
+<ul>
+<li>节点初始为第0层。</li>
+<li>在有第i层的情况下，第i+1层出现概率为p。</li>
+<li>最大为MaxLevel层。</li>
+</ul>
+<p>每层的指针连接到相同层下一个节点（相当于每一层构成一个链表）。</p>
+<h2 id="2-查找"><a href="#2-查找" class="headerlink" title="2. 查找"></a>2. 查找</h2><ul>
+<li>从dummyhead的最高层level出发。</li>
+<li>比较当前层下一个节点的key与待查key<ul>
+<li>小于待查key<ul>
+<li>当前层next节点为空，向下一层。</li>
+<li>否则移动到当前层forward节点。</li>
+</ul>
+</li>
+<li>大于待查key<ul>
+<li>当前层不为第0层，向下一层。</li>
+<li>当前层为第0层，查找失败。</li>
+</ul>
+</li>
+<li>等于待查key，查找成功。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-插入"><a href="#3-插入" class="headerlink" title="3. 插入"></a>3. 插入</h2><p><img src="https://pic4.zhimg.com/80/v2-6a28162637f7ec3496470aa8c2d73f6b_720w.webp" alt="img"></p>
+<ul>
+<li>先查询合适的插入位置。在查询的过程中记录每层最后一个遍历到的节点作为update数组。</li>
+<li>创建新节点，随机生成待插入节点的level。如果level大于跳表当前最大层数，则将level设为跳表最大层数+1，update[level]更新为dummyhead。</li>
+<li>用update连接上新节点，更新新节点各层的指针。</li>
+</ul>
+<h2 id="4-删除"><a href="#4-删除" class="headerlink" title="4. 删除"></a>4. 删除</h2><p><img src="https://pic4.zhimg.com/80/v2-41ed3ff71b11abc2e6aa79de40f6f95f_720w.webp" alt="img"></p>
+<p>与插入类似，记录update，移除时调整update中各节点指针指向。</p>
+<p>删除后，跳表当前最大层数可能发生变化，需要调整。具体为dummyhead节点最高level向下查，看next指针是否为空，为空则将level-1。</p>
+<h2 id="5-比较"><a href="#5-比较" class="headerlink" title="5. 比较"></a>5. 比较</h2><p>与哈希表：范围查找。</p>
+<p>与平衡树：</p>
+<ul>
+<li>范围查找。</li>
+<li>平衡树增删触发染色、旋转操作<ul>
+<li>实现复杂</li>
+<li>可能需要回溯，涉及节点多，并发时锁范围大，导致效率低。</li>
+</ul>
+</li>
+<li>内存占用，平衡树每个节点至少需要两个指针，跳表p=1/4时平均每个节点只要1.33个指针。</li>
+</ul>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/03/16/学习笔记-SQL语法/" class="link prev" title="学习笔记-SQL语法">
+			<span class="hover-underline-animation">&larr; 学习笔记-SQL语法</span>
+		</a>
+	
+	
+		<a href="/2023/03/11/笔试记录-3-11-美团笔试/" class="link next" title="笔试记录-3-11-美团笔试">
+			<span class="hover-underline-animation">笔试记录-3-11-美团笔试 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-json-parse"><span class="toc-text">1. json_parse</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-variant%E4%B8%8Eunion"><span class="toc-text">1. variant与union</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-optional"><span class="toc-text">2. optional</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-string-view"><span class="toc-text">3. string_view</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-if-constexpr"><span class="toc-text">4. if-constexpr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-visit"><span class="toc-text">5. visit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%86%E8%8A%82"><span class="toc-text">4. 细节</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%B7%B3%E8%A1%A8"><span class="toc-text">2. 跳表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B1%82%E6%95%B0"><span class="toc-text">1. 层数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9F%A5%E6%89%BE"><span class="toc-text">2. 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8F%92%E5%85%A5"><span class="toc-text">3. 插入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4"><span class="toc-text">4. 删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%AF%94%E8%BE%83"><span class="toc-text">5. 比较</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

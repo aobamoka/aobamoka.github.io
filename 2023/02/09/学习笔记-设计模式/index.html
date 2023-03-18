@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-设计模式 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-设计模式
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-02-18">2023-02-18</time>
+        </span>
+        <span>Reading Time&#58; 8 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/431714886#:~:text=C%2B%2B%E5%90%84%E7%B1%BB%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%8F%8A%E5%AE%9E%E7%8E%B0%E8%AF%A6%E8%A7%A3%201%201.%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%20%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E5%B1%9E%E4%BA%8E%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%8C%E5%A4%A7%E8%87%B4%E5%8F%AF%E4%BB%A5%E5%88%86%E4%B8%BA%E4%B8%89%E7%B1%BB%EF%BC%8C%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E3%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%E3%80%81%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E3%80%82%20%E5%90%AC%E4%B8%8A%E5%8E%BB%E5%B7%AE%E4%B8%8D%E5%A4%9A%EF%BC%8C%E9%83%BD%E6%98%AF%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E3%80%82%20...%202%202.%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F,%E5%8D%95%E4%BE%8B%E7%9A%84%E4%B8%80%E8%88%AC%E5%AE%9E%E7%8E%B0%E6%AF%94%E8%BE%83%E7%AE%80%E5%8D%95%EF%BC%8C%E4%B8%8B%E9%9D%A2%E6%98%AF%E4%BB%A3%E7%A0%81%E5%92%8CUML%E5%9B%BE%E3%80%82%20...%205%205.%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F%E3%80%81%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%20DP%E4%B9%A6%E4%B8%8A%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%BA%EF%BC%9A%E7%94%A8%E5%8E%9F%E5%9E%8B%E5%AE%9E%E4%BE%8B%E6%8C%87%E5%AE%9A%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%A7%8D%E7%B1%BB%EF%BC%8C%E5%B9%B6%E4%B8%94%E9%80%9A%E8%BF%87%E6%8B%B7%E8%B4%9D%E8%BF%99%E4%BA%9B%E5%8E%9F%E5%9E%8B%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9A%84%E5%AF%B9%E8%B1%A1%E3%80%82%20...%206%206.%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F">C++各类设计模式及实现详解 - 知乎 (zhihu.com)</a></p>
+<h1 id="1-设计原则"><a href="#1-设计原则" class="headerlink" title="1. 设计原则"></a>1. 设计原则</h1><p>总原则：开闭原则：对扩展开放，对修改关闭。程序需要扩展时不能修改原有的代码，而是扩展代码。</p>
+<h2 id="1-单一职责原则"><a href="#1-单一职责原则" class="headerlink" title="1. 单一职责原则"></a>1. 单一职责原则</h2><p>每个类应该实现单一的职责，否则应该拆分。</p>
+<h2 id="2-里氏替换原则LSP"><a href="#2-里氏替换原则LSP" class="headerlink" title="2. 里氏替换原则LSP"></a>2. 里氏替换原则LSP</h2><p>任何基类可以出现的地方，子类一定可以出现。对开闭原则的补充。</p>
+<p>根据该原则，子类对父类方法尽量不要重写和重载。</p>
+<h2 id="3-依赖倒转原则"><a href="#3-依赖倒转原则" class="headerlink" title="3. 依赖倒转原则"></a>3. 依赖倒转原则</h2><p>用到具体类时，不与具体类交互而与其上层接口交互。开闭原则的基础。</p>
+<p>尽量在抽象类定义变量与接口，并通过具体类实现具体功能。</p>
+<h2 id="4-接口隔离原则"><a href="#4-接口隔离原则" class="headerlink" title="4. 接口隔离原则"></a>4. 接口隔离原则</h2><p>抽象类定义的接口不能是子类用不到却必须实现的方法，否则就应该拆分。</p>
+<h2 id="5-迪米特法则-最少知道法则"><a href="#5-迪米特法则-最少知道法则" class="headerlink" title="5. 迪米特法则/最少知道法则"></a>5. 迪米特法则/最少知道法则</h2><p>一个类对自己依赖的类知道越少越好。</p>
+<p>无论被依赖的类多复杂，都应该将逻辑封装在方法内部，通过public向外提供。</p>
+<p>当被依赖的类变化时才能对依赖其的类影响最小。</p>
+<h2 id="6-合成复用法则"><a href="#6-合成复用法则" class="headerlink" title="6. 合成复用法则"></a>6. 合成复用法则</h2><p>尽量首先用聚合，而非继承。</p>
+<p>无法访问聚合对象的private变量与方法，只能使用其提供的接口，符合封装原则；继承会破坏封装。</p>
+<h1 id="2-设计模式"><a href="#2-设计模式" class="headerlink" title="2. 设计模式"></a>2. 设计模式</h1><h2 id="1-工厂模式"><a href="#1-工厂模式" class="headerlink" title="1. 工厂模式"></a>1. 工厂模式</h2><p>简单工厂模式：只有一个工厂，create方法接受想要制造的产品作为参数，返回制造出来的类。</p>
+<p>缺陷：要增加新产品需要修改工厂类。</p>
+<p>工厂方法模式：工厂也提供一个抽象类与create接口，每种产品由专门的子工厂负责制造。</p>
+<p>缺陷：要增加新产品需要增加一个对象的工厂。</p>
+<p>抽象工厂模式：跟工厂方法模式差不多，只是有多个create接口生产这一种类产品的细分？</p>
+<h2 id="2-策略模式"><a href="#2-策略模式" class="headerlink" title="2. 策略模式"></a>2. 策略模式</h2><p>定义一系列的算法，封装起来，并使它们可互相替换。</p>
+<p>比如Cache替换算法，Cache类中维护一个算法指针，提供一个方法进行Cache替换，方法中直接用算法指针调用抽象接口。</p>
+<p>实现1：直接用对应算法指针构造。但构造时客户需要知道算法的具体定义。</p>
+<p>实现2：构造时利用简单工厂模式。构造时客户只需要知道算法的标签，但是构造还是要形参。</p>
+<p>实现3：模板实现。</p>
+<h2 id="3-适配器模式"><a href="#3-适配器模式" class="headerlink" title="3. 适配器模式"></a>3. 适配器模式</h2><p>将一个类的接口转换成客户希望的另一个，使得原本由于接口不兼容而不能一起工作的类可以一起工作。包括类适配器和对象适配器。</p>
+<p>STL中的容器适配器。</p>
+<p>如：</p>
+<ul>
+<li>Sequence类中定义push与pop操作</li>
+<li>deque类中有push/pop_front/back的实现</li>
+<li>定义Stack、Queue类继承Sequence类，并聚合deque类作为类成员，重写push与pop操作，在其中调用deque的具体方法。</li>
+</ul>
+<h2 id="4-单例模式"><a href="#4-单例模式" class="headerlink" title="4. 单例模式"></a>4. 单例模式</h2><p>如果想创建某个特定的子类，一般通过getinstance传入标签。</p>
+<p>饿汉模式：程序运行时立即初始化。</p>
+<p>懒汉模式：第一次调用时才初始化。</p>
+<p>保证懒汉模式线程安全：</p>
+<ul>
+<li>C++ 11 static定义getinstance方法内的静态局部变量，由编译器保证。</li>
+<li>双检测锁，锁前后都需要判断是否为空。</li>
+</ul>
+<h2 id="5-原型-模板方法模式"><a href="#5-原型-模板方法模式" class="headerlink" title="5. 原型/模板方法模式"></a>5. 原型/模板方法模式</h2><p>原型方法：用原型实例指定创建对象的种类，通过<strong>拷贝</strong>这些原型创建新的对象。</p>
+<p>简单地说，实现拷贝构造、Clone方法的深拷贝。</p>
+<p>当直接创建对象代价较大时，可缓存该对象，需要时创建克隆。</p>
+<p>模板方法：定义一个函数f，其中包含操作流程，每一步操作都是虚函数，然后在派生类中重写这些操作。使用时调用f。</p>
+<h2 id="6-建造者模式"><a href="#6-建造者模式" class="headerlink" title="6. 建造者模式"></a>6. 建造者模式</h2><p>感觉跟策略模式没啥区别。。。</p>
+<p>基类定义抽象接口，然后派生类定义具体要怎么建造每个部位。</p>
+<p>指挥官类构造时传入基类指针，然后建造时调用基类的抽象接口。</p>
+<h2 id="7-外观模式-组合模式"><a href="#7-外观模式-组合模式" class="headerlink" title="7. 外观模式/组合模式"></a>7. 外观模式/组合模式</h2><p>外观模式：将一系列类聚合到一个类中，然后对外提供一个方法，其中调用这些类各自的方法。</p>
+<p>组合模式/部分整体模式：好难描述。。。以树形结构描述对象组合，表示部分-整体的层次结构。客户可以像处理简单元素一样处理复杂元素。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-5c095155528ea3fe7ea25af365c71d47_720w.webp" alt="img"></p>
+<h2 id="8-代理模式"><a href="#8-代理模式" class="headerlink" title="8. 代理模式"></a>8. 代理模式</h2><p>为其他对象提供代理来控制对该对象的访问。</p>
+<p>比如图形对象创建开销很大，应该在打开文档时避免一次性创建所有图形对象，打开图形对象的代理替代图形，并由代理负责打开图形。<strong>懒汉思想。</strong></p>
+<p>具体实现：代理初始化被代理对象，保存被代理对象的指针。</p>
+<p>C++的<strong>智能指针</strong>就是代理模式，还应用了<strong>RAII</strong>思想。</p>
+<h2 id="9-享元模式"><a href="#9-享元模式" class="headerlink" title="9. 享元模式"></a>9. 享元模式</h2><p>运用共享技术有效支持大量细粒度的对象。</p>
+<p>具体的，棋盘与棋子。棋子只需要创建黑白两个对象，vector保存棋子位置，而不是棋子对象。</p>
+<h2 id="10-桥接模式"><a href="#10-桥接模式" class="headerlink" title="10. 桥接模式"></a>10. 桥接模式</h2><p>抽象部分与其实现部分分离。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-0f82c904c73dc1f182302dafdd359245_720w.webp" alt="img"></p>
+<h2 id="11-装饰模式"><a href="#11-装饰模式" class="headerlink" title="11. 装饰模式"></a>11. 装饰模式</h2><p>动态的给一个对象添加一些额外的职责。</p>
+<p>又一个说不明白的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span> &#123;</span>  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    Phone() &#123;&#125;  </span><br><span class="line">    <span class="keyword">virtual</span> ~Phone() &#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">ShowDecorate</span><span class="params">()</span> </span>&#123;&#125;  </span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">iPhone</span> :</span> <span class="keyword">public</span> Phone &#123;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="built_in">string</span> m_name; <span class="comment">//手机名称  </span></span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    iPhone(<span class="built_in">string</span> name): m_name(name)&#123;&#125;  </span><br><span class="line">    ~iPhone() &#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ShowDecorate</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span>&lt;&lt;m_name&lt;&lt;<span class="string">&quot;的装饰&quot;</span>&lt;&lt;<span class="built_in">endl</span>;&#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">//具体的手机类  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NokiaPhone</span> :</span> <span class="keyword">public</span> Phone &#123;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="built_in">string</span> m_name;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    NokiaPhone(<span class="built_in">string</span> name): m_name(name)&#123;&#125;  </span><br><span class="line">    ~NokiaPhone() &#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ShowDecorate</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span>&lt;&lt;m_name&lt;&lt;<span class="string">&quot;的装饰&quot;</span>&lt;&lt;<span class="built_in">endl</span>;&#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoratorPhone</span> :</span> <span class="keyword">public</span> Phone &#123;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    Phone *m_phone;  <span class="comment">//要装饰的手机  </span></span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    DecoratorPhone(Phone *phone): m_phone(phone) &#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">ShowDecorate</span><span class="params">()</span> </span>&#123; m_phone-&gt;ShowDecorate(); &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">//具体的装饰类  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoratorPhoneA</span> :</span> <span class="keyword">public</span> DecoratorPhone &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    DecoratorPhoneA(Phone *phone) : DecoratorPhone(phone) &#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ShowDecorate</span><span class="params">()</span> </span>&#123; DecoratorPhone::ShowDecorate(); AddDecorate(); &#125;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AddDecorate</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;增加挂件&quot;</span>&lt;&lt;<span class="built_in">endl</span>; &#125; <span class="comment">//增加的装饰  </span></span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">//具体的装饰类  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoratorPhoneB</span> :</span> <span class="keyword">public</span> DecoratorPhone &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    DecoratorPhoneB(Phone *phone) : DecoratorPhone(phone) &#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ShowDecorate</span><span class="params">()</span> </span>&#123; DecoratorPhone::ShowDecorate(); AddDecorate(); &#125;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AddDecorate</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;屏幕贴膜&quot;</span>&lt;&lt;<span class="built_in">endl</span>; &#125; <span class="comment">//增加的装饰  </span></span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    Phone *iphone = <span class="keyword">new</span> NokiaPhone(<span class="string">&quot;6300&quot;</span>);  </span><br><span class="line">    Phone *dpa = <span class="keyword">new</span> DecoratorPhoneA(iphone); <span class="comment">//装饰，增加挂件  </span></span><br><span class="line">    Phone *dpb = <span class="keyword">new</span> DecoratorPhoneB(dpa);    <span class="comment">//装饰，屏幕贴膜  </span></span><br><span class="line">    dpb-&gt;ShowDecorate();  </span><br><span class="line">    <span class="keyword">delete</span> dpa;  </span><br><span class="line">    <span class="keyword">delete</span> dpb;  </span><br><span class="line">    <span class="keyword">delete</span> iphone;  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<h2 id="12-备忘录模式"><a href="#12-备忘录模式" class="headerlink" title="12. 备忘录模式"></a>12. 备忘录模式</h2><p>不破坏封装性的前提下捕获对象的内部状态，并在对象外保存该状态。</p>
+<p>以后可以将对象恢复到保存的状态。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-d540b88bc98159d7a88b26a46458decb_720w.webp" alt="img"></p>
+<p>gamerole通过save返回memento对象，load传入memento对象载入状态。caretake save传入memento对象保存，load通过下标找到存档并返回。</p>
+<h2 id="13-中介者模式"><a href="#13-中介者模式" class="headerlink" title="13. 中介者模式"></a>13. 中介者模式</h2><p><img src="https://pic2.zhimg.com/80/v2-b186359760b39e81db4614a741271019_720w.webp" alt="img"></p>
+<p>mediator聚合两个Person指针对象。Person聚合一个mediator对象。互相通过set设置好。</p>
+<p>Person send方法调用mediator的send方法，mediator send方法再调用另一个对象的get方法，使另一个对象获得信息。</p>
+<h2 id="14-职责链模式"><a href="#14-职责链模式" class="headerlink" title="14. 职责链模式"></a>14. 职责链模式</h2><p>将对象连成一条链，沿着这条链传递请求，直到有一个对象处理为止。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-0b8c1ce17c8f0b5a4b98cb1b68ba58be_720w.webp" alt="img"></p>
+<p>Manager聚合一个Manager指针对象，表示自己上级。deal时，如果自己能处理请求则处理，否则调用上级的deal函数。</p>
+<h2 id="15-观察者模式-发布-订阅模式"><a href="#15-观察者模式-发布-订阅模式" class="headerlink" title="15. 观察者模式/发布-订阅模式"></a>15. 观察者模式/发布-订阅模式</h2><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-f0ba09772cbb11f708594086e0e5a436_720w.webp" alt="img"></p>
+<p>blog中保存更新status与观察者列表，observer中聚合blog指针对象。blog通过setstatus更新后，调用notify，遍历观察者列表并调用其update方法。</p>
+<p>update方法中调用blog指针对象的getstatus方法，获取更新。</p>
+<h2 id="16-状态模式"><a href="#16-状态模式" class="headerlink" title="16. 状态模式"></a>16. 状态模式</h2><p>允许一个对象在其内部状态改变时改变其行为。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-1d5dd8c3ddf2f62a08caddc4d4a9d02c_720w.webp" alt="img"></p>
+<p>war聚合state指针对象，根据days天数改变state。</p>
+<p>currentstate传入war指针，调用每个state各自的方法。</p>
+<p>天数超出当前state后，为war的setstate传入新的state，然后调用getstate。</p>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/02/15/读书笔记-深度探索C++对象模型/" class="link prev" title="读书笔记-深度探索C++对象模型">
+			<span class="hover-underline-animation">&larr; 读书笔记-深度探索C++对象模型</span>
+		</a>
+	
+	
+		<a href="/2023/02/09/学习笔记-Linux/" class="link next" title="学习笔记-Linux">
+			<span class="hover-underline-animation">学习笔记-Linux &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">1. 设计原则</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99"><span class="toc-text">1. 单一职责原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99LSP"><span class="toc-text">2. 里氏替换原则LSP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BE%9D%E8%B5%96%E5%80%92%E8%BD%AC%E5%8E%9F%E5%88%99"><span class="toc-text">3. 依赖倒转原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99"><span class="toc-text">4. 接口隔离原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99-%E6%9C%80%E5%B0%91%E7%9F%A5%E9%81%93%E6%B3%95%E5%88%99"><span class="toc-text">5. 迪米特法则&#x2F;最少知道法则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%90%88%E6%88%90%E5%A4%8D%E7%94%A8%E6%B3%95%E5%88%99"><span class="toc-text">6. 合成复用法则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">2. 设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F"><span class="toc-text">2. 策略模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">3. 适配器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">4. 单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%8E%9F%E5%9E%8B-%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F"><span class="toc-text">5. 原型&#x2F;模板方法模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">6. 建造者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F-%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F"><span class="toc-text">7. 外观模式&#x2F;组合模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">8. 代理模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F"><span class="toc-text">9. 享元模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F"><span class="toc-text">10. 桥接模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F"><span class="toc-text">11. 装饰模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F"><span class="toc-text">12. 备忘录模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">13. 中介者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-text">14. 职责链模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">15. 观察者模式&#x2F;发布-订阅模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-text">16. 状态模式</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

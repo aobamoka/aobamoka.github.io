@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-Linux - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-Linux
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-17">2023-03-17</time>
+        </span>
+        <span>Reading Time&#58; 13 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-内存管理"><a href="#1-内存管理" class="headerlink" title="1. 内存管理"></a>1. 内存管理</h1><p>共4G虚拟内存（32位最大寻址空间）。</p>
+<h2 id="1-内存各段的意义"><a href="#1-内存各段的意义" class="headerlink" title="1. 内存各段的意义"></a>1. 内存各段的意义</h2><p>从下向上为：</p>
+<ul>
+<li>.text程序文件段：程序的二进制可执行代码，只读。</li>
+<li>.data已初始化数据段：已初始化的全局变量和静态常量。</li>
+<li>.bss未初始化数据段：未初始化的静态变量和全局变量。</li>
+<li>堆段：动态分配的内存，低地址向上增长。</li>
+<li>文件映射段：动态库、共享内存等，低地址向上增长。</li>
+<li>栈段：函数的参数值、局部变量、函数调用上下文。大小固定，可通过参数配置。高地址向下增长。</li>
+</ul>
+<h2 id="2-分页的意义-为什么分页"><a href="#2-分页的意义-为什么分页" class="headerlink" title="2. 分页的意义/为什么分页"></a>2. 分页的意义/为什么分页</h2><ul>
+<li>释放内存以页为单位释放，不会产生外部内存碎片。但会产生内部内存碎片。</li>
+<li>加载程序时不必一次性加载完，可以只在需要用到对应部分的时候再加载到内存中。</li>
+<li>内存空间不足时可将最近没使用的内存页面暂时置入磁盘，一次只需要置入几个页，解决交换效率低的问题。</li>
+</ul>
+<h1 id="2-信号"><a href="#2-信号" class="headerlink" title="2. 信号"></a>2. 信号</h1><p>用户、系统、进程发送给目标进程的信息，通知某个状态改变或系统异常。</p>
+<p>常用信号：</p>
+<ul>
+<li>SIGHUP控制终端挂起。</li>
+<li>SIGPIPE向读端关闭的通道或socket连接中写数据。</li>
+<li>SIGURG：socket连接上收到紧急数据。</li>
+</ul>
+<h1 id="3-Linux设计"><a href="#3-Linux设计" class="headerlink" title="3. Linux设计"></a>3. Linux设计</h1><ul>
+<li>MutiTask多任务：多个任务并发或并行。</li>
+<li>SMP对称多处理：每个CPU地位相同，使用权限相同，共享一个内存，每个CPU都可以访问完整的内存和硬件资源。</li>
+<li>ELF可执行文件链接格式</li>
+<li>Monolithic Kernel宏内核：内核是一个完整的可执行程序，拥有最高权限。</li>
+</ul>
+<h1 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4. I/O"></a>4. I/O</h1><p>通常涉及到磁盘、网络，需要IO接口支持数据交换。</p>
+<p>I/O一般分为两步：</p>
+<ul>
+<li>等待数据准备好（设备管理器/网卡拷贝数据到内核缓冲区）</li>
+<li>操作系统将数据从内核缓冲区拷贝到用户。</li>
+</ul>
+<p>同步IO与异步IO的区别就是要不要等待第二步。</p>
+<h2 id="1-I-O模型"><a href="#1-I-O模型" class="headerlink" title="1. I/O模型"></a>1. I/O模型</h2><h3 id="1-阻塞式IO"><a href="#1-阻塞式IO" class="headerlink" title="1. 阻塞式IO"></a>1. 阻塞式IO</h3><p>系统调用，如果没满足条件（如数据没准备好）就阻塞自己，直到内核准备好数据并拷贝到用户态，唤醒进程并操作数据。</p>
+<p>阻塞时可让出CPU。</p>
+<p>耗费时间，适合CPU并发低、时效性要求低的场合。</p>
+<h3 id="2-非阻塞式IO"><a href="#2-非阻塞式IO" class="headerlink" title="2. 非阻塞式IO"></a>2. 非阻塞式IO</h3><p>类似于自旋锁，如果没满足条件就轮询（一直进行系统调用问），直到内核准备好数据（IO第一步完成），然后等待其拷贝到用户态。</p>
+<h3 id="3-IO多路复用"><a href="#3-IO多路复用" class="headerlink" title="3. IO多路复用"></a>3. IO多路复用</h3><p>调用select/poll，阻塞在这两个系统调用上，而非真正的IO系统调用上。</p>
+<p>IO第一步完成时，select返回可读条件，调用recvfrom，等待完成IO第二步（阻塞）。</p>
+<p>可注册多个进程，select监听所有注册好的IO。</p>
+<p>优点：可同时监听多个描述符，且可以等待多个描述符就绪。</p>
+<h3 id="4-信号驱动IO"><a href="#4-信号驱动IO" class="headerlink" title="4. 信号驱动IO"></a>4. 信号驱动IO</h3><p>通过sigaction系统调用安装一个信号处理函数，立即返回。</p>
+<p>IO第一步完成时，内核给该进程产生一个ISGIO信号，进程接到信号后调用信号处理函数，在启动调用recvfrom，等待完成IO第二步（阻塞）。</p>
+<p>优点：信号到达前不被阻塞，可继续执行程序。</p>
+<h3 id="5-异步IO"><a href="#5-异步IO" class="headerlink" title="5. 异步IO"></a>5. 异步IO</h3><p>通过aio_read系统调用，传递描述符、缓冲区指针、缓冲区大小和文件偏移，告知内核操作完后如何通知，然后继续执行。</p>
+<p>内核收到后立刻返回，然后执行第一步、第二部，然后通知进程IO完成。</p>
+<p>与信号驱动的区别：</p>
+<ul>
+<li>信号驱动通知的是可进行IO事件。（仍需等待第二步）</li>
+<li>异步IO通知的是IO完成。（不需要等待第二步）</li>
+</ul>
+<h3 id="6-高效多路复用：epoll"><a href="#6-高效多路复用：epoll" class="headerlink" title="6. 高效多路复用：epoll"></a>6. 高效多路复用：epoll</h3><p>红黑树/线性结构、epoll_ctl、事件驱动与回调函数/轮询、就绪队列/整个线性结构、返回全是就绪事件/还需要对返回值遍历、ET+LT/LT。</p>
+<h1 id="5-控制台-常用命令"><a href="#5-控制台-常用命令" class="headerlink" title="5. 控制台/常用命令"></a>5. 控制台/常用命令</h1><h2 id="命令实现的原理"><a href="#命令实现的原理" class="headerlink" title="命令实现的原理"></a>命令实现的原理</h2><ul>
+<li>terminal终端：字符输入输出设备的抽象，在linux下是一种<strong>特殊的文件</strong>，键盘输入写入这个文件，对应的终端驱动程序会执行回显等工作。</li>
+<li>shell：本质是命令解释软件。</li>
+<li><strong>运行shell时，shell的stdin、stdout、stderr会打开并指向一个特定的terminal文件，使得我们的键盘输入实际上写到terminal里，但shell通过stdin从terminal文件得到。</strong></li>
+</ul>
+<p>执行方式：</p>
+<ul>
+<li>ubuntu中默认的shell是bash，打开终端时就会启动bash。接下来输入的字符通过terminal传递给bash运行。bash执行指令的方式有三种<ul>
+<li>绝对路径执行，指定执行的命令脚本的路径+命令文件</li>
+<li>sh执行，用脚本对应的sh或bash接脚本执行</li>
+<li>shell环境执行，在当前的shell环境中执行，使用.接脚本或source接脚本</li>
+<li>前两种方式会使用一个新的bash子进程执行命令，父进程睡眠。子进程执行完后回到父进程。</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74935718">可看</a></p>
+<p>规律：</p>
+<ul>
+<li>-i一般为需要输出信息、提示时</li>
+<li>-f与-i相对，一般为无需显示确认信息</li>
+<li>-r/-R一般为递归执行操作</li>
+</ul>
+<p>通配符：</p>
+<ul>
+<li>？可替代单个字符</li>
+<li>*可替代任意多字符</li>
+<li>[charset]可替代其中任意单个字符</li>
+</ul>
+<h2 id="1-标准输入和参数"><a href="#1-标准输入和参数" class="headerlink" title="1. 标准输入和参数"></a>1. 标准输入和参数</h2><p>标准输入</p>
+<ul>
+<li>编程语言中scanf、readline这种命令（程序运行中）</li>
+<li>管道符 | 和重定向符 &gt; &lt; 将数据作为程序的标准输入</li>
+<li>本质上是个文件，被自动链接到终端的前台程序。程序切换时切换链接</li>
+</ul>
+<p>参数</p>
+<ul>
+<li>main函数传入的args字符数组（程序启动时）</li>
+<li>$(cmd)读取cmd输出的数据作为参数</li>
+</ul>
+<p>区分</p>
+<ul>
+<li>伴随程序启动时就附在命令后的属于参数，程序启动后才从终端输入的属于标准内容。</li>
+<li>命令能让终端阻塞，说明接收标准输入，否则不接受</li>
+</ul>
+<h2 id="2-后台运行"><a href="#2-后台运行" class="headerlink" title="2. 后台运行"></a>2. 后台运行</h2><p>cmd &amp;：后台运行，但是关闭shell还是会关闭程序。因为shell下运行的程序都是shell进程的子进程。</p>
+<p>(cmd &amp;)：后台运行，关闭shell不关闭程序。相当于挂到systemd守护进程下，而不是shell进程。</p>
+<h2 id="3-sudo"><a href="#3-sudo" class="headerlink" title="3. sudo"></a>3. sudo</h2><p>sudo会让系统使用/etc/sudoers文件中规定的用户权限和环境变量。</p>
+<p>不用sudo，使用的是/home/(username)/bin中的</p>
+<p>sudo使用本地脚本文件时，用绝对路径，防止找不到。</p>
+<h2 id="4-文件名组合"><a href="#4-文件名组合" class="headerlink" title="4. 文件名组合"></a>4. 文件名组合</h2><p>{s1, s2}, {s3, s4}为取两者交集，即{s1, s2, s3, s4}</p>
+<p>{s1, s2}{s3, s4}为两者乘积，即{s1s3, s1s4, s2s3, s2s4}</p>
+<h2 id="5-路径相关"><a href="#5-路径相关" class="headerlink" title="5. 路径相关"></a>5. 路径相关</h2><ul>
+<li>cd -：返回刚才的路径</li>
+<li>!$：替换成上一次命令最后的路径</li>
+<li>!*：替换成上一次命令所有文件路径</li>
+<li>环境变量CDPATH中加入工作目录，cd在当前目录找不到时会自动到CDPATH中找</li>
+</ul>
+<h2 id="6-命令相关"><a href="#6-命令相关" class="headerlink" title="6. 命令相关"></a>6. 命令相关</h2><ul>
+<li>!!：替换成上一次使用的命令</li>
+<li>history | grep ‘cmd’：找到所有包含cmd的历史命令</li>
+<li>!cmdid：找到历史命令后，使用id运行</li>
+</ul>
+<h2 id="7-查找"><a href="#7-查找" class="headerlink" title="7. 查找"></a>7. 查找</h2><p>find/grep区别：</p>
+<ul>
+<li>find搜索文件，完全匹配（通配符）</li>
+<li>grep搜索文本，包含匹配（正则表达式）</li>
+</ul>
+<p>命令：</p>
+<ul>
+<li>find [path] -选项 参数：根据选项的参数要求在path中寻找文件。支持-and、-or、！表示与或非。<ul>
+<li>find [path] -name filename/“re”：根据path（绝对/相对路径）查找文件名为filename/文件名匹配re正则表达式的文件。</li>
+</ul>
+</li>
+<li>grep (-额外选项) pattern path：在path（没有子目录）中找包含pattern的文件与行，且输出符合额外选项的规范<ul>
+<li>额外选项：<ul>
+<li>-c(count)：只输出匹配行计数</li>
+<li>-i(ignore)：不区分大小写</li>
+<li>-h：查询多文件时不显示文件名</li>
+<li>-I：查询多文件时只输出文件名</li>
+<li>-n：显示匹配行与行号</li>
+<li>-s：不显示不存在或无匹配的错误信息</li>
+<li>-v：反转查找</li>
+<li>-r：要求搜索子目录</li>
+</ul>
+</li>
+<li>特别的用法：带输出的命令 | grep (-选项) “pattern”。在输出中查找匹配pattern的行。相当于将命令的标准输出，通过匿名管道传入grep，作为grep的标准输入。</li>
+</ul>
+</li>
+</ul>
+<h2 id="8-ls"><a href="#8-ls" class="headerlink" title="8. ls"></a>8. ls</h2><p>ls [path default = ./] [-选项] [选项的额外参数]</p>
+<ul>
+<li>-a(all)：显示所有文件与目录（包含隐藏）</li>
+<li>-d(directory)：只列出目录</li>
+<li>-l(long)：长格式显示文件和目录信息</li>
+<li>-r(reverse)：倒序显示</li>
+<li>-t(time)：按修改时间排序</li>
+<li>-A：-a但不列出.与..</li>
+<li>-F：列出文件后：可执行文件加”*”，目录加”/“</li>
+<li>-R：递归显示子目录</li>
+</ul>
+<h2 id="9-chmod"><a href="#9-chmod" class="headerlink" title="9. chmod"></a>9. chmod</h2><p>修改文件权限</p>
+<p>说明：</p>
+<ul>
+<li>u为owner文件拥有者，g为group与文件拥有者同一group，o为other其他人，a为三者（或ugo）。</li>
+<li>+为增加权限，-为取消，=表示唯一设定。</li>
+<li>r为可读取，w为可写入，x为可执行，X为仅当该文件是子目录或该文件已经被设置为可执行。</li>
+<li>也可用数字表示，三个三位数字，每个数字最高位表示r、次高位表示w、最低位表示x。</li>
+<li>-R：递归</li>
+<li>-c：有更改才显示更改动作</li>
+<li>-f：无法更改不显示错误</li>
+</ul>
+<p>示例：</p>
+<ul>
+<li>chmod ugo+r 1.txt：所有人皆可读取</li>
+<li>chmod ug+w,o-w 1.txt：文件拥有者与同一组人可写，其他人不可写</li>
+<li>chmod -R a+r *：当前目录与子目录所有文件给所有人读取权限</li>
+<li>chmod 777 1.txt：所有人对该文件有所有权限</li>
+<li>chmod 4755 name：此程序有root权限</li>
+</ul>
+<h2 id="10-查看文件"><a href="#10-查看文件" class="headerlink" title="10. 查看文件"></a>10. 查看文件</h2><ul>
+<li>vi：编辑方式，如果没有则创建</li>
+<li>cat：显示全部文件内容</li>
+<li>more：分页显示</li>
+<li>less：与more相似，可以往前翻页</li>
+<li>tail：仅查看尾部</li>
+<li>head：仅查看头部</li>
+</ul>
+<h2 id="11-sed"><a href="#11-sed" class="headerlink" title="11. sed"></a>11. sed</h2><p>利用脚本处理文件</p>
+<p>sed [-hnv] [-e&lt;script&gt;] [-f&lt;script文件&gt;] [文件]</p>
+<ul>
+<li>-e/-f：以选项中指定的script处理输入文本文件（也可以省略，带双引号就行了？）</li>
+<li>-h：help</li>
+<li>-n：只显示处理后的结果</li>
+<li>-v：版本</li>
+<li>-i：修改文件</li>
+</ul>
+<p>动作：n动作string：指定第n行，指定动作，如果是写入动作则写入string，没有则不带string</p>
+<ul>
+<li>a：新增</li>
+<li>c：取代</li>
+<li>d：删除</li>
+<li>i：插入，在上一行出现</li>
+<li>p：打印，与-n一起</li>
+<li>s：取代，可搭配正则表达式</li>
+<li>‘/oo/p或d或{一组动作}’：所有包含oo的行</li>
+<li>‘s/old/new/g’：查找与替换</li>
+</ul>
+<p>常用</p>
+<ul>
+<li>sed -e 4a\newline filename：在filename第四行后添加一行，将结果输出到标准输出</li>
+<li>nl filename | sed ‘3,$d’：删除第三行到最后一行</li>
+</ul>
+<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><p>kill：将指定信息送至程序，让其终止。</p>
+<ul>
+<li>kill -l：列出所有可发送的信号</li>
+<li>kill -9/-KILL pid：杀死pid线程（另：-1/-HUP为重新加载，-15/-TERM为正常停止）</li>
+</ul>
+<p>ctrl+c/z</p>
+<ul>
+<li>c：强制中断程序执行并<strong>释放内存</strong>。SIGINT。只对当前前台进程,和他的所在的进程组的每个进程都发送。</li>
+<li>z：暂停程序，不释放内存。进程处于<strong>挂起态</strong>。SIGTSTP。</li>
+<li>另：d：不是发送信号，而是输入EOF</li>
+<li>kill：SIGTERM。只有当前进程收到，可以被阻塞、处理、捕获。</li>
+<li>kill -9：SIGKILL。无视任何处理直接杀死。</li>
+</ul>
+<p>cp：复制文件</p>
+<ul>
+<li>-i：覆盖前逐一询问</li>
+<li>-f：覆盖无需确认</li>
+<li>-r：递归复制文件夹</li>
+<li>-p：还复制修改时间和访问权限</li>
+<li>-l：不复制，只生成链接文件</li>
+<li>-d：复制时保留链接</li>
+<li>-a：-dpr</li>
+<li>scp：远程拷贝</li>
+</ul>
+<p>rm：删除</p>
+<ul>
+<li>-i：删除前逐一询问</li>
+<li>-f：即使设置只读也删除而无需确认</li>
+<li>-r：递归删除</li>
+<li>可组合，如-rf</li>
+<li>rmdir：删除空文件夹</li>
+</ul>
+<p>mv：移动/重命名</p>
+<p>ps：显示当前进程状态</p>
+<ul>
+<li>查找指定进程：<code>ps -ef | grep 进程关键字</code></li>
+</ul>
+<p>终端：/dev/tty</p>
+<p>黑洞文件：/dev/null（写多少都会消失）</p>
+<p>wc：计算文件byte数、字数、行数。文件名缺省则读取标准输入</p>
+<ul>
+<li>-c/–bytes/–chars：只显示byte数</li>
+<li>-l/–lines：只显示行数</li>
+<li>-w/–words：只显示字数</li>
+</ul>
+<p>head/tail：头/尾显示文件，默认10行</p>
+<ul>
+<li>-f：循环读取</li>
+<li>-c n：显示n字节</li>
+<li>-n n：显示n行</li>
+<li>–pid=PID：与-f合用，在PID进程死掉后结束</li>
+</ul>
+<p>bg/fg</p>
+<ul>
+<li>bg：后台任务调度到前台</li>
+<li>fg：前台任务调度到后台</li>
+</ul>
+<p>which/whereis：查找特定文件</p>
+<ul>
+<li>which只查可执行文件</li>
+<li>whereis只查二进制文件、说明文档、源文档等</li>
+</ul>
+<p>alias：给命令取别名，如alias la = ‘ls -a’</p>
+<p>whatis：查询命令简要用法</p>
+<p>ifconfig：显示所有网卡信息</p>
+<ul>
+<li>ifconfig eth0 down/up：开关网卡</li>
+<li>ifconfig eth0 add/del IPv6 64：设置IPv6地址</li>
+<li>ifconfig eth0 hw ether MAC：设置MAC地址</li>
+<li>ifconfig eth0 IP netmask ntmk broadcast bdct：IP地址、子网掩码、广播地址，可以只设置前面的</li>
+</ul>
+<p>lsof（list open files）：列出当前系统打开文件</p>
+<ul>
+<li>lsof -i:端口号：查看端口占用</li>
+<li>list -c abc/-p 1234：查看名为abc/进程号1234的进程打开的文件</li>
+</ul>
+<p>netstat：显示网络状况</p>
+<ul>
+<li>-a：详细</li>
+</ul>
+<p>top：查看CPU负载情况</p>
+<h1 id="6-调试"><a href="#6-调试" class="headerlink" title="6. 调试"></a>6. 调试</h1><h2 id="1-段错误"><a href="#1-段错误" class="headerlink" title="1. 段错误"></a>1. 段错误</h2><p>由于内存问题引起</p>
+<ul>
+<li>访问不存在的内存地址</li>
+<li>访问系统保护的内存地址</li>
+<li>访问只读的内存地址</li>
+<li>栈溢出</li>
+<li>delete使用错误（删除了非new的内存、重复delete）</li>
+<li>数组越界</li>
+</ul>
+<h2 id="2-core"><a href="#2-core" class="headerlink" title="2. core"></a>2. core</h2><ul>
+<li>ulimit -c：查看core开关</li>
+<li>ulimit -c [size]/unlimited 设置core大小</li>
+<li>gdb [exec file] [core file]：运行后执行bt查看错误位置的堆栈信息</li>
+<li>gdb -c [core file] -&gt; file [exec file] -&gt; bt：跟上面一样</li>
+<li>x [virtual addr]：查看指定虚拟地址存储内容</li>
+</ul>
+<h2 id="3-gdb"><a href="#3-gdb" class="headerlink" title="3. gdb"></a>3. gdb</h2><ul>
+<li>gdb ./二进制可执行文件：进入gdb</li>
+<li>run：直接运行程序</li>
+<li>start：在main起始位置停下</li>
+<li>list：查看调试行上下五行。<ul>
+<li>list xxx.c:20：查看该文件20行上下五行</li>
+</ul>
+</li>
+<li>step：逐步调试。进入函数内部</li>
+<li>next：逐步调试。直接运行完函数</li>
+<li>until xxx.c:20：直接运行到该行</li>
+<li>continue：从当前位置开始运行</li>
+<li>break xxx.c:20：打断点</li>
+<li>info break：查看断点</li>
+<li>delete [断点号]：删除所有断点/删除指定断点</li>
+<li>backtrace：查看函数调用栈</li>
+<li>print 变量名</li>
+</ul>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/02/09/学习笔记-设计模式/" class="link prev" title="学习笔记-设计模式">
+			<span class="hover-underline-animation">&larr; 学习笔记-设计模式</span>
+		</a>
+	
+	
+		<a href="/2023/02/08/学习笔记-查漏补缺/" class="link next" title="学习笔记-查漏补缺">
+			<span class="hover-underline-animation">学习笔记-查漏补缺 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">1. 内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E5%90%84%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">1. 内存各段的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E9%A1%B5%E7%9A%84%E6%84%8F%E4%B9%89-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E9%A1%B5"><span class="toc-text">2. 分页的意义&#x2F;为什么分页</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E4%BF%A1%E5%8F%B7"><span class="toc-text">2. 信号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Linux%E8%AE%BE%E8%AE%A1"><span class="toc-text">3. Linux设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4. I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. I&#x2F;O模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">1. 阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">2. 非阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">3. IO多路复用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8IO"><span class="toc-text">4. 信号驱动IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%BC%82%E6%AD%A5IO"><span class="toc-text">5. 异步IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%AB%98%E6%95%88%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9Aepoll"><span class="toc-text">6. 高效多路复用：epoll</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%8E%A7%E5%88%B6%E5%8F%B0-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">5. 控制台&#x2F;常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">命令实现的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C"><span class="toc-text">2. 后台运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sudo"><span class="toc-text">3. sudo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E5%90%8D%E7%BB%84%E5%90%88"><span class="toc-text">4. 文件名组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%B7%AF%E5%BE%84%E7%9B%B8%E5%85%B3"><span class="toc-text">5. 路径相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%91%BD%E4%BB%A4%E7%9B%B8%E5%85%B3"><span class="toc-text">6. 命令相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%9F%A5%E6%89%BE"><span class="toc-text">7. 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ls"><span class="toc-text">8. ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-chmod"><span class="toc-text">9. chmod</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="toc-text">10. 查看文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-sed"><span class="toc-text">11. sed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88"><span class="toc-text">综合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%B0%83%E8%AF%95"><span class="toc-text">6. 调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="toc-text">1. 段错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-core"><span class="toc-text">2. core</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-gdb"><span class="toc-text">3. gdb</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-SQL语法 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-SQL语法
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-17">2023-03-17</time>
+        </span>
+        <span>Reading Time&#58; 3 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-基本"><a href="#1-基本" class="headerlink" title="1. 基本"></a>1. 基本</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--select</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tablename		<span class="comment">--所有列</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename	<span class="comment">--col列</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--distinct</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> col <span class="keyword">from</span> tablename <span class="comment">--col列互不相同，如果有多列，只有这几列值完全相同才会被排除</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--where</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">where</span> id <span class="operator">&lt;=</span> <span class="number">2</span> <span class="comment">--添加条件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--and or</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">where</span> id <span class="operator">&gt;=</span> <span class="number">2</span> <span class="keyword">and</span> id <span class="operator">&lt;=</span> <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--order by</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">order</span> <span class="keyword">by</span> id, col <span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span> <span class="comment">--将结果依次按id、col升序|降序排列</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--insert into</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tablename <span class="keyword">values</span> (v1, v2, ...) <span class="comment">--尾部插入所有列的值</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tablename (c1, c2, ...) <span class="keyword">values</span> (v1, v2, ...) <span class="comment">--指定列插入值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--update</span></span><br><span class="line"><span class="keyword">update</span> tablename <span class="keyword">set</span> col1 <span class="operator">=</span> v1, col2 <span class="operator">=</span> v2, ... <span class="keyword">where</span> <span class="keyword">condition</span> <span class="comment">--更新符合条件的行指定列的值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--delete</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> tablename <span class="keyword">where</span> <span class="keyword">condition</span> <span class="comment">--删除符合条件的行</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="2-高级"><a href="#2-高级" class="headerlink" title="2. 高级"></a>2. 高级</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--limit</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">where</span> <span class="keyword">condition</span> <span class="keyword">order</span> <span class="keyword">by</span> id limit <span class="number">5</span> <span class="comment">--返回符合条件的行中id前五位</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--like 匹配全部</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">where</span> name [<span class="keyword">not</span>] <span class="keyword">like</span> &quot;huang%&quot; <span class="comment">--模糊匹配（左模糊、右模糊、左右模糊）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--like通配符</span></span><br><span class="line"><span class="comment">--%：替代0个或多个任意字符</span></span><br><span class="line"><span class="comment">--_：替代一个字符</span></span><br><span class="line"><span class="comment">--[]：替代其中的一个字符</span></span><br><span class="line"><span class="comment">--[!/^]：替代不在其中的一个字符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--regexp 匹配一部分</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">where</span> name [<span class="keyword">not</span>] regexp <span class="string">&#x27;^huang&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--regexp通配符</span></span><br><span class="line"><span class="comment">--^：匹配字符串开始位置 放在字符串前面</span></span><br><span class="line"><span class="comment">--$：匹配字符串结束位置 放在字符串后面</span></span><br><span class="line"><span class="comment">--.：匹配任意字符</span></span><br><span class="line"><span class="comment">--下面三个都是放在单个字符后面</span></span><br><span class="line"><span class="comment">--*/&#123;0,&#125;：匹配0个或多个字符</span></span><br><span class="line"><span class="comment">--+/&#123;1,&#125;：匹配1个或多个字符</span></span><br><span class="line"><span class="comment">--?/&#123;0,1&#125;：匹配0个或1个字符</span></span><br><span class="line"><span class="comment">--&#123;&#125;：通用写法</span></span><br><span class="line"><span class="comment">--|：匹配两个字符串中的一个 放在两个字符串中间</span></span><br><span class="line"><span class="comment">--[]：与like相同，可通过a-d表示区间内的多个字符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--in 相当于or</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">where</span> name <span class="keyword">in</span> (<span class="string">&#x27;huang&#x27;</span>, <span class="string">&#x27;yi&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">--between 相当于and</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> tablename <span class="keyword">where</span> id <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--as 取别名</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">as</span> c, name <span class="keyword">as</span> n <span class="keyword">from</span> tablename</span><br><span class="line"></span><br><span class="line"><span class="comment">--join 连接两个表</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--inner join = join 表中存在至少一个匹配时返回行</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> table1 <span class="keyword">inner</span> <span class="keyword">join</span> table2 <span class="keyword">on</span> table1.name <span class="operator">=</span> table2.name</span><br><span class="line"></span><br><span class="line"><span class="comment">--left join 从table1中返回所有行，table2中没有匹配则结果为null</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--right join 从table2中返回所有行，table1中没有匹配则结果为null</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--full join 只要其中一个表存在匹配，返回行 （MySQL不支持）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--union 合并两个或多个select语句的结果，col值不重复</span></span><br><span class="line"><span class="comment">--union all值可重复</span></span><br><span class="line"><span class="keyword">select</span> col <span class="keyword">from</span> table1 <span class="keyword">union</span> <span class="keyword">select</span> col <span class="keyword">from</span> table2</span><br><span class="line"></span><br><span class="line"><span class="comment">--select into 从一个表复制信息到另一个表</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">into</span> table2 <span class="keyword">from</span> table1</span><br><span class="line"></span><br><span class="line"><span class="comment">--insert into select 从table1复制数据，将数据插入到一个已存在的表table2，table2中已存在的行不受影响</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> table2 <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> table1 <span class="comment">--table2后可接指定的列，需与select后面的列匹配</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>where和having：</p>
+<ul>
+<li>where子句是在<strong>分组前过滤数据</strong>。在对查询结果进行分组前，将不符合条件的行去掉。</li>
+<li>having子句是在<strong>分组后过滤数据</strong>。筛选满足条件的组。</li>
+</ul>
+<h1 id="3-条件"><a href="#3-条件" class="headerlink" title="3. 条件"></a>3. 条件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">case</span><br><span class="line">when condition1 then dosth</span><br><span class="line">when condition2 then dosth</span><br><span class="line">...</span><br><span class="line">else dosth</span><br><span class="line">end</span><br><span class="line">--例子</span><br><span class="line">select </span><br><span class="line">case </span><br><span class="line">when age &lt; 25 or age is null then &#39;25岁以下&#39;</span><br><span class="line">else &#39;25岁及以上&#39;</span><br><span class="line">end as age_cut, </span><br><span class="line">count(*)</span><br><span class="line">from user_profile</span><br><span class="line">group by age_cut;</span><br></pre></td></tr></table></figure></section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a class="link-disabled prev link">&larr; Not More</a>
+	
+	
+		<a href="/2023/03/12/学习笔记-几个小项目总结/" class="link next" title="学习笔记-几个小项目总结">
+			<span class="hover-underline-animation">学习笔记-几个小项目总结 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC"><span class="toc-text">1. 基本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%AB%98%E7%BA%A7"><span class="toc-text">2. 高级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%9D%A1%E4%BB%B6"><span class="toc-text">3. 条件</span></a></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

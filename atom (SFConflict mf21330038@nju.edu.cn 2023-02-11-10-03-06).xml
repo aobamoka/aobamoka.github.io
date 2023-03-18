@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>aobamoka</title>
+  <icon>http://example.com/avatar.png</icon>
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2023-01-06T08:18:15.812Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>aoba moka</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>小林操作系统学习笔记</title>
+    <link href="http://example.com/2022/12/21/%E5%B0%8F%E6%9E%97%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/2022/12/21/%E5%B0%8F%E6%9E%97%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-12-21T06:50:45.000Z</published>
+    <updated>2023-01-06T08:18:15.812Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;一刷没做笔记，这是二刷，刷完估计也到找实习了。唉，今年经济行情有点差，加上计算机去年18届裁员和19届秋招惨状。。。只能多看看书卷一卷了。&lt;/p&gt;
+&lt;h1 id=&quot;1-硬件结构&quot;&gt;&lt;a href=&quot;#1-硬件结构&quot; class=&quot;headerlink&quot; title=&quot;1.</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>labuladong计算机技术笔记</title>
+    <link href="http://example.com/2022/12/15/labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/2022/12/15/labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-12-15T08:01:27.000Z</published>
+    <updated>2022-12-18T10:41:35.566Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-linux文件系统文件用途&quot;&gt;&lt;a href=&quot;#1-linux文件系统文件用途&quot; class=&quot;headerlink&quot; title=&quot;1. linux文件系统文件用途&quot;&gt;&lt;/a&gt;1. linux文件系统文件用途&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;/bin</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>小林codingMYSQL知识点总结</title>
+    <link href="http://example.com/2022/11/23/%E5%B0%8F%E6%9E%97codingMYSQL%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/"/>
+    <id>http://example.com/2022/11/23/%E5%B0%8F%E6%9E%97codingMYSQL%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/</id>
+    <published>2022-11-23T07:42:48.000Z</published>
+    <updated>2022-12-07T07:00:17.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;MYSQL&quot;&gt;&lt;a href=&quot;#MYSQL&quot; class=&quot;headerlink&quot; title=&quot;MYSQL&quot;&gt;&lt;/a&gt;MYSQL&lt;/h1&gt;&lt;p&gt;大三上的数据库课，而且讲的很浅，感觉没记下些啥，可能很基础的也会记上来。。。&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>小林coding计网知识点总结</title>
+    <link href="http://example.com/2022/11/10/%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/"/>
+    <id>http://example.com/2022/11/10/%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/</id>
+    <published>2022-11-10T08:18:01.000Z</published>
+    <updated>2022-11-22T08:39:26.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;小林coding计网总结&quot;&gt;&lt;a href=&quot;#小林coding计网总结&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络是怎样连接的读书笔记6</title>
+    <link href="http://example.com/2022/11/04/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B06/"/>
+    <id>http://example.com/2022/11/04/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B06/</id>
+    <published>2022-11-04T10:41:37.000Z</published>
+    <updated>2022-11-04T07:54:22.602Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记6&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记6&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记6&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记6&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>线段树学习笔记</title>
+    <link href="http://example.com/2022/10/17/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/2022/10/17/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-10-17T01:19:43.000Z</published>
+    <updated>2022-12-24T06:00:27.369Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;线段树-学习笔记&quot;&gt;&lt;a href=&quot;#线段树-学习笔记&quot; class=&quot;headerlink&quot; title=&quot;线段树 学习笔记&quot;&gt;&lt;/a&gt;线段树 学习笔记&lt;/h1&gt;&lt;h1 id=&quot;1-背景&quot;&gt;&lt;a href=&quot;#1-背景&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>树状数组学习笔记</title>
+    <link href="http://example.com/2022/10/16/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/2022/10/16/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-10-16T06:47:36.000Z</published>
+    <updated>2022-10-16T07:29:52.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;树状数组学习笔记&quot;&gt;&lt;a href=&quot;#树状数组学习笔记&quot; class=&quot;headerlink&quot; title=&quot;树状数组学习笔记&quot;&gt;&lt;/a&gt;树状数组学习笔记&lt;/h1&gt;&lt;h2 id=&quot;1-用途&quot;&gt;&lt;a href=&quot;#1-用途&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络是怎样连接的读书笔记5</title>
+    <link href="http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B05/"/>
+    <id>http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B05/</id>
+    <published>2022-10-15T10:41:37.000Z</published>
+    <updated>2022-11-03T07:43:25.609Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记5&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记5&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记5&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记5&lt;/h1&gt;&lt;h2 id=&quot;5-1-Web服务器&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络是怎样连接的读书笔记4</title>
+    <link href="http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B04/"/>
+    <id>http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B04/</id>
+    <published>2022-10-15T10:41:37.000Z</published>
+    <updated>2022-10-28T13:38:53.276Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记4&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记4&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记4&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记4&lt;/h1&gt;&lt;h2 id=&quot;4-1-ADSL&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Java项目入门</title>
+    <link href="http://example.com/2022/10/14/Java%E9%A1%B9%E7%9B%AE%E5%85%A5%E9%97%A8/"/>
+    <id>http://example.com/2022/10/14/Java%E9%A1%B9%E7%9B%AE%E5%85%A5%E9%97%A8/</id>
+    <published>2022-10-14T11:34:25.000Z</published>
+    <updated>2022-10-15T06:22:28.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Java项目入门&quot;&gt;&lt;a href=&quot;#Java项目入门&quot; class=&quot;headerlink&quot; title=&quot;Java项目入门&quot;&gt;&lt;/a&gt;Java项目入门&lt;/h1&gt;&lt;p&gt;秒杀商城架构和依赖都看不懂。。。先回来学学基础知识吧。&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络是怎样连接的读书笔记3</title>
+    <link href="http://example.com/2022/10/13/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B03/"/>
+    <id>http://example.com/2022/10/13/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B03/</id>
+    <published>2022-10-13T06:45:03.000Z</published>
+    <updated>2022-10-15T08:35:29.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记3&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记3&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记3&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记3&lt;/h1&gt;&lt;h2</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络是怎样连接的 读书笔记2</title>
+    <link href="http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02/"/>
+    <id>http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02/</id>
+    <published>2022-09-17T07:46:39.000Z</published>
+    <updated>2022-09-24T07:10:08.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记2&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记2&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记2&quot;&gt;&lt;/a&gt;网络是怎样连接的</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>网络是怎样连接的读书笔记1</title>
+    <link href="http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B01/"/>
+    <id>http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B01/</id>
+    <published>2022-09-17T07:46:38.000Z</published>
+    <updated>2022-10-13T08:09:21.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记1&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记1&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记1&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记1&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://example.com/2021/09/21/hello-world/"/>
+    <id>http://example.com/2021/09/21/hello-world/</id>
+    <published>2021-09-21T09:30:23.081Z</published>
+    <updated>2021-01-12T05:37:47.589Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java学习笔记4</title>
+    <link href="http://example.com/2021/09/20/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/"/>
+    <id>http://example.com/2021/09/20/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</id>
+    <published>2021-09-20T06:30:49.000Z</published>
+    <updated>2021-09-20T06:55:10.095Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;这期学一学java核心类&lt;/p&gt;
+&lt;h2 id=&quot;字符串String&quot;&gt;&lt;a href=&quot;#字符串String&quot; class=&quot;headerlink&quot; title=&quot;字符串String&quot;&gt;&lt;/a&gt;字符串String&lt;/h2&gt;&lt;h3</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java学习笔记3</title>
+    <link href="http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/"/>
+    <id>http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</id>
+    <published>2021-09-19T08:17:58.000Z</published>
+    <updated>2021-09-19T10:07:27.303Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;面向对象&quot;&gt;&lt;a href=&quot;#面向对象&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java学习笔记2</title>
+    <link href="http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/"/>
+    <id>http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</id>
+    <published>2021-09-19T08:07:32.000Z</published>
+    <updated>2021-09-19T08:13:53.783Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;数组&quot;&gt;&lt;a href=&quot;#数组&quot; class=&quot;headerlink&quot; title=&quot;数组&quot;&gt;&lt;/a&gt;数组&lt;/h2&gt;&lt;h3 id=&quot;数组遍历&quot;&gt;&lt;a href=&quot;#数组遍历&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java学习笔记1</title>
+    <link href="http://example.com/2021/09/18/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/"/>
+    <id>http://example.com/2021/09/18/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</id>
+    <published>2021-09-18T08:23:53.000Z</published>
+    <updated>2021-09-18T09:34:35.978Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;软件分析课程需要，提前熟悉下java，也不知道学多久太监。&lt;/p&gt;
+&lt;h2 id=&quot;基本结构与类型&quot;&gt;&lt;a href=&quot;#基本结构与类型&quot; class=&quot;headerlink&quot; title=&quot;基本结构与类型&quot;&gt;&lt;/a&gt;基本结构与类型&lt;/h2&gt;&lt;h3 id=&quot;类&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>kframework学习笔记3</title>
+    <link href="http://example.com/2021/07/18/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/"/>
+    <id>http://example.com/2021/07/18/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</id>
+    <published>2021-07-18T06:17:16.000Z</published>
+    <updated>2021-07-18T07:05:34.574Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本学习笔记从tutorial 2-1开始记录。&lt;/p&gt;
+&lt;h1 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>kramework学习笔记2</title>
+    <link href="http://example.com/2021/07/17/kramework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/"/>
+    <id>http://example.com/2021/07/17/kramework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</id>
+    <published>2021-07-17T02:16:56.000Z</published>
+    <updated>2021-07-18T03:18:55.170Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本笔记开始于tutorial lesson 1-5.&lt;/p&gt;
+&lt;h1 id=&quot;添加整数、布尔值运算与条件操作&quot;&gt;&lt;a href=&quot;#添加整数、布尔值运算与条件操作&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>

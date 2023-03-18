@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-TinyWebServer思路梳理 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-TinyWebServer思路梳理
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-17">2023-03-17</time>
+        </span>
+        <span>Reading Time&#58; 27 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-框架"><a href="#1-框架" class="headerlink" title="1. 框架"></a>1. 框架</h1><p>用户使用Web浏览器与服务器进行通信。键入域名后，浏览器首先通过缓存或DNS查询将域名解析成IP地址，然后向对应IP地址的服务器发送一个请求。</p>
+<p>服务器端，首先创建socket、bind并listen，完成TCP三次握手建立连接。之后，服务器调用accept取出一个已完成的连接，根据HTTP报文请求的内容，构造一个响应报文，发回用户端。用户端的浏览器解析HTTP报文并渲染后，显示在浏览器上。</p>
+<p>主要由主线程、工作线程和文件系统三部分构成，相邻两个部分通过队列通信。</p>
+<ul>
+<li>主线程：监听事件，处理客户端连接，读写网络数据。</li>
+<li>工作线程：处理业务逻辑的线程。</li>
+<li>文件系统：跳表、日志。</li>
+</ul>
+<h1 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2. I/O模型"></a>2. I/O模型</h1><p>以读数据为例，I/O分为两个部分：</p>
+<ul>
+<li>数据准备：内核通过设备控制器通知设备准备数据。设备控制器将数据从磁盘拷贝到内核空间。</li>
+<li>内核将数据从内核空间拷贝到用户空间。</li>
+</ul>
+<p>同步与异步区分方式：用户是否等待I/O过程。</p>
+<p>阻塞I/O：调用方法后等待两个部分。</p>
+<p>非阻塞I/O：如果数据尚未准备完成，就做其他事，直到某次检测到数据准备完成，然后等待第二部分。</p>
+<p>信号驱动I/O：由信号通知第一部分完成，然后等待第二部分。</p>
+<p>I/O复用：用一个线程检测多个I/O函数，直到有数据可读就等待第二部分。</p>
+<p>异步I/O：都不等待，内核拷贝到用户空间后通知用户。</p>
+<h1 id="3-事件处理模式"><a href="#3-事件处理模式" class="headerlink" title="3. 事件处理模式"></a>3. 事件处理模式</h1><h2 id="1-reactor与proactor模型"><a href="#1-reactor与proactor模型" class="headerlink" title="1. reactor与proactor模型"></a>1. reactor与proactor模型</h2><p>reactor：主线程（I/O处理单元）只负责监听文件描述符上是否有事件发生，如果有则通知工作线程（逻辑单元）。工作线程负责读写数据、接受新连接、业务处理。通常由同步I/O实现。</p>
+<p>proactor：主线程和内核负责读写数据、处理新连接等I/O操作，工作线程只负责业务处理。通常由异步I/O实现。</p>
+<p>半同步半异步I/O：实际上是半同步/半模拟proactor模式，因为IO线程负责读写，工作线程只处理业务。</p>
+<ul>
+<li>主线程在epoll注册读就绪事件。</li>
+<li>主线程等待数据可读。</li>
+<li>当有数据可读时，主线程从socket循环读取数据直到没有数据可读，然后将数据封装成请求对象并插入请求队列，并通过条件变量唤醒沉睡的工作线程。</li>
+<li>睡眠在条件变量上的一个工作请求被唤醒，从队列中取出一个请求，处理请求并生成响应，然后注册写就绪事件，继续在条件变量上沉睡。</li>
+<li>主线程等待数据可写。</li>
+<li>当有数据可写时，主线程往socket写入处理结果，写完后继续注册读事件。</li>
+</ul>
+<h2 id="2-select-poll与epoll"><a href="#2-select-poll与epoll" class="headerlink" title="2. select/poll与epoll"></a>2. select/poll与epoll</h2><p>优缺点：</p>
+<ol>
+<li>调用：epoll在<strong>内核</strong>用<strong>红黑树</strong>维护监听文件描述符集合，每次添加文件描述符时系统调用；select/poll每次调用时将要监听的描述符集合拷贝入内核，select使用线性表，poll使用链表。</li>
+<li>事件触发：epoll有事件触发时，通过回调函数通知epoll文件描述符，内核将就绪的文件描述符放入就绪队列中，等待epoll_wait调用，返回就绪队列；select/poll通过遍历检查是否有事件发生，如果有则将整个文件描述符集合拷贝回用户空间，用户仍需遍历一遍判断活动的文件描述符。</li>
+<li>模式：select/poll只能工作在LT模式，epoll支持LT与ET。</li>
+</ol>
+<p>适用：文件描述符数量少、且都很活跃时，epoll每次添加文件描述符都要系统调用，且系统调用开销大，所以用select/poll；不满足这些条件时，则用epoll。</p>
+<p>EPOLLONESHOT事件：该事件的文件描述符上的注册事件只触发一次，要想重新注册事件需要调用epoll_ctl重置文件描述符上的事件。防止socket上一个数据没处理完时又有新数据到达触发事件，被另一个线程获得处理，产生多个线程操作同一socket。</p>
+<h2 id="3-触发方式"><a href="#3-触发方式" class="headerlink" title="3. 触发方式"></a>3. 触发方式</h2><p>LT：水平触发：有可读事件发生时，服务端不断从epoll_wait中苏醒，直到缓冲区数据被读取完。类似于select/poll的遍历。</p>
+<p>ET：边缘触发：有可读事件发生时，服务端只从epoll_wait苏醒一次，即使没有读取数据。下次苏醒需要等到下次有可读事件发生。</p>
+<p>使用ET时必须保证该文件描述符非阻塞（因为是主线程负责读数据，如果设置为阻塞会导致主线程读完阻塞，无法处理其他事件），且每次I/O都必须等到读写完。</p>
+<p>ET可减少epoll_wait的系统调用次数，因此效率一般较高。</p>
+<h2 id="4-具体实现"><a href="#4-具体实现" class="headerlink" title="4. 具体实现"></a>4. 具体实现</h2><ul>
+<li>主循环开始前先通过epoll_ctl注册listenfd的读事件</li>
+<li>主循环中，就绪事件为listenfd读事件，表示accept可以取出已经建立的连接，accept返回一个新的socket文件描述符fd用于通信。</li>
+<li>fd读事件注册到epoll中，等待用户通信。</li>
+<li>主循环中，就绪事件为fd读事件，主线程读出HTTP请求报文，放入fd的封装结构http_conn的读缓冲区中，并将该封装结构放入线程池的请求队列。</li>
+<li>放入请求队列时，通过信号量唤醒线程池中的线程，线程竞争获得锁，并从请求队列中取出连接处理业务。</li>
+<li>处理完毕后将响应报文写入fd对应的http_conn写缓冲区中，fd注册写事件。</li>
+<li>主循环中，就绪事件为fd写事件，主线程读出HTTP响应报文，通过writev发送给客户端。</li>
+</ul>
+<h2 id="5-改进"><a href="#5-改进" class="headerlink" title="5. 改进"></a>5. 改进</h2><ul>
+<li>多reactor多线程模式：<ul>
+<li>主reactor只监听连接建立事件，并轮询子reactor，分发连接。</li>
+<li>每个线程作为一个子reactor，接收传入的连接，并继续监听其上的读写事件。</li>
+<li>子线程监听到读写事件，将连接信息封装对象，分发给线程池里的一个线程。</li>
+<li>线程池里的线程阻塞在队列上，等待条件变量唤醒。</li>
+<li>线程唤醒后，取到对象，从连接对象的套接字中读出数据，解析、生成响应报文并发送。</li>
+</ul>
+</li>
+<li>主reactor与子reactor传递连接的方式。（为了避免主reactor传递连接时子reactor正在epoll_wait阻塞）<ul>
+<li>主reactor为每个子reactor创建一个管道。</li>
+<li>主reactor通过轮询，将连接fd写入子reactor对应的管道。</li>
+<li>子reactor在建立时将管道fd读事件加入epoll监听。</li>
+<li>子reactor接到事件后判断fd是否为管道fd，是则读出管道里的连接fd，为其注册读事件。</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-线程池"><a href="#4-线程池" class="headerlink" title="4. 线程池"></a>4. 线程池</h1><p>本质思想：用空间（对象指针数组）换时间（创建与销毁对象的额外开销）。</p>
+<p>一般通过单例模式实现，使用RAII（资源获取即初始化）设计。</p>
+<p>事先创建并初始化好的线程数组。thread绑定函数后，通过detach将线程设置为脱离态，线程运行结束时资源会被自动回收。</p>
+<p>线程数目设置：对于CPU密集型任务，线程数可以设置为CPU核数；对于IO密集型任务，线程数一般大于CPU核数，因为IO处理一般较慢，较多的线程数能为CPU争取更多的任务，不至于所有线程都在等待IO。</p>
+<p>使用线程池的原因：</p>
+<ul>
+<li>创建与销毁新线程需要为其分配并初始化资源，会带来额外开销。</li>
+<li>需要限制同时运行的线程数。</li>
+</ul>
+<h1 id="5-HTTP报文处理"><a href="#5-HTTP报文处理" class="headerlink" title="5. HTTP报文处理"></a>5. HTTP报文处理</h1><h2 id="1-大致流程"><a href="#1-大致流程" class="headerlink" title="1. 大致流程"></a>1. 大致流程</h2><ul>
+<li>浏览器发出http连接请求，主线程创建http对象接收请求，将数据读入buffer，之后将对象插入任务队列，工作线程取出一个任务处理。</li>
+<li>工作线程调用process_read函数，处理报文。通过状态机逐行解析报文。</li>
+<li>解析完报文后调用do_request函数生成响应报文，process_write写入buffer返回给浏览器。</li>
+</ul>
+<h2 id="2-状态"><a href="#2-状态" class="headerlink" title="2. 状态"></a>2. 状态</h2><p>read主状态机：标识解析位置</p>
+<ul>
+<li>CHECK_STATE_REQUESTLINE，解析请求行，用parse_request_line函数解析。</li>
+<li>CHECK_STATE_HEADER，解析请求头，用parse_headers解析。</li>
+<li>CHECK_STATE_CONTENT，解析消息体（只有POST请求有），用parse_content解析。</li>
+</ul>
+<p>read从状态机：标识解析一行的状态</p>
+<ul>
+<li>LINE_OK，完整读取一行。</li>
+<li>LINE_BAD，报文语法有误。</li>
+<li>LINE_OPEN，读取的行不完整。</li>
+</ul>
+<p>报文解析状态：</p>
+<ul>
+<li>NO_REQUEST，请求不完整，需要继续读取</li>
+<li>GET_REQUEST，获得完整请求。</li>
+<li>BAD_REQUEST，语法错误。</li>
+<li>INTERNAL_ERROR，服务器内部错误。</li>
+</ul>
+<h2 id="3-解析过程"><a href="#3-解析过程" class="headerlink" title="3. 解析过程"></a>3. 解析过程</h2><p>http报文每一行的数据由\r\n结束，可以通过查找这个将报文拆成单独的行解析，并在查找到后，用一个指针指向\r\n后面的第一个字符，然后将\r\n置为\0\0。这样就能用上次的指针直接获得本行数据（字符串以\0结束）。</p>
+<p>解析GET时，每一行都是\r\n结束，因此判断从状态机LINE_OK即可跳出解析循环。</p>
+<p>解析POST时，根据请求头得到的消息体长度直接读取对应大小的数据。消息体末尾没有\r\n结束字符，因此从状态机是LINE_OPEN状态，此时还需要判断主状态机是否为CHECK_STATE_CONTENT，如果是则标识消息体解析完毕，退出循环。</p>
+<p>对于本项目来说，POST中的数据只有用户名和密码，用于进行登录校验。</p>
+<p>如果是图片和视频页面，浏览器解析html发现还有文件时会再次请求，因为action不属于任意一种情况，所以会直接将本地文件目录与请求的资源名相拼接，从而获取对应的图片和视频。</p>
+<p>html文件用html格式传输，图片、视频用二进制格式传输。</p>
+<h2 id="4-解决读报文的粘包问题"><a href="#4-解决读报文的粘包问题" class="headerlink" title="4. 解决读报文的粘包问题"></a>4. 解决读报文的粘包问题</h2><p>请求行和请求头可以直接根据格式是否匹配读取。</p>
+<p>应用层HTTP头部带有content-length字段，可以指示消息体大小。</p>
+<h1 id="6-用户校验"><a href="#6-用户校验" class="headerlink" title="6. 用户校验"></a>6. 用户校验</h1><p>POST请求报文在包体中携带用户名密码。</p>
+<ul>
+<li>对登录操作，只需要判断跳表中有没有键值对即可。</li>
+<li>对注册操作，先插入跳表中，然后判断跳表中有没有键值对。</li>
+<li>跳表用RAII思想实现，构造时自动导入本地dumpfile文件，析构时自动导出到本地dumpfile文件。</li>
+</ul>
+<h1 id="7-优化：非活动连接处理"><a href="#7-优化：非活动连接处理" class="headerlink" title="7. 优化：非活动连接处理"></a>7. 优化：非活动连接处理</h1><p>使用SIGALRM信号实现定时器，周期触发SIGALRM信号。主循环接到信号后对升序链表上所有定时器处理，如果该段时间内没有交换数据则关闭连接，释放资源。</p>
+<p>本项目信号处理函数只发送信号通知程序主循环，对应处理逻辑放在主循环中。（为了不让信号屏蔽太久）</p>
+<p>每次触发信号，遍历定时器升序链表，判断当前时间与定时器超时时间，直到遇到第一个超时的定时器，然后执行回调函数并删除，并继续便利。</p>
+<p>使用定时器：</p>
+<ul>
+<li>连接时创建连接对应的定时器，添加到链表上。</li>
+<li>关闭连接时移除定时器。</li>
+<li>处理定时信号时，定时标志设置为true。</li>
+<li>处理读写事件时，如果该连接有事件则后移定时器，否则执行定时事件。</li>
+</ul>
+<p>接收信号：</p>
+<ul>
+<li>内核放到对应进程的信号队列中，向进程发送一个中断使其陷入内核态。</li>
+</ul>
+<p>检测信号：</p>
+<ul>
+<li>进程从内核态返回用户态前。</li>
+<li>进程在内核态中从睡眠状态被唤醒。</li>
+</ul>
+<p>处理信号：</p>
+<ul>
+<li>内核将内核栈内容拷贝到用户栈，修改指令寄存器指向信号处理函数。</li>
+<li>进程返回用户态执行信号处理函数。</li>
+<li>执行完后返回内核态检查是否有其他信号未处理。</li>
+<li>如果没有未处理的信号，就将内核栈回复（从用户栈备份拷贝回来），恢复指令寄存器，最后回到用户态继续执行进程。</li>
+</ul>
+<h1 id="8-单例模式"><a href="#8-单例模式" class="headerlink" title="8. 单例模式"></a>8. 单例模式</h1><h2 id="1-懒汉模式"><a href="#1-懒汉模式" class="headerlink" title="1. 懒汉模式"></a>1. 懒汉模式</h2><p>第一次被使用时才初始化，初始化方法放在获得实例的方法中。即如果获得的实例指针为空，则初始化，然后返回实例指针。</p>
+<p>线程不安全，因为可能有多个线程同时读取实例指针为空，然后同时修改指针。</p>
+<p>实现：</p>
+<p>函数内的局部静态对象实现线程安全懒汉模式。（C++11后要求编译器保证内部静态变量的线程安全性）</p>
+<p>双检测锁实现线程安全懒汉模式：判断指针为空后先上锁，再判断指针是否为空，如果为空则创建。</p>
+<h2 id="2-饿汉模式"><a href="#2-饿汉模式" class="headerlink" title="2. 饿汉模式"></a>2. 饿汉模式</h2><p>程序运行时立马初始化。</p>
+<p>一定是线程安全的。</p>
+<h1 id="9-日志"><a href="#9-日志" class="headerlink" title="9. 日志"></a>9. 日志</h1><p>同步日志：日志写入与工作线程串行执行。调用write_log时立即加锁写。</p>
+<p>异步日志：所写的日志内容存入阻塞队列，写线程从队列中读取并写入。调用write_log时，只将要写的内容放入队列中。</p>
+<p>单例模式：一个类只有一个实例，同时提供全局访问方法。</p>
+<h2 id="1-条件变量"><a href="#1-条件变量" class="headerlink" title="1. 条件变量"></a>1. 条件变量</h2><p>实现生产者消费者队列。</p>
+<p><code>int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)</code>：</p>
+<ol>
+<li>等待条件变量满足</li>
+<li>释放获得的锁（1、2一起是一个原子操作，所以如果调用的时候满足条件，就不需要释放锁）</li>
+<li>阻塞</li>
+<li>被唤醒时解除阻塞，尝试获取锁</li>
+</ol>
+<p>感觉.。。。不如c++11 condition_variable + unique_lock</p>
+<p>一般在调用前先上锁，且在循环里使用，因为多个线程等待锁时，返回的时候并不一定能竞争到锁。</p>
+<p>调用线程放入条件变量的请求队列后再解锁：如果在释放互斥锁前、放入队列之后等待的条件改变了，因为线程不在队列上，会忽略条件满足的信号。</p>
+<h1 id="10-压测-amp-webbench原理"><a href="#10-压测-amp-webbench原理" class="headerlink" title="10. 压测&amp;webbench原理"></a>10. 压测&amp;webbench原理</h1><p>并发量：创建的子进程的总数。</p>
+<p>大致流程：</p>
+<ul>
+<li>先尝试一次合法连接。</li>
+<li>如果成功就由父进程fork多个子进程。</li>
+<li>每个子进程循环做web访问测试，将访问结果通过管道告知父进程。</li>
+<li>父进程做最终结果统计。</li>
+</ul>
+<p>源码：</p>
+<p>getopt_long：循环读取命令行参数。</p>
+<ul>
+<li>-c：子进程数量</li>
+<li>-t：运行时间</li>
+<li>-p：使用代理服务器并传入代理网络号和端口号</li>
+</ul>
+<p>build_request：构造请求报文</p>
+<p>bench：父进程测试连接，连接成功就先建立管道通信，然后不断fork子进程，子进程调用benchcore请求，并将自己请求成功/失败数目发给父进程，父进程通过管道接收结果，统计计算。</p>
+<p>benchcore：子进程设置超时信号，然后不断进行HTTP请求。</p>
+<p>优点：</p>
+<ol>
+<li>部署简单，适用于小型网站压测（最多模拟3万并发）</li>
+<li>能支持动静态页面测试</li>
+<li>支持对含有SSL的安全网站测试</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>不适合中大型网站测试</li>
+<li>并发采用多进程而非多线程，长时间使用大量占用内存与CPU，所以不适合长时间使用</li>
+</ol>
+<h1 id="11-改进"><a href="#11-改进" class="headerlink" title="11. 改进"></a>11. 改进</h1><ul>
+<li>实现文件上传功能</li>
+<li>定时器改成堆（感觉不太行）<ul>
+<li>过期定时器都是连续的，需要顺序遍历，用堆一个个弹出反而增加了复杂度</li>
+<li>连接出错需要关闭指定的定时器，堆无法做到</li>
+</ul>
+</li>
+<li>c++11重构 muduo库网络编程 + c++11多线程</li>
+</ul>
+<h1 id="12-准备"><a href="#12-准备" class="headerlink" title="12. 准备"></a>12. 准备</h1><h2 id="1-项目介绍"><a href="#1-项目介绍" class="headerlink" title="1. 项目介绍"></a>1. 项目介绍</h2><p>为什么做项目：实验室与课程使用的语言偏向于Python、Java等，感觉对于C++项目的实际开发有些薄弱，所以通过这个项目来熟悉C++项目的实际开发，以及在项目中实践学过的计算机网络知识、编程思想等。</p>
+<p>介绍项目：主要由主线程、工作线程和文件系统三部分构成，相邻两个部分通过队列通信。</p>
+<ul>
+<li>主线程：通过epoll监听事件，处理客户端连接，读写网络数据，封装数据并通过队列传递给工作线程。</li>
+<li>工作线程：从队列上取数据，解析并生成响应报文，然后通知主线程有写事件。</li>
+<li>文件系统：使用队列实现日志系统、使用跳表存储用户名-密码键值对。</li>
+</ul>
+<p><strong>印象最深的部分</strong>：主循环的<strong>统一事件源</strong>思想：将信号事件当作IO事件一样处理。具体的，将<strong>管道读事件注册到epoll中</strong>，这样能与其他读事件一样被监听到，被主循环统一处理。</p>
+<p>具体操作：</p>
+<ul>
+<li>服务器接收到新连接时，为其创建对应的定时器，包括绑定回调函数等，然后添加到链表上。</li>
+<li>主循环开始前设置一个超时信号。</li>
+<li>信号到来时，回调函数写管道描述符。</li>
+<li>管道描述符出现读事件被epoll监听到，在主循环内跟其他事件同时处理。</li>
+<li>处理异常事件时，关闭连接，在链表上删除对应的定时器。</li>
+<li>处理信号时，将超时标志设置为true，一轮循环结束后再处理。</li>
+<li>处理读写事件时，如果读写成功，重置对应连接的超时时间，否则关闭连接并删除定时器。</li>
+</ul>
+<h2 id="2-线程池"><a href="#2-线程池" class="headerlink" title="2. 线程池"></a>2. 线程池</h2><h3 id="1-设计模式"><a href="#1-设计模式" class="headerlink" title="1. 设计模式"></a>1. 设计模式</h3><p>线程池类有一个私有成员数组，表示线程池中的线程。</p>
+<ul>
+<li>thread数组初始化每个线程并传递静态成员函数worker与参数this指针、detach设置脱离态。</li>
+<li>worker中通过线程池类的指针调用私有方法run。</li>
+<li>run中工作线程从请求队列中取出一个任务处理。</li>
+</ul>
+<p>用静态成员函数worker的原因：类的非静态成员函数都会带有this指针作为第一个参数，而pthread_create第三个参数要求*<em>参数类型为void**</em>，不能匹配。</p>
+<p>改用c++11的thread后好像没有这个毛病了。</p>
+<h3 id="2-同步机制"><a href="#2-同步机制" class="headerlink" title="2. 同步机制"></a>2. 同步机制</h3><p>信号、信号量、条件变量、互斥锁</p>
+<h3 id="3-工作线程工作过程"><a href="#3-工作线程工作过程" class="headerlink" title="3. 工作线程工作过程"></a>3. 工作线程工作过程</h3><p>队列不为空，通过信号量唤醒等待的工作线程，多个线程竞争任务；工作线程取出一个任务，执行完业务逻辑后，通过信号量继续阻塞自己等待。</p>
+<h3 id="4-客户端数目很多，线程数不多，怎么及时响应"><a href="#4-客户端数目很多，线程数不多，怎么及时响应" class="headerlink" title="4. 客户端数目很多，线程数不多，怎么及时响应"></a>4. 客户端数目很多，线程数不多，怎么及时响应</h3><p>并不是一个线程对应一个客户连接，客户的请求储存在工作队列，线程依次从工作队列中取出进行处理。如果速度很慢，就需要增大线程池容量，或者部署多个服务器等做法。</p>
+<h3 id="5-客户请求占用很久时间"><a href="#5-客户请求占用很久时间" class="headerlink" title="5. 客户请求占用很久时间"></a>5. 客户请求占用很久时间</h3><p>相当于可用线程数减少，会影响到接下来的客户请求与总体响应速度。可以为线程处理任务设置超时时间，如果超时则直接断开连接或重新插入任务。</p>
+<h2 id="3-并发模型"><a href="#3-并发模型" class="headerlink" title="3. 并发模型"></a>3. 并发模型</h2><h3 id="1-并发模型"><a href="#1-并发模型" class="headerlink" title="1. 并发模型"></a>1. 并发模型</h3><p>线程池设计模式为同步IO模拟的Proactor事件处理模式。</p>
+<p>同步线程处理客户逻辑，异步线程处理IO事件。</p>
+<p>主线程为异步线程，负责监听所有socket的实践。如果有新连接到来，接收新连接socket并往epoll内核事件表中注册其读写事件；如果监听的socket发生了读写事件，就先读写数据，然后将连接与对应的数据封装成对象，插入到请求队列。</p>
+<p>工作线程睡眠在请求队列上，有任务到来时通过竞争获得任务。</p>
+<h3 id="2-reactor与proactor"><a href="#2-reactor与proactor" class="headerlink" title="2. reactor与proactor"></a>2. reactor与proactor</h3><p>reactor：</p>
+<p>单reactor单线程：</p>
+<ul>
+<li>reactor监听事件。如果是连接建立事件分发给acceptor，如果是读写事件分发给对应的handler。</li>
+<li>acceptor建立连接，创建一个当前连接的对应的handler对象。</li>
+<li>handler进行read-&gt;业务处理-&gt;send的流程。</li>
+</ul>
+<p>缺点：一个线程无法利用多核CPU；handler处理业务时会阻塞。</p>
+<p>单reactor多线程（类似于同步IO模拟的proactor，但是这个是子线程直接send，而不是发回给handler send）：</p>
+<ul>
+<li>主线程reactor监听事件，如果是连接建立事件分发给acceptor，如果是读写事件分发给对应的handler。</li>
+<li>acceptor建立连接，创建一个当前连接的对应的handler对象。</li>
+<li>handler read，将数据发送给子线程processor；子线程处理完毕后send。</li>
+<li>processor进行业务处理。</li>
+</ul>
+<p>优点：充分利用了多核CPU性能。</p>
+<p>缺点：只有一个reactor监听事件，易成为性能瓶颈。</p>
+<p>多reactor多线程（主从reactor）：</p>
+<ul>
+<li>主线程reactor监听连接事件，分发给acceptor建立连接。</li>
+<li>acceptor建立连接。</li>
+<li>主线程将连接分发给某个子线程reactor。</li>
+<li>子线程reactor分到连接时创建对应连接的handler对象，并监听读写事件。</li>
+<li>子线程reactor监听到读写事件时，调用对应handler处理。</li>
+<li>handler进行read-&gt;业务处理-&gt;send流程。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>主线程和子线程分工明确，主线程只监听连接事件，子线程只监听读写事件。</li>
+<li>主线程和子线程交互简单，主线程只要传递新连接，子线程处理完业务后直接发回而不经过主线程。</li>
+</ul>
+<p>reactor与proactor的区别：IO操作在主线程则为proactor、在工作线程为reactor。</p>
+<h3 id="3-epoll-select-poll"><a href="#3-epoll-select-poll" class="headerlink" title="3. epoll/select/poll"></a>3. epoll/select/poll</h3><h2 id="4-HTTP报文解析"><a href="#4-HTTP报文解析" class="headerlink" title="4. HTTP报文解析"></a>4. HTTP报文解析</h2><h3 id="1-状态机"><a href="#1-状态机" class="headerlink" title="1. 状态机"></a>1. 状态机</h3><p>使用状态机主要是为了封装逻辑。因为HTTP报文由很多部分组成，一步步解析的话十分复杂。使用状态机，服务器可以根据不同状态或者消息类型进行相应的逻辑处理，这样可以使得程序清晰易懂，可读性与可理解性强。</p>
+<h3 id="2-安全的HTTPS协议"><a href="#2-安全的HTTPS协议" class="headerlink" title="2. 安全的HTTPS协议"></a>2. 安全的HTTPS协议</h3><p>连接阶段使用了TLS四次握手，能验证对方的身份并交换密钥；</p>
+<p>数据交互阶段使用交换的密钥进行交互，能防止篡改与窃听。</p>
+<h3 id="3-SSL连接过程"><a href="#3-SSL连接过程" class="headerlink" title="3. SSL连接过程"></a>3. SSL连接过程</h3><p>以RSA握手算法为例。</p>
+<ul>
+<li><p>第一次握手：客户端发送随机数r1、TLS版本号、支持的密码套件（密钥交换算法+签名算法+对称加密+摘要算法）。</p>
+</li>
+<li><p>第二次握手：服务端验证TLS版本号是否支持。发送：</p>
+<ul>
+<li>随机数r2。</li>
+<li>服务端选择的密码套件（RSA）。</li>
+<li>服务端的数字证书。</li>
+</ul>
+</li>
+<li><p>第三次握手：客户端根据证书验证服务端身份。生成随机数r3，根据r1r2r3生成会话密钥。发送：</p>
+<ul>
+<li>随机数r3。</li>
+<li>会话改变通知，表明随后的通信都改用会话密钥加密。</li>
+<li>握手完成通知，表明客户端的握手已结束。同时客户端对握手过程中发送的报文做一个摘要一并发送，供对方校验。</li>
+</ul>
+</li>
+<li><p>第四次握手：服务端获得r3，生成会话密钥。发送：</p>
+<ul>
+<li>会话改变通知，表明随后的通信都改用会话密钥加密。</li>
+<li>握手完成通知，表明服务端的握手已结束。同时服务端对握手过程中发送的报文做一个摘要一并发送，供对方校验。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-GET与POST"><a href="#4-GET与POST" class="headerlink" title="4. GET与POST"></a>4. GET与POST</h3><p>get也可以有body，而post也可以将申请的资源放在url中。</p>
+<p>本质区别：浏览器与服务器对两种消息的处理不同。</p>
+<ul>
+<li>浏览器与服务器会对url大小作出限制。</li>
+<li>如果在GET中用body添加数据，有些服务器会读出数据，而有些服务器会忽略。</li>
+</ul>
+<p>一次包&amp;两次包：</p>
+<ul>
+<li>有些浏览器发送POST，不一定会分header与body发两次包。</li>
+<li>网络环境好时一次包与两次包时间差别不大，但是两次包在TCP验证完整性上有很大优势。</li>
+</ul>
+<h3 id="5-HTTP1-1"><a href="#5-HTTP1-1" class="headerlink" title="5. HTTP1.1"></a>5. HTTP1.1</h3><p>与1.0的区别：挑比较重要的说</p>
+<ul>
+<li>长连接改善了短连接造成的性能开销（HTTP1.0每次发送请求都要建立一次TCP连接）。Connection：Keep-Alive。</li>
+<li>多了Host域，存放url。因为HTTP1.1时代一个物理主机上已经可以存在多个虚拟主机，且共享一个IP地址，要通过域名区分。</li>
+<li>多了range域，支持只请求资源的某个部分。Content-Range中声明返回对象的偏移值和长度。服务器返回了该范围则返回206，防止Cache将响应误认为是完整对象。</li>
+</ul>
+<p>关闭TCP连接：</p>
+<ul>
+<li>退出主循环</li>
+<li>写失败</li>
+<li>超时信号</li>
+</ul>
+<h2 id="5-用户名密码存储"><a href="#5-用户名密码存储" class="headerlink" title="5. 用户名密码存储"></a>5. 用户名密码存储</h2><h3 id="1-登录"><a href="#1-登录" class="headerlink" title="1. 登录"></a>1. 登录</h3><ul>
+<li>构造跳表时，加载本地dumpfile文件的用户名-密码对。</li>
+<li>注册与登录时携带了用户名密码作为数据，使用POST报文，并将用户名密码放在包体中。</li>
+<li>浏览器端解析出POST报文与其内容，根据url末尾的action字段判断登录还是注册。</li>
+<li>注册时插入跳表。</li>
+<li>登录直接查跳表。</li>
+<li>程序结束时，跳表析构函数中调用方法存储dumpfile文件。</li>
+</ul>
+<h3 id="2-页面跳转"><a href="#2-页面跳转" class="headerlink" title="2. 页面跳转"></a>2. 页面跳转</h3><p>请求报文请求行的url中，最后一个/后面的信息代表想要跳转的页面。这个属性通过html页面按钮的action属性设置，点击按钮就能请求对应action的页面，将action附带在url尾部。</p>
+<p>解析报文时，将url尾部的action属性截取下来，然后根据之前在html中设置的进行分类。</p>
+<p><strong>传输文本使用text/html格式，传输图片和视频使用二进制格式。</strong></p>
+<h3 id="3-状态保存"><a href="#3-状态保存" class="headerlink" title="3. 状态保存"></a>3. 状态保存</h3><p>可以利用session或cookie保存。</p>
+<p>cookie是服务端发给用户端，用户端保存的身份标识。服务端在TCP第二次握手时发给用户端，用户端保存好cookie，后续发送数据时附带cookie，服务端通过解析cookie辨认用户端。</p>
+<p>session是服务端保存的状态。每当客户发送http报文过来，服务端在记录的用户数据中查找，核实用户身份。</p>
+<h3 id="4-大量用户数据"><a href="#4-大量用户数据" class="headerlink" title="4. 大量用户数据"></a>4. 大量用户数据</h3><p>通过多级哈希对用户信息进行分组。每当有用户信息到来时，先进行多级哈希，判断所在的组是否加载到内存中，如果加载了则直接验证，否则只需要加载对应组的数据。</p>
+<h2 id="6-定时器"><a href="#6-定时器" class="headerlink" title="6. 定时器"></a>6. 定时器</h2><h3 id="1-作用"><a href="#1-作用" class="headerlink" title="1. 作用"></a>1. 作用</h3><p>处理非活跃连接，释放资源。</p>
+<h3 id="2-工作原理"><a href="#2-工作原理" class="headerlink" title="2. 工作原理"></a>2. 工作原理</h3><p>每个连接分配一个定时器，然后将定时器挂在升序链表上。</p>
+<p>通过alarm函数周期性触发SIGALARM信号，信号回调函数通过管道通知主循环。Linux中进程收到信号时，操作系统中断当前流程，转入信号处理函数执行，完成后再返回中断的地方继续执行。一般信号处理函数需要屏蔽其他信号，为了避免信号屏蔽时间过长，信号处理函数只负责通过管道通知主循环，在主循环中进行实际的信号处理。</p>
+<ul>
+<li>信号处理函数：通过具名管道给主线程发信号。（主线程通过epoll_wait可获知具名管道描述符上的读事件）</li>
+</ul>
+<p>主循环接到管道通信后对升序链表上的定时器进行处理，对比过期时间与当前时间，然后关闭超时的连接。</p>
+<p>信号处理程序的跳转和结束都由内核操作，所以信号处理的整个过程有<strong>两次</strong>从用户态变到内核态。</p>
+<p><strong>统一事件源</strong>思想：将信号事件与其他事件一样处理。具体的，将<strong>管道读事件注册到epoll中</strong>，这样能与其他读事件一样被监听到，被主循环统一处理。</p>
+<p>具体操作：</p>
+<ul>
+<li>服务器接收到新连接时，为其创建对应的定时器，包括绑定回调函数等，然后添加到链表上。</li>
+<li>主循环开始前设置一个超时信号。</li>
+<li>信号到来时，管道描述符出现读事件被epoll监听到，按照统一事件源思想，在主循环内跟其他事件同时处理。</li>
+<li>处理异常事件时，关闭连接，在链表上删除对应的定时器。</li>
+<li>处理信号时，将超时标志设置为true，一轮循环结束后再处理。</li>
+<li>处理读写事件时，如果读写成功，重置对应连接的超时时间，否则关闭连接并删除定时器。</li>
+</ul>
+<h3 id="3-优化"><a href="#3-优化" class="headerlink" title="3. 优化"></a>3. 优化</h3><p>添加ON复杂度，删除O1复杂度。最小堆、调表。最小堆增删都是OLogN，以超时时间建立最小堆，每次判断堆顶是否超时，如果超时则删除堆顶继续判断。</p>
+<h2 id="7-日志"><a href="#7-日志" class="headerlink" title="7. 日志"></a>7. 日志</h2><p>由单独的线程写。</p>
+<h3 id="1-运行机制"><a href="#1-运行机制" class="headerlink" title="1. 运行机制"></a>1. 运行机制</h3><ul>
+<li>程序开始运行时利用单例模式初始化日志，根据参数队列长度是否小于等于0，确认同步或异步写入。</li>
+<li>异步写入的话，创建一个线程绑定写日志函数，该函数不断从阻塞队列中取。</li>
+<li>产生动作的线程自己负责构造日志，记录服务器的状态，并放入消费队列。写线程只负责写。</li>
+</ul>
+<h3 id="2-异步与同步"><a href="#2-异步与同步" class="headerlink" title="2. 异步与同步"></a>2. 异步与同步</h3><p>同步方式：写日志的方法与工作线程串行执行。因为涉及IO操作，单条日志较大时会阻塞工作线程，导致服务器并发能力下降。</p>
+<p>异步方式：将要写的日志放入阻塞队列，队列不为空时唤醒写线程。使用生产者-消费者模型提升并发能力。</p>
+<h3 id="3-将日志分发到不同机器上"><a href="#3-将日志分发到不同机器上" class="headerlink" title="3. 将日志分发到不同机器上"></a>3. 将日志分发到不同机器上</h3><p>使用消息队列进行分发。Kafka？</p>
+<h2 id="8-压测"><a href="#8-压测" class="headerlink" title="8. 压测"></a>8. 压测</h2><p>使用webbench进行测试，满足上万并发量。1w+QPS。</p>
+<p>并发量：创建的子进程的总数。</p>
+<h3 id="1-webbench原理"><a href="#1-webbench原理" class="headerlink" title="1. webbench原理"></a>1. webbench原理</h3><p>webbench是一款轻量级的用于对中小型网站进行压力测试的工具，可以实现高达数万的并发测试。</p>
+<p>主要原理：</p>
+<ul>
+<li>先尝试连接一次服务器看能否连接上。</li>
+<li>如果可以，父进程中fork若干个子进程。</li>
+<li>子进程在一定时限内对目标服务器发出访问请求，之后通过管道将访问成功、失败数量等信息发送给父进程。</li>
+<li>父进程统计这些数据并计算，最后显示出来。</li>
+</ul>
+<p>优点：工具小，部署简单。</p>
+<p>缺点：只支持上万并发，不适合对中大型网站测试；使用多进程模型，运行时间长可能导致CPU、内存消耗过大，不适合长时间测试。</p>
+<h2 id="9-优化"><a href="#9-优化" class="headerlink" title="9. 优化"></a>9. 优化</h2><ul>
+<li>C++11面向对象式实现（muduo网络编程库+thread系列头文件）</li>
+<li>非关系数据库替代MySQL（已实现跳表）</li>
+<li>添加cookie或session</li>
+<li>文件上传功能</li>
+</ul>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/02/06/学习笔记-Redis/" class="link prev" title="学习笔记-Redis">
+			<span class="hover-underline-animation">&larr; 学习笔记-Redis</span>
+		</a>
+	
+	
+		<a href="/2023/01/28/学习笔记-分布式系统/" class="link next" title="学习笔记-分布式系统">
+			<span class="hover-underline-animation">学习笔记-分布式系统 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%A1%86%E6%9E%B6"><span class="toc-text">1. 框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">2. I&#x2F;O模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">3. 事件处理模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-reactor%E4%B8%8Eproactor%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. reactor与proactor模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-select-poll%E4%B8%8Eepoll"><span class="toc-text">2. select&#x2F;poll与epoll</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A6%E5%8F%91%E6%96%B9%E5%BC%8F"><span class="toc-text">3. 触发方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-text">4. 具体实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%94%B9%E8%BF%9B"><span class="toc-text">5. 改进</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">4. 线程池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-HTTP%E6%8A%A5%E6%96%87%E5%A4%84%E7%90%86"><span class="toc-text">5. HTTP报文处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">1. 大致流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%8A%B6%E6%80%81"><span class="toc-text">2. 状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-text">3. 解析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%A7%A3%E5%86%B3%E8%AF%BB%E6%8A%A5%E6%96%87%E7%9A%84%E7%B2%98%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-text">4. 解决读报文的粘包问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E7%94%A8%E6%88%B7%E6%A0%A1%E9%AA%8C"><span class="toc-text">6. 用户校验</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E4%BC%98%E5%8C%96%EF%BC%9A%E9%9D%9E%E6%B4%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86"><span class="toc-text">7. 优化：非活动连接处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">8. 单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%87%92%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 懒汉模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%A5%BF%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">2. 饿汉模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E6%97%A5%E5%BF%97"><span class="toc-text">9. 日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="toc-text">1. 条件变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E5%8E%8B%E6%B5%8B-amp-webbench%E5%8E%9F%E7%90%86"><span class="toc-text">10. 压测&amp;webbench原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E6%94%B9%E8%BF%9B"><span class="toc-text">11. 改进</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E5%87%86%E5%A4%87"><span class="toc-text">12. 准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 项目介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">2. 线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 设计模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="toc-text">2. 同步机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-text">3. 工作线程工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E7%9B%AE%E5%BE%88%E5%A4%9A%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%95%B0%E4%B8%8D%E5%A4%9A%EF%BC%8C%E6%80%8E%E4%B9%88%E5%8F%8A%E6%97%B6%E5%93%8D%E5%BA%94"><span class="toc-text">4. 客户端数目很多，线程数不多，怎么及时响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%A2%E6%88%B7%E8%AF%B7%E6%B1%82%E5%8D%A0%E7%94%A8%E5%BE%88%E4%B9%85%E6%97%B6%E9%97%B4"><span class="toc-text">5. 客户请求占用很久时间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-text">3. 并发模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. 并发模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-reactor%E4%B8%8Eproactor"><span class="toc-text">2. reactor与proactor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-epoll-select-poll"><span class="toc-text">3. epoll&#x2F;select&#x2F;poll</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HTTP%E6%8A%A5%E6%96%87%E8%A7%A3%E6%9E%90"><span class="toc-text">4. HTTP报文解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-text">1. 状态机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E5%85%A8%E7%9A%84HTTPS%E5%8D%8F%E8%AE%AE"><span class="toc-text">2. 安全的HTTPS协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-SSL%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B"><span class="toc-text">3. SSL连接过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-GET%E4%B8%8EPOST"><span class="toc-text">4. GET与POST</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-HTTP1-1"><span class="toc-text">5. HTTP1.1</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E5%AD%98%E5%82%A8"><span class="toc-text">5. 用户名密码存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%99%BB%E5%BD%95"><span class="toc-text">1. 登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC"><span class="toc-text">2. 页面跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%8A%B6%E6%80%81%E4%BF%9D%E5%AD%98"><span class="toc-text">3. 状态保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%A7%E9%87%8F%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE"><span class="toc-text">4. 大量用户数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">6. 定时器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BD%9C%E7%94%A8"><span class="toc-text">1. 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">2. 工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BC%98%E5%8C%96"><span class="toc-text">3. 优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%97%A5%E5%BF%97"><span class="toc-text">7. 日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">1. 运行机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%82%E6%AD%A5%E4%B8%8E%E5%90%8C%E6%AD%A5"><span class="toc-text">2. 异步与同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B0%86%E6%97%A5%E5%BF%97%E5%88%86%E5%8F%91%E5%88%B0%E4%B8%8D%E5%90%8C%E6%9C%BA%E5%99%A8%E4%B8%8A"><span class="toc-text">3. 将日志分发到不同机器上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%8E%8B%E6%B5%8B"><span class="toc-text">8. 压测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-webbench%E5%8E%9F%E7%90%86"><span class="toc-text">1. webbench原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E4%BC%98%E5%8C%96"><span class="toc-text">9. 优化</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

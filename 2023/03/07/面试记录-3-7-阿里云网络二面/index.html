@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>面试记录-3-7-阿里云网络二面 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      面试记录-3-7-阿里云网络二面
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-07">2023-03-07</time>
+        </span>
+        <span>Reading Time&#58; 1 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><p>就二十分钟。。。必挂了。</p>
+<h1 id="1-自我介绍"><a href="#1-自我介绍" class="headerlink" title="1. 自我介绍"></a>1. 自我介绍</h1><h1 id="2-Raft协议"><a href="#2-Raft协议" class="headerlink" title="2. Raft协议"></a>2. Raft协议</h1><h1 id="3-Raft协议集群变更"><a href="#3-Raft协议集群变更" class="headerlink" title="3. Raft协议集群变更"></a>3. Raft协议集群变更</h1><h1 id="4-Raft协议脑裂"><a href="#4-Raft协议脑裂" class="headerlink" title="4. Raft协议脑裂"></a>4. Raft协议脑裂</h1><p>怎么告诉客户端变更了leader、两个leader要怎么办。</p>
+<h1 id="5-etcd"><a href="#5-etcd" class="headerlink" title="5. etcd"></a>5. etcd</h1><h1 id="6-网络编程API"><a href="#6-网络编程API" class="headerlink" title="6. 网络编程API"></a>6. 网络编程API</h1><p>服务端：</p>
+<ul>
+<li>socket创建套接字</li>
+<li>bind绑定地址与端口</li>
+<li>listen开始进入LISTEN态监听</li>
+<li>accept获得一个全连接</li>
+<li>send/recv读写</li>
+</ul>
+<p>客户端</p>
+<ul>
+<li>socket创建套接字</li>
+<li>connect连接</li>
+<li>send/recv读写</li>
+</ul>
+<h1 id="7-调用API的三次握手状态变换（SYN-SENT这些）"><a href="#7-调用API的三次握手状态变换（SYN-SENT这些）" class="headerlink" title="7. 调用API的三次握手状态变换（SYN_SENT这些）"></a>7. 调用API的三次握手状态变换（SYN_SENT这些）</h1><p>服务端：listen()进入LISTEN状态，然后接受客户端SYN报文建立连接，accept取出的是已经建立好的连接。</p>
+<p>客户端：connect()进入SYN_SENT状态，接受到服务端的SYN+ACK报文后建立连接。</p>
+<h1 id="8-多个客户端访问是否需要多次listen"><a href="#8-多个客户端访问是否需要多次listen" class="headerlink" title="8. 多个客户端访问是否需要多次listen"></a>8. 多个客户端访问是否需要多次listen</h1><p>listen只是让服务端进入LISTEN状态，后续只需要监听该套接字上是否有连接事件到来即可。</p>
+<h1 id="9-QUIC的改进"><a href="#9-QUIC的改进" class="headerlink" title="9. QUIC的改进"></a>9. QUIC的改进</h1><ul>
+<li>无队头阻塞</li>
+<li>更快连接建立</li>
+<li>连接迁移</li>
+</ul>
+<h1 id="10-QUIC的连接迁移具体步骤"><a href="#10-QUIC的连接迁移具体步骤" class="headerlink" title="10. QUIC的连接迁移具体步骤"></a>10. QUIC的连接迁移具体步骤</h1><p>通过头部的CID标识连接，双方在随机生成的CID列表上达成一致，列表上的CID映射到同一连接，切换环境时切换CID。（防止CID被窃取获得用户地址）</p>
+<p>迁移后双方都向对方发起路径验证，探测可达性。</p>
+<h1 id="11-SYN洪泛攻击"><a href="#11-SYN洪泛攻击" class="headerlink" title="11. SYN洪泛攻击"></a>11. SYN洪泛攻击</h1><p>攻击者不断发送syn报文给服务端，塞满其半连接队列。</p>
+<h1 id="12-syncookie的工作原理"><a href="#12-syncookie的工作原理" class="headerlink" title="12. syncookie的工作原理"></a>12. syncookie的工作原理</h1><p>服务器收到SYN包并返回SYN+ACK包时，不放入半连接队列，而是根据这个SYN包计算出一个cookie值。</p>
+<p>在收到ACK包时，TCP服务器在根据那个cookie值检查这个ACK包的合法性。如果合法，直接放入全连接队列中建立连接。</p>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/03/09/学习笔记-研究经历整理/" class="link prev" title="学习笔记-研究经历整理">
+			<span class="hover-underline-animation">&larr; 学习笔记-研究经历整理</span>
+		</a>
+	
+	
+		<a href="/2023/03/01/学习笔记-多线程笔试题/" class="link next" title="学习笔记-多线程笔试题">
+			<span class="hover-underline-animation">学习笔记-多线程笔试题 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 自我介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Raft%E5%8D%8F%E8%AE%AE"><span class="toc-text">2. Raft协议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Raft%E5%8D%8F%E8%AE%AE%E9%9B%86%E7%BE%A4%E5%8F%98%E6%9B%B4"><span class="toc-text">3. Raft协议集群变更</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Raft%E5%8D%8F%E8%AE%AE%E8%84%91%E8%A3%82"><span class="toc-text">4. Raft协议脑裂</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-etcd"><span class="toc-text">5. etcd</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8BAPI"><span class="toc-text">6. 网络编程API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E8%B0%83%E7%94%A8API%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%8A%B6%E6%80%81%E5%8F%98%E6%8D%A2%EF%BC%88SYN-SENT%E8%BF%99%E4%BA%9B%EF%BC%89"><span class="toc-text">7. 调用API的三次握手状态变换（SYN_SENT这些）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%A4%9A%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BF%E9%97%AE%E6%98%AF%E5%90%A6%E9%9C%80%E8%A6%81%E5%A4%9A%E6%AC%A1listen"><span class="toc-text">8. 多个客户端访问是否需要多次listen</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-QUIC%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="toc-text">9. QUIC的改进</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-QUIC%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%BF%81%E7%A7%BB%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="toc-text">10. QUIC的连接迁移具体步骤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-SYN%E6%B4%AA%E6%B3%9B%E6%94%BB%E5%87%BB"><span class="toc-text">11. SYN洪泛攻击</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-syncookie%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">12. syncookie的工作原理</span></a></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

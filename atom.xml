@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-12-07T07:00:17.086Z</updated>
+  <updated>2023-03-17T07:40:31.005Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,40 +17,18 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>小林codingMYSQL知识点总结</title>
-    <link href="http://example.com/2022/11/23/%E5%B0%8F%E6%9E%97codingMYSQL%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/"/>
-    <id>http://example.com/2022/11/23/%E5%B0%8F%E6%9E%97codingMYSQL%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/</id>
-    <published>2022-11-23T07:42:48.000Z</published>
-    <updated>2022-12-07T07:00:17.086Z</updated>
+    <title>学习笔记-SQL语法</title>
+    <link href="http://example.com/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/"/>
+    <id>http://example.com/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/</id>
+    <published>2023-03-16T07:22:49.000Z</published>
+    <updated>2023-03-17T07:40:31.005Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;MYSQL&quot;&gt;&lt;a href=&quot;#MYSQL&quot; class=&quot;headerlink&quot; title=&quot;MYSQL&quot;&gt;&lt;/a&gt;MYSQL&lt;/h1&gt;&lt;p&gt;大三上的数据库课，而且讲的很浅，感觉没记下些啥，可能很基础的也会记上来。。。&lt;/p&gt;
-&lt;h2</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>小林coding计网知识点总结</title>
-    <link href="http://example.com/2022/11/10/%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/"/>
-    <id>http://example.com/2022/11/10/%E5%B0%8F%E6%9E%97coding%E8%AE%A1%E7%BD%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/</id>
-    <published>2022-11-10T08:18:01.000Z</published>
-    <updated>2022-11-22T08:39:26.569Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;小林coding计网总结&quot;&gt;&lt;a href=&quot;#小林coding计网总结&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;1-基本&quot;&gt;&lt;a href=&quot;#1-基本&quot; class=&quot;headerlink&quot; title=&quot;1. 基本&quot;&gt;&lt;/a&gt;1. 基本&lt;/h1&gt;&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td</summary>
         
       
     
@@ -60,39 +38,18 @@
   </entry>
   
   <entry>
-    <title>网络是怎样连接的读书笔记6</title>
-    <link href="http://example.com/2022/11/04/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B06/"/>
-    <id>http://example.com/2022/11/04/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B06/</id>
-    <published>2022-11-04T10:41:37.000Z</published>
-    <updated>2022-11-04T07:54:22.000Z</updated>
+    <title>学习笔记-几个小项目总结</title>
+    <link href="http://example.com/2023/03/12/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%87%A0%E4%B8%AA%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
+    <id>http://example.com/2023/03/12/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%87%A0%E4%B8%AA%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/</id>
+    <published>2023-03-12T08:10:02.000Z</published>
+    <updated>2023-03-15T04:51:16.000Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记6&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记6&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记6&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记6&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>线段树学习笔记</title>
-    <link href="http://example.com/2022/10/17/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    <id>http://example.com/2022/10/17/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
-    <published>2022-10-17T01:19:43.000Z</published>
-    <updated>2022-10-17T01:51:48.489Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;线段树-学习笔记&quot;&gt;&lt;a href=&quot;#线段树-学习笔记&quot; class=&quot;headerlink&quot; title=&quot;线段树 学习笔记&quot;&gt;&lt;/a&gt;线段树 学习笔记&lt;/h1&gt;&lt;h1 id=&quot;1-背景&quot;&gt;&lt;a href=&quot;#1-背景&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;1-json-parse&quot;&gt;&lt;a href=&quot;#1-json-parse&quot; class=&quot;headerlink&quot; title=&quot;1. json_parse&quot;&gt;&lt;/a&gt;1. json_parse&lt;/h1&gt;&lt;p&gt;使用C++</summary>
         
       
     
@@ -102,39 +59,18 @@
   </entry>
   
   <entry>
-    <title>树状数组学习笔记</title>
-    <link href="http://example.com/2022/10/16/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    <id>http://example.com/2022/10/16/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
-    <published>2022-10-16T06:47:36.000Z</published>
-    <updated>2022-10-16T07:29:52.148Z</updated>
+    <title>笔试记录-3-11-美团笔试</title>
+    <link href="http://example.com/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/"/>
+    <id>http://example.com/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/</id>
+    <published>2023-03-11T13:03:53.000Z</published>
+    <updated>2023-03-11T13:20:59.000Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;树状数组学习笔记&quot;&gt;&lt;a href=&quot;#树状数组学习笔记&quot; class=&quot;headerlink&quot; title=&quot;树状数组学习笔记&quot;&gt;&lt;/a&gt;树状数组学习笔记&lt;/h1&gt;&lt;h2 id=&quot;1-用途&quot;&gt;&lt;a href=&quot;#1-用途&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>网络是怎样连接的读书笔记4</title>
-    <link href="http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B04/"/>
-    <id>http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B04/</id>
-    <published>2022-10-15T10:41:37.000Z</published>
-    <updated>2022-10-28T13:38:53.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记4&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记4&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记4&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记4&lt;/h1&gt;&lt;h2 id=&quot;4-1-ADSL&quot;&gt;&lt;a</summary>
+    <summary type="html">&lt;h1 id=&quot;1&quot;&gt;&lt;a href=&quot;#1&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -144,40 +80,18 @@
   </entry>
   
   <entry>
-    <title>网络是怎样连接的读书笔记5</title>
-    <link href="http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B05/"/>
-    <id>http://example.com/2022/10/15/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B05/</id>
-    <published>2022-10-15T10:41:37.000Z</published>
-    <updated>2022-11-03T07:43:25.000Z</updated>
+    <title>学习笔记-研究经历整理</title>
+    <link href="http://example.com/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/"/>
+    <id>http://example.com/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/</id>
+    <published>2023-03-09T07:57:46.000Z</published>
+    <updated>2023-03-12T01:55:02.000Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记5&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记5&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记5&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记5&lt;/h1&gt;&lt;h2 id=&quot;5-1-Web服务器&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Java项目入门</title>
-    <link href="http://example.com/2022/10/14/Java%E9%A1%B9%E7%9B%AE%E5%85%A5%E9%97%A8/"/>
-    <id>http://example.com/2022/10/14/Java%E9%A1%B9%E7%9B%AE%E5%85%A5%E9%97%A8/</id>
-    <published>2022-10-14T11:34:25.000Z</published>
-    <updated>2022-10-15T06:22:28.172Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Java项目入门&quot;&gt;&lt;a href=&quot;#Java项目入门&quot; class=&quot;headerlink&quot; title=&quot;Java项目入门&quot;&gt;&lt;/a&gt;Java项目入门&lt;/h1&gt;&lt;p&gt;秒杀商城架构和依赖都看不懂。。。先回来学学基础知识吧。&lt;/p&gt;
-&lt;h2</summary>
+    <summary type="html">&lt;h1 id=&quot;单元测试的意义&quot;&gt;&lt;a href=&quot;#单元测试的意义&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -187,39 +101,19 @@
   </entry>
   
   <entry>
-    <title>网络是怎样连接的读书笔记3</title>
-    <link href="http://example.com/2022/10/13/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B03/"/>
-    <id>http://example.com/2022/10/13/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B03/</id>
-    <published>2022-10-13T06:45:03.000Z</published>
-    <updated>2022-10-15T08:35:29.703Z</updated>
+    <title>面试记录-3-7-阿里云网络二面</title>
+    <link href="http://example.com/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/"/>
+    <id>http://example.com/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/</id>
+    <published>2023-03-07T08:05:06.000Z</published>
+    <updated>2023-03-07T09:08:19.000Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记3&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记3&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记3&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记3&lt;/h1&gt;&lt;h2</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>网络是怎样连接的 读书笔记2</title>
-    <link href="http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02/"/>
-    <id>http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B02/</id>
-    <published>2022-09-17T07:46:39.000Z</published>
-    <updated>2022-09-24T07:10:08.384Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记2&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记2&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记2&quot;&gt;&lt;/a&gt;网络是怎样连接的</summary>
+    <summary type="html">&lt;p&gt;就二十分钟。。。必挂了。&lt;/p&gt;
+&lt;h1 id=&quot;1-自我介绍&quot;&gt;&lt;a href=&quot;#1-自我介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 自我介绍&quot;&gt;&lt;/a&gt;1. 自我介绍&lt;/h1&gt;&lt;h1 id=&quot;2-Raft协议&quot;&gt;&lt;a</summary>
         
       
     
@@ -229,39 +123,18 @@
   </entry>
   
   <entry>
-    <title>网络是怎样连接的读书笔记1</title>
-    <link href="http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B01/"/>
-    <id>http://example.com/2022/09/17/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B01/</id>
-    <published>2022-09-17T07:46:38.000Z</published>
-    <updated>2022-10-13T08:09:21.817Z</updated>
+    <title>学习笔记-多线程笔试题</title>
+    <link href="http://example.com/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/"/>
+    <id>http://example.com/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/</id>
+    <published>2023-03-01T13:38:31.000Z</published>
+    <updated>2023-03-14T11:15:08.460Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;网络是怎样连接的-读书笔记1&quot;&gt;&lt;a href=&quot;#网络是怎样连接的-读书笔记1&quot; class=&quot;headerlink&quot; title=&quot;网络是怎样连接的 读书笔记1&quot;&gt;&lt;/a&gt;网络是怎样连接的 读书笔记1&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://example.com/2022/02/17/hello-world/"/>
-    <id>http://example.com/2022/02/17/hello-world/</id>
-    <published>2022-02-17T03:51:33.690Z</published>
-    <updated>2021-01-12T05:37:47.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;1&quot;&gt;&lt;a href=&quot;#1&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -271,40 +144,18 @@
   </entry>
   
   <entry>
-    <title>java学习笔记4</title>
-    <link href="http://example.com/2021/09/20/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/"/>
-    <id>http://example.com/2021/09/20/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</id>
-    <published>2021-09-20T06:30:49.000Z</published>
-    <updated>2021-09-20T06:55:10.000Z</updated>
+    <title>面试记录-3-1-阿里云PolarDB一面</title>
+    <link href="http://example.com/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/"/>
+    <id>http://example.com/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/</id>
+    <published>2023-03-01T13:06:53.000Z</published>
+    <updated>2023-03-04T08:28:44.598Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;这期学一学java核心类&lt;/p&gt;
-&lt;h2 id=&quot;字符串String&quot;&gt;&lt;a href=&quot;#字符串String&quot; class=&quot;headerlink&quot; title=&quot;字符串String&quot;&gt;&lt;/a&gt;字符串String&lt;/h2&gt;&lt;h3</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>java学习笔记3</title>
-    <link href="http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/"/>
-    <id>http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</id>
-    <published>2021-09-19T08:17:58.000Z</published>
-    <updated>2021-09-19T10:07:27.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;面向对象&quot;&gt;&lt;a href=&quot;#面向对象&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;1-自我介绍&quot;&gt;&lt;a href=&quot;#1-自我介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 自我介绍&quot;&gt;&lt;/a&gt;1. 自我介绍&lt;/h1&gt;&lt;h1 id=&quot;2-线程和进程的区别&quot;&gt;&lt;a href=&quot;#2-线程和进程的区别&quot;</summary>
         
       
     
@@ -314,40 +165,18 @@
   </entry>
   
   <entry>
-    <title>java学习笔记2</title>
-    <link href="http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/"/>
-    <id>http://example.com/2021/09/19/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</id>
-    <published>2021-09-19T08:07:32.000Z</published>
-    <updated>2021-09-19T08:13:53.000Z</updated>
+    <title>面试记录-2.23-阿里云网络一面</title>
+    <link href="http://example.com/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/"/>
+    <id>http://example.com/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/</id>
+    <published>2023-02-23T12:29:50.000Z</published>
+    <updated>2023-02-25T08:00:33.268Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h2 id=&quot;数组&quot;&gt;&lt;a href=&quot;#数组&quot; class=&quot;headerlink&quot; title=&quot;数组&quot;&gt;&lt;/a&gt;数组&lt;/h2&gt;&lt;h3 id=&quot;数组遍历&quot;&gt;&lt;a href=&quot;#数组遍历&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>java学习笔记1</title>
-    <link href="http://example.com/2021/09/18/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/"/>
-    <id>http://example.com/2021/09/18/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</id>
-    <published>2021-09-18T08:23:53.000Z</published>
-    <updated>2021-09-18T09:34:35.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;软件分析课程需要，提前熟悉下java，也不知道学多久太监。&lt;/p&gt;
-&lt;h2 id=&quot;基本结构与类型&quot;&gt;&lt;a href=&quot;#基本结构与类型&quot; class=&quot;headerlink&quot; title=&quot;基本结构与类型&quot;&gt;&lt;/a&gt;基本结构与类型&lt;/h2&gt;&lt;h3 id=&quot;类&quot;&gt;&lt;a</summary>
+    <summary type="html">&lt;h1 id=&quot;2-23-阿里云网络一面（虚拟网络相关的组？）&quot;&gt;&lt;a href=&quot;#2-23-阿里云网络一面（虚拟网络相关的组？）&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -357,41 +186,19 @@
   </entry>
   
   <entry>
-    <title>kframework学习笔记3</title>
-    <link href="http://example.com/2021/07/18/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/"/>
-    <id>http://example.com/2021/07/18/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</id>
-    <published>2021-07-18T06:17:16.000Z</published>
-    <updated>2021-07-18T07:05:34.000Z</updated>
+    <title>读书笔记-深度探索C++对象模型</title>
+    <link href="http://example.com/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://example.com/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/</id>
+    <published>2023-02-15T08:12:03.000Z</published>
+    <updated>2023-03-13T11:02:13.019Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;本学习笔记从tutorial 2-1开始记录。&lt;/p&gt;
-&lt;h1 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>kramework学习笔记2</title>
-    <link href="http://example.com/2021/07/17/kramework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/"/>
-    <id>http://example.com/2021/07/17/kramework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</id>
-    <published>2021-07-17T02:16:56.000Z</published>
-    <updated>2021-07-18T03:18:55.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;本笔记开始于tutorial lesson 1-5.&lt;/p&gt;
-&lt;h1 id=&quot;添加整数、布尔值运算与条件操作&quot;&gt;&lt;a href=&quot;#添加整数、布尔值运算与条件操作&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;1-关于对象&quot;&gt;&lt;a href=&quot;#1-关于对象&quot; class=&quot;headerlink&quot; title=&quot;1. 关于对象&quot;&gt;&lt;/a&gt;1. 关于对象&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;class与struct实际上是不矛盾的。即 &lt;code&gt;struct A; class</summary>
         
       
     
@@ -401,19 +208,18 @@
   </entry>
   
   <entry>
-    <title>kframework学习笔记1</title>
-    <link href="http://example.com/2021/07/16/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/"/>
-    <id>http://example.com/2021/07/16/kframework%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</id>
-    <published>2021-07-16T01:46:39.000Z</published>
-    <updated>2021-07-16T07:03:33.000Z</updated>
+    <title>学习笔记-设计模式</title>
+    <link href="http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</id>
+    <published>2023-02-09T14:03:19.000Z</published>
+    <updated>2023-02-18T04:51:50.436Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;暑假跟着导师提前做项目，需要学个这东西。因为官方tutorial很多东西讲得很隐晦（并且作者用的纯正的罗马尼亚口音英语根本听不懂），所以开个学习笔记防止自己忘了。&lt;/p&gt;
-&lt;h1 id=&quot;kframework基本概念&quot;&gt;&lt;a href=&quot;#kframework基本概念&quot;</summary>
+    <summary type="html">&lt;p&gt;&lt;a</summary>
         
       
     
@@ -423,19 +229,211 @@
   </entry>
   
   <entry>
-    <title>流畅的python阅读笔记</title>
-    <link href="http://example.com/2021/04/27/%E6%B5%81%E7%95%85%E7%9A%84python%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
-    <id>http://example.com/2021/04/27/%E6%B5%81%E7%95%85%E7%9A%84python%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</id>
-    <published>2021-04-26T16:09:48.000Z</published>
-    <updated>2021-04-26T16:28:13.000Z</updated>
+    <title>学习笔记-Linux</title>
+    <link href="http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/"/>
+    <id>http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/</id>
+    <published>2023-02-09T08:13:34.000Z</published>
+    <updated>2023-03-17T02:48:27.000Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;考研尘埃落定，毕设大部分时间也都是等炼丹结果，所以闲着无事，开始学习。之前就听学长提起过《流畅的python》这本书，所以正好借此机会学习一下。&lt;/p&gt;
-&lt;h1 id=&quot;第一章-Python数据模型&quot;&gt;&lt;a href=&quot;#第一章-Python数据模型&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;1-内存管理&quot;&gt;&lt;a href=&quot;#1-内存管理&quot; class=&quot;headerlink&quot; title=&quot;1. 内存管理&quot;&gt;&lt;/a&gt;1. 内存管理&lt;/h1&gt;&lt;p&gt;共4G虚拟内存（32位最大寻址空间）。&lt;/p&gt;
+&lt;h2 id=&quot;1-内存各段的意义&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-查漏补缺</title>
+    <link href="http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/"/>
+    <id>http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</id>
+    <published>2023-02-08T14:08:49.000Z</published>
+    <updated>2023-03-17T02:51:19.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;自我介绍&quot;&gt;&lt;a href=&quot;#自我介绍&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-Git</title>
+    <link href="http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Git/"/>
+    <id>http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Git/</id>
+    <published>2023-02-08T08:08:40.000Z</published>
+    <updated>2023-03-14T05:12:08.682Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-基本原理&quot;&gt;&lt;a href=&quot;#1-基本原理&quot; class=&quot;headerlink&quot; title=&quot;1. 基本原理&quot;&gt;&lt;/a&gt;1. 基本原理&lt;/h1&gt;&lt;p&gt;git整个数据库存储在.git/目录下.&lt;/p&gt;
+&lt;h2 id=&quot;1-数据结构&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-Redis</title>
+    <link href="http://example.com/2023/02/06/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Redis/"/>
+    <id>http://example.com/2023/02/06/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Redis/</id>
+    <published>2023-02-06T07:37:30.000Z</published>
+    <updated>2023-03-01T11:49:49.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-基础篇&quot;&gt;&lt;a href=&quot;#1-基础篇&quot; class=&quot;headerlink&quot; title=&quot;1. 基础篇&quot;&gt;&lt;/a&gt;1. 基础篇&lt;/h1&gt;&lt;h2 id=&quot;1-Redis&quot;&gt;&lt;a href=&quot;#1-Redis&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-TinyWebServer思路梳理</title>
+    <link href="http://example.com/2023/01/30/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-TinyWebServer%E6%80%9D%E8%B7%AF%E6%A2%B3%E7%90%86/"/>
+    <id>http://example.com/2023/01/30/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-TinyWebServer%E6%80%9D%E8%B7%AF%E6%A2%B3%E7%90%86/</id>
+    <published>2023-01-30T07:47:21.000Z</published>
+    <updated>2023-03-17T15:52:19.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-框架&quot;&gt;&lt;a href=&quot;#1-框架&quot; class=&quot;headerlink&quot; title=&quot;1. 框架&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-分布式系统</title>
+    <link href="http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</id>
+    <published>2023-01-28T09:19:12.000Z</published>
+    <updated>2023-03-15T05:38:01.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-基本概念&quot;&gt;&lt;a href=&quot;#1-基本概念&quot; class=&quot;headerlink&quot; title=&quot;1. 基本概念&quot;&gt;&lt;/a&gt;1. 基本概念&lt;/h1&gt;&lt;h2 id=&quot;1-CAP定理&quot;&gt;&lt;a href=&quot;#1-CAP定理&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-大数据场景处理</title>
+    <link href="http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9C%BA%E6%99%AF%E5%A4%84%E7%90%86/"/>
+    <id>http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9C%BA%E6%99%AF%E5%A4%84%E7%90%86/</id>
+    <published>2023-01-28T08:29:34.000Z</published>
+    <updated>2023-02-09T08:12:11.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-找相同字符串&quot;&gt;&lt;a href=&quot;#1-找相同字符串&quot; class=&quot;headerlink&quot; title=&quot;1.找相同字符串&quot;&gt;&lt;/a&gt;1.找相同字符串&lt;/h1&gt;&lt;p&gt;场景：找相同URL&lt;/p&gt;
+&lt;h2 id=&quot;1-分治法&quot;&gt;&lt;a href=&quot;#1-分治法&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-C++</title>
+    <link href="http://example.com/2023/01/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-C++/"/>
+    <id>http://example.com/2023/01/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-C++/</id>
+    <published>2023-01-07T08:01:25.000Z</published>
+    <updated>2023-03-16T05:41:52.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;C和C-区别&quot;&gt;&lt;a href=&quot;#C和C-区别&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-操作系统</title>
+    <link href="http://example.com/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://example.com/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</id>
+    <published>2022-12-21T06:50:45.000Z</published>
+    <updated>2023-03-15T14:04:39.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-硬件结构&quot;&gt;&lt;a href=&quot;#1-硬件结构&quot; class=&quot;headerlink&quot; title=&quot;1. 硬件结构&quot;&gt;&lt;/a&gt;1. 硬件结构&lt;/h1&gt;&lt;h2 id=&quot;1-冯诺依曼模型&quot;&gt;&lt;a href=&quot;#1-冯诺依曼模型&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>labuladong计算机技术笔记</title>
+    <link href="http://example.com/2022/12/15/labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/2022/12/15/labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-12-15T08:01:27.000Z</published>
+    <updated>2022-12-18T10:41:35.566Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-linux文件系统文件用途&quot;&gt;&lt;a href=&quot;#1-linux文件系统文件用途&quot; class=&quot;headerlink&quot; title=&quot;1. linux文件系统文件用途&quot;&gt;&lt;/a&gt;1. linux文件系统文件用途&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;/bin</summary>
         
       
     

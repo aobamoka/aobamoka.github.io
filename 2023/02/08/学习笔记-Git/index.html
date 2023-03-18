@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-Git - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-Git
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-14">2023-03-14</time>
+        </span>
+        <span>Reading Time&#58; 6 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-基本原理"><a href="#1-基本原理" class="headerlink" title="1. 基本原理"></a>1. 基本原理</h1><p>git整个数据库存储在.git/目录下.</p>
+<h2 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h2><p>Git object：</p>
+<ul>
+<li>blob类型：只储存一个文件的内容，不包括文件名等其他信息。将这些信息通过SHA1哈希算法得到哈希值，作为object在Git仓库中的唯一标识。</li>
+<li>tree类型：将当前目录结构打一个快照，储存一个目录结构。存储文件的权限和文件名。</li>
+<li>commit类型：储存一个提交的信息。</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-1cbdf1cf24c0c0b3c0a6e9a7429bb070_720w.webp" alt="img"></p>
+<p>Git本质上是一个k-v数据库加默克尔树形成的有向无环图。</p>
+<h2 id="2-分区"><a href="#2-分区" class="headerlink" title="2. 分区"></a>2. 分区</h2><p><img src="https://pic1.zhimg.com/80/v2-71aa7d6613b4b9efbee48415f1369590_720w.webp" alt="img"></p>
+<ul>
+<li>工作目录：操作系统文件，在此进行编辑。</li>
+<li>索引：暂存区域，下次commit时提交到Git仓库。</li>
+<li>Git仓库：Git object记录每一次提交的快照，以及链式结构记录的提交变更历史。</li>
+</ul>
+<h2 id="3-解决冲突"><a href="#3-解决冲突" class="headerlink" title="3. 解决冲突"></a>3. 解决冲突</h2><p>具体步骤：</p>
+<ul>
+<li>前提：不能在master分支上修改，该分支只能通过pull和merge变更。修改的分支为dev。</li>
+<li>dev分支执行git merge origin/master，将远程master分支合并到dev。</li>
+<li>如果没有报错，直接跳过这一步。根据提示解决冲突，保存文件，然后add与commit添加commit信息。</li>
+<li>切换到master分支。</li>
+<li>pull确保当前master是最新代码。</li>
+<li>dev合并回master分支。</li>
+<li>push提交。</li>
+</ul>
+<h2 id="4-多人协作"><a href="#4-多人协作" class="headerlink" title="4. 多人协作"></a>4. 多人协作</h2><ul>
+<li>试图git push origin [branch] 推送自己的修改。</li>
+<li>如果推送失败，说明远程分支比自己的更新，先git pull试图合并。</li>
+<li>合并可能产生冲突，解决冲突并在本地提交。</li>
+<li>git push origin [branch]推送</li>
+</ul>
+<h1 id="2-git-add-commit-rm"><a href="#2-git-add-commit-rm" class="headerlink" title="2. git add/commit/rm"></a>2. git add/commit/rm</h1><p>add将文件添加到暂存区，commit将暂存区的修改提交到分支。</p>
+<p>与add相对，git rm是删除文件，删了后同样要用commit提交</p>
+<p>提交时并不会盲目复制整个目录，而是将当前版本与上一个版本进行对比，打包所有的差异，作为一个提交记录。</p>
+<h1 id="3-git-branch"><a href="#3-git-branch" class="headerlink" title="3. git branch"></a>3. git branch</h1><p>创建分支只是指向某个提交记录，不会额外耗费内存。</p>
+<p>创建分支后分支没有变，要用git checkout改变分支。</p>
+<p>2.23版本后用git switch取代git checkout。</p>
+<ul>
+<li>git branch -f 分支 提交：将分支移动到提交处。</li>
+<li>git branch -u o/main foo 或 git checkout -b foo o/main：让foo跟踪远程分支。</li>
+<li>git branch -d 分支 删除分支（-D：强行删除分支，即使上面还有没有提交的修改）</li>
+</ul>
+<h1 id="4-git-merge"><a href="#4-git-merge" class="headerlink" title="4. git merge"></a>4. git merge</h1><p>合并两个分支。</p>
+<ul>
+<li>如果它们没有父子关系，则创建一个新的提交，并指向这两个分支。</li>
+<li>如果它们有父子关系，只需要移动指针到最新的提交。</li>
+</ul>
+<p>如果出现冲突，解决冲突后再git add与commit，就会创建一个新提交，指向这两个分支。</p>
+<h1 id="5-git-rebase"><a href="#5-git-rebase" class="headerlink" title="5. git rebase"></a>5. git rebase</h1><p>在rebase后的分支a的基础上，从a与当前分支的共同祖先开始，逐一应用该祖先到当前分支的所有修改。最后将当前分支指向最新的分支。</p>
+<p>同样是合并分支。将并行开发转换成线性开发。</p>
+<ul>
+<li>如果没有父子关系，从当前分支取出一系列提交记录，然后逐个应用在参数分支。</li>
+<li>如果有父子关系，只需要移动指针到最新的提交。</li>
+</ul>
+<h1 id="6-HEAD"><a href="#6-HEAD" class="headerlink" title="6. HEAD"></a>6. HEAD</h1><p>一般情况下，HEAD指向当前分支，当前分支指向某个提交。</p>
+<p>通过git checkout分离HEAD，可使其指向某个提交。</p>
+<p>^表示上个提交，~n表示上n个提交。通过HEAD^来相对移动。</p>
+<h1 id="7-git-reset"><a href="#7-git-reset" class="headerlink" title="7. git reset"></a>7. git reset</h1><p>回退提交记录，相当于重定位HEAD指针。但是对远程分支无效。</p>
+<p>还可以回退文件，git reset HEAD filename：将该文件暂存区的修改撤销。</p>
+<h1 id="8-git-revert"><a href="#8-git-revert" class="headerlink" title="8. git revert"></a>8. git revert</h1><p>创建新提交，引入更改来撤销当前提交。即，新提交状态与上上个提交相同。</p>
+<h1 id="9-git-cherry-pick"><a href="#9-git-cherry-pick" class="headerlink" title="9. git cherry-pick"></a>9. git cherry-pick</h1><p>将一些提交操作在当前的分支下复现。相当于单个提交的rebase。</p>
+<p>如果冲突，会停下来，用户解决完冲突，add加入暂存区后，通过–continue选项继续执行，或–abort放弃。</p>
+<h1 id="10-交互式rebase"><a href="#10-交互式rebase" class="headerlink" title="10. 交互式rebase"></a>10. 交互式rebase</h1><p>加入-i参数，使用交互式界面操作rebase。交互式界面可操作提交数目与顺序。</p>
+<p>git rebase -i 创建分支的提交位置</p>
+<h1 id="11-git-tag"><a href="#11-git-tag" class="headerlink" title="11. git tag"></a>11. git tag</h1><p>tag与分支同样指向一个提交，但tag不能被随意变动。</p>
+<p>tag只在本地有，不自动推送到远程。</p>
+<ul>
+<li>git tag [tagname] [hash]：打标签，不加hash就在当前提交打<ul>
+<li>-a：tagname</li>
+<li>-m：说明</li>
+<li>-d：删除</li>
+</ul>
+</li>
+<li>git show [tagname]</li>
+</ul>
+<h1 id="12-git-describe"><a href="#12-git-describe" class="headerlink" title="12. git describe"></a>12. git describe</h1><p>找到最近的标签。</p>
+<p><code>git describe 提交/默认HEAD</code></p>
+<p>输出 <code>&lt;tag&gt;_&lt;numCommits&gt;_g&lt;hash&gt;</code></p>
+<ul>
+<li>tag为离提交最近的标签。</li>
+<li>numcommits为该提交与ref相差多少提交记录。</li>
+<li>hash为提交的哈希值前几位。</li>
+</ul>
+<h1 id="13-git-clone"><a href="#13-git-clone" class="headerlink" title="13. git clone"></a>13. git clone</h1><h1 id="14-git-fetch"><a href="#14-git-fetch" class="headerlink" title="14. git fetch"></a>14. git fetch</h1><ul>
+<li>从远程仓库下载本地仓库缺失的提交记录</li>
+<li>更新远程分支指针</li>
+</ul>
+<p>不会修改本地文件，只是单纯下载进行这一操作所需的所有数据。</p>
+<h1 id="15-git-pull"><a href="#15-git-pull" class="headerlink" title="15. git pull"></a>15. git pull</h1><p>git fetch + git merge</p>
+<p>git pull –rebase = git fetch + git rebase</p>
+<h1 id="16-git-push"><a href="#16-git-push" class="headerlink" title="16. git push"></a>16. git push</h1><p>git push origin master</p>
+<p>切到本地仓库的main分支，获取所有的提交，再到远程仓库origin找到main分支，将远程仓库没有的提交记录添加。</p>
+<h1 id="17-git-status-diff-reflog"><a href="#17-git-status-diff-reflog" class="headerlink" title="17. git status/diff/reflog"></a>17. git status/diff/reflog</h1><p>查看状态。</p>
+<p>Status查看当前待commit的文件信息、冲突信息。</p>
+<p>Diff传入文件名，查看该文件上一次提交修改的内容。</p>
+<p>reflog查看输入过的命令。</p>
+<h1 id="18-git-checkout"><a href="#18-git-checkout" class="headerlink" title="18. git checkout"></a>18. git checkout</h1><ul>
+<li>改变分支（2.4后用switch区分语义）<ul>
+<li>git checkout -b [dev]：创建dev并改变HEAD至dev。（不加-b则仅改变，需要先通过git branch [dev]创建）</li>
+</ul>
+</li>
+<li>改变文件<ul>
+<li>git checkout – filename：将该文件回到最后一次commit/add的状态（能恢复删除的文件）</li>
+</ul>
+</li>
+</ul>
+<h1 id="19-git-remote"><a href="#19-git-remote" class="headerlink" title="19. git remote"></a>19. git remote</h1><p>关联：git remote add origin [url]</p>
+<p>第一次提交：git push -u origin master：将本地master分支提交到远程仓库。</p>
+<p>后续：git push -u origin master</p>
+<p>删除：git remote rm origin：删除本地库与远程库之间的关联。</p>
+<h1 id="20-git-switch"><a href="#20-git-switch" class="headerlink" title="20. git switch"></a>20. git switch</h1><p>git 2.4后才有的</p>
+<p>为了区分checkout改变分支与文件的动作，用switch来改变分支。</p>
+<ul>
+<li>git switch -c dev：创建并改变分支</li>
+</ul>
+<h2 id="21-git-stash"><a href="#21-git-stash" class="headerlink" title="21. git stash"></a>21. git stash</h2><p>暂存现场工作</p>
+<ul>
+<li>git stash：暂存现场工作</li>
+<li>git stash list：查看暂存的工作</li>
+<li>git stash apply stash@{1}：恢复 默认上一条，如果加最后一个参数则恢复指定的</li>
+<li>git stash drop：删除暂存的工作</li>
+<li>git stash pop：上两条合并</li>
+</ul>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/02/08/学习笔记-查漏补缺/" class="link prev" title="学习笔记-查漏补缺">
+			<span class="hover-underline-animation">&larr; 学习笔记-查漏补缺</span>
+		</a>
+	
+	
+		<a href="/2023/02/06/学习笔记-Redis/" class="link next" title="学习笔记-Redis">
+			<span class="hover-underline-animation">学习笔记-Redis &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-text">1. 基本原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">1. 数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E5%8C%BA"><span class="toc-text">2. 分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81"><span class="toc-text">3. 解决冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C"><span class="toc-text">4. 多人协作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-add-commit-rm"><span class="toc-text">2. git add&#x2F;commit&#x2F;rm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-branch"><span class="toc-text">3. git branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-git-merge"><span class="toc-text">4. git merge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-git-rebase"><span class="toc-text">5. git rebase</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-HEAD"><span class="toc-text">6. HEAD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-git-reset"><span class="toc-text">7. git reset</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-git-revert"><span class="toc-text">8. git revert</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-git-cherry-pick"><span class="toc-text">9. git cherry-pick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E4%BA%A4%E4%BA%92%E5%BC%8Frebase"><span class="toc-text">10. 交互式rebase</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-git-tag"><span class="toc-text">11. git tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-git-describe"><span class="toc-text">12. git describe</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-git-clone"><span class="toc-text">13. git clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-git-fetch"><span class="toc-text">14. git fetch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-git-pull"><span class="toc-text">15. git pull</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#16-git-push"><span class="toc-text">16. git push</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#17-git-status-diff-reflog"><span class="toc-text">17. git status&#x2F;diff&#x2F;reflog</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#18-git-checkout"><span class="toc-text">18. git checkout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#19-git-remote"><span class="toc-text">19. git remote</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#20-git-switch"><span class="toc-text">20. git switch</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#21-git-stash"><span class="toc-text">21. git stash</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

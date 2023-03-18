@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>读书笔记-深度探索C++对象模型 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      读书笔记-深度探索C++对象模型
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-13">2023-03-13</time>
+        </span>
+        <span>Reading Time&#58; 5 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-关于对象"><a href="#1-关于对象" class="headerlink" title="1. 关于对象"></a>1. 关于对象</h1><ol>
+<li>class与struct实际上是不矛盾的。即 <code>struct A; class A &#123; ... &#125;;</code>是可以同时存在的，默认是public还是private按定义的来（定义为class则默认private，否则默认public）。也可以用class继承struct。</li>
+<li>class中，相同区间声明的成员一定按声明顺序存储，但不同区间则顺序不一定（private、public、父子类等）。</li>
+<li>转换是一种编译器指令，大部分情况下并不改变指针的地址，而只是影响指针指向<strong>内存的大小和内容</strong>的<strong>解释方式</strong>。</li>
+</ol>
+<h1 id="2-构造函数语义学"><a href="#2-构造函数语义学" class="headerlink" title="2. 构造函数语义学"></a>2. 构造函数语义学</h1><ol>
+<li>默认构造函数并不是默认一定会生成，只在编译器认为“需要”的时候编译生成。且只会初始化类对象，不会初始化标量。<ol>
+<li>成员变量为“带有默认构造函数的类对象”，编译器会依定义顺序调用所有成员的默认构造函数。如果用户自定义了部分成员变量的初始化（不含参数），编译器会在用户自定义的代码前先插入其他成员的默认构造函数。</li>
+<li>基类有默认构造函数。</li>
+<li>有虚函数/基类有虚函数。必须要完成vptr与vtable的初始化。</li>
+<li>有虚基类。虚基类也是通过vtable实现。</li>
+</ol>
+</li>
+<li>编译器是否会生成拷贝构造函数，取决于类是否展现出“逐位拷贝语义”。类不展现出该语义的情况与1类似，此时编译器生成拷贝构造函数。<ol>
+<li>1.1与1.2中，为其基类与成员调用其定义的拷贝构造函数。</li>
+<li>1.3与1.4中，vtable必须深拷贝，vptr也不能直接拷贝使得两个对象有同一vtable。</li>
+</ol>
+</li>
+<li>NRV优化：将函数中值传递的类对象返回值改为在参数中引用传递，返回void。必须要类显式定义了拷贝构造函数才会启动NRV优化。</li>
+<li>成员初始化列表：会作为语句插入到用户自定义语句之前，且按照成员声明顺序排列。所以，成员初始化列表尽量按照声明顺序排列，以防止用某些还没初始化的成员初始化其他成员。</li>
+</ol>
+<h1 id="3-Data语意学"><a href="#3-Data语意学" class="headerlink" title="3. Data语意学"></a>3. Data语意学</h1><ol>
+<li>空类：不同的编译器处理不同：对于A-&gt;B/C-&gt;D的菱形继承关系，它们都为空类。A的大小为1，但B、D的大小在不同的编译器上分别为8、12或4、8。<ol>
+<li>一种编译器为B继承的A保留了其1字节的大小，又由于对齐，填充了3字节，使得最终大小为1（A）+3（padding）+4（vptr）=8</li>
+<li>另一种编译器因为B有了vptr不为空，所以不需要A的1字节，为4。</li>
+</ol>
+</li>
+</ol>
+<h1 id="4-Function语意学"><a href="#4-Function语意学" class="headerlink" title="4. Function语意学"></a>4. Function语意学</h1><ol>
+<li><code>((classname*)0)-&gt;member_function()</code>在下列条件下是能成功的。后续引入了静态成员函数替代这种写法。<ol>
+<li>不直接读写成员变量</li>
+<li>成员函数不声明为const、volatile、virtual</li>
+</ol>
+</li>
+<li>多态虚表：一个class对应一个虚表，在编译器构建完成。虚表中包含该类的类型信息、虚函数的地址（按定义顺序排列）。</li>
+<li>多继承的虚函数：thunk模型：每个被多继承的基类维护一个虚表指针，其中一个基类为主要基类，其他的为次要基类。主要基类的虚表指针维护<strong>该派生类从主要基类继承链上的全部虚函数</strong>，而次要基类的虚表指针只维护<strong>该次要基类继承链上的</strong>虚函数（从该次要基类开始，所以看不见派生类的）。主要基类的虚表中会维护需要调整this指针的函数（在其他次要基类中定义的）<ol>
+<li>实际调用时，根据虚表中的记录调整this函数到相应位置，再通过虚表查询调用。</li>
+<li>当然，这样频繁移动this指针会使运行效率更慢。</li>
+</ol>
+</li>
+<li>虚成员函数的指针也可实现动态多态。</li>
+<li>inline函数：<ol>
+<li>处理流程<ol>
+<li>分析函数定义，判断其能不能成为inline，如果不能则成为static函数</li>
+<li>在调用点上扩展inline函数</li>
+</ol>
+</li>
+<li>同名局部变量、副作用函数会使用临时变量进行处理</li>
+</ol>
+</li>
+</ol>
+<h1 id="5-构造、析构、拷贝语意学"><a href="#5-构造、析构、拷贝语意学" class="headerlink" title="5. 构造、析构、拷贝语意学"></a>5. 构造、析构、拷贝语意学</h1><ol>
+<li>纯虚函数<ol>
+<li>纯虚函数可以在类外被定义，也能被静态调用（类名::虚函数）</li>
+<li>尽量不要将析构函数声明为纯虚函数。析构函数在编译时会扩张，以<strong>静态调用</strong>的方式调用其所有基类的析构函数，导致<strong>纯虚析构函数一定得在类外定义</strong>。</li>
+</ol>
+</li>
+</ol>
+<h1 id="6-执行期语意学"><a href="#6-执行期语意学" class="headerlink" title="6. 执行期语意学"></a>6. 执行期语意学</h1><ol>
+<li>临时对象的生命期：临时性对象被摧毁，应该是对产生临时对象的完整表达式求值过程中的最后一个步骤。<ol>
+<li>完整表达式一般指被涵括的表达式中最外围的那个。</li>
+<li>两个例外：<ol>
+<li>临时对象作为拷贝构造函数的参数：临时对象保留到对象构造完成。</li>
+<li>临时对象被常引用绑定：临时对象保留到引用或临时对象的生命范畴结束。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="7-站在对象模型的尖端"><a href="#7-站在对象模型的尖端" class="headerlink" title="7. 站在对象模型的尖端"></a>7. 站在对象模型的尖端</h1><ol>
+<li>template模板<ol>
+<li>template只存在声明时，里面的静态成员是不可用的，即使与类型无关。（不能 <code>Point::Status s</code>这样不带类型名）</li>
+<li>成员函数只在其被调用的时候实例化。为了空间时间效率，以及支持尚未实现的功能的考虑。</li>
+<li>int和long一致的架构中，类型实例化还是会产生两个实例。</li>
+<li>错误处理：面对声明时，只将其收集为一系列tokens，即只做与语法有关的错误检查（不合法字符等），不作与语法无关的检查（类型检查等）。</li>
+<li>名称决议法：在模板定义域与实例化域分别声明同名的不同重载函数（该函数不是模板类成员）时：<ol>
+<li>如果函数与“用以实例化模板的参数类型”有关，则使用模板定义域的函数。</li>
+<li>如果函数与“用以实例化模板的参数类型”无关，则使用模板实例化域的函数。</li>
+<li>是否有关：向函数传入了该参数类型的参数。</li>
+</ol>
+</li>
+<li>成员函数的实例化：<ol>
+<li>编译时不产生任何实例化。</li>
+<li>链接前，检查每个编译模块文件，寻找模板实例的相互参考与对应的定义。</li>
+<li>对于参考到模板实例而该实例没有定义的情况，将该文件视为与另一个实例化等同。</li>
+<li>重新执行编译器，编译每一个改变过的文件。</li>
+<li>重复直到所有必要的实例化操作完成。</li>
+<li>链接。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/02/23/面试记录-2-23-阿里云网络一面/" class="link prev" title="面试记录-2.23-阿里云网络一面">
+			<span class="hover-underline-animation">&larr; 面试记录-2.23-阿里云网络一面</span>
+		</a>
+	
+	
+		<a href="/2023/02/09/学习笔记-设计模式/" class="link next" title="学习笔记-设计模式">
+			<span class="hover-underline-animation">学习笔记-设计模式 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%85%B3%E4%BA%8E%E5%AF%B9%E8%B1%A1"><span class="toc-text">1. 关于对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E8%AF%AD%E4%B9%89%E5%AD%A6"><span class="toc-text">2. 构造函数语义学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Data%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">3. Data语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Function%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">4. Function语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%9E%84%E9%80%A0%E3%80%81%E6%9E%90%E6%9E%84%E3%80%81%E6%8B%B7%E8%B4%9D%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">5. 构造、析构、拷贝语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%89%A7%E8%A1%8C%E6%9C%9F%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">6. 执行期语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E7%AB%99%E5%9C%A8%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B0%96%E7%AB%AF"><span class="toc-text">7. 站在对象模型的尖端</span></a></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

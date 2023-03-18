@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>算法学习-背包问题与滚动数组思想 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      算法学习-背包问题与滚动数组思想
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-02-15">2023-02-15</time>
+        </span>
+        <span>Reading Time&#58; 4 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h2 id="一、主要思想"><a href="#一、主要思想" class="headerlink" title="一、主要思想"></a>一、主要思想</h2><p>利用大多数dp问题往往具有：根据上一个或者上几个状态来决定当前状态，的特点，而只针对这几个状态进行存储，不断地用新生成的数据覆盖不使用的旧数据空间，以达到降低空间利用的目的。</p>
+<h2 id="二、举例说明"><a href="#二、举例说明" class="headerlink" title="二、举例说明"></a>二、举例说明</h2><p>以经典的01背包问题为例，dp[n][m]为动态规划数组dp，n代表物品的编号，m代表当前总共占的体积大小，而dp的值则代表了当前情况下所能获得的最大价值。<br>由于上面对dp数组与下标的定义，可以知道边界条件的初始化值：</p>
+<ul>
+<li>dp[0][j]代表了取第0件物品时所能产生的最大价值。显然当j大于等于第0件物品的体积时，dp[0][j]即为第0件物品的价值，否则为0。</li>
+<li>dp[i][0]代表了背包为空时能产生的最大价值，显然背包为空时不能放入任何物品，最大价值为0。</li>
+</ul>
+<p>接下来确认递推关系，对于某位置dp[i][j]：</p>
+<ul>
+<li>我们可以不取第i号物品（或者已经放不下了），此时dp[i][j]=dp[i-1][j]。</li>
+<li>我们也可以取第i号物品，此时dp[i][j]=dp[i-1][j-weight[i]]+value[i]。</li>
+</ul>
+<p>得到递推关系dp[i][j]=max(dp[i-1][j],dp[i-1][j-weight[i]]+value[i])。</p>
+<p>从中我们可以看出的是，对于i这一层关系来说，dp[i]只与dp[i-1]的状态有关，也就意味着，在做dp[i-1]行到dp[i]行的状态转移时，i-2、……、0行的状态都是不被需要的。所以我们可以在状态转移时只用一维数组dp[j]记录状态，不断用新的值来覆盖旧的值。</p>
+<h2 id="三、第二维j的遍历方向问题"><a href="#三、第二维j的遍历方向问题" class="headerlink" title="三、第二维j的遍历方向问题"></a>三、第二维j的遍历方向问题</h2><p>对于01背包问题来说，假设我们通过正序来遍历j，利用dp[4][9]得到了dp[5][10]的值，而下一步我们又需要利用到dp[4][10]的值，但是这个时候它的值已经被dp[5][10]覆盖了，所以无法再取到它的值。</p>
+<p>而如果采用j倒序的方式来遍历，当某个位置的值将要更新时，它只会依靠位于其前面的位置的值来更新，而此时它的前面位置的值还处于上一层未被更新，它的后面位置的值均已被更新，但是在这一层不会被调用到，所以可以解决覆盖问题。</p>
+<p>对于完全背包问题，由于物品可以取无限多次，所以可以采用正序进行遍历。</p>
+<h2 id="四、求方式数"><a href="#四、求方式数" class="headerlink" title="四、求方式数"></a>四、求方式数</h2><p>在求装满背包有几种方法的情况下，递推公式一般为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j] +&#x3D; dp[j - nums[i]];</span><br></pre></td></tr></table></figure>
+<h2 id="五、两层循环嵌套顺序能否互换"><a href="#五、两层循环嵌套顺序能否互换" class="headerlink" title="五、两层循环嵌套顺序能否互换"></a>五、两层循环嵌套顺序能否互换</h2><p>01背包问题与完全背包问题都是可以替换的，因为在递推过程中，当前位置的值永远只会依赖当前位置左上方向上的值，而这些值无论以哪种循环嵌套顺序，都是先于当前位置被计算。一般为外层遍历物品，内层遍历背包</p>
+<p>如果不是求组合数，而是需要求排列数，即{1,5}与{5,1}算作两种解答，这时候需要外层遍历背包，内层遍历物品。</p>
+<h2 id="六、知识点总结"><a href="#六、知识点总结" class="headerlink" title="六、知识点总结"></a>六、知识点总结</h2><p>拿到动态规划问题的步骤：</p>
+<ol>
+<li>分析是否为背包问题</li>
+<li>分析是哪种背包问题（下列三种分类）</li>
+<li>分析是01还是完全</li>
+<li>分析要求的答案是组合还是排列，即元素之间的顺序关系</li>
+</ol>
+<p>常见背包问题分类</p>
+<h3 id="①-组合问题："><a href="#①-组合问题：" class="headerlink" title="① 组合问题："></a>① 组合问题：</h3><ol>
+<li>377.组合总和 Ⅳ</li>
+<li>494.目标和</li>
+<li>518.零钱兑换 II</li>
+</ol>
+<p>通用公式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j]+&#x3D;dp[j-weight[i]]</span><br></pre></td></tr></table></figure>
+<h3 id="②-True与False问题："><a href="#②-True与False问题：" class="headerlink" title="② True与False问题："></a>② True与False问题：</h3><ol>
+<li>139.组合总和 Ⅳ</li>
+<li>416.目标和</li>
+</ol>
+<p>通用公式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j]&#x3D;dp[j]|dp[j-weight[i]]</span><br></pre></td></tr></table></figure>
+<h3 id="③-最大最小问题"><a href="#③-最大最小问题" class="headerlink" title="③ 最大最小问题"></a>③ 最大最小问题</h3><ol>
+<li>474.一和零</li>
+<li>322.零钱兑换</li>
+</ol>
+<p>通用公式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j]&#x3D;max&#x2F;min(dp[j],dp[j-weight[i]]+value[i])</span><br></pre></td></tr></table></figure>
+<p>再分类</p>
+<h3 id="①-01背包问题"><a href="#①-01背包问题" class="headerlink" title="① 01背包问题"></a>① 01背包问题</h3><p>数组中的元素不可重复使用，应该将物品放在外侧循环，体积放在内侧循环，并且对体积倒序遍历。</p>
+<h3 id="②-完全背包问题"><a href="#②-完全背包问题" class="headerlink" title="② 完全背包问题"></a>② 完全背包问题</h3><p>数组中的元素可重复使用，应该将物品放在外侧循环，体积放在内侧循环，并且对体积正序遍历。</p>
+<h3 id="③-需要考虑元素间的顺序"><a href="#③-需要考虑元素间的顺序" class="headerlink" title="③ 需要考虑元素间的顺序"></a>③ 需要考虑元素间的顺序</h3><p>应该将体积放在外侧循环，物品放在内侧循环。如果出现这种情况，在内侧循环赋值时记得将下标与体积进行比较，避免数组越界。</p>
+<p>以上总结参考自：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-iv/solution/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/">https://leetcode-cn.com/problems/combination-sum-iv/solution/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/</a></p>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2021/07/16/大致了解-kframework1/" class="link prev" title="大致了解-kframework1">
+			<span class="hover-underline-animation">&larr; 大致了解-kframework1</span>
+		</a>
+	
+	
+		<a href="/2021/03/20/leetcode-master学习笔记-动态规划/" class="link next" title="leetcode-master学习笔记-动态规划">
+			<span class="hover-underline-animation">leetcode-master学习笔记-动态规划 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="toc-text">一、主要思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="toc-text">二、举例说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%AC%AC%E4%BA%8C%E7%BB%B4j%E7%9A%84%E9%81%8D%E5%8E%86%E6%96%B9%E5%90%91%E9%97%AE%E9%A2%98"><span class="toc-text">三、第二维j的遍历方向问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B1%82%E6%96%B9%E5%BC%8F%E6%95%B0"><span class="toc-text">四、求方式数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%B8%A4%E5%B1%82%E5%BE%AA%E7%8E%AF%E5%B5%8C%E5%A5%97%E9%A1%BA%E5%BA%8F%E8%83%BD%E5%90%A6%E4%BA%92%E6%8D%A2"><span class="toc-text">五、两层循环嵌套顺序能否互换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-text">六、知识点总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0-%E7%BB%84%E5%90%88%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-text">① 组合问题：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1-True%E4%B8%8EFalse%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-text">② True与False问题：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2-%E6%9C%80%E5%A4%A7%E6%9C%80%E5%B0%8F%E9%97%AE%E9%A2%98"><span class="toc-text">③ 最大最小问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0-01%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-text">① 01背包问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-text">② 完全背包问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2-%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E5%85%83%E7%B4%A0%E9%97%B4%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-text">③ 需要考虑元素间的顺序</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

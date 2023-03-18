@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>学习笔记-大数据场景处理 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      学习笔记-大数据场景处理
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-02-09">2023-02-09</time>
+        </span>
+        <span>Reading Time&#58; 1 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-找相同字符串"><a href="#1-找相同字符串" class="headerlink" title="1.找相同字符串"></a>1.找相同字符串</h1><p>场景：找相同URL</p>
+<h2 id="1-分治法"><a href="#1-分治法" class="headerlink" title="1. 分治法"></a>1. 分治法</h2><p>按照哈希值分组，所有相同字符串一定在同一组，然后在同一组中求相同字符串。如果组仍然太大，还可以再次哈希。</p>
+<h2 id="2-前缀树"><a href="#2-前缀树" class="headerlink" title="2. 前缀树"></a>2. 前缀树</h2><p>字典树</p>
+<h1 id="2-找高频词"><a href="#2-找高频词" class="headerlink" title="2. 找高频词"></a>2. 找高频词</h1><p>场景：访问最多的IP、请求最多的资源</p>
+<p>分治法：</p>
+<ol>
+<li>哈希分组，每组用哈希表统计频数</li>
+<li>优先队列求高频词</li>
+</ol>
+<h1 id="3-找不重复整数"><a href="#3-找不重复整数" class="headerlink" title="3. 找不重复整数"></a>3. 找不重复整数</h1><h2 id="1-分治法-1"><a href="#1-分治法-1" class="headerlink" title="1. 分治法"></a>1. 分治法</h2><h2 id="2-位图法"><a href="#2-位图法" class="headerlink" title="2. 位图法"></a>2. 位图法</h2><p>用位表示状态，可以每个数用2bit表示，00表示没出现过、01表示出现过一次、10表示多次出现。</p>
+<p>整理成位图后再遍历位图即可。</p>
+<h1 id="4-判断某个数是否存在"><a href="#4-判断某个数是否存在" class="headerlink" title="4. 判断某个数是否存在"></a>4. 判断某个数是否存在</h1><h2 id="1-分治法-2"><a href="#1-分治法-2" class="headerlink" title="1. 分治法"></a>1. 分治法</h2><h2 id="2-位图法-1"><a href="#2-位图法-1" class="headerlink" title="2. 位图法"></a>2. 位图法</h2><p>0表示不存在，1表示存在</p>
+<h1 id="5-找中位数"><a href="#5-找中位数" class="headerlink" title="5. 找中位数"></a>5. 找中位数</h1><h2 id="1-双堆法"><a href="#1-双堆法" class="headerlink" title="1. 双堆法"></a>1. 双堆法</h2><p>两个堆，分别维护更大的一半数与更小的一半数，根据堆顶元素即可得中位数。</p>
+<h2 id="2-分治法"><a href="#2-分治法" class="headerlink" title="2. 分治法"></a>2. 分治法</h2><ol>
+<li>先按最高位分治，根据两个集合中数据个数判断中位数在哪个集合中。</li>
+<li>之后再按次高位分支，循环直到集合大小能装进内存中。</li>
+<li>在内存中排序并找到中位数。</li>
+</ol>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/01/28/学习笔记-分布式系统/" class="link prev" title="学习笔记-分布式系统">
+			<span class="hover-underline-animation">&larr; 学习笔记-分布式系统</span>
+		</a>
+	
+	
+		<a href="/2023/01/07/学习笔记-C++/" class="link next" title="学习笔记-C++">
+			<span class="hover-underline-animation">学习笔记-C++ &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%89%BE%E7%9B%B8%E5%90%8C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">1.找相同字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">1. 分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%89%8D%E7%BC%80%E6%A0%91"><span class="toc-text">2. 前缀树</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%89%BE%E9%AB%98%E9%A2%91%E8%AF%8D"><span class="toc-text">2. 找高频词</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%89%BE%E4%B8%8D%E9%87%8D%E5%A4%8D%E6%95%B4%E6%95%B0"><span class="toc-text">3. 找不重复整数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%86%E6%B2%BB%E6%B3%95-1"><span class="toc-text">1. 分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BD%8D%E5%9B%BE%E6%B3%95"><span class="toc-text">2. 位图法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%95%B0%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-text">4. 判断某个数是否存在</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%86%E6%B2%BB%E6%B3%95-2"><span class="toc-text">1. 分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BD%8D%E5%9B%BE%E6%B3%95-1"><span class="toc-text">2. 位图法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%89%BE%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="toc-text">5. 找中位数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8F%8C%E5%A0%86%E6%B3%95"><span class="toc-text">1. 双堆法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">2. 分治法</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>算法学习-树状数组 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      算法学习-树状数组
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-02-15">2023-02-15</time>
+        </span>
+        <span>Reading Time&#58; 3 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="树状数组学习笔记"><a href="#树状数组学习笔记" class="headerlink" title="树状数组学习笔记"></a>树状数组学习笔记</h1><h2 id="1-用途"><a href="#1-用途" class="headerlink" title="1. 用途"></a>1. 用途</h2><p>在O(logn)时间复杂度下实现数组的单点查询与修改、区间和查询与修改。</p>
+<h2 id="2-lowbit"><a href="#2-lowbit" class="headerlink" title="2. lowbit"></a>2. lowbit</h2><p>lowbit即为某个数二进制表示种最低位上的1，如n = 3，二进制表示为11，则lowbit(3) = 1；n = 6，二进制表示为110，则lowbit(6) = 10。</p>
+<p>lowbit的便捷求法为lowbit(i) = i &amp; -i。</p>
+<p>想法：</p>
+<p>为方便表述理解，设数组为nums[1……8]，树状数组为tree[1……8]。</p>
+<p>单点修改：我们需要更新nums[3]的值，可以不断让3加上它的lowbit，并更新路径上的tree数组的值，即更新tree数组上下标为3、4、8的值。可以看作沿着树的叶子节点一路向上修改。</p>
+<p>区间查询：我们需要求nums[1……7]区间和，可以通过lowbit将区间和分割为若干个子区间和，7的二进制表示为111，可以分割为7(111)、6(110)、4(100)这样几个区间，分别存储[7, 7]、[5, 6]、[1, 4]区间内的元素和，并进行累加。</p>
+<h2 id="3-具体实现"><a href="#3-具体实现" class="headerlink" title="3. 具体实现"></a>3. 具体实现</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/range-sum-query-mutable/submissions/">LeetCode 307.区间和检索-数组可修改</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumArray</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums, tree;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    NumArray(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        n = nums.size();</span><br><span class="line">        <span class="keyword">this</span>-&gt;nums.push_back(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i: nums) <span class="keyword">this</span>-&gt;nums.push_back(i);</span><br><span class="line">        tree = <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            add(i + <span class="number">1</span>, nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt;= n; i += (i &amp; -i)) &#123;</span><br><span class="line">            tree[i] += val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> index, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        add(index + <span class="number">1</span>, val - nums[index + <span class="number">1</span>]);</span><br><span class="line">        nums[index + <span class="number">1</span>] = val;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">prefix</span><span class="params">(<span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (right == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = right; i &gt; <span class="number">0</span>; i -= (i &amp; -i)) &#123;</span><br><span class="line">            res += tree[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">sumRange</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> prefix(right + <span class="number">1</span>) - prefix(left);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>由于C++数组下标从0开始，为方便理解，创建大小为n+1的树状数组来储存。</p>
+<h2 id="4-区间修改与单点查询"><a href="#4-区间修改与单点查询" class="headerlink" title="4. 区间修改与单点查询"></a>4. 区间修改与单点查询</h2><p>这里实现的是支持单点修改与区间查询的PURQ(Point Update Range Query)树状数组，此外还有支持区间修改与单点查询的RUPQ树状数组，以及区间修改与区间查询的RURQ树状数组。</p>
+<h3 id="差分数组"><a href="#差分数组" class="headerlink" title="差分数组"></a>差分数组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">diff[1] &#x3D; nums[1]</span><br><span class="line">diff[n] &#x3D; nums[n] - nums[n - 1]</span><br></pre></td></tr></table></figure>
+<h3 id="区间修改"><a href="#区间修改" class="headerlink" title="区间修改"></a>区间修改</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nums &#x3D; &#123;4, 2, -2, 7, 8&#125;, diff &#x3D; &#123;4, -2, -4, 9, 1&#125;</span><br></pre></td></tr></table></figure>
+<p>此时将区间[2, 4]范围内的元素加3，只需要执行操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">diff[2] +&#x3D; 3</span><br><span class="line">diff[4 + 1] -&#x3D; 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nums &#x3D; &#123;4, 5, 1, 10, 8&#125;, diff &#x3D; &#123;4, 1, -4, 9, -2&#125;</span><br></pre></td></tr></table></figure>
+<p>实际不需要修改nums数组的元素。</p>
+<h3 id="单点查询"><a href="#单点查询" class="headerlink" title="单点查询"></a>单点查询</h3><p>可以观察到</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nums[n] &#x3D; nums[n] - nums[n - 1] + nums[n - 1] - nums[n - 2] + ... + nums[1]</span><br><span class="line">	&#x3D; diff[n] + diff[n - 1] + ... + diff[0]</span><br></pre></td></tr></table></figure>
+<p>因此，针对差分数组diff建立树状数组，就能得到O(logn)时间内完成区间修改与单点查询的树状数组。</p>
+<h2 id="5-区间修改与区间查询"><a href="#5-区间修改与区间查询" class="headerlink" title="5. 区间修改与区间查询"></a>5. 区间修改与区间查询</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">preSum(k) &#x3D; nums[1] + nums[2] + ... + nums[k] </span><br><span class="line">	  &#x3D; diff[1] + (diff[1] + diff[2]) + ... + (diff[1] + diff[2] + ... + diff[k])</span><br><span class="line">	  &#x3D; k * diff[1] + (k - 1) * diff[1] + ... + diff[k]</span><br><span class="line">	  &#x3D; k * (diff[1] + diff[2] + ... + diff[k]) - (1 * diff[1] + 2 * diff[2] + ... + k * diff[k])</span><br></pre></td></tr></table></figure>
+<p>所以，只需要在RUPQ的基础上额外维护数组helperArr = {i * diff[i]} 。</p>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2022/10/17/算法学习-线段树/" class="link prev" title="算法学习-线段树">
+			<span class="hover-underline-animation">&larr; 算法学习-线段树</span>
+		</a>
+	
+	
+		<a href="/2022/10/15/读书笔记-网络是怎样连接的4/" class="link next" title="读书笔记-网络是怎样连接的4">
+			<span class="hover-underline-animation">读书笔记-网络是怎样连接的4 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-text">树状数组学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%94%A8%E9%80%94"><span class="toc-text">1. 用途</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-lowbit"><span class="toc-text">2. lowbit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-text">3. 具体实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8C%BA%E9%97%B4%E4%BF%AE%E6%94%B9%E4%B8%8E%E5%8D%95%E7%82%B9%E6%9F%A5%E8%AF%A2"><span class="toc-text">4. 区间修改与单点查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84"><span class="toc-text">差分数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E9%97%B4%E4%BF%AE%E6%94%B9"><span class="toc-text">区间修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%82%B9%E6%9F%A5%E8%AF%A2"><span class="toc-text">单点查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%8C%BA%E9%97%B4%E4%BF%AE%E6%94%B9%E4%B8%8E%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2"><span class="toc-text">5. 区间修改与区间查询</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

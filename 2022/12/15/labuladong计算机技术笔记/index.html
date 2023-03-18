@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>labuladong计算机技术笔记 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      labuladong计算机技术笔记
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2022-12-18">2022-12-18</time>
+        </span>
+        <span>Reading Time&#58; 6 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-linux文件系统文件用途"><a href="#1-linux文件系统文件用途" class="headerlink" title="1. linux文件系统文件用途"></a>1. linux文件系统文件用途</h1><ul>
+<li>/bin /sbin：存储可执行的二进制文件，如cp、chmod、ifconfig等命令。</li>
+<li>/boot：存储系统启动需要的文件。</li>
+<li>/dev：存放设备文件。</li>
+<li>/etc：存放很多程序的配置信息，如apt。(在/etc/apt中更改镜像源)</li>
+<li>/lib：包含bin和sbin中可执行文件的依赖，类似win中的dll文件库。</li>
+<li>/media：有一个以用户名命名的文件夹，里面是自动挂载的设备，如U盘等。</li>
+<li>/mnt：手动挂载设备的地方。</li>
+<li>/opt：无特定用途。</li>
+<li>/proc：全部正在运行程序的状态信息。有以PID命名的文件夹。</li>
+<li>/root：root用户的home目录</li>
+<li>/run /sys：存储某些程序的运行时信息和系统需要的一些信息。由于存储在内存，所以随着机器关闭而丢失。</li>
+<li>/srv：存放服务数据。</li>
+<li>/tmp：存储一些程序的临时文件。</li>
+<li>/usr：存放一些非系统必须的资源，如用户安装的应用程序。/usr和/usr/local目录中也有bin和sbin，存放用户使用的工具。</li>
+<li>/var：存储日志信息。</li>
+<li>/home：普通用户的home目录</li>
+</ul>
+<h1 id="2-进程-线程-文件描述符"><a href="#2-进程-线程-文件描述符" class="headerlink" title="2. 进程-线程-文件描述符"></a>2. 进程-线程-文件描述符</h1><p>linux中进程就是一个数据结构task_struct，称为进程描述符  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">    long state; &#x2F;&#x2F; 状态</span><br><span class="line">    struct mm_struct *mm; &#x2F;&#x2F;虚拟内存</span><br><span class="line">    pid_t pid; &#x2F;&#x2F; 进程号</span><br><span class="line">    struct task_struct __rcu *parent &#x2F;&#x2F; 指向父进程的指针</span><br><span class="line">    struct list_head children; &#x2F;&#x2F;子进程列表</span><br><span class="line">    struct fs_struct *fs; &#x2F;&#x2F;存放文件系统信息的指针</span><br><span class="line">    struct files_struct *files; &#x2F;&#x2F; 该进程打开的文件指针组成的数组</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="1-文件描述符"><a href="#1-文件描述符" class="headerlink" title="1. 文件描述符"></a>1. 文件描述符</h2><p>一般一个进程会从files[0]读取输入，将输出写入files[1]，将错误信息写入files[2]。每个进程被创建时files的前三位分别被填入默认值标准输入流、标准输出流、标准错误流。文件描述符指的就是这个文件指针数组的索引。  </p>
+<p>一般的计算机输入流是键盘，输出流和错误流是显示器。</p>
+<p>输入重定向：将files[0]指向一个文件，程序就会从这个文件中读取数据。  </p>
+<p>输出重定向：将files[1]指向一个文件，程序的输出就会写入到这个文件中。  </p>
+<p>错误重定向：与输出重定向一样。  </p>
+<p>管道符|：把一个进程的输出流和另一个进程的输入流连接起来，数据在其中传递。</p>
+<h2 id="2-线程"><a href="#2-线程" class="headerlink" title="2.线程"></a>2.线程</h2><p>linux中的线程和进程实际上都是用的task_struct表示，只有共享的数据区域不同。子进程的mm指针指向一片新的虚拟内存区域，而子线程的mm指针与其父进程共享。</p>
+<h2 id="3-shell小技巧"><a href="#3-shell小技巧" class="headerlink" title="3. shell小技巧"></a>3. shell小技巧</h2><h3 id="1-标准输入和参数"><a href="#1-标准输入和参数" class="headerlink" title="1. 标准输入和参数"></a>1. 标准输入和参数</h3><p>标准输入：scanf、readline这种命令。可以通过管道传输给其他命令。  </p>
+<p>参数：main函数传入的args字符串组。可以通过$()传输给其他命令。  </p>
+<p>判断：如果命令能让终端阻塞，说明其接受标准输入。</p>
+<h3 id="2-后台运行程序"><a href="#2-后台运行程序" class="headerlink" title="2. 后台运行程序"></a>2. 后台运行程序</h3><p>远程登陆服务器时，终端会一直阻塞。</p>
+<p>在命令之后加&amp;：命令行不会阻塞，但是如果退出服务器登录就不能再访问该网页。  </p>
+<p>(cmd &amp;)：可以实现不阻塞且可以在shell关闭后访问web端。  </p>
+<p>原理：命令行终端实际上是shell进程，在其中执行的程序都是shell进程的子进程，所以终端关闭后其子进程都会退出。(cmd &amp;)是将cmd命令挂到一个systemd系统守护进程名下，与shell无关。</p>
+<h3 id="3-单引号与双引号"><a href="#3-单引号与双引号" class="headerlink" title="3. 单引号与双引号"></a>3. 单引号与双引号</h3><p>对于$ ( )这些富豪，单引号包围的字符不会转义，而双引号会，所以如果其中有空格，应该用双引号括起来。</p>
+<h3 id="4-sudo"><a href="#4-sudo" class="headerlink" title="4. sudo"></a>4. sudo</h3><p>有些脚本不用sudo能用，但是加了sudo反而用不了，因为这些脚本只存在于用户环境变量中，要用sudo运行必须使用绝对路径。</p>
+<h3 id="5-相似文件名"><a href="#5-相似文件名" class="headerlink" title="5. 相似文件名"></a>5. 相似文件名</h3><p>可以用花括号括起来文件名组成部分，会自动组合。  </p>
+<p>比如{1,2,3}{4,5,6}，会自动组合成14、15、16、……（中间不能存在空格）</p>
+<h3 id="6-输入路径"><a href="#6-输入路径" class="headerlink" title="6. 输入路径"></a>6. 输入路径</h3><p>cd -： 返回上一次在的目录  </p>
+<p>!$：替换成上一次命令最后的路径  </p>
+<p>!*：替换成上一次命令输入的所有文件路径  </p>
+<p>CDPATH：当cd命令在当前目录中找不到指定文件或目录时，会去CDPATH中的路径找</p>
+<h3 id="7-输入重复命令"><a href="#7-输入重复命令" class="headerlink" title="7. 输入重复命令"></a>7. 输入重复命令</h3><p>!!：自动替换成上一次使用的命令  </p>
+<p>history | grep ‘condition’：搜索带有condition的历史命令  </p>
+<p>!id：上面指令搜索的每一条命令都带有独特id，通过id可以重新运行</p>
+<h3 id="8-重定向符号"><a href="#8-重定向符号" class="headerlink" title="8. 重定向符号"></a>8. 重定向符号</h3><blockquote>
+<p>：将标准输出重定向到文件中（清除原有文件中的数据）。  </p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>：将标准输出重定向到文件中（在原有内容后追加）。  </p>
+</blockquote>
+</blockquote>
+<p><code>cat file.txt &gt; file.txt</code>  </p>
+<p>最终会得到空文件，因为执行顺序是：重定向符号是&gt;，所以shell先打开file.txt清空内容，然后将cat的标准输出指向file.txt。  </p>
+<p><code>echo hello world &gt; file.txt</code><br><code>cat file.txt &gt;&gt; file.txt</code><br>最终会得到死循环，因为cat是逐行读取数据然后输出。  </p>
+<p>|：管道符的多个命令是并行执行的。  </p>
+<h3 id="9-session和cookie"><a href="#9-session和cookie" class="headerlink" title="9. session和cookie"></a>9. session和cookie</h3><p>cookie：HTTP是一种无状态的协议，如果需要进行连续操作，服务器就需要给用户贴个特定的标签，用户每次请求时加上标签让服务器认出来。  </p>
+<p>一个cookie相当于name=value的变量，而一个session是存储在服务器上的映射。  </p>
+<p>session具体由Manager、Provider与Session三个类配合实现：</p>
+<ol>
+<li>服务器接到浏览器的HTTP请求，Handler解析Header中的cookie，得到SessionID并发给Manager。</li>
+<li>Manager存储了session存活时间、cookie名称等配置信息，所有的session存在Manager的Provider中，Manager把SID传递给Provider让他去找出对应的session。</li>
+<li>Provider是一个容器，存储SID与session的映射，根据SID找到Session结构并返回。</li>
+<li>Handler拿出Session中的具体信息，生成该用户的HTML网页并返回给客户端。</li>
+</ol>
+<h3 id="10-git"><a href="#10-git" class="headerlink" title="10. git"></a>10. git</h3><p>git的三个分区：</p>
+<ul>
+<li>工作目录working directory（肉眼可以看到的文件）</li>
+<li>暂存区stage area/index area</li>
+<li>提交历史commit history（HEAD指针指向的位置）</li>
+</ul>
+<p>分区转换：</p>
+<ul>
+<li>将work dir中的修改加入stage：git add</li>
+<li>将stage中的修改还原到work dir：git checkout</li>
+<li>将stage的文件添加到history：git commit</li>
+<li>将history的文件还原到stage区：git reset</li>
+<li>将work dir的修改提交到history区：先git add后git commit，或者git commit -a</li>
+<li>将history区的历史提交还原到work dir中：git checkout HEAD . </li>
+</ul>
+</section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2022/12/21/学习笔记-操作系统/" class="link prev" title="学习笔记-操作系统">
+			<span class="hover-underline-animation">&larr; 学习笔记-操作系统</span>
+		</a>
+	
+	
+		<a href="/2022/11/23/学习笔记-MySQL/" class="link next" title="学习笔记-MySQL">
+			<span class="hover-underline-animation">学习笔记-MySQL &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E7%94%A8%E9%80%94"><span class="toc-text">1. linux文件系统文件用途</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">2. 进程-线程-文件描述符</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">1. 文件描述符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B"><span class="toc-text">2.线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-shell%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-text">3. shell小技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="toc-text">2. 后台运行程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%8D%95%E5%BC%95%E5%8F%B7%E4%B8%8E%E5%8F%8C%E5%BC%95%E5%8F%B7"><span class="toc-text">3. 单引号与双引号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-sudo"><span class="toc-text">4. sudo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%9B%B8%E4%BC%BC%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-text">5. 相似文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%BE%93%E5%85%A5%E8%B7%AF%E5%BE%84"><span class="toc-text">6. 输入路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%BE%93%E5%85%A5%E9%87%8D%E5%A4%8D%E5%91%BD%E4%BB%A4"><span class="toc-text">7. 输入重复命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E9%87%8D%E5%AE%9A%E5%90%91%E7%AC%A6%E5%8F%B7"><span class="toc-text">8. 重定向符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-session%E5%92%8Ccookie"><span class="toc-text">9. session和cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-git"><span class="toc-text">10. git</span></a></li></ol></li></ol></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>

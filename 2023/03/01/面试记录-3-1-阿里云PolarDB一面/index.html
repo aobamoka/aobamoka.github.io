@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#333333">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="keyword"  content="">
+    <meta name="description" content="">
+    <title>面试记录-3-1-阿里云PolarDB一面 - 青叶摩卡的博客</title>
+    <base href="/">
+    <link rel="preconnect" href="//cdn.bootcss.com">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css" rel="stylesheet" media="screen and (prefers-color-scheme: dark)">
+    <!-- UIkit CSS -->
+    <link href="https://cdn.bootcss.com/uikit/3.2.0/css/uikit.min.css" rel="stylesheet">
+    <!-- UIkit JS -->
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit.min.js" async></script>
+    <script src="https://cdn.bootcss.com/uikit/3.2.0/js/uikit-icons.min.js" async></script>
+    
+<link rel="stylesheet" href="/styles/cold-stone.css">
+
+    <noscript>
+      <p class="text-center">你的浏览器还没开启 Javascript 功能！</p>
+    </noscript>
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="aobamoka" type="application/atom+xml">
+</head>
+
+  <body>
+    
+
+    <header class="header" uk-sticky="top: 100; animation: uk-animation-slide-top; bottom: #sticky-on-scroll-up">
+  <nav class="wrapper header-content">
+    <div class="nav-overlay uk-navbar-left">
+      <h1 class="title nav-list-item uk-logo" data-link="/">
+        
+        <a href="/" data-link="/">aobamoka</a>
+        
+      </h1>
+
+      <ul class="nav-list">
+        
+        <li class="nav-list-item" data-link="/categories/">
+          <a class="nav-list-link" href="/categories">CATEGORIES</a>
+        </li>
+        
+        
+        <li class="nav-list-item" data-link="/about/">
+          <a class="nav-list-link" href="/about/">ABOUT</a>
+        </li>
+        
+        <li class="nav-list-item" data-link="/rss/">
+          <a class="nav-list-link" href="/atom.xml">RSS</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="uk-navbar-right translate-x">
+        <a class="uk-navbar-toggle" href="#modal-full" uk-search-icon uk-toggle></a>
+      </div>
+    
+  </nav>
+</header>
+
+<div id="modal-full" class="uk-modal-full uk-modal" uk-modal>
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <button class="uk-modal-close-full" type="button" uk-close></button>
+    <form class="uk-search uk-search-large search-form" action="//google.com/search" method="get" accept-charset="UTF-8"
+      target="_blank">
+      <input class="uk-search-input search-form-input" type="search" name="q" placeholder="Search"
+        autofocus autocomplete="false">
+      <input type="hidden" name="sitesearch" value="http://example.com">
+    </form>
+  </div>
+</div>
+
+
+    <main class="main wrapper"><article class="article slide-in-right uk-article">
+  <section class="article-header">
+    <h1 class="article-title uk-article-title">
+      面试记录-3-1-阿里云PolarDB一面
+    </h1>
+    <p class="article-meta uk-article-meta">
+      <span class="meta-info">
+        <span>
+          Last Update&#58;<time class="post-time"
+            datetime="2023-03-04">2023-03-04</time>
+        </span>
+        <span>Reading Time&#58; 5 min</span>
+        <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
+            id="busuanzi_value_page_pv"></span></span>
+      </span>
+    </p>
+  </section>
+  <section class="article-content"><h1 id="1-自我介绍"><a href="#1-自我介绍" class="headerlink" title="1. 自我介绍"></a>1. 自我介绍</h1><h1 id="2-线程和进程的区别"><a href="#2-线程和进程的区别" class="headerlink" title="2. 线程和进程的区别"></a>2. 线程和进程的区别</h1><h1 id="3-线程、进程的通信手段"><a href="#3-线程、进程的通信手段" class="headerlink" title="3. 线程、进程的通信手段"></a>3. 线程、进程的通信手段</h1><h1 id="4-管道"><a href="#4-管道" class="headerlink" title="4. 管道"></a>4. 管道</h1><h1 id="5-乐观锁、悲观锁、自旋锁、互斥锁"><a href="#5-乐观锁、悲观锁、自旋锁、互斥锁" class="headerlink" title="5. 乐观锁、悲观锁、自旋锁、互斥锁"></a>5. 乐观锁、悲观锁、自旋锁、互斥锁</h1><h1 id="6-自旋锁和互斥锁的使用场景"><a href="#6-自旋锁和互斥锁的使用场景" class="headerlink" title="6. 自旋锁和互斥锁的使用场景"></a>6. 自旋锁和互斥锁的使用场景</h1><h1 id="7-B-树"><a href="#7-B-树" class="headerlink" title="7. B+树"></a>7. B+树</h1><h1 id="8-B-树的并发控制"><a href="#8-B-树的并发控制" class="headerlink" title="8. B+树的并发控制"></a>8. B+树的并发控制</h1><p>问的实际上是锁</p>
+<h1 id="9-LSM树"><a href="#9-LSM树" class="headerlink" title="9. LSM树"></a>9. LSM树</h1><p>日志结构合并树。</p>
+<p>作为各种NoSQL的底层存储索引。</p>
+<h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><ul>
+<li>横跨内外存，分为多个层，L0位于内存，L1-LN位于磁盘。</li>
+<li>内存中一般采用<strong>有序、高性能查找的结构</strong>，如AVL树、红黑树、跳表等。</li>
+<li>外存中每一层本质是多个<strong>文件</strong>，文件内是排序好的数据。</li>
+<li>每一层树数据达到阈值后，按照<strong>一定策略</strong>向下层归并。</li>
+<li>增删改LSM树均在内存操作，归并时将修改刷盘。</li>
+<li>特点：<strong>写性能强、读性能弱</strong>。</li>
+</ul>
+<p>与B+树都使用了WAL计数，但B+树增删改均是随机写，LSM树只是追加顺序写，而LSM树读操作最坏需要遍历所有层，所以读效率一般不如B+树。</p>
+<p>优：增删改速度快，写性能强。</p>
+<p>缺：读性能弱；归并操作消耗资源；不支持范围查询。</p>
+<h2 id="2-具体结构"><a href="#2-具体结构" class="headerlink" title="2. 具体结构"></a>2. 具体结构</h2><p>由memtable、immutable-memtable（内存）与SSTable（磁盘）组成。</p>
+<h2 id="3-插入"><a href="#3-插入" class="headerlink" title="3. 插入"></a>3. 插入</h2><p><strong>只在内存中进行</strong></p>
+<p>分为两步：</p>
+<ol>
+<li>WAL写日志</li>
+<li>将待插入的数据定位到<strong>内存</strong>中待写入的位置，写入。（不在乎该数据是否在<strong>磁盘</strong>中）</li>
+<li>如果数据已在内存，就变为更新。</li>
+</ol>
+<p>增删改操作在memtable中进行，memtable大小达到阈值后转变成immutable-memtable（即将刷盘的中间态），并新建一个memtable。后台线程将immutable-memtable写入磁盘L1层形成SSTable文件，随后销毁immutable-memtable。</p>
+<p>SSTable不可修改，改善都是以顺序写入新记录的形式呈现。读取数据从新到旧读，所以先读到最新的数据。</p>
+<p>单个SSTable不存在相同key的数据，而不同SStable可能存在。</p>
+<h2 id="4-更新"><a href="#4-更新" class="headerlink" title="4. 更新"></a>4. 更新</h2><p><strong>只在内存中进行</strong></p>
+<ol>
+<li>在内存中找待更新的数据。</li>
+<li>如果内存中找到，就更新。</li>
+<li>否则改为插入到其应该在的位置。</li>
+</ol>
+<h2 id="5-删除"><a href="#5-删除" class="headerlink" title="5. 删除"></a>5. 删除</h2><p><strong>只在内存中进行</strong></p>
+<p>只是将更新改为打上delete标签。如果找不到就插入一个有delete标签的数据。</p>
+<h2 id="6-查找"><a href="#6-查找" class="headerlink" title="6. 查找"></a>6. 查找</h2><p>性能偏弱，按照层次增加依次查找，知道找到为止。</p>
+<p>外存中每一层的多个SSTable配有布隆过滤器和索引。布隆过滤器快速判断block内部是否存在待查找的值，可能存在则通过索引加速查找。</p>
+<p>最坏需要遍历所有层。</p>
+<h2 id="7-归并"><a href="#7-归并" class="headerlink" title="7. 归并"></a>7. 归并</h2><p>将低级别多个SSTable文件中的数据放入高一级的SSTable文件，并清除这些低级别的文件。</p>
+<p>三个问题：</p>
+<ul>
+<li>读放大：读取数据时实际读取量大于真正的数据量。如LSM读取数据时可能需要扫描多个SSTable。</li>
+<li>写放大：写入数据时实际写入量大于真正的数据量。如LSM树种写入触发Compact操作。</li>
+<li>空间放大：数据实际占用的磁盘空间比数据真正大小更多。如LSM种存放旧版数据都是无效的。</li>
+</ul>
+<p>必要性：对一个数据增删改时，磁盘中可能存有其历史版本，而这些历史版本不会被读取到、没有任何作用，但是占着磁盘，需要清理。</p>
+<p>两种广泛应用的策略</p>
+<h3 id="1-STCS-Size-Tiered-Compaction-Strategy"><a href="#1-STCS-Size-Tiered-Compaction-Strategy" class="headerlink" title="1. STCS Size-Tiered-Compaction-Strategy"></a>1. STCS Size-Tiered-Compaction-Strategy</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/772b1dc05459429ca9fd7c837d3dddfa~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="img"></p>
+<p>保证<strong>同一层</strong>中所有SSTable大小相近。</p>
+<p>某层SSTable数量达到阈值时，将其合成一个更大的SSTable，放入下一个level，且在合并过程中清理重复的、被删除的数据。</p>
+<p>多路归并排序。</p>
+<p>对三个问题的解决：</p>
+<ul>
+<li>读放大：<strong>存在</strong>。不知道要查找的key在哪个SSTable，还是需要从新到旧遍历所有SSTable。</li>
+<li>写放大：<strong>存在</strong>。写时触发Compact。</li>
+<li>空间放大：<strong>存在</strong>。这种策略只能保证每个SSTable不存在重复数据，但同一层多个SSTable依然可能有相同数据。</li>
+</ul>
+<h3 id="2-LCS-Leveled-Compaction-Strategy"><a href="#2-LCS-Leveled-Compaction-Strategy" class="headerlink" title="2. LCS Leveled-Compaction-Strategy"></a>2. LCS Leveled-Compaction-Strategy</h3><p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/38fbb237a5654586a225f6237424fd94~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="img"></p>
+<p>保证<strong>磁盘</strong>所有层SSTable大小一致。</p>
+<p>每一层限制总文件大小，层内按序排列且无重复数据（SSTable之间也有序）。</p>
+<p>某层总文件大小达到阈值时，在该层选择一个SSTable与下一层key范围有交集的SSTable合并。保证合并后单个SSTable大小不超过阈值，且层内有序。多个不相关Compact可并行。</p>
+<p>对三个问题的解决：</p>
+<ul>
+<li>读放大：较小。层内SSTable也有序，所以可直接定位到可能存放key的SSTable。</li>
+<li>写放大：存在。写时触发Compact。</li>
+<li>空间放大：较小。层内无重复数据，compact时不创建临时文件。</li>
+</ul>
+<h2 id="8-MVCC在LSM树的应用"><a href="#8-MVCC在LSM树的应用" class="headerlink" title="8. MVCC在LSM树的应用"></a>8. MVCC在LSM树的应用</h2><p>防止高频率读写时，一个连接读取的SSTable被Compact的问题。</p>
+<p>悲观锁解决效率过低，通过MVCC解决。</p>
+<p>本质上快照+对所有SSTable加上引用计数。某个版本的引用计数降为0时，清理版本内引用计数为0的SSTable。</p>
+<h1 id="10-MySQL语句执行流程"><a href="#10-MySQL语句执行流程" class="headerlink" title="10. MySQL语句执行流程"></a>10. MySQL语句执行流程</h1><h1 id="11-10中的词法分析和语法分析具体是？"><a href="#11-10中的词法分析和语法分析具体是？" class="headerlink" title="11. 10中的词法分析和语法分析具体是？"></a>11. 10中的词法分析和语法分析具体是？</h1><h1 id="12-隔离级别和防止的问题"><a href="#12-隔离级别和防止的问题" class="headerlink" title="12. 隔离级别和防止的问题"></a>12. 隔离级别和防止的问题</h1><h1 id="13-vector和list"><a href="#13-vector和list" class="headerlink" title="13. vector和list"></a>13. vector和list</h1><h1 id="14-vector扩容机制"><a href="#14-vector扩容机制" class="headerlink" title="14. vector扩容机制"></a>14. vector扩容机制</h1><p>感觉可以讲讲reserve和resize、capacity和size</p>
+<h1 id="15-拷贝构造函数什么时候调用"><a href="#15-拷贝构造函数什么时候调用" class="headerlink" title="15. 拷贝构造函数什么时候调用"></a>15. 拷贝构造函数什么时候调用</h1><h1 id="16-C-设计一个LRU"><a href="#16-C-设计一个LRU" class="headerlink" title="16. C++设计一个LRU"></a>16. C++设计一个LRU</h1><h1 id="17-问了面的另一个部门"><a href="#17-问了面的另一个部门" class="headerlink" title="17. 问了面的另一个部门"></a>17. 问了面的另一个部门</h1><h1 id="18-算法：K个有序数组排序"><a href="#18-算法：K个有序数组排序" class="headerlink" title="18. 算法：K个有序数组排序"></a>18. 算法：K个有序数组排序</h1><p>写了堆、讲了归并排序</p>
+<h1 id="19-算法：多线程打印1-100-重要！！！"><a href="#19-算法：多线程打印1-100-重要！！！" class="headerlink" title="19. 算法：多线程打印1~100 重要！！！"></a>19. 算法：多线程打印1~100 重要！！！</h1><p>要求：交替、不空转、同一调用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cv;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; ++i) &#123;</span><br><span class="line">        <span class="function">unique_lock&lt;mutex&gt; <span class="title">lck</span><span class="params">(mtx)</span></span>;</span><br><span class="line">        <span class="keyword">while</span> (id != flag) cv.wait(lck);</span><br><span class="line">        <span class="keyword">if</span> (id + (i % <span class="number">2</span>) == <span class="number">2</span>) <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        flag = <span class="number">3</span> - flag;</span><br><span class="line">        cv.notify_all();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">thread <span class="title">a</span><span class="params">(print, <span class="number">1</span>)</span></span>;</span><br><span class="line">    print(<span class="number">2</span>);</span><br><span class="line">    a.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></section>
+</article>
+
+<section class="prev-next card slide-in-right">
+	
+		<a href="/2023/03/01/学习笔记-多线程笔试题/" class="link prev" title="学习笔记-多线程笔试题">
+			<span class="hover-underline-animation">&larr; 学习笔记-多线程笔试题</span>
+		</a>
+	
+	
+		<a href="/2023/02/23/面试记录-2-23-阿里云网络一面/" class="link next" title="面试记录-2.23-阿里云网络一面">
+			<span class="hover-underline-animation">面试记录-2.23-阿里云网络一面 &rarr;</span>
+		</a>
+	
+</section>
+
+
+<section class="article-toc">
+  <div class="card uk-margin-remove-bottom">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 自我介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2. 线程和进程的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%BA%BF%E7%A8%8B%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1%E6%89%8B%E6%AE%B5"><span class="toc-text">3. 线程、进程的通信手段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%AE%A1%E9%81%93"><span class="toc-text">4. 管道</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E4%B9%90%E8%A7%82%E9%94%81%E3%80%81%E6%82%B2%E8%A7%82%E9%94%81%E3%80%81%E8%87%AA%E6%97%8B%E9%94%81%E3%80%81%E4%BA%92%E6%96%A5%E9%94%81"><span class="toc-text">5. 乐观锁、悲观锁、自旋锁、互斥锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%87%AA%E6%97%8B%E9%94%81%E5%92%8C%E4%BA%92%E6%96%A5%E9%94%81%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">6. 自旋锁和互斥锁的使用场景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-B-%E6%A0%91"><span class="toc-text">7. B+树</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-B-%E6%A0%91%E7%9A%84%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">8. B+树的并发控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-LSM%E6%A0%91"><span class="toc-text">9. LSM树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%9A%E4%B9%89"><span class="toc-text">1. 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%85%B7%E4%BD%93%E7%BB%93%E6%9E%84"><span class="toc-text">2. 具体结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8F%92%E5%85%A5"><span class="toc-text">3. 插入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9B%B4%E6%96%B0"><span class="toc-text">4. 更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%88%A0%E9%99%A4"><span class="toc-text">5. 删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%9F%A5%E6%89%BE"><span class="toc-text">6. 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%BD%92%E5%B9%B6"><span class="toc-text">7. 归并</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-STCS-Size-Tiered-Compaction-Strategy"><span class="toc-text">1. STCS Size-Tiered-Compaction-Strategy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-LCS-Leveled-Compaction-Strategy"><span class="toc-text">2. LCS Leveled-Compaction-Strategy</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-MVCC%E5%9C%A8LSM%E6%A0%91%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">8. MVCC在LSM树的应用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-MySQL%E8%AF%AD%E5%8F%A5%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-text">10. MySQL语句执行流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-10%E4%B8%AD%E7%9A%84%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%92%8C%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E5%85%B7%E4%BD%93%E6%98%AF%EF%BC%9F"><span class="toc-text">11. 10中的词法分析和语法分析具体是？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E5%92%8C%E9%98%B2%E6%AD%A2%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">12. 隔离级别和防止的问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-vector%E5%92%8Clist"><span class="toc-text">13. vector和list</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-vector%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">14. vector扩容机制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%B0%83%E7%94%A8"><span class="toc-text">15. 拷贝构造函数什么时候调用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#16-C-%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AALRU"><span class="toc-text">16. C++设计一个LRU</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#17-%E9%97%AE%E4%BA%86%E9%9D%A2%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E9%83%A8%E9%97%A8"><span class="toc-text">17. 问了面的另一个部门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#18-%E7%AE%97%E6%B3%95%EF%BC%9AK%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F"><span class="toc-text">18. 算法：K个有序数组排序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#19-%E7%AE%97%E6%B3%95%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%93%E5%8D%B01-100-%E9%87%8D%E8%A6%81%EF%BC%81%EF%BC%81%EF%BC%81"><span class="toc-text">19. 算法：多线程打印1~100 重要！！！</span></a></li></ol>
+  </div>
+</section>
+
+<section class="article slide-in-right">
+  <div class="loader" id="loader">
+    <svg viewBox="0 0 50 50">
+      <circle class="ring" cx="25" cy="25" r="20"></circle>
+      <circle class="ball" cx="25" cy="5" r="3.5"></circle>
+    </svg>
+  </div>
+
+  <div class="comment" id="utteranc"></div>
+  <noscript>Please activate JavaScript for normal use of comments</noscript>
+</section>
+
+<a class="card back-to-top" id="backTop">&UpArrow;</a>
+</main>
+
+    
+
+    <script>
+	window.COLD_STONE = {
+		root: "/",
+		author: "aoba moka" || '',
+		gaid: "xxxxxxxxxxxxxx" || '',
+		repo: "xrr2016/blog" || '',
+	}
+</script>
+
+
+
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad()</script>
+
+
+<script src="/scripts/busuanzi.js" referrerpolicy="origin"></script>
+
+<script src="/scripts/cold-stone.js"></script>
+
+
+
+  <script src="//www.googletagmanager.com/gtag/js?id=xxxxxxxxxxxxxx"></script>
+
+  <script>
+	window.dataLayer = window.dataLayer || []
+	function gtag() {
+		dataLayer.push(arguments)
+	}
+	gtag('js', new Date())
+	gtag('config', window.COLD_STONE.gaid)
+  </script>
+
+
+  </body>
+</html>
