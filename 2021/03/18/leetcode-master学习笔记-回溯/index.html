@@ -114,7 +114,7 @@
 <h3 id="②-回溯函数怎么写"><a href="#②-回溯函数怎么写" class="headerlink" title="② 回溯函数怎么写"></a>② 回溯函数怎么写</h3><h4 id="Ⅰ、确立返回值与参数"><a href="#Ⅰ、确立返回值与参数" class="headerlink" title="Ⅰ、确立返回值与参数"></a>Ⅰ、确立返回值与参数</h4><p>返回值一般为void，一般通过传递引用类型的参数来记录回溯中寻找到的结果。</p>
 <h4 id="Ⅱ、终止条件"><a href="#Ⅱ、终止条件" class="headerlink" title="Ⅱ、终止条件"></a>Ⅱ、终止条件</h4><p>到了dfs遍历的叶子节点，此时将符合条件的答案存进参数传递的记录容器之中，并且直接返回。</p>
 <h4 id="Ⅲ、遍历过程"><a href="#Ⅲ、遍历过程" class="headerlink" title="Ⅲ、遍历过程"></a>Ⅲ、遍历过程</h4><p>对当前层的每种可能结果，将该结果添加进记录路径用的变量之中，之后对下一层进行递归调用；当从下一层返回时，在路径之中去除本次添加，以达到回溯的效果。</p>
-<p>根据本人做题经验，存储符合要求的可能结果的、作为引用参数进行传递的容器一般为双层vector，或vector<code>&lt;string&gt;</code>；记录路径的引用参数一般为上述容器的子类型。（或者把这两个放进全局变量里也可以）</p>
+<p>根据本人做题经验，存储符合要求的可能结果的、作为引用参数进行传递的容器一般为双层vector，或vector <code>&lt;string&gt;</code>；记录路径的引用参数一般为上述容器的子类型。（或者把这两个放进全局变量里也可以）</p>
 <h2 id="二、组合问题"><a href="#二、组合问题" class="headerlink" title="二、组合问题"></a>二、组合问题</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combinations/">leetcode 77：组合</a></p>
 <p>虽然这道题简单，但是剪枝挺值得一学。<br>剪枝思想为：当搜索到当前层时，如果发现当前层剩下的元素数目已经不足以填充path到k，则不需要继续搜索而是直接返回。</p>
 <p>体现在i&lt;=n-(k-path.size())这一条语句上</p>
@@ -153,8 +153,8 @@
 		</a>
 	
 	
-		<a href="/2021/03/16/leetcode-master学习笔记-二叉树/" class="link next" title="leetcode-master学习笔记-二叉树1">
-			<span class="hover-underline-animation">leetcode-master学习笔记-二叉树1 &rarr;</span>
+		<a href="/2021/03/17/leetcode-master学习笔记-二叉树2/" class="link next" title="leetcode-master学习笔记-二叉树2">
+			<span class="hover-underline-animation">leetcode-master学习笔记-二叉树2 &rarr;</span>
 		</a>
 	
 </section>
