@@ -94,7 +94,7 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2021-03-16">2021-03-16</time>
+            datetime="2023-03-18">2023-03-18</time>
         </span>
         <span>Reading Time&#58; 2 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
@@ -111,7 +111,7 @@
 <h3 id="③「确定单层递归的逻辑：」"><a href="#③「确定单层递归的逻辑：」" class="headerlink" title="③「确定单层递归的逻辑：」"></a>③「确定单层递归的逻辑：」</h3><p>确定每一层递归需要处理的信息。在这里也就会重复调用自己来实现递归的过程。</p>
 <h2 id="三、三序遍历"><a href="#三、三序遍历" class="headerlink" title="三、三序遍历"></a>三、三序遍历</h2><h3 id="三序遍历的迭代形式需要熟练"><a href="#三序遍历的迭代形式需要熟练" class="headerlink" title="三序遍历的迭代形式需要熟练"></a>三序遍历的迭代形式需要熟练</h3><p>前序：每次取栈首节点并弹出栈，如果为空则直接略过，否则输出其值，并将左右子节点压入栈中（因为要先左后右，所以先压右节点）。</p>
 <p>中序：一直搜索当前节点的左子节点同时将当前节点压栈，直到为nullptr。之后从栈中弹出当前节点并输出，再令当前节点为当前节点的右节点，继续循环。</p>
-<p>后序：<font color=blue>后序为左右中，而前序为中左右，所以将前序遍历的压栈顺序进行调整，使输出中右左，并在输出完毕之后对输出序列进行reverse，即可得到后序遍历的序列。</font></p>
+<p>后序：<code>&lt;font color=blue&gt;</code>后序为左右中，而前序为中左右，所以将前序遍历的压栈顺序进行调整，使输出中右左，并在输出完毕之后对输出序列进行reverse，即可得到后序遍历的序列。<code>&lt;/font&gt;</code></p>
 <h3 id="统一风格的迭代三序遍历代码"><a href="#统一风格的迭代三序遍历代码" class="headerlink" title="统一风格的迭代三序遍历代码"></a>统一风格的迭代三序遍历代码</h3><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/WKg0Ty1_3SZkztpHubZPRg">https://mp.weixin.qq.com/s/WKg0Ty1_3SZkztpHubZPRg</a></p>
 <p>在中间节点push后紧接着push一个nullptr节点来做标记。</p>
 <h2 id="四、层次遍历"><a href="#四、层次遍历" class="headerlink" title="四、层次遍历"></a>四、层次遍历</h2><p>之前一直搞不太清该怎么算每一层的个数</p>

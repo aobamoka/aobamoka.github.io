@@ -94,7 +94,7 @@
       <span class="meta-info">
         <span>
           Last Update&#58;<time class="post-time"
-            datetime="2021-03-22">2021-03-22</time>
+            datetime="2023-03-18">2023-03-18</time>
         </span>
         <span>Reading Time&#58; 3 min</span>
         <span class="hide" id="busuanzi_container_page_pv">Readed&#58; <span
@@ -103,7 +103,7 @@
     </p>
   </section>
   <section class="article-content"><p>在leetcode上陆陆续续也刷了有小几百道题了，但是感觉学习到的东西不够系统，很多刷的题也容易忘记，正好看到了这篇比较系统的github博客，试着跟它学习学习。<br>链接地址：<a target="_blank" rel="noopener" href="https://github.com/youngyangyang04/leetcode-master">https://github.com/youngyangyang04/leetcode-master</a></p>
-<h2 id="1、二分查找"><a href="#1、二分查找" class="headerlink" title="1、二分查找"></a>1、二分查找</h2><p>对于left&lt;=right还是left&lt;right，以及left=mid还是left=mid+1的问题。这个问题在我之前的刷题过程中出现的次数还挺多的，之前主要靠输出来一个个情况试进行解决。教程作者给出的方法是坚持<font color=red>“循环不变量”</font>.这里的循环不变量指，如果你设置的区间为闭区间，那么就一直使用闭区间对应的计算方法来计算值，而不使用半开半闭区间的计算方法。</p>
+<h2 id="1、二分查找"><a href="#1、二分查找" class="headerlink" title="1、二分查找"></a>1、二分查找</h2><p>对于left&lt;=right还是left&lt;right，以及left=mid还是left=mid+1的问题。这个问题在我之前的刷题过程中出现的次数还挺多的，之前主要靠输出来一个个情况试进行解决。教程作者给出的方法是坚持<code>&lt;font color=red&gt;</code>“循环不变量”<code>&lt;/font&gt;</code>.这里的循环不变量指，如果你设置的区间为闭区间，那么就一直使用闭区间对应的计算方法来计算值，而不使用半开半闭区间的计算方法。</p>
 <h3 id="第一种情况：区间为-left-right"><a href="#第一种情况：区间为-left-right" class="headerlink" title="第一种情况：区间为[left, right]"></a>第一种情况：区间为[left, right]</h3><p>① 这种情况下，如果结束条件为left&lt;right，区间里还会剩下两个元素无法处理，因此结束条件应该为left&lt;=right；</p>
 <p>② left与right这种边界所代表的元素也包含在区间内，因此区间缩小时应该写为left=mid+1与right=mid-1。</p>
 <h3 id="第二种情况：区间为-left-right"><a href="#第二种情况：区间为-left-right" class="headerlink" title="第二种情况：区间为[left, right)"></a>第二种情况：区间为[left, right)</h3><p>① 这种情况下，结束条件为left&lt;right时，区间内只剩下一个元素；反之如果加上=则区间内没有元素，因此应该选用left&amp;&lt;right；</p>
@@ -113,7 +113,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x+y+z+y&#x3D;2*(x+y)</span><br></pre></td></tr></table></figure>
 <p>解得z=x，这意味着链表头到环的入口的距离与相遇点到环的入口的距离相等。所以我们再设置一个从头开始的指针，它与相遇点的指针同步移动，这两个指针相遇的新相遇点即为环的入口。</p>
 <h2 id="3、滑动窗口"><a href="#3、滑动窗口" class="headerlink" title="3、滑动窗口"></a>3、滑动窗口</h2><p>求连续子数组时可以尝试用这种方法</p>
-<h2 id="4、循环矩阵"><a href="#4、循环矩阵" class="headerlink" title="4、循环矩阵"></a>4、循环矩阵</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/spiral-matrix-ii/">leetcode 59：螺旋矩阵II</a> <br>一道很好的实践“循环不变量”理论的题目，做法也很简单，常见的对问题中行为的模拟。我的做法是每一层深度分为四个行列进行添加，在对每一行列进行添加时坚持不加最右元素与不加最下元素（否则会导致重复添加）。</p>
+<h2 id="4、循环矩阵"><a href="#4、循环矩阵" class="headerlink" title="4、循环矩阵"></a>4、循环矩阵</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/spiral-matrix-ii/">leetcode 59：螺旋矩阵II</a><br>一道很好的实践“循环不变量”理论的题目，做法也很简单，常见的对问题中行为的模拟。我的做法是每一层深度分为四个行列进行添加，在对每一行列进行添加时坚持不加最右元素与不加最下元素（否则会导致重复添加）。</p>
 <h2 id="5、总结篇"><a href="#5、总结篇" class="headerlink" title="5、总结篇"></a>5、总结篇</h2><p>介绍了关于数组的基本概念，总结如下：</p>
 <ul>
 <li>数组是存放在连续内存空间上的相同类型数据的集合</li>
