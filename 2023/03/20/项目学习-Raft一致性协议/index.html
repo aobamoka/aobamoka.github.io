@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>学习笔记-多线程笔试题 | 摩卡&#39;s blog</title>
+  <title>项目学习-Raft一致性协议 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -403,33 +403,24 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        学习笔记-多线程笔试题
+        项目学习-Raft一致性协议
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2023-03-01 |
+          <i class="fas fa-calendar"></i> 发表于：2023-03-20 |
         </span>
       
 
-      
-        <span class="post-detail-header_categories">
-          <i class="iconfont iconbookmark1"></i> 分类：
-          
-            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-detail-header_category">
-              学习笔记
-            </a>
-          
-        </span>
       
 
       
@@ -450,16 +441,286 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>题目：编写一个程序，开启3个线程，这3个线程的ID分别为A、B、C，每个线程将自己的ID在屏幕上打印10遍，要求输出结果必须按ABC的顺序显示；如：ABCABC….依次递推。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">	unique_lock&lt;mutex&gt; ul;</span><br><span class="line">	cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> id == flag; &#125;);  </span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt;  <span class="string">&#x27;A&#x27;</span> + id &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	flag = (flag + <span class="number">1</span>) % <span class="number">3</span>;</span><br><span class="line">	<span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	cond.notify_all();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    thread b(print, 1), c(print, 2);</span><br><span class="line">    print(<span class="number">0</span>);</span><br><span class="line">    b.join();</span><br><span class="line">    c.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>题目：子线程循环 10 次，接着主线程循环 100 次，接着又回到子线程循环 10 次，接着再回到主线程又循环 100 次，如此循环50次，试写出代码</p>
-<p>子线程与主线程必有一个满足条件(flag == num),不满足条件的那个线程不可能获取unique_lock(会在wait中释放)，只有满足条件的线程才能获取锁，执行程序</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"><span class="keyword">int</span> flag = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; ++i) &#123;</span><br><span class="line">	<span class="function">unique_lock&lt;mutex&gt; <span class="title">ul</span><span class="params">(mtx)</span></span>;</span><br><span class="line">	cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> id == flag; &#125;);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; id; ++j);</span><br><span class="line">	flag = <span class="number">110</span> - id;</span><br><span class="line">	<span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	cond.notify_all();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">thread <span class="title">sub</span><span class="params">(loop, <span class="number">10</span>)</span></span>;</span><br><span class="line">    loop(<span class="number">100</span>);</span><br><span class="line">    sub.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><p>题目(google笔试题)：有四个线程1、2、3、4。线程1的功能就是输出1，线程2的功能就是输出2，以此类推………现在有四个文件ABCD。初始都为空。现要让四个文件呈如下格式：<br>A：1 2 3 4 1 2….<br>B：2 3 4 1 2 3….<br>C：3 4 1 2 3 4….</p>
-<p>D：4 1 2 3 4 1….</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> write_stat[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> turn = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">ofstream file[<span class="number">4</span>];</span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> turn)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; turn; ++i) &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">4</span>; ++j) &#123;</span><br><span class="line">	    <span class="function">unique_lock&lt;mutex&gt; <span class="title">ul</span><span class="params">(mtx)</span></span>;</span><br><span class="line">	    cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> write_stat[j] == id; &#125;);</span><br><span class="line">	    file[j] &lt;&lt; (id + <span class="number">1</span>);</span><br><span class="line">	    write_stat[j] = (write_stat[j] + <span class="number">1</span>) % <span class="number">4</span>; </span><br><span class="line">	    <span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	    cond.notify_all();</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) file[i] = ofstream(to_string(<span class="string">&#x27;A&#x27;</span> + i) + <span class="string">&quot;.txt&quot;</span>);</span><br><span class="line">    thread a(print, 1, turn), b(print, 2, turn), c(print, 3, turn);</span><br><span class="line">    print(<span class="number">0</span>, turn);</span><br><span class="line">    a.join();</span><br><span class="line">    b.join();</span><br><span class="line">    c.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) file[i].close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="4"><a href="#4" class="headerlink" title="4"></a>4</h1><p>题目：两个线程交替打印1~100。要求：同一个函数；不空转。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">1</span>, flag = <span class="number">1</span>;</span><br><span class="line">mutex mtx;</span><br><span class="line">condition_variable cond;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (n &lt; <span class="number">100</span>) &#123;</span><br><span class="line">  	<span class="function">unique_lock&lt;mutex&gt; <span class="title">ul</span><span class="params">(mtx)</span></span>;</span><br><span class="line">	cond.wait(ul, [&amp;]&#123; <span class="keyword">return</span> id == flag; &#125;);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; n &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	++n;</span><br><span class="line">	flag = <span class="number">3</span> - flag;</span><br><span class="line">	<span class="comment">// ul.unlock(); // notify_all后会自动释放</span></span><br><span class="line">	cond.notify_one();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">thread <span class="title">a</span><span class="params">(print, <span class="number">2</span>)</span></span>;</span><br><span class="line">    print(<span class="number">1</span>);</span><br><span class="line">    a.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7a313173b56a">讲的挺清楚的</a></p>
+<p>一个共识算法，即多个节点对某事达成一致的看法。</p>
+<p>Raft算法首要目标是易理解，对Paxos算法做了问题分解、状态简化。</p>
+<p>两个核心属性：</p>
+<ul>
+<li>可靠性：已提交的日志不会再修改。由已提交的日志存在于大多数节点上、日志最新的节点才能获得大多数投票保证。</li>
+<li>一致性：所有节点数据一致。</li>
+</ul>
+<p>要达成的目标：</p>
+<ul>
+<li>安全性保证：非拜占庭错误下，网络延迟、分区、丢包、冗余和乱序等错误都可以保证正确。</li>
+<li>可用性：集群中只要有大多数机器可运行且能相互通信、和客户端通信，就能保证可用。</li>
+<li>不依赖时序保证一致性：物理时钟错误或极端消息延迟只有在最坏情况下才会导致可用性问题。</li>
+<li>通常情况下，一条指令可以尽可能快的在进群中大多数节点响应一轮远程过程调用时完成，小部分较慢的节点不影响整体性能。</li>
+</ul>
+<p>大致流程：选举出leader，leader完全负责replicated log的管理。leader负责接收所有客户端更新请求，然后复制到follower节点，并在安全的时候执行这些请求。如果leader故障，会在follower中选出新leader。</p>
+<p><strong>非leader接收到客户端的请求会转交给leader。</strong></p>
+<h1 id="2-状态"><a href="#2-状态" class="headerlink" title="2. 状态"></a>2. 状态</h1><p>一个节点有三种状态：</p>
+<ul>
+<li>leader：最多只有一个。接收到更新的term的心跳包时变成follower。</li>
+<li>follower：启动时的初始状态。心跳包超时时变为candidate。</li>
+<li>candidate：发现其他更新的节点时变为follower；选举超时（一段时间没收到多数票）时开始新一轮选举；收到多数票时变为leader。</li>
+</ul>
+<p>term：每个term从新一轮选举开始，到开始下一轮选举结束（有follower心跳包超时变为candidate）。每个节点各自维护term计数，当自己变为candidate时就自增term，否则等到更高term的包到来时同步自己的term。term递增，可以充当逻辑时钟的作用。</p>
+<h1 id="3-选举"><a href="#3-选举" class="headerlink" title="3. 选举"></a>3. 选举</h1><p>系统刚开启时，所有节点都是follower；follower心跳包超时（leader挂了、没选出leader、网络故障）后，主动发起选举：</p>
+<ul>
+<li>增加本地term，切换到candidate。</li>
+<li>投自己一票。</li>
+<li>向其他所有节点请求投票。</li>
+<li>等待回复。</li>
+</ul>
+<p>结果有三种：</p>
+<ul>
+<li>发现总票数大于节点数的一半，成为leader并发送心跳包。</li>
+<li>收到心跳包（其他人当选），成为follower。</li>
+<li>一段时间内没收到多数票，保持candidate状态并重新发起选举。平票会导致系统不可用，需要避免，因此设置每个节点随机选举超时时间、节点数目为奇数来避免平票。</li>
+</ul>
+<p>投票约束：</p>
+<ul>
+<li>1个term内只能投一票。</li>
+<li>候选人日志不能比该节点旧（有不同term时，term越新日志越新；term相同时，日志越长越新）。<ul>
+<li>不能以长度为第一选择项：可能有节点连续当选，然后都在收到日志之后复制日志之前崩溃，这样其本地日志会一直变长，而其他节点没有。</li>
+<li>不要求commit。</li>
+</ul>
+</li>
+<li>先到先得。</li>
+</ul>
+<p>超时时间一般设置150ms~300ms：</p>
+<ul>
+<li>不能太短：新的leader节点心跳包还来不及到达，就已经超时发起选举推翻leader了。</li>
+<li>不能太长：如果选不出leader，所有节点都在等待超时，系统不可用时间会较长。</li>
+</ul>
+<h1 id="4-log复制"><a href="#4-log复制" class="headerlink" title="4. log复制"></a>4. log复制</h1><p>客户端不知道leader：如果非leader的节点发送到客户端请求，就会拒绝请求，并提供该节点知道的关于最新leader的信息。如果leader崩溃，客户端请求超时，会选择随机节点重试。</p>
+<p>约束：</p>
+<ul>
+<li>leader不能删改自己的日志，也不能从follower处更新自己的日志，只能从客户端处追加。</li>
+<li>leader强制要求follower的日志与自己相同。</li>
+<li>超过半数的follower收到该条日志后，leader就更新commitIndex并将日志应用到状态机，保证该条日志生效。</li>
+</ul>
+<p>选举完成后进入工作期。客户端请求发给leader，leader调度请求并保证与follower的一致性。</p>
+<p><strong>基于复制状态机：相同的初始状态+相同输入=相同的结束状态。</strong></p>
+<p>leader将客户端请求与term等信息封装成log entry，复制到所有follower节点，大家按相同顺序应用log entry中的请求，能保证状态一致。</p>
+<p>保证：</p>
+<ul>
+<li>不同日志中两个条目有相同的term与index，则它们存储相同指令，且它们之前的所有日志全部相同。</li>
+</ul>
+<p>维护状态：</p>
+<ul>
+<li>leader维护所有节点的NextIndex、MatchIndex，每个节点维护自身的CommitIndex。</li>
+<li>NextIndex表示待发往该节点的Entry Index，初始化为leader的log长度，表示从最后一天开始往前试探</li>
+<li>MatchIndex表示已匹配的Entry Index，初始化为0，表示还不知道匹配进度</li>
+<li>CommitIndex表示当前已提交的EntryIndex</li>
+<li>转为Leader后，MatchIndex、CommitIndex置0，NextIndex为自己最后一条日志Index+1。</li>
+</ul>
+<p>leader行动：</p>
+<ul>
+<li>添加log entry。</li>
+<li>在心跳包中附带上log entry与前一条entry信息。Follower收到后校验该entry前一条日志是否匹配（比较自己prevLogIndex位置上的日志的term是否为prevLogTerm），是则直接写入entry，否则删除不匹配的日志，返回失败。</li>
+<li>等待多数响应。每有一条成功的返回消息，更新对应节点的NextIndex和MatchIndex，继续发送后续的Entry。每有一条失败的返回消息，回退NextIndex继续发送（可优化为回退一个term），直到其返回成功。follower更新nextindex及之后的所有log entry。</li>
+<li>如果大多数节点的MatchIndex大于CommitIndex，就更新CommitIndex。对自己的状态机应用log entry。</li>
+<li>回复客户端ACK。</li>
+<li>心跳包中附带上Leader最新的CommitIndex。Follower发现心跳包的CommitIndex大于自身，则应用状态，将自身的CommitIndex更新为自身最新的LogIndex与leader的CommitIndex的最小值。（应设定为<strong>只在没有log同步时才同步commit</strong>）</li>
+<li>等待多数响应。</li>
+</ul>
+<p><strong>只要log entry复制到多数节点，就能保证不会被回滚</strong>。</p>
+<h1 id="5-集群变更"><a href="#5-集群变更" class="headerlink" title="5. 集群变更"></a>5. 集群变更</h1><p>在系统运行时动态增删节点。</p>
+<p><strong>约定一次只能变更一个节点。</strong></p>
+<p>问题：假设一开始三个节点，假设增加两个节点后触发选举，1、2节点保存的配置只有3个节点，所以节点1获得1、2的选票当选；新节点5获得3、4、5的选票当选，出现两个节点。</p>
+<p>Raft在新旧配置之间添加过渡阶段处理，称为联合共识阶段。该阶段约束：（这里的新配置指新节点+老节点）</p>
+<ul>
+<li>日志条目被复制给集群中新、老配置的所有节点。</li>
+<li>新加入节点和原有节点都能成为leader。</li>
+<li>达成一致需要分别在两种配置上超过半数。</li>
+</ul>
+<p><strong>C-old-new日志与C-new日志都是在follower收到后立马apply</strong>，而不必等leader的commit。</p>
+<h2 id="1-添加节点"><a href="#1-添加节点" class="headerlink" title="1. 添加节点"></a>1. 添加节点</h2><p>两阶段变更。</p>
+<p>通过发送日志来发送配置变更日志指令。假设向三个节点的集群添加两个节点。</p>
+<p>阶段一：客户端发送新配置给leader，leader将新老配置取并集，包装为C-old-new日志。</p>
+<ul>
+<li>leader apply并发送C-old-new，复制给follower节点，但提交后不对状态机数据有任何变动。</li>
+<li>follower收到C-old-new后立即apply，进入联合共识阶段。1为leader，复制给4、5，而2、3在旧配置。老的1、2、3集群中日志未超过半数，所以不能提交。</li>
+<li>假设2收到C-old-new，这样老集群超过半数处在联合共识阶段，即使leader崩溃，新leader也会处于该阶段。</li>
+</ul>
+<p>阶段二：</p>
+<ul>
+<li>leader apply并发送C-new，告知follower可以切换到新集群。在这段时间，客户端的指令可以正常提交，但是得满足联合共识约束。</li>
+<li>follower收到C-new后立即apply，如果发现自己不在C-new，立即退出集群。</li>
+<li>leader确认C-new大部分节点切换成功后，响应客户端成功。</li>
+</ul>
+<h2 id="2-删除节点-特例：删除leader"><a href="#2-删除节点-特例：删除leader" class="headerlink" title="2. 删除节点-特例：删除leader"></a>2. 删除节点-特例：删除leader</h2><p>可能要删除leader节点。假设删除1、5.</p>
+<ul>
+<li>leader发送C-old-new，超过半数收到后提交。</li>
+<li>leader发送C-new。因为其还没生效，所以1仍然行使leader职责，只是超过半数时不计算他自己。</li>
+<li>leader提交C-new之后，退位。</li>
+<li>新集群中的节点重新选取leader。</li>
+</ul>
+<h1 id="6-安全性"><a href="#6-安全性" class="headerlink" title="6. 安全性"></a>6. 安全性</h1><p>任何系统模型都要满足安全性，即任何情况下，系统都不能出现不可逆的错误，也不能向客户端返回错误内容。</p>
+<h2 id="1-选举安全"><a href="#1-选举安全" class="headerlink" title="1. 选举安全"></a>1. 选举安全</h2><p>保证任意一次选举最多只有一个leader</p>
+<ul>
+<li>一个节点1个term只能投一票。</li>
+<li>只有获得多数票才会当选。</li>
+<li>只能响应term大于等于自己term的请求。</li>
+</ul>
+<p>决定是否投票给candidate</p>
+<ul>
+<li>candidate term不小于自身term</li>
+<li>自身还没有投票</li>
+<li>candidate日志比自己新</li>
+</ul>
+<p>保证不进入超时-选举循环</p>
+<ul>
+<li>所有follower投给自己：设置随机超时时间。</li>
+<li>平票：奇数节点；设置随机超时时间。</li>
+</ul>
+<p>保证leader出现后其他节点迅速达成一致：可能会出现情况：leader刚被选举出来，但是另一个节点B选举超时发起新的选举，term更高，A收到请求后被迫变成follower。</p>
+<ul>
+<li>leader产生后迅速发出心跳。</li>
+<li>合理设置超时时间，应该远大于广播时间。</li>
+</ul>
+<h2 id="2-leader完整性"><a href="#2-leader完整性" class="headerlink" title="2. leader完整性"></a>2. leader完整性</h2><p>如果一个log entry在某个term内被提交，这条log entry一定会出现在所有更高term的leader的日志中。</p>
+<ul>
+<li>一个log entry被复制到多数节点才算提交。</li>
+<li>一个节点得到多数投票才能成为leader。</li>
+<li>一个节点给其他节点投票的前提是，其他节点日志不能比该节点旧（有不同term时，term越新日志越新；term相同时，日志越长越新）。</li>
+</ul>
+<h2 id="3-复制安全性"><a href="#3-复制安全性" class="headerlink" title="3. 复制安全性"></a>3. 复制安全性</h2><p>两个约定：</p>
+<ul>
+<li>Leader节点只追加log数据，不修改与删除已有数据。</li>
+<li>Follower在指定index上的log条目与Leader term不一致，则用Leader的log覆盖。</li>
+</ul>
+<p>相同index处follower term号比leader大：follower原来是leader，日志没同步半数后崩溃。</p>
+<ul>
+<li>follower删除自己的。</li>
+</ul>
+<p>新leader没有最新的数据</p>
+<ul>
+<li>给它投票的前提就是其log比自己更新，所以不可能有不是最新数据的leader。</li>
+</ul>
+<p>follower应用日志到状态机的时间</p>
+<ul>
+<li>后续leader发送心跳包或日志时，follower发现自己的commitindex小于leader，就更新并应用。</li>
+</ul>
+<p>leader提交并返回客户端后自己挂了</p>
+<ul>
+<li>新的leader一定是有最新日志的，也包括了原leader挂了前提交的日志，所以新leader会继续复制该日志。</li>
+</ul>
+<p>日志复制超过半数节点，leader还没提交就崩溃</p>
+<ul>
+<li>Raft核心：只要Leader把某个日志应用到状态机，最终所有节点都能把该日志应用到状态机。</li>
+<li>日志只是复制到半数节点，Leader还没应用，所以不保证该条日志后续一定提交。（客户端没有收到肯定答复，所以无法确认最终是否生效）</li>
+<li>日志被提交生效的充分必要条件是，日志被复制到超过半数节点，且日志是当前Leader任期内从客户端收到。（不是当前任期内收到，会在提交后续日志的同时顺带提交）</li>
+</ul>
+<h2 id="4-扩容安全性"><a href="#4-扩容安全性" class="headerlink" title="4. 扩容安全性"></a>4. 扩容安全性</h2><p>leader发送C-old-new时崩溃，会不会有多个leader</p>
+<ul>
+<li>C-old-new收到就按新配置运行，不要等提交。假设旧配置集群选出了leader，因为它们都投了票，所以联合共识阶段的节点无法在旧配置集群中获得多数选票，无法产生第二个leader。</li>
+</ul>
+<p>新当选的leader会继续提交C-old-new吗？</p>
+<ul>
+<li>不一定。旧配置集群中的节点当选时，联合共识阶段节点的C-old-new会被删除。此时客户端没有收到leader的确认信息，所以系统不保证节点一定添加成功，客户端需要重新发出指令添加节点。</li>
+</ul>
+<p>老集群超过半数处于联合共识阶段时leader崩溃。</p>
+<ul>
+<li>投票约束保证老集群当选的leader也一定有C-old-new。</li>
+</ul>
+<h2 id="5-缩容安全性"><a href="#5-缩容安全性" class="headerlink" title="5. 缩容安全性"></a>5. 缩容安全性</h2><p>leader提交C-new之前，客户端发来新的日志</p>
+<ul>
+<li>leader工作在C-new下，会将日志复制到新集群节点上，收到新集群半数以上确认后提交日志。</li>
+</ul>
+<h2 id="6-可用性"><a href="#6-可用性" class="headerlink" title="6. 可用性"></a>6. 可用性</h2><p>新节点同步数据期间无法提交新日志，造成集群短时间不可用：</p>
+<ul>
+<li>新节点同步数据期间可以以<strong>没有投票权</strong>的方式加入。</li>
+</ul>
+<p>被删除的节点在leader进入新配置后不再收到心跳，触发选举使leader失效：</p>
+<ul>
+<li>节点确认当前leader存在时，忽略请求投票。</li>
+<li>确认存在：收到请求投票时间距离上次收到心跳或日志的时间不超过超时时间。</li>
+</ul>
+<h1 id="7-快速恢复-由逐个变为逐term"><a href="#7-快速恢复-由逐个变为逐term" class="headerlink" title="7. 快速恢复-由逐个变为逐term"></a>7. 快速恢复-由逐个变为逐term</h1><p>由于follower下线太久或脑裂，导致有大量log需要同步。</p>
+<p>解决方法：一次同步一个term的log。</p>
+<p>如果不匹配，follower回复时携带：</p>
+<ul>
+<li>XTerm：自己的冲突log对应的任期号。</li>
+<li>XIndex：自己任期号为XTerm的第一条Log的Index。</li>
+<li>XLen：如果follower在冲突处没有log，XTerm会返回-1，XLen表示空白的Log槽位数。</li>
+</ul>
+<p><strong>场景1</strong>：S1 45 Leader S2 466。此时S1没有最新Term的任何Log。</p>
+<p>S1返回XTerm=5，XIndex=2。S2发现自己没有term=5的日志，就将S1的nextIndex设置为XIndex。</p>
+<p><strong>场景2</strong>：S1 444 Leader S2 466.</p>
+<p>S1返回XTerm=4，XIndex=1。S2发现自己有term=4的日志，将S1的nextIndex设置到本地在XTerm位置的Log条目后面，即2。</p>
+<p><strong>场景3</strong>：S1 4 Leader S2 466。</p>
+<p>S1返回XTerm=-1，XLen=2。S2根据XLen回退S1的nextIndex到其最后一条条目的下一条，即2。</p>
+<p>因为是线性查找，可使用二分提速。</p>
+<h1 id="8-持久化-日志快照"><a href="#8-持久化-日志快照" class="headerlink" title="8. 持久化/日志快照"></a>8. 持久化/日志快照</h1><p>需要持久化的数据：Log、currentTerm、votedFor。后两者为了确保一个任期内只有一个leader。</p>
+<p>写入频率问题：将数据写入磁盘大概花费10ms，但相对于Raft中的操作太长了，代价很大；运行较久的Raft系统中，Log累积过多，如果持久化需要大量磁盘空间，且恢复需要很长时间。</p>
+<p>解决：快照：当Log大于一定限制时，要求应用程序在Log特定位置对其状态快照（k-v表单与位置，即LogIndex）。然后Raft丢弃该位置之前的所有Log记录。快照在应用程序生成，且Raft需要通过某种方式调用到应用程序，通知其生成与获取快照。</p>
+<p>Raft持久化问题转化为持久化最后一次快照，以及之后的所有Log。</p>
+<p>有Follower的Log没有同步到快照位置</p>
+<ul>
+<li>有follower落后则不丢弃：Leader通过nextIndex发现有Follower的Log落后于快照点，就不丢弃快照前的Log。<ul>
+<li>如果Follower落后过多，比如一直断网、断电，这种方法无效。</li>
+</ul>
+</li>
+<li>引入InstallSnapshot RPC：在日志复制Leader尝试回退的过程中，如果Leader不能再回退（到达了快照点），就直接发送快照，再发送后面的Log。</li>
+</ul>
+<h1 id="9-特殊情况"><a href="#9-特殊情况" class="headerlink" title="9. 特殊情况"></a>9. 特殊情况</h1><h2 id="1-网络分割（脑裂）"><a href="#1-网络分割（脑裂）" class="headerlink" title="1. 网络分割（脑裂）"></a>1. 网络分割（脑裂）</h2><p>网络分割时，如果原leader被划分在少数节点集群中，可能出现多个leader，但是它们term不同（原leader和多数节点集群选举出的新leader）。</p>
+<p>如果网络一直分割，那么多个leader可能一直存在。但是客户端只会给原leader发送指令，而原leader也会一直认为自己是leader，它无法同步给大多数节点，所以返回给客户端失败。通过牺牲一定的服务可用性保证数据一致性。</p>
+<p>如果网络恢复，老leader发现有更新term的节点后就会自动降级为follower，并通过日志匹配机制同步。客户端在脑裂阶段发给原leader的指令回应都是失败，因此客户端需要一直发送，等到原leader恢复成follower，再将客户端的指令转发给新leader，之后客户端就能与新leader正常通信。</p>
+<p>问题：老leader在少数派时，客户端读取可能读到旧值。</p>
+<p>解决：引入region leader（可以是raft leader），其作为raft leader代理与客户端交互，将请求转发给raft leader。任期内每隔t时间间隔在集群内部更新region leader的lease。（感觉region leader还是有问题，不如让leade主动降级简单）</p>
+<p>网络分区时：</p>
+<ul>
+<li>region在多数派，raft在多数派。无影响。</li>
+<li>region在多数派，raft在少数派。多数派会选出新的raft leader。因为客户端请求要走region leader，region leader就转发给新的raft leader，不会读到旧值。</li>
+<li>region在少数派，raft在多数派。客户端请求找到region，无法联系到raft，请求失败，直到lease过期。新region leader在多数派产生。因为老region没法成功写入，所以不会读到旧值，代价是这期间系统不可用。</li>
+<li>region在少数派，raft在少数派。与上一种情况类似。</li>
+</ul>
+<h2 id="2-重启"><a href="#2-重启" class="headerlink" title="2. 重启"></a>2. 重启</h2><p>可以通过创建快照恢复。</p>
+<p>优点：</p>
+<ul>
+<li>降低重启耗时，不需要从第一条entry开始逐条应用。</li>
+<li>节省空间：快照做完后或产生新快照即可删除。</li>
+</ul>
+<h2 id="3-特殊情况下新leader如何告知客户端"><a href="#3-特殊情况下新leader如何告知客户端" class="headerlink" title="3. 特殊情况下新leader如何告知客户端"></a>3. 特殊情况下新leader如何告知客户端</h2><p>脑裂：旧leader位于少数派</p>
+<p>可以设置主动降级条件，leader在得不到大多数回应几次后主动降级成为follower，客户端询问时该follower不知道leader信息，因此客户端会随机挑选节点发送命令，只要挑选的节点位于多数派，就能连接上多数派选举出来的新leader。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mindwind/p/5231986.html">可以一看</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28882896">可以一看2</a></p>
+<h1 id="10-与Paxos"><a href="#10-与Paxos" class="headerlink" title="10. 与Paxos"></a>10. 与Paxos</h1><p>basic paxos复杂且效率相对更低，目前的项目都是基于multi-paxos实现。</p>
+<p>主要区别：</p>
+<ul>
+<li>multi-paxos的leader任意节点都能当选，而raft必须满足term与log的约束。</li>
+<li>multi-paxos允许日志出现空洞，而raft不允许。</li>
+</ul>
+<h1 id="11-读"><a href="#11-读" class="headerlink" title="11. 读"></a>11. 读</h1><p>一般方案：</p>
+<ul>
+<li>写主读从：容易读到过时的数据。</li>
+<li>写主读主：状态机落后commit、网络分区导致脏读。</li>
+<li>raft log read：将读操作同样作为一条log操作，当该log可以被应用到到状态机时，返回读结果。</li>
+</ul>
+<p>后两种都是读主，主容易过载。</p>
+<p>读性能优化：</p>
+<ul>
+<li>read index：<ul>
+<li>leader收到读请求，记录当前的commitindex，称为read index。</li>
+<li>leader发送一次心跳包，确保领导权，避免网络分区。</li>
+<li>等待状态机至少应用到read index。</li>
+<li>执行读请求，返回状态机的结果。</li>
+</ul>
+</li>
+<li>lease read：<ul>
+<li>leader设置一个比选举超时更短的时间作为租期，在这段期间内可以相信其他节点一定没有发起选举，也就不会存在脑裂。</li>
+<li>租期内直接读主。</li>
+<li>非租期内走read index。</li>
+</ul>
+</li>
+<li>follower read：<ul>
+<li>follower收到读请求后主动向leader询问commit index，等到自己的commit index更新到这个位置并应用到状态机后，返回客户端。</li>
+</ul>
+</li>
+</ul>
+
       </div>
       <div class="post-tags-categories">
         
@@ -472,7 +733,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2023/03/01/学习笔记-多线程笔试题/" target="_blank" title="学习笔记-多线程笔试题">https://aobamoka.github.io/2023/03/01/学习笔记-多线程笔试题/</a>
+    <a href="/2023/03/20/项目学习-Raft一致性协议/" target="_blank" title="项目学习-Raft一致性协议">https://aobamoka.github.io/2023/03/20/项目学习-Raft一致性协议/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -490,40 +751,25 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">面试记录-3-7-阿里云网络二面</div>
-      </div>
-      
-      <!-- <div class="content">
-        就二十分钟。。。必挂了。
-1. 自我介绍2. Raft协议3. Raft协议集群变更4. Raft协议脑裂怎么告诉客户端
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/" class="post-nav-link">
+    <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">面试记录-3-1-阿里云PolarDB一面</div>
+        <div class="title-text">项目学习-CMU-15-445-Lab1-2</div>
       </div>
       <!-- <div class="content">
-        1. 自我介绍2. 线程和进程的区别3. 线程、进程的通信手段4. 管道5. 乐观锁、悲观锁、自旋锁、互斥锁6. 自旋锁
+        1. LRU-K1. 理论K不是指大小，是指访问次数！
+根据每个页面的K-距离判断该弹出哪个页面。
+K-距离定义：
+
+页
       </div> -->
     </a>
   </div>
@@ -621,7 +867,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1"><span class="toc-text">1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2"><span class="toc-text">2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3"><span class="toc-text">3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4"><span class="toc-text">4</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 基本介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%8A%B6%E6%80%81"><span class="toc-text">2. 状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%80%89%E4%B8%BE"><span class="toc-text">3. 选举</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-log%E5%A4%8D%E5%88%B6"><span class="toc-text">4. log复制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%9B%86%E7%BE%A4%E5%8F%98%E6%9B%B4"><span class="toc-text">5. 集群变更</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9"><span class="toc-text">1. 添加节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9-%E7%89%B9%E4%BE%8B%EF%BC%9A%E5%88%A0%E9%99%A4leader"><span class="toc-text">2. 删除节点-特例：删除leader</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">6. 安全性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%80%89%E4%B8%BE%E5%AE%89%E5%85%A8"><span class="toc-text">1. 选举安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-leader%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-text">2. leader完整性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%8D%E5%88%B6%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">3. 复制安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%89%A9%E5%AE%B9%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">4. 扩容安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%A9%E5%AE%B9%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">5. 缩容安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-text">6. 可用性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D-%E7%94%B1%E9%80%90%E4%B8%AA%E5%8F%98%E4%B8%BA%E9%80%90term"><span class="toc-text">7. 快速恢复-由逐个变为逐term</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E6%8C%81%E4%B9%85%E5%8C%96-%E6%97%A5%E5%BF%97%E5%BF%AB%E7%85%A7"><span class="toc-text">8. 持久化&#x2F;日志快照</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5"><span class="toc-text">9. 特殊情况</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E5%88%86%E5%89%B2%EF%BC%88%E8%84%91%E8%A3%82%EF%BC%89"><span class="toc-text">1. 网络分割（脑裂）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%87%8D%E5%90%AF"><span class="toc-text">2. 重启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E4%B8%8B%E6%96%B0leader%E5%A6%82%E4%BD%95%E5%91%8A%E7%9F%A5%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">3. 特殊情况下新leader如何告知客户端</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E4%B8%8EPaxos"><span class="toc-text">10. 与Paxos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E8%AF%BB"><span class="toc-text">11. 读</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
