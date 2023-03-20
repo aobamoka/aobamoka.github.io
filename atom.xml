@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>aobamoka</title>
-  <icon>http://example.com/avatar.png</icon>
+  <title>摩卡&#39;s blog</title>
+  <icon>https://aobamoka.github.io/avatar.png</icon>
+  <subtitle>from NJU</subtitle>
+  <link href="https://aobamoka.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/atom.xml" rel="self"/>
-  
-  <link href="http://example.com/"/>
-  <updated>2023-03-17T07:40:31.005Z</updated>
-  <id>http://example.com/</id>
+  <link href="https://aobamoka.github.io/"/>
+  <updated>2023-03-20T02:50:16.000Z</updated>
+  <id>https://aobamoka.github.io/</id>
   
   <author>
     <name>aoba moka</name>
@@ -17,11 +17,97 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>项目学习-CMU-15-445-Lab1-2</title>
+    <link href="https://aobamoka.github.io/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/"/>
+    <id>https://aobamoka.github.io/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/</id>
+    <published>2023-03-20T02:16:08.000Z</published>
+    <updated>2023-03-20T02:50:16.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-LRU-K&quot;&gt;&lt;a href=&quot;#1-LRU-K&quot; class=&quot;headerlink&quot; title=&quot;1. LRU-K&quot;&gt;&lt;/a&gt;1. LRU-K&lt;/h1&gt;&lt;h2 id=&quot;1-理论&quot;&gt;&lt;a href=&quot;#1-理论&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab1-1</title>
+    <link href="https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/"/>
+    <id>https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/</id>
+    <published>2023-03-19T08:10:30.000Z</published>
+    <updated>2023-03-19T08:30:15.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-可扩展动态散列&quot;&gt;&lt;a href=&quot;#1-可扩展动态散列&quot; class=&quot;headerlink&quot; title=&quot;1. 可扩展动态散列&quot;&gt;&lt;/a&gt;1. 可扩展动态散列&lt;/h1&gt;&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab0</title>
+    <link href="https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/"/>
+    <id>https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/</id>
+    <published>2023-03-19T04:50:53.000Z</published>
+    <updated>2023-03-19T05:36:36.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-字典树&quot;&gt;&lt;a href=&quot;#1-字典树&quot; class=&quot;headerlink&quot; title=&quot;1. 字典树&quot;&gt;&lt;/a&gt;1. 字典树&lt;/h1&gt;&lt;p&gt;lab0要求完成的是线程安全的字典树。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;字典树，树形结构，</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-Shell编程</title>
+    <link href="https://aobamoka.github.io/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/"/>
+    <id>https://aobamoka.github.io/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/</id>
+    <published>2023-03-18T06:37:49.000Z</published>
+    <updated>2023-03-19T10:24:10.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-运行原理&quot;&gt;&lt;a href=&quot;#1-运行原理&quot; class=&quot;headerlink&quot; title=&quot;1. 运行原理&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>学习笔记-SQL语法</title>
-    <link href="http://example.com/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/"/>
-    <id>http://example.com/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/</id>
+    <link href="https://aobamoka.github.io/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/"/>
+    <id>https://aobamoka.github.io/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/</id>
     <published>2023-03-16T07:22:49.000Z</published>
-    <updated>2023-03-17T07:40:31.005Z</updated>
+    <updated>2023-03-17T07:40:31.000Z</updated>
     
     
       
@@ -39,17 +125,17 @@
   
   <entry>
     <title>学习笔记-几个小项目总结</title>
-    <link href="http://example.com/2023/03/12/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%87%A0%E4%B8%AA%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
-    <id>http://example.com/2023/03/12/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%87%A0%E4%B8%AA%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/</id>
+    <link href="https://aobamoka.github.io/2023/03/12/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%87%A0%E4%B8%AA%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
+    <id>https://aobamoka.github.io/2023/03/12/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%87%A0%E4%B8%AA%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/</id>
     <published>2023-03-12T08:10:02.000Z</published>
-    <updated>2023-03-15T04:51:16.000Z</updated>
+    <updated>2023-03-20T08:12:53.000Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;1-json-parse&quot;&gt;&lt;a href=&quot;#1-json-parse&quot; class=&quot;headerlink&quot; title=&quot;1. json_parse&quot;&gt;&lt;/a&gt;1. json_parse&lt;/h1&gt;&lt;p&gt;使用C++</summary>
+    <summary type="html">&lt;h1 id=&quot;1-json-parse&quot;&gt;&lt;a href=&quot;#1-json-parse&quot; class=&quot;headerlink&quot; title=&quot;1. json_parse&quot;&gt;&lt;/a&gt;1.</summary>
         
       
     
@@ -60,10 +146,10 @@
   
   <entry>
     <title>笔试记录-3-11-美团笔试</title>
-    <link href="http://example.com/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/"/>
-    <id>http://example.com/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/</id>
+    <link href="https://aobamoka.github.io/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/"/>
+    <id>https://aobamoka.github.io/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/</id>
     <published>2023-03-11T13:03:53.000Z</published>
-    <updated>2023-03-11T13:20:59.000Z</updated>
+    <updated>2023-03-11T13:20:59.808Z</updated>
     
     
       
@@ -81,10 +167,10 @@
   
   <entry>
     <title>学习笔记-研究经历整理</title>
-    <link href="http://example.com/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/"/>
-    <id>http://example.com/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/</id>
+    <link href="https://aobamoka.github.io/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/"/>
+    <id>https://aobamoka.github.io/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/</id>
     <published>2023-03-09T07:57:46.000Z</published>
-    <updated>2023-03-12T01:55:02.000Z</updated>
+    <updated>2023-03-12T01:55:02.303Z</updated>
     
     
       
@@ -102,10 +188,10 @@
   
   <entry>
     <title>面试记录-3-7-阿里云网络二面</title>
-    <link href="http://example.com/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/"/>
-    <id>http://example.com/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/</id>
+    <link href="https://aobamoka.github.io/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/"/>
+    <id>https://aobamoka.github.io/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/</id>
     <published>2023-03-07T08:05:06.000Z</published>
-    <updated>2023-03-07T09:08:19.000Z</updated>
+    <updated>2023-03-07T09:08:19.480Z</updated>
     
     
       
@@ -124,10 +210,10 @@
   
   <entry>
     <title>学习笔记-多线程笔试题</title>
-    <link href="http://example.com/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/"/>
-    <id>http://example.com/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/</id>
+    <link href="https://aobamoka.github.io/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/"/>
+    <id>https://aobamoka.github.io/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/</id>
     <published>2023-03-01T13:38:31.000Z</published>
-    <updated>2023-03-14T11:15:08.460Z</updated>
+    <updated>2023-03-14T11:15:08.000Z</updated>
     
     
       
@@ -145,10 +231,10 @@
   
   <entry>
     <title>面试记录-3-1-阿里云PolarDB一面</title>
-    <link href="http://example.com/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/"/>
-    <id>http://example.com/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/</id>
+    <link href="https://aobamoka.github.io/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/"/>
+    <id>https://aobamoka.github.io/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/</id>
     <published>2023-03-01T13:06:53.000Z</published>
-    <updated>2023-03-04T08:28:44.598Z</updated>
+    <updated>2023-03-04T08:28:44.000Z</updated>
     
     
       
@@ -166,10 +252,10 @@
   
   <entry>
     <title>面试记录-2.23-阿里云网络一面</title>
-    <link href="http://example.com/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/"/>
-    <id>http://example.com/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/</id>
+    <link href="https://aobamoka.github.io/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/"/>
+    <id>https://aobamoka.github.io/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/</id>
     <published>2023-02-23T12:29:50.000Z</published>
-    <updated>2023-02-25T08:00:33.268Z</updated>
+    <updated>2023-02-25T08:00:33.000Z</updated>
     
     
       
@@ -187,10 +273,10 @@
   
   <entry>
     <title>读书笔记-深度探索C++对象模型</title>
-    <link href="http://example.com/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/"/>
-    <id>http://example.com/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/</id>
+    <link href="https://aobamoka.github.io/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/"/>
+    <id>https://aobamoka.github.io/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/</id>
     <published>2023-02-15T08:12:03.000Z</published>
-    <updated>2023-03-13T11:02:13.019Z</updated>
+    <updated>2023-03-13T11:02:13.000Z</updated>
     
     
       
@@ -209,10 +295,10 @@
   
   <entry>
     <title>学习笔记-设计模式</title>
-    <link href="http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    <id>http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</id>
+    <link href="https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <id>https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</id>
     <published>2023-02-09T14:03:19.000Z</published>
-    <updated>2023-02-18T04:51:50.436Z</updated>
+    <updated>2023-02-18T04:51:50.000Z</updated>
     
     
       
@@ -230,10 +316,10 @@
   
   <entry>
     <title>学习笔记-Linux</title>
-    <link href="http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/"/>
-    <id>http://example.com/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/</id>
+    <link href="https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/"/>
+    <id>https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/</id>
     <published>2023-02-09T08:13:34.000Z</published>
-    <updated>2023-03-17T02:48:27.000Z</updated>
+    <updated>2023-03-19T10:14:53.000Z</updated>
     
     
       
@@ -252,10 +338,10 @@
   
   <entry>
     <title>学习笔记-查漏补缺</title>
-    <link href="http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/"/>
-    <id>http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</id>
+    <link href="https://aobamoka.github.io/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/"/>
+    <id>https://aobamoka.github.io/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</id>
     <published>2023-02-08T14:08:49.000Z</published>
-    <updated>2023-03-17T02:51:19.000Z</updated>
+    <updated>2023-03-17T02:51:19.446Z</updated>
     
     
       
@@ -273,10 +359,10 @@
   
   <entry>
     <title>学习笔记-Git</title>
-    <link href="http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Git/"/>
-    <id>http://example.com/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Git/</id>
+    <link href="https://aobamoka.github.io/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Git/"/>
+    <id>https://aobamoka.github.io/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Git/</id>
     <published>2023-02-08T08:08:40.000Z</published>
-    <updated>2023-03-14T05:12:08.682Z</updated>
+    <updated>2023-03-14T05:12:08.000Z</updated>
     
     
       
@@ -295,10 +381,10 @@
   
   <entry>
     <title>学习笔记-Redis</title>
-    <link href="http://example.com/2023/02/06/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Redis/"/>
-    <id>http://example.com/2023/02/06/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Redis/</id>
+    <link href="https://aobamoka.github.io/2023/02/06/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Redis/"/>
+    <id>https://aobamoka.github.io/2023/02/06/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Redis/</id>
     <published>2023-02-06T07:37:30.000Z</published>
-    <updated>2023-03-01T11:49:49.000Z</updated>
+    <updated>2023-03-01T11:49:49.099Z</updated>
     
     
       
@@ -316,10 +402,10 @@
   
   <entry>
     <title>学习笔记-TinyWebServer思路梳理</title>
-    <link href="http://example.com/2023/01/30/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-TinyWebServer%E6%80%9D%E8%B7%AF%E6%A2%B3%E7%90%86/"/>
-    <id>http://example.com/2023/01/30/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-TinyWebServer%E6%80%9D%E8%B7%AF%E6%A2%B3%E7%90%86/</id>
+    <link href="https://aobamoka.github.io/2023/01/30/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-TinyWebServer%E6%80%9D%E8%B7%AF%E6%A2%B3%E7%90%86/"/>
+    <id>https://aobamoka.github.io/2023/01/30/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-TinyWebServer%E6%80%9D%E8%B7%AF%E6%A2%B3%E7%90%86/</id>
     <published>2023-01-30T07:47:21.000Z</published>
-    <updated>2023-03-17T15:52:19.000Z</updated>
+    <updated>2023-03-20T07:25:21.000Z</updated>
     
     
       
@@ -337,10 +423,10 @@
   
   <entry>
     <title>学习笔记-分布式系统</title>
-    <link href="http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/"/>
-    <id>http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</id>
+    <link href="https://aobamoka.github.io/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/"/>
+    <id>https://aobamoka.github.io/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</id>
     <published>2023-01-28T09:19:12.000Z</published>
-    <updated>2023-03-15T05:38:01.000Z</updated>
+    <updated>2023-03-20T08:59:13.000Z</updated>
     
     
       
@@ -348,92 +434,6 @@
         
         
     <summary type="html">&lt;h1 id=&quot;1-基本概念&quot;&gt;&lt;a href=&quot;#1-基本概念&quot; class=&quot;headerlink&quot; title=&quot;1. 基本概念&quot;&gt;&lt;/a&gt;1. 基本概念&lt;/h1&gt;&lt;h2 id=&quot;1-CAP定理&quot;&gt;&lt;a href=&quot;#1-CAP定理&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-大数据场景处理</title>
-    <link href="http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9C%BA%E6%99%AF%E5%A4%84%E7%90%86/"/>
-    <id>http://example.com/2023/01/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9C%BA%E6%99%AF%E5%A4%84%E7%90%86/</id>
-    <published>2023-01-28T08:29:34.000Z</published>
-    <updated>2023-02-09T08:12:11.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-找相同字符串&quot;&gt;&lt;a href=&quot;#1-找相同字符串&quot; class=&quot;headerlink&quot; title=&quot;1.找相同字符串&quot;&gt;&lt;/a&gt;1.找相同字符串&lt;/h1&gt;&lt;p&gt;场景：找相同URL&lt;/p&gt;
-&lt;h2 id=&quot;1-分治法&quot;&gt;&lt;a href=&quot;#1-分治法&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-C++</title>
-    <link href="http://example.com/2023/01/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-C++/"/>
-    <id>http://example.com/2023/01/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-C++/</id>
-    <published>2023-01-07T08:01:25.000Z</published>
-    <updated>2023-03-16T05:41:52.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;C和C-区别&quot;&gt;&lt;a href=&quot;#C和C-区别&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-操作系统</title>
-    <link href="http://example.com/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    <id>http://example.com/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</id>
-    <published>2022-12-21T06:50:45.000Z</published>
-    <updated>2023-03-15T14:04:39.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-硬件结构&quot;&gt;&lt;a href=&quot;#1-硬件结构&quot; class=&quot;headerlink&quot; title=&quot;1. 硬件结构&quot;&gt;&lt;/a&gt;1. 硬件结构&lt;/h1&gt;&lt;h2 id=&quot;1-冯诺依曼模型&quot;&gt;&lt;a href=&quot;#1-冯诺依曼模型&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>labuladong计算机技术笔记</title>
-    <link href="http://example.com/2022/12/15/labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/"/>
-    <id>http://example.com/2022/12/15/labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/</id>
-    <published>2022-12-15T08:01:27.000Z</published>
-    <updated>2022-12-18T10:41:35.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-linux文件系统文件用途&quot;&gt;&lt;a href=&quot;#1-linux文件系统文件用途&quot; class=&quot;headerlink&quot; title=&quot;1. linux文件系统文件用途&quot;&gt;&lt;/a&gt;1. linux文件系统文件用途&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;/bin</summary>
         
       
     
