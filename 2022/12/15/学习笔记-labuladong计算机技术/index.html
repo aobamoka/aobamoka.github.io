@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>读书笔记-深度探索C++对象模型 | 摩卡&#39;s blog</title>
+  <title>学习笔记-labuladong计算机技术 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -403,21 +403,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        读书笔记-深度探索C++对象模型
+        学习笔记-labuladong计算机技术
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2023-02-15 |
+          <i class="fas fa-calendar"></i> 发表于：2022-12-15 |
         </span>
       
 
@@ -425,8 +425,8 @@
         <span class="post-detail-header_categories">
           <i class="iconfont iconbookmark1"></i> 分类：
           
-            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-detail-header_category">
-              读书笔记
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-detail-header_category">
+              学习笔记
             </a>
           
         </span>
@@ -450,99 +450,87 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-关于对象"><a href="#1-关于对象" class="headerlink" title="1. 关于对象"></a>1. 关于对象</h1><ol>
-<li>class与struct实际上是不矛盾的。即 <code>struct A; class A &#123; ... &#125;;</code>是可以同时存在的，默认是public还是private按定义的来（定义为class则默认private，否则默认public）。也可以用class继承struct。</li>
-<li>class中，相同区间声明的成员一定按声明顺序存储，但不同区间则顺序不一定（private、public、父子类等）。</li>
-<li>转换是一种编译器指令，大部分情况下并不改变指针的地址，而只是影响指针指向<strong>内存的大小和内容</strong>的<strong>解释方式</strong>。</li>
+        <h1 id="1-linux文件系统文件用途"><a href="#1-linux文件系统文件用途" class="headerlink" title="1. linux文件系统文件用途"></a>1. linux文件系统文件用途</h1><ul>
+<li>/bin /sbin：存储可执行的二进制文件，如cp、chmod、ifconfig等命令。</li>
+<li>/boot：存储系统启动需要的文件。</li>
+<li>/dev：存放设备文件。</li>
+<li>/etc：存放很多程序的配置信息，如apt。(在/etc/apt中更改镜像源)</li>
+<li>/lib：包含bin和sbin中可执行文件的依赖，类似win中的dll文件库。</li>
+<li>/media：有一个以用户名命名的文件夹，里面是自动挂载的设备，如U盘等。</li>
+<li>/mnt：手动挂载设备的地方。</li>
+<li>/opt：无特定用途。</li>
+<li>/proc：全部正在运行程序的状态信息。有以PID命名的文件夹。</li>
+<li>/root：root用户的home目录</li>
+<li>/run /sys：存储某些程序的运行时信息和系统需要的一些信息。由于存储在内存，所以随着机器关闭而丢失。</li>
+<li>/srv：存放服务数据。</li>
+<li>/tmp：存储一些程序的临时文件。</li>
+<li>/usr：存放一些非系统必须的资源，如用户安装的应用程序。/usr和/usr/local目录中也有bin和sbin，存放用户使用的工具。</li>
+<li>/var：存储日志信息。</li>
+<li>/home：普通用户的home目录</li>
+</ul>
+<h1 id="2-进程-线程-文件描述符"><a href="#2-进程-线程-文件描述符" class="headerlink" title="2. 进程-线程-文件描述符"></a>2. 进程-线程-文件描述符</h1><p>linux中进程就是一个数据结构task_struct，称为进程描述符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">    long state; &#x2F;&#x2F; 状态</span><br><span class="line">    struct mm_struct *mm; &#x2F;&#x2F;虚拟内存</span><br><span class="line">    pid_t pid; &#x2F;&#x2F; 进程号</span><br><span class="line">    struct task_struct __rcu *parent &#x2F;&#x2F; 指向父进程的指针</span><br><span class="line">    struct list_head children; &#x2F;&#x2F;子进程列表</span><br><span class="line">    struct fs_struct *fs; &#x2F;&#x2F;存放文件系统信息的指针</span><br><span class="line">    struct files_struct *files; &#x2F;&#x2F; 该进程打开的文件指针组成的数组</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="1-文件描述符"><a href="#1-文件描述符" class="headerlink" title="1. 文件描述符"></a>1. 文件描述符</h2><p>一般一个进程会从files[0]读取输入，将输出写入files[1]，将错误信息写入files[2]。每个进程被创建时files的前三位分别被填入默认值标准输入流、标准输出流、标准错误流。文件描述符指的就是这个文件指针数组的索引。</p>
+<p>一般的计算机输入流是键盘，输出流和错误流是显示器。</p>
+<p>输入重定向：将files[0]指向一个文件，程序就会从这个文件中读取数据。</p>
+<p>输出重定向：将files[1]指向一个文件，程序的输出就会写入到这个文件中。</p>
+<p>错误重定向：与输出重定向一样。</p>
+<p>管道符|：把一个进程的输出流和另一个进程的输入流连接起来，数据在其中传递。</p>
+<h2 id="2-线程"><a href="#2-线程" class="headerlink" title="2.线程"></a>2.线程</h2><p>linux中的线程和进程实际上都是用的task_struct表示，只有共享的数据区域不同。子进程的mm指针指向一片新的虚拟内存区域，而子线程的mm指针与其父进程共享。</p>
+<h2 id="3-shell小技巧"><a href="#3-shell小技巧" class="headerlink" title="3. shell小技巧"></a>3. shell小技巧</h2><h3 id="1-标准输入和参数"><a href="#1-标准输入和参数" class="headerlink" title="1. 标准输入和参数"></a>1. 标准输入和参数</h3><p>标准输入：scanf、readline这种命令。可以通过管道传输给其他命令。</p>
+<p>参数：main函数传入的args字符串组。可以通过$()传输给其他命令。</p>
+<p>判断：如果命令能让终端阻塞，说明其接受标准输入。</p>
+<h3 id="2-后台运行程序"><a href="#2-后台运行程序" class="headerlink" title="2. 后台运行程序"></a>2. 后台运行程序</h3><p>远程登陆服务器时，终端会一直阻塞。</p>
+<p>在命令之后加&amp;：命令行不会阻塞，但是如果退出服务器登录就不能再访问该网页。</p>
+<p>(cmd &amp;)：可以实现不阻塞且可以在shell关闭后访问web端。</p>
+<p>原理：命令行终端实际上是shell进程，在其中执行的程序都是shell进程的子进程，所以终端关闭后其子进程都会退出。(cmd &amp;)是将cmd命令挂到一个systemd系统守护进程名下，与shell无关。</p>
+<h3 id="3-单引号与双引号"><a href="#3-单引号与双引号" class="headerlink" title="3. 单引号与双引号"></a>3. 单引号与双引号</h3><p>对于$ ( )这些富豪，单引号包围的字符不会转义，而双引号会，所以如果其中有空格，应该用双引号括起来。</p>
+<h3 id="4-sudo"><a href="#4-sudo" class="headerlink" title="4. sudo"></a>4. sudo</h3><p>有些脚本不用sudo能用，但是加了sudo反而用不了，因为这些脚本只存在于用户环境变量中，要用sudo运行必须使用绝对路径。</p>
+<h3 id="5-相似文件名"><a href="#5-相似文件名" class="headerlink" title="5. 相似文件名"></a>5. 相似文件名</h3><p>可以用花括号括起来文件名组成部分，会自动组合。</p>
+<p>比如{1,2,3}{4,5,6}，会自动组合成14、15、16、……（中间不能存在空格）</p>
+<h3 id="6-输入路径"><a href="#6-输入路径" class="headerlink" title="6. 输入路径"></a>6. 输入路径</h3><p>cd -： 返回上一次在的目录</p>
+<p>!$：替换成上一次命令最后的路径</p>
+<p>!*：替换成上一次命令输入的所有文件路径</p>
+<p>CDPATH：当cd命令在当前目录中找不到指定文件或目录时，会去CDPATH中的路径找</p>
+<h3 id="7-输入重复命令"><a href="#7-输入重复命令" class="headerlink" title="7. 输入重复命令"></a>7. 输入重复命令</h3><p>!!：自动替换成上一次使用的命令</p>
+<p>history | grep ‘condition’：搜索带有condition的历史命令</p>
+<p>!id：上面指令搜索的每一条命令都带有独特id，通过id可以重新运行</p>
+<h3 id="8-重定向符号"><a href="#8-重定向符号" class="headerlink" title="8. 重定向符号"></a>8. 重定向符号</h3><blockquote>
+<p>：将标准输出重定向到文件中（清除原有文件中的数据）。</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>：将标准输出重定向到文件中（在原有内容后追加）。</p>
+</blockquote>
+</blockquote>
+<p><code>cat file.txt &gt; file.txt</code></p>
+<p>最终会得到空文件，因为执行顺序是：重定向符号是&gt;，所以shell先打开file.txt清空内容，然后将cat的标准输出指向file.txt。</p>
+<p><code>echo hello world &gt; file.txt</code><br><code>cat file.txt &gt;&gt; file.txt</code><br>最终会得到死循环，因为cat是逐行读取数据然后输出。</p>
+<p>|：管道符的多个命令是并行执行的。</p>
+<h3 id="9-session和cookie"><a href="#9-session和cookie" class="headerlink" title="9. session和cookie"></a>9. session和cookie</h3><p>cookie：HTTP是一种无状态的协议，如果需要进行连续操作，服务器就需要给用户贴个特定的标签，用户每次请求时加上标签让服务器认出来。</p>
+<p>一个cookie相当于name=value的变量，而一个session是存储在服务器上的映射。</p>
+<p>session具体由Manager、Provider与Session三个类配合实现：</p>
+<ol>
+<li>服务器接到浏览器的HTTP请求，Handler解析Header中的cookie，得到SessionID并发给Manager。</li>
+<li>Manager存储了session存活时间、cookie名称等配置信息，所有的session存在Manager的Provider中，Manager把SID传递给Provider让他去找出对应的session。</li>
+<li>Provider是一个容器，存储SID与session的映射，根据SID找到Session结构并返回。</li>
+<li>Handler拿出Session中的具体信息，生成该用户的HTML网页并返回给客户端。</li>
 </ol>
-<h1 id="2-构造函数语义学"><a href="#2-构造函数语义学" class="headerlink" title="2. 构造函数语义学"></a>2. 构造函数语义学</h1><ol>
-<li>默认构造函数并不是默认一定会生成，只在编译器认为“需要”的时候编译生成。且只会初始化类对象，不会初始化标量。<ol>
-<li>成员变量为“带有默认构造函数的类对象”，编译器会依定义顺序调用所有成员的默认构造函数。如果用户自定义了部分成员变量的初始化（不含参数），编译器会在用户自定义的代码前先插入其他成员的默认构造函数。</li>
-<li>基类有默认构造函数。</li>
-<li>有虚函数/基类有虚函数。必须要完成vptr与vtable的初始化。</li>
-<li>有虚基类。虚基类也是通过vtable实现。</li>
-</ol>
-</li>
-<li>编译器是否会生成拷贝构造函数，取决于类是否展现出“逐位拷贝语义”。类不展现出该语义的情况与1类似，此时编译器生成拷贝构造函数。<ol>
-<li>1.1与1.2中，为其基类与成员调用其定义的拷贝构造函数。</li>
-<li>1.3与1.4中，vtable必须深拷贝，vptr也不能直接拷贝使得两个对象有同一vtable。</li>
-</ol>
-</li>
-<li>NRV优化：将函数中值传递的类对象返回值改为在参数中引用传递，返回void。必须要类显式定义了拷贝构造函数才会启动NRV优化。</li>
-<li>成员初始化列表：会作为语句插入到用户自定义语句之前，且按照成员声明顺序排列。所以，成员初始化列表尽量按照声明顺序排列，以防止用某些还没初始化的成员初始化其他成员。</li>
-</ol>
-<h1 id="3-Data语意学"><a href="#3-Data语意学" class="headerlink" title="3. Data语意学"></a>3. Data语意学</h1><ol>
-<li>空类：不同的编译器处理不同：对于A-&gt;B/C-&gt;D的菱形继承关系，它们都为空类。A的大小为1，但B、D的大小在不同的编译器上分别为8、12或4、8。<ol>
-<li>一种编译器为B继承的A保留了其1字节的大小，又由于对齐，填充了3字节，使得最终大小为1（A）+3（padding）+4（vptr）=8</li>
-<li>另一种编译器因为B有了vptr不为空，所以不需要A的1字节，为4。</li>
-</ol>
-</li>
-</ol>
-<h1 id="4-Function语意学"><a href="#4-Function语意学" class="headerlink" title="4. Function语意学"></a>4. Function语意学</h1><ol>
-<li><code>((classname*)0)-&gt;member_function()</code>在下列条件下是能成功的。后续引入了静态成员函数替代这种写法。<ol>
-<li>不直接读写成员变量</li>
-<li>成员函数不声明为const、volatile、virtual</li>
-</ol>
-</li>
-<li>多态虚表：一个class对应一个虚表，在编译器构建完成。虚表中包含该类的类型信息、虚函数的地址（按定义顺序排列）。</li>
-<li>多继承的虚函数：thunk模型：每个被多继承的基类维护一个虚表指针，其中一个基类为主要基类，其他的为次要基类。主要基类的虚表指针维护<strong>该派生类从主要基类继承链上的全部虚函数</strong>，而次要基类的虚表指针只维护<strong>该次要基类继承链上的</strong>虚函数（从该次要基类开始，所以看不见派生类的）。主要基类的虚表中会维护需要调整this指针的函数（在其他次要基类中定义的）<ol>
-<li>实际调用时，根据虚表中的记录调整this函数到相应位置，再通过虚表查询调用。</li>
-<li>当然，这样频繁移动this指针会使运行效率更慢。</li>
-</ol>
-</li>
-<li>虚成员函数的指针也可实现动态多态。</li>
-<li>inline函数：<ol>
-<li>处理流程<ol>
-<li>分析函数定义，判断其能不能成为inline，如果不能则成为static函数</li>
-<li>在调用点上扩展inline函数</li>
-</ol>
-</li>
-<li>同名局部变量、副作用函数会使用临时变量进行处理</li>
-</ol>
-</li>
-</ol>
-<h1 id="5-构造、析构、拷贝语意学"><a href="#5-构造、析构、拷贝语意学" class="headerlink" title="5. 构造、析构、拷贝语意学"></a>5. 构造、析构、拷贝语意学</h1><ol>
-<li>纯虚函数<ol>
-<li>纯虚函数可以在类外被定义，也能被静态调用（类名::虚函数）</li>
-<li>尽量不要将析构函数声明为纯虚函数。析构函数在编译时会扩张，以<strong>静态调用</strong>的方式调用其所有基类的析构函数，导致<strong>纯虚析构函数一定得在类外定义</strong>。</li>
-</ol>
-</li>
-</ol>
-<h1 id="6-执行期语意学"><a href="#6-执行期语意学" class="headerlink" title="6. 执行期语意学"></a>6. 执行期语意学</h1><ol>
-<li>临时对象的生命期：临时性对象被摧毁，应该是对产生临时对象的完整表达式求值过程中的最后一个步骤。<ol>
-<li>完整表达式一般指被涵括的表达式中最外围的那个。</li>
-<li>两个例外：<ol>
-<li>临时对象作为拷贝构造函数的参数：临时对象保留到对象构造完成。</li>
-<li>临时对象被常引用绑定：临时对象保留到引用或临时对象的生命范畴结束。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h1 id="7-站在对象模型的尖端"><a href="#7-站在对象模型的尖端" class="headerlink" title="7. 站在对象模型的尖端"></a>7. 站在对象模型的尖端</h1><ol>
-<li>template模板<ol>
-<li>template只存在声明时，里面的静态成员是不可用的，即使与类型无关。（不能 <code>Point::Status s</code>这样不带类型名）</li>
-<li>成员函数只在其被调用的时候实例化。为了空间时间效率，以及支持尚未实现的功能的考虑。</li>
-<li>int和long一致的架构中，类型实例化还是会产生两个实例。</li>
-<li>错误处理：面对声明时，只将其收集为一系列tokens，即只做与语法有关的错误检查（不合法字符等），不作与语法无关的检查（类型检查等）。</li>
-<li>名称决议法：在模板定义域与实例化域分别声明同名的不同重载函数（该函数不是模板类成员）时：<ol>
-<li>如果函数与“用以实例化模板的参数类型”有关，则使用模板定义域的函数。</li>
-<li>如果函数与“用以实例化模板的参数类型”无关，则使用模板实例化域的函数。</li>
-<li>是否有关：向函数传入了该参数类型的参数。</li>
-</ol>
-</li>
-<li>成员函数的实例化：<ol>
-<li>编译时不产生任何实例化。</li>
-<li>链接前，检查每个编译模块文件，寻找模板实例的相互参考与对应的定义。</li>
-<li>对于参考到模板实例而该实例没有定义的情况，将该文件视为与另一个实例化等同。</li>
-<li>重新执行编译器，编译每一个改变过的文件。</li>
-<li>重复直到所有必要的实例化操作完成。</li>
-<li>链接。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
+<h3 id="10-git"><a href="#10-git" class="headerlink" title="10. git"></a>10. git</h3><p>git的三个分区：</p>
+<ul>
+<li>工作目录working directory（肉眼可以看到的文件）</li>
+<li>暂存区stage area/index area</li>
+<li>提交历史commit history（HEAD指针指向的位置）</li>
+</ul>
+<p>分区转换：</p>
+<ul>
+<li>将work dir中的修改加入stage：git add</li>
+<li>将stage中的修改还原到work dir：git checkout</li>
+<li>将stage的文件添加到history：git commit</li>
+<li>将history的文件还原到stage区：git reset</li>
+<li>将work dir的修改提交到history区：先git add后git commit，或者git commit -a</li>
+<li>将history区的历史提交还原到work dir中：git checkout HEAD .</li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -556,7 +544,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2023/02/15/读书笔记-深度探索C++对象模型/" target="_blank" title="读书笔记-深度探索C++对象模型">https://aobamoka.github.io/2023/02/15/读书笔记-深度探索C++对象模型/</a>
+    <a href="/2022/12/15/学习笔记-labuladong计算机技术/" target="_blank" title="学习笔记-labuladong计算机技术">https://aobamoka.github.io/2022/12/15/学习笔记-labuladong计算机技术/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -578,18 +566,18 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/" class="post-nav-link">
+    <a href="/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">面试记录-2.23-阿里云网络一面</div>
+        <div class="title-text">学习笔记-操作系统</div>
       </div>
       
       <!-- <div class="content">
-        2.23-阿里云网络一面（虚拟网络相关的组？）1. 自我介绍2. 项目文件压缩
+        1. 硬件结构1. 冯诺依曼模型冯诺依曼模型：运算器、控制器、存储器、输入设备、输出设备。对应于现代计算机的结构：
 
-无损压缩：用在文本文件、代码文件、可执
+存
       </div> -->
     </a>
   </div>
@@ -600,16 +588,16 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-nav-link">
+    <a href="/2022/11/23/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-MySQL/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">学习笔记-设计模式</div>
+        <div class="title-text">学习笔记-MySQL</div>
       </div>
       <!-- <div class="content">
-        C++各类设计模式及实现详解 - 知乎 (zhihu.com)
-1. 设计原则总原则：开闭原则：对扩展开放，对修改关闭。
+        大三上的数据库课，而且讲的很浅，感觉没记下些啥，可能很基础的也会记上来。。。
+1. 基础篇1. 关系型数据库与非关系型数
       </div> -->
     </a>
   </div>
@@ -707,7 +695,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%85%B3%E4%BA%8E%E5%AF%B9%E8%B1%A1"><span class="toc-text">1. 关于对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E8%AF%AD%E4%B9%89%E5%AD%A6"><span class="toc-text">2. 构造函数语义学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Data%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">3. Data语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Function%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">4. Function语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%9E%84%E9%80%A0%E3%80%81%E6%9E%90%E6%9E%84%E3%80%81%E6%8B%B7%E8%B4%9D%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">5. 构造、析构、拷贝语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%89%A7%E8%A1%8C%E6%9C%9F%E8%AF%AD%E6%84%8F%E5%AD%A6"><span class="toc-text">6. 执行期语意学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E7%AB%99%E5%9C%A8%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B0%96%E7%AB%AF"><span class="toc-text">7. 站在对象模型的尖端</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E7%94%A8%E9%80%94"><span class="toc-text">1. linux文件系统文件用途</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">2. 进程-线程-文件描述符</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">1. 文件描述符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B"><span class="toc-text">2.线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-shell%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-text">3. shell小技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="toc-text">2. 后台运行程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%8D%95%E5%BC%95%E5%8F%B7%E4%B8%8E%E5%8F%8C%E5%BC%95%E5%8F%B7"><span class="toc-text">3. 单引号与双引号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-sudo"><span class="toc-text">4. sudo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%9B%B8%E4%BC%BC%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-text">5. 相似文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%BE%93%E5%85%A5%E8%B7%AF%E5%BE%84"><span class="toc-text">6. 输入路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%BE%93%E5%85%A5%E9%87%8D%E5%A4%8D%E5%91%BD%E4%BB%A4"><span class="toc-text">7. 输入重复命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E9%87%8D%E5%AE%9A%E5%90%91%E7%AC%A6%E5%8F%B7"><span class="toc-text">8. 重定向符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-session%E5%92%8Ccookie"><span class="toc-text">9. session和cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-git"><span class="toc-text">10. git</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

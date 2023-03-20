@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>labuladong计算机技术笔记 | 摩卡&#39;s blog</title>
+  <title>分类: 学习笔记 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -390,596 +390,270 @@
 </header>
         <!-- 内容区域 -->
         
- <!-- prismjs 代码高亮 -->
- 
 
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-categoryDetail" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
 
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        labuladong计算机技术笔记
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2022-12-15 |
-        </span>
-      
-
-      
-
-      
-    
+<div class="category-header"  style="background-image:url('https://pic3.zhimg.com/80/v2-98dcd81cb0d1fee52a807c13cedb8338_1440w.jpg?source=1940ef5c')">
+  <div class="category-header-title">
+    category
   </div>
-  
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content post-row" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <h1 id="1-linux文件系统文件用途"><a href="#1-linux文件系统文件用途" class="headerlink" title="1. linux文件系统文件用途"></a>1. linux文件系统文件用途</h1><ul>
-<li>/bin /sbin：存储可执行的二进制文件，如cp、chmod、ifconfig等命令。</li>
-<li>/boot：存储系统启动需要的文件。</li>
-<li>/dev：存放设备文件。</li>
-<li>/etc：存放很多程序的配置信息，如apt。(在/etc/apt中更改镜像源)</li>
-<li>/lib：包含bin和sbin中可执行文件的依赖，类似win中的dll文件库。</li>
-<li>/media：有一个以用户名命名的文件夹，里面是自动挂载的设备，如U盘等。</li>
-<li>/mnt：手动挂载设备的地方。</li>
-<li>/opt：无特定用途。</li>
-<li>/proc：全部正在运行程序的状态信息。有以PID命名的文件夹。</li>
-<li>/root：root用户的home目录</li>
-<li>/run /sys：存储某些程序的运行时信息和系统需要的一些信息。由于存储在内存，所以随着机器关闭而丢失。</li>
-<li>/srv：存放服务数据。</li>
-<li>/tmp：存储一些程序的临时文件。</li>
-<li>/usr：存放一些非系统必须的资源，如用户安装的应用程序。/usr和/usr/local目录中也有bin和sbin，存放用户使用的工具。</li>
-<li>/var：存储日志信息。</li>
-<li>/home：普通用户的home目录</li>
-</ul>
-<h1 id="2-进程-线程-文件描述符"><a href="#2-进程-线程-文件描述符" class="headerlink" title="2. 进程-线程-文件描述符"></a>2. 进程-线程-文件描述符</h1><p>linux中进程就是一个数据结构task_struct，称为进程描述符  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">    long state; &#x2F;&#x2F; 状态</span><br><span class="line">    struct mm_struct *mm; &#x2F;&#x2F;虚拟内存</span><br><span class="line">    pid_t pid; &#x2F;&#x2F; 进程号</span><br><span class="line">    struct task_struct __rcu *parent &#x2F;&#x2F; 指向父进程的指针</span><br><span class="line">    struct list_head children; &#x2F;&#x2F;子进程列表</span><br><span class="line">    struct fs_struct *fs; &#x2F;&#x2F;存放文件系统信息的指针</span><br><span class="line">    struct files_struct *files; &#x2F;&#x2F; 该进程打开的文件指针组成的数组</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="1-文件描述符"><a href="#1-文件描述符" class="headerlink" title="1. 文件描述符"></a>1. 文件描述符</h2><p>一般一个进程会从files[0]读取输入，将输出写入files[1]，将错误信息写入files[2]。每个进程被创建时files的前三位分别被填入默认值标准输入流、标准输出流、标准错误流。文件描述符指的就是这个文件指针数组的索引。  </p>
-<p>一般的计算机输入流是键盘，输出流和错误流是显示器。</p>
-<p>输入重定向：将files[0]指向一个文件，程序就会从这个文件中读取数据。  </p>
-<p>输出重定向：将files[1]指向一个文件，程序的输出就会写入到这个文件中。  </p>
-<p>错误重定向：与输出重定向一样。  </p>
-<p>管道符|：把一个进程的输出流和另一个进程的输入流连接起来，数据在其中传递。</p>
-<h2 id="2-线程"><a href="#2-线程" class="headerlink" title="2.线程"></a>2.线程</h2><p>linux中的线程和进程实际上都是用的task_struct表示，只有共享的数据区域不同。子进程的mm指针指向一片新的虚拟内存区域，而子线程的mm指针与其父进程共享。</p>
-<h2 id="3-shell小技巧"><a href="#3-shell小技巧" class="headerlink" title="3. shell小技巧"></a>3. shell小技巧</h2><h3 id="1-标准输入和参数"><a href="#1-标准输入和参数" class="headerlink" title="1. 标准输入和参数"></a>1. 标准输入和参数</h3><p>标准输入：scanf、readline这种命令。可以通过管道传输给其他命令。  </p>
-<p>参数：main函数传入的args字符串组。可以通过$()传输给其他命令。  </p>
-<p>判断：如果命令能让终端阻塞，说明其接受标准输入。</p>
-<h3 id="2-后台运行程序"><a href="#2-后台运行程序" class="headerlink" title="2. 后台运行程序"></a>2. 后台运行程序</h3><p>远程登陆服务器时，终端会一直阻塞。</p>
-<p>在命令之后加&amp;：命令行不会阻塞，但是如果退出服务器登录就不能再访问该网页。  </p>
-<p>(cmd &amp;)：可以实现不阻塞且可以在shell关闭后访问web端。  </p>
-<p>原理：命令行终端实际上是shell进程，在其中执行的程序都是shell进程的子进程，所以终端关闭后其子进程都会退出。(cmd &amp;)是将cmd命令挂到一个systemd系统守护进程名下，与shell无关。</p>
-<h3 id="3-单引号与双引号"><a href="#3-单引号与双引号" class="headerlink" title="3. 单引号与双引号"></a>3. 单引号与双引号</h3><p>对于$ ( )这些富豪，单引号包围的字符不会转义，而双引号会，所以如果其中有空格，应该用双引号括起来。</p>
-<h3 id="4-sudo"><a href="#4-sudo" class="headerlink" title="4. sudo"></a>4. sudo</h3><p>有些脚本不用sudo能用，但是加了sudo反而用不了，因为这些脚本只存在于用户环境变量中，要用sudo运行必须使用绝对路径。</p>
-<h3 id="5-相似文件名"><a href="#5-相似文件名" class="headerlink" title="5. 相似文件名"></a>5. 相似文件名</h3><p>可以用花括号括起来文件名组成部分，会自动组合。  </p>
-<p>比如{1,2,3}{4,5,6}，会自动组合成14、15、16、……（中间不能存在空格）</p>
-<h3 id="6-输入路径"><a href="#6-输入路径" class="headerlink" title="6. 输入路径"></a>6. 输入路径</h3><p>cd -： 返回上一次在的目录  </p>
-<p>!$：替换成上一次命令最后的路径  </p>
-<p>!*：替换成上一次命令输入的所有文件路径  </p>
-<p>CDPATH：当cd命令在当前目录中找不到指定文件或目录时，会去CDPATH中的路径找</p>
-<h3 id="7-输入重复命令"><a href="#7-输入重复命令" class="headerlink" title="7. 输入重复命令"></a>7. 输入重复命令</h3><p>!!：自动替换成上一次使用的命令  </p>
-<p>history | grep ‘condition’：搜索带有condition的历史命令  </p>
-<p>!id：上面指令搜索的每一条命令都带有独特id，通过id可以重新运行</p>
-<h3 id="8-重定向符号"><a href="#8-重定向符号" class="headerlink" title="8. 重定向符号"></a>8. 重定向符号</h3><blockquote>
-<p>：将标准输出重定向到文件中（清除原有文件中的数据）。  </p>
-</blockquote>
-<blockquote>
-<blockquote>
-<p>：将标准输出重定向到文件中（在原有内容后追加）。  </p>
-</blockquote>
-</blockquote>
-<p><code>cat file.txt &gt; file.txt</code>  </p>
-<p>最终会得到空文件，因为执行顺序是：重定向符号是&gt;，所以shell先打开file.txt清空内容，然后将cat的标准输出指向file.txt。  </p>
-<p><code>echo hello world &gt; file.txt</code><br><code>cat file.txt &gt;&gt; file.txt</code><br>最终会得到死循环，因为cat是逐行读取数据然后输出。  </p>
-<p>|：管道符的多个命令是并行执行的。  </p>
-<h3 id="9-session和cookie"><a href="#9-session和cookie" class="headerlink" title="9. session和cookie"></a>9. session和cookie</h3><p>cookie：HTTP是一种无状态的协议，如果需要进行连续操作，服务器就需要给用户贴个特定的标签，用户每次请求时加上标签让服务器认出来。  </p>
-<p>一个cookie相当于name=value的变量，而一个session是存储在服务器上的映射。  </p>
-<p>session具体由Manager、Provider与Session三个类配合实现：</p>
-<ol>
-<li>服务器接到浏览器的HTTP请求，Handler解析Header中的cookie，得到SessionID并发给Manager。</li>
-<li>Manager存储了session存活时间、cookie名称等配置信息，所有的session存在Manager的Provider中，Manager把SID传递给Provider让他去找出对应的session。</li>
-<li>Provider是一个容器，存储SID与session的映射，根据SID找到Session结构并返回。</li>
-<li>Handler拿出Session中的具体信息，生成该用户的HTML网页并返回给客户端。</li>
-</ol>
-<h3 id="10-git"><a href="#10-git" class="headerlink" title="10. git"></a>10. git</h3><p>git的三个分区：</p>
-<ul>
-<li>工作目录working directory（肉眼可以看到的文件）</li>
-<li>暂存区stage area/index area</li>
-<li>提交历史commit history（HEAD指针指向的位置）</li>
-</ul>
-<p>分区转换：</p>
-<ul>
-<li>将work dir中的修改加入stage：git add</li>
-<li>将stage中的修改还原到work dir：git checkout</li>
-<li>将stage的文件添加到history：git commit</li>
-<li>将history的文件还原到stage区：git reset</li>
-<li>将work dir的修改提交到history区：先git add后git commit，或者git commit -a</li>
-<li>将history区的历史提交还原到work dir中：git checkout HEAD . </li>
-</ul>
-
-      </div>
-      <div class="post-tags-categories">
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>作者:  </strong>aoba moka</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>文章链接:  </strong>
-    <a href="/2022/12/15/labuladong计算机技术笔记/" target="_blank" title="labuladong计算机技术笔记">https://aobamoka.github.io/2022/12/15/labuladong计算机技术笔记/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>版权声明:   </strong>
-      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      许可协议。转载请注明出处!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
+  <div class="category-header-desc">
     
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">学习笔记-操作系统</div>
-      </div>
-      
-      <!-- <div class="content">
-        1. 硬件结构1. 冯诺依曼模型冯诺依曼模型：运算器、控制器、存储器、输入设备、输出设备。对应于现代计算机的结构：
-
-存
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2022/11/23/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-MySQL/" class="post-nav-link">
-      <div class="title">
-        下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">学习笔记-MySQL</div>
-      </div>
-      <!-- <div class="content">
-        大三上的数据库课，而且讲的很浅，感觉没记下些啥，可能很基础的也会记上来。。。
-1. 基础篇1. 关系型数据库与非关系型数
-      </div> -->
-    </a>
-  </div>
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
+      <span class="title" id="category-header-desc"></span>
+      <script>
+  function typedFn() {
+    const el = '#category-header-desc';
+    const type = 'categoryDetail';
+    let desc = '愿你如风，被人温柔以待'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
   }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
-      <div id="gitment-container"></div>
-
-    
+  typedFn();
+</script>
+      
   </div>
+  <div class="mask-box"></div>
+</div>
 
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
 
-
+<div class="category">
+  <div class="category-name">
+    <div class="name" style="background-color: #A3E4D7;">学习笔记 分类</div>
   </div>
+  <!-- 每一篇文章卡片 -->
+  <!-- hash算法 -->
 
-  <!-- 目录 -->
-  <aside id='l_side'>
+<section class="posts">
   
     
-      <section class="widget side_blogger">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img src='/medias/test.png'/>
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2022-12-21</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">学习笔记-操作系统</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            1. 硬件结构1. 冯诺依曼模型冯诺依曼模型：运算器、控制器、存储器、输入设备、输出设备。对应于现代计算机的结构：
+
+存储器：内存
+控制器：南桥，负责IO设备、外部存储设备与BIOS之间的通信；北桥，负责CPU和内存、显卡的数据传送
+运算器
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2022/12/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
-      
-    
-    
-      <div class='text'>
-        
-          <h2>摩卡</h2>
-        
-        
-          <p>因幡めぐる单推人</p>
-
-        
-        
-          <p><span id="jinrishici-sentence">摩卡's blog</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
       </div>
+    </article>
+  
     
+    <article class="post reveal" style="   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2022-12-15</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2022/12/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF/">学习笔记-labuladong计算机技术</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2022/12/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            1. linux文件系统文件用途
+/bin /sbin：存储可执行的二进制文件，如cp、chmod、ifconfig等命令。
+/boot：存储系统启动需要的文件。
+/dev：存放设备文件。
+/etc：存放很多程序的配置信息，如apt。(在/
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2022/12/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF/">
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2022/12/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-labuladong%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E6%9C%AF/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
     
-  </div>
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2021-03-17</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/">学习笔记-leetcode-master-二叉树2</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            1、二叉树最小深度leetcode 111：二叉树的最小深度
+简单题，但是有个坑，不能像求最大深度那么做。因为最小深度是到叶子节点的最小深度，而如果只有一个子节点为空，最大深度的算法就会把该节点最小深度设置为1，而这是不对的。
+只有一个子节
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2021/03/17/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%912/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2021-03-16</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/">学习笔记-leetcode-master-二叉树1</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            一、简单知识一些概念：满二叉树、完全二叉树、二叉搜索树、平衡二叉搜索树
+C++中map、set、multimap，multiset的底层实现都是平衡二叉搜索树（红黑树）
+存储方式：链式存储、数组存储（一般用于堆中）
+遍历：DFS（前序遍历、
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/">
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
 </section>
-
-    
-  
-  
-  
-
-  <div class="layout_sticky">    
-    
-      
-<section class="widget side_toc">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E7%94%A8%E9%80%94"><span class="toc-text">1. linux文件系统文件用途</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">2. 进程-线程-文件描述符</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">1. 文件描述符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B"><span class="toc-text">2.线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-shell%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-text">3. shell小技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="toc-text">2. 后台运行程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%8D%95%E5%BC%95%E5%8F%B7%E4%B8%8E%E5%8F%8C%E5%BC%95%E5%8F%B7"><span class="toc-text">3. 单引号与双引号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-sudo"><span class="toc-text">4. sudo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%9B%B8%E4%BC%BC%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-text">5. 相似文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%BE%93%E5%85%A5%E8%B7%AF%E5%BE%84"><span class="toc-text">6. 输入路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%BE%93%E5%85%A5%E9%87%8D%E5%A4%8D%E5%91%BD%E4%BB%A4"><span class="toc-text">7. 输入重复命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E9%87%8D%E5%AE%9A%E5%90%91%E7%AC%A6%E5%8F%B7"><span class="toc-text">8. 重定向符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-session%E5%92%8Ccookie"><span class="toc-text">9. session和cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-git"><span class="toc-text">10. git</span></a></li></ol></li></ol></li></ol> -->
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
 </div>
-
-      
-  <section class="widget side_recent_post">
-    
-  <header>
-    
-      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      
-      <!-- hash算法 -->
-      
-      <div class="aside-list">
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-20</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/">项目学习-CMU-15-445-Lab0</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/">学习笔记-Shell编程</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-16</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/">学习笔记-SQL语法</a>
-            </div>
-          </div>
-        
-      </div>
-    </div>
-  </section>
-
-    
-  </div>
-</aside>
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
-</div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
-  <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
+<div class="w-70">
   
-</script>
-
+</div>
 
       </main>
     </div>
