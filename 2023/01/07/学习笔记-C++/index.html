@@ -1206,8 +1206,8 @@
 <p>policy：</p>
 <ul>
 <li>launch::async(0x1)：异步启动</li>
-<li>launch::deferred(0x2)：调用future::get、future::wait时同步启动</li>
-<li>launch::async | launch::deferred(0x3)：根据操作系统而定</li>
+<li>launch::deferred(0x2)：调用future::get、future::wait时同步启动。实际上不创建线程，而是在本线程中运行。</li>
+<li>launch::async | launch::deferred(0x3)：根据操作系统而定。系统资源紧张时会用同步启动。</li>
 </ul>
 <p>第一个参数也可省略，默认为0x3。</p>
 <h3 id="5-future"><a href="#5-future" class="headerlink" title="5. future"></a>5. future</h3><p>定义 <code>future&lt;T&gt;</code>类型的对象val接收async的返回值（T为async传入函数的返回值类型），然后调用val.get()阻塞等待线程结束，并获取其返回值。</p>
