@@ -1068,6 +1068,7 @@
 <li>类型指数据类型</li>
 <li>值类别指lvalue、rvalue，rvalue可分为prvalue、xrvalue。</li>
 </ul>
+<p>declval&lt;T&gt;()：返回一个类型的右值引用，不管它有没有构造函数、能否创建对象（抽象基类）</p>
 <h3 id="1-移动语义"><a href="#1-移动语义" class="headerlink" title="1. 移动语义"></a>1. 移动语义</h3><p>转让资源，通过移动构造函数（move）实现，仅对于实现了移动构造函数的类有作用。</p>
 <p>move源码：简单来说，通过remove_reference&lt;T&gt;移除所有引用，然后加上右值引用后强制转换。</p>
 <p>remove_reference&lt;T&gt;：对普通类型、左值引用、右值引用分别特化</p>
@@ -2006,7 +2007,7 @@
           <h2>摩卡</h2>
         
         
-          <p>因幡めぐる单推</p>
+          <p>不太会说话</p>
 
         
         
