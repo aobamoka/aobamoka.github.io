@@ -637,7 +637,6 @@
 <li>-e/-f：以选项中指定的script处理输入文本文件（也可以省略，带双引号就行了？）</li>
 <li>-h：help</li>
 <li>-n：只显示处理后的结果</li>
-<li>-v：版本</li>
 <li>-i：修改文件</li>
 </ul>
 <p>动作：n动作string：指定第n行，指定动作，如果是写入动作则写入string，没有则不带string</p>
@@ -658,6 +657,30 @@
 </ul>
 <h2 id="12-awk"><a href="#12-awk" class="headerlink" title="12. awk"></a>12. awk</h2><p>awk是处理列的。sed是处理行的。</p>
 <p>awk将每行按空格分割成数组，通过$n获取指定列，从1开始。</p>
+<h2 id="13-正则表达式"><a href="#13-正则表达式" class="headerlink" title="13. 正则表达式"></a>13. 正则表达式</h2><h3 id="1-字符匹配"><a href="#1-字符匹配" class="headerlink" title="1. 字符匹配"></a>1. 字符匹配</h3><ul>
+<li>[:alnum:]：字母和数字</li>
+<li>[:lower:]：小写字母</li>
+<li>[:upper:]：大写字母</li>
+<li>[:digit:]：数字</li>
+<li>[:xdigit:]：十六进制数字</li>
+</ul>
+<h3 id="2-匹配次数"><a href="#2-匹配次数" class="headerlink" title="2. 匹配次数"></a>2. 匹配次数</h3><ul>
+<li>*：任意次</li>
+<li>\?：0或1次</li>
+<li>\+：至少一次</li>
+<li>\{n\}：n次</li>
+<li>\{m,n\}：m~n次</li>
+<li>\{,n\}：至多n次</li>
+<li>\{n,\}：至少n次</li>
+</ul>
+<h3 id="3-位置锚定"><a href="#3-位置锚定" class="headerlink" title="3. 位置锚定"></a>3. 位置锚定</h3><ul>
+<li>^：行首锚定</li>
+<li>$：行尾锚定</li>
+<li>^PATTERN$：模式匹配整行</li>
+<li>\&lt; \b：词首锚定</li>
+<li>\&gt; \b：词尾锚定</li>
+</ul>
+<h3 id="4-后向引用"><a href="#4-后向引用" class="headerlink" title="4. 后向引用"></a>4. 后向引用</h3><p>括号分组，左起第n个左括号与其匹配的右括号中间匹配到的字符为第n组。后续可通过\n指定。</p>
 <h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><p>kill：将指定信息送至程序，让其终止。</p>
 <ul>
 <li>kill -l：列出所有可发送的信号</li>
@@ -772,6 +795,7 @@
 <li>delete [断点号]：删除所有断点/删除指定断点</li>
 <li>backtrace：查看函数调用栈</li>
 <li>print 变量名</li>
+<li>x：打印指定内存的信息</li>
 </ul>
 
       </div>
@@ -838,8 +862,8 @@
       </div>
       <!-- <div class="content">
         自我介绍
-面试官您好，我的名字是xxx，今年23岁，湖南人。（基本信息）
-我本科和硕士阶段都就读于南京大学的计算机科学与
+面试官您好，我的名字是xxx，今年23岁，来自湖南。（基本信息）
+我本科和硕士阶段都就读于南京大学的计算机科学
       </div> -->
     </a>
   </div>
@@ -937,7 +961,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">1. 内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E5%90%84%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">1. 内存各段的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E9%A1%B5%E7%9A%84%E6%84%8F%E4%B9%89-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E9%A1%B5"><span class="toc-text">2. 分页的意义&#x2F;为什么分页</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E4%BF%A1%E5%8F%B7"><span class="toc-text">2. 信号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Linux%E8%AE%BE%E8%AE%A1"><span class="toc-text">3. Linux设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4. I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. I&#x2F;O模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">1. 阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">2. 非阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">3. IO多路复用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8IO"><span class="toc-text">4. 信号驱动IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%BC%82%E6%AD%A5IO"><span class="toc-text">5. 异步IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%AB%98%E6%95%88%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9Aepoll"><span class="toc-text">6. 高效多路复用：epoll</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%8E%A7%E5%88%B6%E5%8F%B0-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">5. 控制台&#x2F;常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">命令实现的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C"><span class="toc-text">2. 后台运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sudo"><span class="toc-text">3. sudo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E5%90%8D%E7%BB%84%E5%90%88"><span class="toc-text">4. 文件名组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%B7%AF%E5%BE%84%E7%9B%B8%E5%85%B3"><span class="toc-text">5. 路径相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%91%BD%E4%BB%A4%E7%9B%B8%E5%85%B3"><span class="toc-text">6. 命令相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%9F%A5%E6%89%BE"><span class="toc-text">7. 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ls"><span class="toc-text">8. ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-chmod"><span class="toc-text">9. chmod</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="toc-text">10. 查看文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-sed"><span class="toc-text">11. sed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-awk"><span class="toc-text">12. awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88"><span class="toc-text">综合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%B0%83%E8%AF%95"><span class="toc-text">6. 调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="toc-text">1. 段错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-core"><span class="toc-text">2. core</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-gdb"><span class="toc-text">3. gdb</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">1. 内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E5%90%84%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">1. 内存各段的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E9%A1%B5%E7%9A%84%E6%84%8F%E4%B9%89-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E9%A1%B5"><span class="toc-text">2. 分页的意义&#x2F;为什么分页</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E4%BF%A1%E5%8F%B7"><span class="toc-text">2. 信号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Linux%E8%AE%BE%E8%AE%A1"><span class="toc-text">3. Linux设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4. I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. I&#x2F;O模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">1. 阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">2. 非阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">3. IO多路复用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8IO"><span class="toc-text">4. 信号驱动IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%BC%82%E6%AD%A5IO"><span class="toc-text">5. 异步IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%AB%98%E6%95%88%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9Aepoll"><span class="toc-text">6. 高效多路复用：epoll</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%8E%A7%E5%88%B6%E5%8F%B0-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">5. 控制台&#x2F;常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">命令实现的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C"><span class="toc-text">2. 后台运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sudo"><span class="toc-text">3. sudo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E5%90%8D%E7%BB%84%E5%90%88"><span class="toc-text">4. 文件名组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%B7%AF%E5%BE%84%E7%9B%B8%E5%85%B3"><span class="toc-text">5. 路径相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%91%BD%E4%BB%A4%E7%9B%B8%E5%85%B3"><span class="toc-text">6. 命令相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%9F%A5%E6%89%BE"><span class="toc-text">7. 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ls"><span class="toc-text">8. ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-chmod"><span class="toc-text">9. chmod</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="toc-text">10. 查看文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-sed"><span class="toc-text">11. sed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-awk"><span class="toc-text">12. awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">13. 正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%97%E7%AC%A6%E5%8C%B9%E9%85%8D"><span class="toc-text">1. 字符匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8C%B9%E9%85%8D%E6%AC%A1%E6%95%B0"><span class="toc-text">2. 匹配次数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BD%8D%E7%BD%AE%E9%94%9A%E5%AE%9A"><span class="toc-text">3. 位置锚定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%8E%E5%90%91%E5%BC%95%E7%94%A8"><span class="toc-text">4. 后向引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88"><span class="toc-text">综合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%B0%83%E8%AF%95"><span class="toc-text">6. 调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="toc-text">1. 段错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-core"><span class="toc-text">2. core</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-gdb"><span class="toc-text">3. gdb</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -963,6 +987,48 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -1024,48 +1090,6 @@
                 
               </div>
               <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/">项目学习-CMU-15-445-Lab0</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/">学习笔记-Shell编程</a>
             </div>
           </div>
         

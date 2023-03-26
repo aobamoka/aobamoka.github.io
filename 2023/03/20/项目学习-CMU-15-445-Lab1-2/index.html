@@ -473,15 +473,15 @@
 <li>LRU-K的作用主要是降低缓存污染，但K设置过高可能让历史缓存清除不掉，综合各种因素后选用LRU-2。</li>
 </ul>
 <p>2Q：即LRU-2，为LRU-K特例。</p>
-<h2 id="2-具体实现-数据结构"><a href="#2-具体实现-数据结构" class="headerlink" title="2. 具体实现-数据结构"></a>2. 具体实现-数据结构</h2><p>结构设计：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FrameInfo</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">frame_id_t</span> frame_id_;</span><br><span class="line">  <span class="keyword">size_t</span> access_times_;</span><br><span class="line">  <span class="keyword">bool</span> evictable_;</span><br><span class="line">  explicit FrameInfo(frame_id_t f, size_t at = 1, bool evi = true): frame_id_(f), access_times_(at), evictable_(evi) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">[[maybe_unused]] <span class="keyword">size_t</span> replacer_size_;</span><br><span class="line"><span class="keyword">size_t</span> k_; <span class="comment">// k</span></span><br><span class="line"><span class="keyword">size_t</span> evictable_num_; <span class="comment">// 可被换出的页面数目</span></span><br><span class="line"><span class="built_in">std</span>::mutex latch_; <span class="comment">// 互斥锁</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;FrameInfo&gt; lt_k_list_; <span class="comment">// 历史队列，保存小于k次访问的页面</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;FrameInfo&gt; ge_k_list_; <span class="comment">// 缓存队列，保存大于等于k次访问的页面</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unordered_map</span>&lt;<span class="keyword">frame_id_t</span>, <span class="built_in">std</span>::<span class="built_in">list</span>&lt;FrameInfo&gt;::iterator&gt; hash_; <span class="comment">// 哈希表，在常数时间内查找链表项</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-数据结构"><a href="#2-数据结构" class="headerlink" title="2. 数据结构"></a>2. 数据结构</h2><p>结构设计：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FrameInfo</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">frame_id_t</span> frame_id_;  <span class="comment">// 物理页号</span></span><br><span class="line">  <span class="keyword">size_t</span> access_times_;  <span class="comment">// 访问次数</span></span><br><span class="line">  <span class="keyword">bool</span> evictable_;  <span class="comment">// 是否可被换出</span></span><br><span class="line">  explicit FrameInfo(frame_id_t f, size_t at = 1, bool evi = false): frame_id_(f), access_times_(at), evictable_(evi) &#123;&#125;</span><br><span class="line">  <span class="comment">// 这里怎么设置evi都可以，因为FrameInfo只在RecordAccess中新建，而lab1-3中，RecordAccess后一般会马上调用SetEvitable置为false</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">[[maybe_unused]] <span class="keyword">size_t</span> replacer_size_;  <span class="comment">// 物理页总数，页框号不应大于等于这个数</span></span><br><span class="line"><span class="keyword">size_t</span> k_; <span class="comment">// k</span></span><br><span class="line"><span class="keyword">size_t</span> evictable_num_; <span class="comment">// 可被换出的页面数目</span></span><br><span class="line"><span class="built_in">std</span>::mutex latch_; <span class="comment">// 互斥锁</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;FrameInfo&gt; lt_k_list_; <span class="comment">// 历史队列，保存小于k次访问的页面</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;FrameInfo&gt; ge_k_list_; <span class="comment">// 缓存队列，保存大于等于k次访问的页面</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unordered_map</span>&lt;<span class="keyword">frame_id_t</span>, <span class="built_in">std</span>::<span class="built_in">list</span>&lt;FrameInfo&gt;::iterator&gt; hash_; <span class="comment">// 哈希表，在常数时间内查找链表项</span></span><br></pre></td></tr></table></figure>
 <p>踩坑点：</p>
 <ul>
 <li>页面访问次数小于k时，访问页面并不会改变位置，因为K-距离只由第一次访问时间决定，所以此时不需要移动list。</li>
 <li>寻找被弹出的界面时，因为找到的页面可能是不能被弹出的，所以只能从后往前遍历寻找，有没有更快的方法？</li>
 <li>锁粒度能细化吗？</li>
 </ul>
-<h1 id="2-具体实现"><a href="#2-具体实现" class="headerlink" title="2. 具体实现"></a>2. 具体实现</h1><h2 id="1-Evict"><a href="#1-Evict" class="headerlink" title="1. Evict"></a>1. Evict</h2><p>作用：找到一个换出到磁盘的frame。</p>
+<h1 id="2-具体实现"><a href="#2-具体实现" class="headerlink" title="2. 具体实现"></a>2. 具体实现</h1><h2 id="1-Evict"><a href="#1-Evict" class="headerlink" title="1. Evict"></a>1. Evict</h2><p>作用：找到一个换出到磁盘的物理页。</p>
 <p>输入：</p>
 <ul>
 <li>frame_id_t *frame_id：如果有页面被弹出，用该参数存储弹出页面id。</li>
@@ -497,12 +497,37 @@
 <li>再在缓存队列逆序遍历，看能否找到可弹出的，如果找到则弹出后返回。</li>
 <li>返回false。</li>
 </ul>
-<h2 id="2-RecordAccess"><a href="#2-RecordAccess" class="headerlink" title="2. RecordAccess"></a>2. RecordAccess</h2><p>作用：访问页面。如果其在缓存中，就增加访问次数并调整位置；否则插入一条。</p>
+<h2 id="2-RecordAccess"><a href="#2-RecordAccess" class="headerlink" title="2. RecordAccess"></a>2. RecordAccess</h2><p>作用：访问对应物理页。如果其在缓存中，就增加访问次数并调整位置；否则插入一条。</p>
 <p>输入：</p>
 <ul>
 <li>frame_id_t frame_id：访问的页面</li>
 </ul>
-<p>具体逻辑；</p>
+<p>具体逻辑：</p>
+<ul>
+<li>如果物理页框号无效（大于等于物理页数），则抛出异常。</li>
+<li>如果对应物理页在lru中，则增加其访问次数。<ul>
+<li>如果增加后次数等于k，则应该移动队列。</li>
+<li>如果增加后次数大于k，则应该将其移到队列首部。</li>
+</ul>
+</li>
+<li>如果对应物理页不再lru中，则将其加入lru。</li>
+</ul>
+<h2 id="3-SetEvitable"><a href="#3-SetEvitable" class="headerlink" title="3. SetEvitable"></a>3. SetEvitable</h2><p>输入：frame_id_t 要设置的物理页号，set_evitable 设置其是否可被换出，一般是false。</p>
+<p>具体逻辑：</p>
+<ul>
+<li>判断物理页号是否有效。</li>
+<li>如果找不到物理页号，直接返回。</li>
+<li>如果找到，根据set_evitable设置，并改变evictable_num。</li>
+</ul>
+<h2 id="4-Remove"><a href="#4-Remove" class="headerlink" title="4. Remove"></a>4. Remove</h2><p>输入：frame_id_t 要移除的物理页号。</p>
+<p>具体逻辑：</p>
+<ul>
+<li>判断物理页号是否有效。</li>
+<li>如果找不到物理页号，直接返回。</li>
+<li>如果找到但其不可被移除，抛出异常。</li>
+<li>减少evctable_num，并在哈希表与链表中移除。</li>
+</ul>
+<h2 id="5-Size"><a href="#5-Size" class="headerlink" title="5. Size"></a>5. Size</h2><p>返回evictable_num即可。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -568,9 +593,9 @@ Raft算法首要目标是易理解，对Paxos算
         <div class="title-text">项目学习-CMU-15-445-Lab1-1</div>
       </div>
       <!-- <div class="content">
-        1. 可扩展动态散列详细阅读
+        1. ExtendibleHashTable1. 理论详细阅读
 作用：能动态扩容的哈希表。
-特点：哈希表大小必定为2^D，D为全局位深度，初始为0。每个哈
+特点：哈希表大小必定为2^D
       </div> -->
     </a>
   </div>
@@ -668,7 +693,7 @@ Raft算法首要目标是易理解，对Paxos算
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-LRU-K"><span class="toc-text">1. LRU-K</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%90%86%E8%AE%BA"><span class="toc-text">1. 理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">2. 具体实现-数据结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 具体实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Evict"><span class="toc-text">1. Evict</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RecordAccess"><span class="toc-text">2. RecordAccess</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-LRU-K"><span class="toc-text">1. LRU-K</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%90%86%E8%AE%BA"><span class="toc-text">1. 理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">2. 数据结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 具体实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Evict"><span class="toc-text">1. Evict</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RecordAccess"><span class="toc-text">2. RecordAccess</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-SetEvitable"><span class="toc-text">3. SetEvitable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Remove"><span class="toc-text">4. Remove</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Size"><span class="toc-text">5. Size</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -694,6 +719,48 @@ Raft算法首要目标是易理解，对Paxos算
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -755,48 +822,6 @@ Raft算法首要目标是易理解，对Paxos算
                 
               </div>
               <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/">项目学习-CMU-15-445-Lab0</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/">学习笔记-Shell编程</a>
             </div>
           </div>
         

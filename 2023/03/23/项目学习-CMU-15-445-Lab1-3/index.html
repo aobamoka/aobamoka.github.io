@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Hello World | 摩卡&#39;s blog</title>
+  <title>项目学习-CMU-15-445-Lab1-3 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -410,17 +410,26 @@
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        Hello World
+        项目学习-CMU-15-445-Lab1-3
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2021-09-21 |
+          <i class="fas fa-calendar"></i> 发表于：2023-03-23 |
         </span>
       
 
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/" class="post-detail-header_category">
+              项目学习
+            </a>
+          
+        </span>
       
 
       
@@ -441,15 +450,140 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h1 id="1-BufferPoolManagerInstance"><a href="#1-BufferPoolManagerInstance" class="headerlink" title="1. BufferPoolManagerInstance"></a>1. BufferPoolManagerInstance</h1><h2 id="1-理论"><a href="#1-理论" class="headerlink" title="1. 理论"></a>1. 理论</h2><p>1-3要实现的是基于1-1的哈希表与1-2的lru-k cache的内存页面置换算法。</p>
+<h2 id="2-数据结构"><a href="#2-数据结构" class="headerlink" title="2. 数据结构"></a>2. 数据结构</h2><p>Page：表示缓存页</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> data_[BUSTUB_PAGE_SIZE]&#123;&#125;;  <span class="comment">// 存储数据，大小为4096即4K</span></span><br><span class="line"><span class="keyword">page_id_t</span> page_id_ = INVALID_PAGE_ID;  <span class="comment">// 映射的物理页号</span></span><br><span class="line"><span class="keyword">int</span> pin_count_ = <span class="number">0</span>;  <span class="comment">// 引用计数</span></span><br><span class="line"><span class="keyword">bool</span> is_dirty_ = <span class="literal">false</span>;  <span class="comment">// 脏页标志</span></span><br><span class="line">ReaderWriterLatch rwlatch_;  <span class="comment">// 读写锁，后面的lab才用到</span></span><br></pre></td></tr></table></figure>
+<p>page代表物理页号，frame代表缓存页号。</p>
+<p>pin_count类似于引用计数？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">size_t</span> pool_size_;  <span class="comment">// pages_数组大小，代表缓存页数目</span></span><br><span class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">page_id_t</span>&gt; next_page_id_ = <span class="number">0</span>;  <span class="comment">// 下一个分配的物理页号</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">size_t</span> bucket_size_ = <span class="number">4</span>;  <span class="comment">// ExtendibleHashTable的桶大小</span></span><br><span class="line"></span><br><span class="line">Page *pages_;  <span class="comment">// 具体的缓存页，可通过frame_id访问</span></span><br><span class="line">DiskManager *disk_manager_;  <span class="comment">// 具体读写磁盘的对象。在页面将要被换出或强制刷盘时，通过该指针的WritePage方法写磁盘；在从磁盘加载已存在的页时，通过该指针的ReadPage方法读磁盘</span></span><br><span class="line">ExtendibleHashTable&lt;<span class="keyword">page_id_t</span>, <span class="keyword">frame_id_t</span>&gt; *page_table_;  <span class="comment">// 物理页号-缓存页号的映射关系</span></span><br><span class="line">LRUKReplacer *replacer_;  <span class="comment">// 非空闲的缓存页lru-k淘汰策略</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;<span class="keyword">frame_id_t</span>&gt; free_list_;  <span class="comment">// 空闲缓存页链表</span></span><br><span class="line"><span class="built_in">std</span>::mutex latch_;  <span class="comment">// 互斥锁</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-实现"><a href="#2-实现" class="headerlink" title="2. 实现"></a>2. 实现</h1><h2 id="1-GetFrame"><a href="#1-GetFrame" class="headerlink" title="1. GetFrame"></a>1. GetFrame</h2><p>因为NewPgImp和FetchPgImp都是要找一个闲置或能被换出的缓存页号，所以将这部分抽象为GetFrame方法。</p>
+<p>输入：frame_it_t* 通过指针传递找到的缓存页号。</p>
+<p>输出：bool 代表是否找到。</p>
+<p>具体逻辑：</p>
+<ul>
+<li>优先找free_list，如果不为空就取出一个闲置的缓存页号，赋给参数，返回true。</li>
+<li>然后找lru-k，通过Evict方法尝试能否取出一个evictable=true的缓存页号。如果能取出：<ul>
+<li>该页可能为脏页，需要先写回磁盘。</li>
+<li>在哈希表中移除映射关系。</li>
+<li>将该缓存页号赋给参数。</li>
+<li>重置该缓存页。</li>
+<li>返回true。</li>
+</ul>
+</li>
+<li>如果都找不到，说明缓存页都被占用，且都不可被换出，返回false。</li>
+</ul>
+<h2 id="2-NewPgImp"><a href="#2-NewPgImp" class="headerlink" title="2. NewPgImp"></a>2. NewPgImp</h2><p>申请一块新的物理页，并尝试换入缓存。</p>
+<p>输入：page_id_t* 通过指针传递成功创建的物理页号。</p>
+<p>输出：如果成功创建，返回对应的缓存页指针；否则返回nullptr。</p>
+<p>具体逻辑：</p>
+<ul>
+<li>加锁。</li>
+<li>通过GetFrame尝试找能用的缓存页，如果找到：<ul>
+<li>AllocatePage分配新的物理页号，传给参数。</li>
+<li>重置该缓存页信息，物理页号为上一步新创建的，pin_count置为1。<ul>
+<li>因为是新建的页，所以不需要ReadPage。</li>
+</ul>
+</li>
+<li>在哈希表中加入映射关系。</li>
+<li>lru-k记录一次访问，并设置不可移除<ul>
+<li>因为新建页一般会马上访问。</li>
+</ul>
+</li>
+<li>返回缓存页指针。</li>
+</ul>
+</li>
+<li>找不到，返回nullptr。</li>
+</ul>
+<h2 id="3-FetchPgImp"><a href="#3-FetchPgImp" class="headerlink" title="3. FetchPgImp"></a>3. FetchPgImp</h2><p>为一块已有的物理找一块缓存页。</p>
+<p>输入：page_id_t 物理页号</p>
+<p>输出：如果成功找到，返回对应的缓存页指针；否则返回nullptr。</p>
+<p>具体逻辑：</p>
+<ul>
+<li>加锁</li>
+<li>如果该页已有了映射的缓存页：<ul>
+<li>lru-k记录一次访问，并设置不可移除。</li>
+<li>自增对应缓存页的pin_count。</li>
+<li>返回缓存页指针。</li>
+</ul>
+</li>
+<li>如果该页没有映射的缓存页，通过GetFrame尝试找能用的缓存页，如果找到：<ul>
+<li>重置该缓存页信息，虚拟页框号为上一步新创建的，pin_count置为1。<ul>
+<li>因为是已有的页，所以需要ReadPage。</li>
+</ul>
+</li>
+<li>在哈希表中加入映射关系。</li>
+<li>lru-k记录一次访问，并设置不可移除<ul>
+<li>因为一般会马上访问。</li>
+</ul>
+</li>
+<li>返回缓存页指针。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-UnpinPgImp"><a href="#4-UnpinPgImp" class="headerlink" title="4. UnpinPgImp"></a>4. UnpinPgImp</h2><p>一般是进程对该物理页访问结束了，减少一次引用计数。</p>
+<p>输入：page_id_t 待操作的物理页号，bool 是否修改过该页（是否设置脏页）</p>
+<p>输出：</p>
+<ul>
+<li>true：找到该页并且成功减少pin_count。</li>
+<li>false：找不到该页；该页的pin_count不能再被减少。</li>
+</ul>
+<p>具体逻辑：</p>
+<ul>
+<li>加锁</li>
+<li>找到该页，如果找不到返回false。</li>
+<li>如果该页对应的缓存页pin_count已经为0，返回false。</li>
+<li>如果is_dirty，设置脏页标记。</li>
+<li>减少pin_count.</li>
+<li>如果该页pin_count降到0，则设置为可移出。</li>
+<li>返回true。</li>
+</ul>
+<h2 id="5-FlushPgImp"><a href="#5-FlushPgImp" class="headerlink" title="5. FlushPgImp"></a>5. FlushPgImp</h2><p>输入：page_id_t 待刷盘的物理页号。</p>
+<p>输出：如果该页有对应的缓存页，返回true，否则false。</p>
+<p>具体逻辑：</p>
+<ul>
+<li>加锁</li>
+<li>找到对应的缓存页，不管dirty位直接刷盘。</li>
+<li>将dirty位置为false。</li>
+</ul>
+<h2 id="6-FlushAllPgsImp"><a href="#6-FlushAllPgsImp" class="headerlink" title="6. FlushAllPgsImp"></a>6. FlushAllPgsImp</h2><p>具体逻辑：</p>
+<ul>
+<li>加锁</li>
+<li>遍历pages，只要不为无效页，都刷盘。</li>
+</ul>
+<h2 id="7-DeletePgImp"><a href="#7-DeletePgImp" class="headerlink" title="7. DeletePgImp"></a>7. DeletePgImp</h2><p>输入：page_id_t 待删除的物理页号</p>
+<p>输出：如果无法删除（对应的缓存页还有pin_count，即还有其他进程访问），返回false，否则都返回true。（踩坑点：找不到也返回true）</p>
+<p>具体逻辑：</p>
+<ul>
+<li>加锁</li>
+<li>找对应的缓存页</li>
+<li>如果删不掉，返回false。</li>
+<li>如果为脏页，先刷盘。</li>
+<li>从lru中移除，加入free_list。</li>
+<li>重置页面信息。</li>
+<li>DeallocatePage（实际上没用，就是做个样子）</li>
+</ul>
+<h1 id="3-框架理解"><a href="#3-框架理解" class="headerlink" title="3. 框架理解"></a>3. 框架理解</h1><p>disk_manager</p>
+<p>使用到了ReadPage与WritePage两个方法。</p>
+<p>具体实现：使用一个文件表示内存，文件流fstream类进行读写操作。</p>
+<h2 id="1-WritePage"><a href="#1-WritePage" class="headerlink" title="1. WritePage"></a>1. WritePage</h2><p>具体逻辑：</p>
+<ul>
+<li>加锁</li>
+<li>根据物理页号*物理页大小（4K）获得offset偏移量。</li>
+<li>根据偏移量移动文件流指针到对应页开头，写数据。</li>
+<li>将文件流刷盘。</li>
+</ul>
+<h2 id="2-ReadPage"><a href="#2-ReadPage" class="headerlink" title="2. ReadPage"></a>2. ReadPage</h2><p>具体逻辑：</p>
+<ul>
+<li>加锁</li>
+<li>根据物理页号*物理页大小（4K）获得offset偏移量。<ul>
+<li>偏移量不能大于文件大小。</li>
+</ul>
+</li>
+<li>根据偏移量移动文件流指针到对应页开头，读数据。<ul>
+<li>如果读出来的数据比一页要少，可能存在bug，将当前页读出来的数据后面的数据置为0。</li>
+</ul>
+</li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -463,7 +597,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2021/09/21/hello-world/" target="_blank" title="Hello World">https://aobamoka.github.io/2021/09/21/hello-world/</a>
+    <a href="/2023/03/23/项目学习-CMU-15-445-Lab1-3/" target="_blank" title="项目学习-CMU-15-445-Lab1-3">https://aobamoka.github.io/2023/03/23/项目学习-CMU-15-445-Lab1-3/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -485,16 +619,17 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2022/09/17/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%841/" class="post-nav-link">
+    <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">读书笔记-网络是怎样连接的1</div>
+        <div class="title-text">项目学习-CMU-15-445-Lab2-1</div>
       </div>
       
       <!-- <div class="content">
-        网络是怎样连接的 读书笔记1前言想卷进外企只能提前多准备点东西了，正好计网学的也不是很行，先整两本入门书看看吧。后续可能
+        感觉没必要专门为2-1写篇文章？
+1. BPlusTreePage1. BPlusTreePage根据Lab1-3，Pa
       </div> -->
     </a>
   </div>
@@ -505,16 +640,17 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2021/09/20/%E5%A4%A7%E8%87%B4%E4%BA%86%E8%A7%A3-java4/" class="post-nav-link">
+    <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">大致了解-java4</div>
+        <div class="title-text">项目学习-Raft一致性协议</div>
       </div>
       <!-- <div class="content">
-        这期学一学java核心类
-字符串StringStringBuilder为了高效拼接字符串，防止直接使用临时对象导致的内存
+        1. 基本介绍讲的挺清楚的
+一个共识算法，即多个节点对某事达成一致的看法。
+Raft算法首要目标是易理解，对Paxos算
       </div> -->
     </a>
   </div>
@@ -612,7 +748,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-BufferPoolManagerInstance"><span class="toc-text">1. BufferPoolManagerInstance</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%90%86%E8%AE%BA"><span class="toc-text">1. 理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">2. 数据结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-GetFrame"><span class="toc-text">1. GetFrame</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-NewPgImp"><span class="toc-text">2. NewPgImp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-FetchPgImp"><span class="toc-text">3. FetchPgImp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-UnpinPgImp"><span class="toc-text">4. UnpinPgImp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-FlushPgImp"><span class="toc-text">5. FlushPgImp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-FlushAllPgsImp"><span class="toc-text">6. FlushAllPgsImp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-DeletePgImp"><span class="toc-text">7. DeletePgImp</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%A1%86%E6%9E%B6%E7%90%86%E8%A7%A3"><span class="toc-text">3. 框架理解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-WritePage"><span class="toc-text">1. WritePage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ReadPage"><span class="toc-text">2. ReadPage</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -638,6 +774,48 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -699,48 +877,6 @@
                 
               </div>
               <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/">项目学习-CMU-15-445-Lab0</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/">学习笔记-Shell编程</a>
             </div>
           </div>
         

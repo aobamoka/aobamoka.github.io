@@ -450,12 +450,9 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-字典树"><a href="#1-字典树" class="headerlink" title="1. 字典树"></a>1. 字典树</h1><p>lab0要求完成的是线程安全的字典树。</p>
-<ul>
-<li>字典树，树形结构， 每个节点保存单个字符，从根遍历到叶子节点的字符组成string，即为key值。</li>
-<li>叶子节点保存key值对应的value。</li>
-</ul>
-<p>整个lab分为三个数据结构</p>
+        <h1 id="1-字典树"><a href="#1-字典树" class="headerlink" title="1. 字典树"></a>1. 字典树</h1><h2 id="1-理论"><a href="#1-理论" class="headerlink" title="1. 理论"></a>1. 理论</h2><p>字典树，树形结构， 每个节点保存单个字符，从根遍历到叶子节点的字符组成string，即为key值。</p>
+<p>叶子节点保存key值对应的value。</p>
+<h2 id="2-数据结构"><a href="#2-数据结构" class="headerlink" title="2. 数据结构"></a>2. 数据结构</h2><p>整个lab分为三个数据结构</p>
 <ul>
 <li>TrieNode：保存非结束（is_end = false）的Trie节点。<ul>
 <li>char key_char_：当前Trie节点的key值。</li>
@@ -478,6 +475,7 @@
 <p>注意把is_end_设置为true，因为该类型一定有value。</p>
 <h2 id="3-Trie"><a href="#3-Trie" class="headerlink" title="3. Trie"></a>3. Trie</h2><h3 id="1-Insert"><a href="#1-Insert" class="headerlink" title="1. Insert"></a>1. Insert</h3><p>输入：string key， T value。</p>
 <p>输出：bool，表示是否插入成功。</p>
+<p>具体逻辑：</p>
 <ul>
 <li>首先判断key是否为空，为空则直接返回false。</li>
 <li>用latch上锁。（因为封装了，所以不能用unique_lock，记得在返回前解锁）</li>
@@ -491,6 +489,7 @@
 </ul>
 <h3 id="2-Remove"><a href="#2-Remove" class="headerlink" title="2. Remove"></a>2. Remove</h3><p>输入：string key。</p>
 <p>输出：bool，表示是否删除成功。</p>
+<p>具体逻辑：</p>
 <ul>
 <li>首先判断key是否为空，为空则直接返回false。</li>
 <li>用latch上锁。</li>
@@ -502,6 +501,7 @@
 </ul>
 <h3 id="3-GetValue"><a href="#3-GetValue" class="headerlink" title="3. GetValue"></a>3. GetValue</h3><p>输入：string key，bool *success，表示是否成功。</p>
 <p>输出：T value。</p>
+<p>具体逻辑：</p>
 <ul>
 <li>遍历，如果中途到达空节点，说明要找的值不存在，返回空值。</li>
 <li>用dynamic_cast尝试将遍历到的最后一个节点转为TrieNodeWithValue。<ul>
@@ -555,9 +555,9 @@
       </div>
       
       <!-- <div class="content">
-        1. 可扩展动态散列详细阅读
+        1. ExtendibleHashTable1. 理论详细阅读
 作用：能动态扩容的哈希表。
-特点：哈希表大小必定为2^D，D为全局位深度，初始为0。每个哈
+特点：哈希表大小必定为2^D
       </div> -->
     </a>
   </div>
@@ -675,7 +675,7 @@ terminal终端：字符输入输出设备的抽象，在linux下是一种特殊�
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%AD%97%E5%85%B8%E6%A0%91"><span class="toc-text">1. 字典树</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-TrieNode"><span class="toc-text">1. TrieNode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-TrieNodeWithValue"><span class="toc-text">2. TrieNodeWithValue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Trie"><span class="toc-text">3. Trie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Insert"><span class="toc-text">1. Insert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Remove"><span class="toc-text">2. Remove</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-GetValue"><span class="toc-text">3. GetValue</span></a></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%AD%97%E5%85%B8%E6%A0%91"><span class="toc-text">1. 字典树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%90%86%E8%AE%BA"><span class="toc-text">1. 理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">2. 数据结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-TrieNode"><span class="toc-text">1. TrieNode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-TrieNodeWithValue"><span class="toc-text">2. TrieNodeWithValue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Trie"><span class="toc-text">3. Trie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Insert"><span class="toc-text">1. Insert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Remove"><span class="toc-text">2. Remove</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-GetValue"><span class="toc-text">3. GetValue</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -701,6 +701,48 @@ terminal终端：字符输入输出设备的抽象，在linux下是一种特殊�
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -762,48 +804,6 @@ terminal终端：字符输入输出设备的抽象，在linux下是一种特殊�
                 
               </div>
               <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/">项目学习-CMU-15-445-Lab0</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/">学习笔记-Shell编程</a>
             </div>
           </div>
         

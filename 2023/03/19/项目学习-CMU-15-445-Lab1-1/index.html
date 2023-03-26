@@ -450,7 +450,7 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-可扩展动态散列"><a href="#1-可扩展动态散列" class="headerlink" title="1. 可扩展动态散列"></a>1. 可扩展动态散列</h1><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1020586">详细阅读</a></p>
+        <h1 id="1-ExtendibleHashTable"><a href="#1-ExtendibleHashTable" class="headerlink" title="1. ExtendibleHashTable"></a>1. ExtendibleHashTable</h1><h2 id="1-理论"><a href="#1-理论" class="headerlink" title="1. 理论"></a>1. 理论</h2><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1020586">详细阅读</a></p>
 <p>作用：能动态扩容的哈希表。</p>
 <p>特点：哈希表大小必定为2^D，D为全局位深度，初始为0。每个哈希项（桶）的大小也必定为2^L，L为局部位深度。</p>
 <p>插入元素时，元素根据key哈希值的末D位分配到对应桶中。如果桶溢出，则发生分裂。</p>
@@ -477,20 +477,15 @@
 <ul>
 <li>未实现：如果删除后桶元素为空，可与其兄弟桶合并，并减少局部位深度。如果所有局部位深度都小于全局位深度，可以收缩散列表。</li>
 </ul>
+<h2 id="2-数据结构"><a href="#2-数据结构" class="headerlink" title="2. 数据结构"></a>2. 数据结构</h2><p>Bucket：用开散列法解决散列冲突问题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> size_;  <span class="comment">// 桶大小</span></span><br><span class="line"><span class="keyword">int</span> depth_;  <span class="comment">// 局部位深度</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;<span class="built_in">std</span>::<span class="built_in">pair</span>&lt;K, V&gt;&gt; list_;  <span class="comment">// 开散列法的开链表</span></span><br></pre></td></tr></table></figure>
+<p>ExtendibleHashTable</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> global_depth_;    <span class="comment">// 全局位深度</span></span><br><span class="line"><span class="keyword">size_t</span> bucket_size_;  <span class="comment">// 单个桶大小，等于Bucket::size_</span></span><br><span class="line"><span class="keyword">int</span> num_buckets_;     <span class="comment">// 当前桶数目，初始为1</span></span><br><span class="line"><span class="keyword">mutable</span> <span class="built_in">std</span>::mutex latch_;  <span class="comment">// 互斥锁</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Bucket&gt;&gt; dir_;   <span class="comment">// 散列表</span></span><br></pre></td></tr></table></figure>
 <h1 id="2-实现"><a href="#2-实现" class="headerlink" title="2. 实现"></a>2. 实现</h1><h2 id="1-Bucket"><a href="#1-Bucket" class="headerlink" title="1. Bucket"></a>1. Bucket</h2><p>单个桶，里面封装了list，存储桶中所有元素。</p>
 <p>通过list的API实现查、增、删即可。</p>
-<h2 id="2-extendible-hash-table"><a href="#2-extendible-hash-table" class="headerlink" title="2. extendible_hash_table"></a>2. extendible_hash_table</h2><p>成员：</p>
-<ul>
-<li>vector表示散列表。</li>
-<li>全局位深度</li>
-<li>桶大小</li>
-<li>桶数目</li>
-<li>mutex</li>
-</ul>
-<p>Find、Remove都是找到桶，然后调用对应桶的API就行了。Insert可能出现桶溢出，较为复杂。</p>
-<p>Insert：</p>
-<p>输入：key、value</p>
-<p>步骤：</p>
+<h2 id="2-ExtendibleHashTable"><a href="#2-ExtendibleHashTable" class="headerlink" title="2. ExtendibleHashTable"></a>2. ExtendibleHashTable</h2><p>Find、Remove都是找到桶，然后调用对应桶的API就行了。Insert可能出现桶溢出，较为复杂。</p>
+<h3 id="1-Insert"><a href="#1-Insert" class="headerlink" title="1. Insert"></a>1. Insert</h3><p>输入：key、value</p>
+<p>具体步骤：</p>
 <ul>
 <li>找到桶。</li>
 <li>先尝试在桶中插入，如果成功就结束了。</li>
@@ -499,7 +494,7 @@
 <li>增加全局位深度。</li>
 </ul>
 </li>
-<li>重新定位桶，因为全局位深度增加，导致增加的末D位可能为1。</li>
+<li>重新定位桶，因为全局位深度增加，导致增加的散列位可能为1。</li>
 <li>新建两个桶，深度为全局位深度，将原桶的元素按新散列值分配到两个桶中。</li>
 <li>替换散列表中对应的桶。</li>
 <li>递归调用，再次尝试插入。（在这之前需要先释放锁）</li>
@@ -571,9 +566,7 @@ K-距离定义：
         <div class="title-text">项目学习-CMU-15-445-Lab0</div>
       </div>
       <!-- <div class="content">
-        1. 字典树lab0要求完成的是线程安全的字典树。
-
-字典树，树形结构， 每个节点保存单个字符，从根遍历到叶子节点的字符
+        1. 字典树1. 理论字典树，树形结构， 每个节点保存单个字符，从根遍历到叶子节点的字符组成string，即为key值。
       </div> -->
     </a>
   </div>
@@ -671,7 +664,7 @@ K-距离定义：
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%8F%AF%E6%89%A9%E5%B1%95%E5%8A%A8%E6%80%81%E6%95%A3%E5%88%97"><span class="toc-text">1. 可扩展动态散列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Bucket"><span class="toc-text">1. Bucket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-extendible-hash-table"><span class="toc-text">2. extendible_hash_table</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-ExtendibleHashTable"><span class="toc-text">1. ExtendibleHashTable</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%90%86%E8%AE%BA"><span class="toc-text">1. 理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">2. 数据结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Bucket"><span class="toc-text">1. Bucket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ExtendibleHashTable"><span class="toc-text">2. ExtendibleHashTable</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Insert"><span class="toc-text">1. Insert</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -697,6 +690,48 @@ K-距离定义：
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -758,48 +793,6 @@ K-距离定义：
                 
               </div>
               <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/">项目学习-CMU-15-445-Lab0</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/">学习笔记-Shell编程</a>
             </div>
           </div>
         

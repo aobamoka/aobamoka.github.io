@@ -679,7 +679,7 @@
 <h1 id="3-内存管理"><a href="#3-内存管理" class="headerlink" title="3. 内存管理"></a>3. 内存管理</h1><p>程序使用的内存地址叫虚拟内存地址，实际存在硬件里的空间地址叫物理内存地址。进程持有的虚拟地址通过CPU中的内存管理单元MMU映射到物理地址，再通过物理地址访问内存。</p>
 <p>虚拟内存的意义/为什么要虚拟内存：</p>
 <ul>
-<li>结合磁盘和物理内存的优势，为进程提供看起来速度足够快且容量足够大的独立存储。</li>
+<li>结合磁盘和物理内存的优势，为进程提供看起来速度足够快且容量足够大的独立存储。进程都有一样的虚拟内存，但页表不同，因此分配到的物理内存也就不同。</li>
 <li>进程间可共享物理内存减少开销，也能简化程序的链接、装载与内存分配过程。</li>
 <li>控制进程对物理内存的访问，隔离不同进程的访问权限，提高系统的安全性。</li>
 </ul>
@@ -759,7 +759,7 @@
 <h2 id="8-申请超出物理内存的虚拟内存"><a href="#8-申请超出物理内存的虚拟内存" class="headerlink" title="8. 申请超出物理内存的虚拟内存"></a>8. 申请超出物理内存的虚拟内存</h2><p>分别在32位、64位机器上申请8GB虚拟内存</p>
 <ul>
 <li>32位操作系统进程最大只能申请3GB虚拟内存，所以会申请失败。</li>
-<li>64位操作系统进程最大可以申请128TB虚拟内存，所以会申请成功，即使物理内存小于8GB（申请的是虚拟内存）。如果虚拟内存被访问，要看系统有无Swap分区。<ul>
+<li>64位操作系统进程最大可以申请128TB虚拟内存，所以会申请成功，即使物理内存小于8GB（申请的是虚拟内存）。如果物理页框全被分配完时，虚拟内存被访问，要看系统有无Swap分区。<ul>
 <li>如果没有，因为物理空间不够，进程会因为内存溢出OOM被系统杀死。</li>
 <li>如果有，只要申请的物理内存不高出实际物理内存太多，就能正常运行。</li>
 </ul>
@@ -1013,6 +1013,14 @@
 <h3 id="3-乐观锁-悲观锁"><a href="#3-乐观锁-悲观锁" class="headerlink" title="3. 乐观锁/悲观锁"></a>3. 乐观锁/悲观锁</h3><p>乐观锁：先修改资源，再验证这段时间内有没有冲突，如果有冲突就放弃操作。使用CAS或版本号控制实现。CAS在硬件层面上保证原子性，由CPU支持。</p>
 <p>悲观锁：先上锁再访问共享资源。</p>
 <p>乐观锁重试成本很高，所以只有在冲突概率很低且加锁成本很高时才用乐观锁。</p>
+<p>乐观锁/CAS应用：<strong>无锁队列</strong></p>
+<p>ABA问题：</p>
+<ul>
+<li>进程P1在共享变量中读到值A。</li>
+<li>P2抢占，将A改为B再改回A。</li>
+<li>P1抢占，看到A没变，继续执行。（A如果是地址，其内的数据可能已改变）</li>
+</ul>
+<p>解决：计数/版本号</p>
 <h3 id="4-条件变量"><a href="#4-条件变量" class="headerlink" title="4. 条件变量"></a>4. 条件变量</h3><p>条件变量也是锁，能弥补互斥锁只有锁定和非锁定两种状态的缺点。当条件不满足时，线程揭开相应的互斥锁，等待条件发生变化。一旦某个线程改变了条件变量，就会通知相应的条件变量唤醒数个正被此条件变量阻塞的线程。</p>
 <p>互斥锁是线程间互斥的机制，而条件变量是同步的机制。</p>
 <h3 id="5-CAS是乐观锁，为什么基于CAS实现的自旋锁是悲观锁？"><a href="#5-CAS是乐观锁，为什么基于CAS实现的自旋锁是悲观锁？" class="headerlink" title="5. CAS是乐观锁，为什么基于CAS实现的自旋锁是悲观锁？"></a>5. CAS是乐观锁，为什么基于CAS实现的自旋锁是悲观锁？</h3><p>自旋锁基于CAS加了while或睡眠操作来实现自旋效果，需要事先拿到锁才能修改数据，所以算悲观锁。</p>
@@ -1844,6 +1852,48 @@
             
 
             <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-23</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
               <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
@@ -1898,48 +1948,6 @@
                 
               </div>
               <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/">项目学习-CMU-15-445-Lab0</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/">学习笔记-Shell编程</a>
             </div>
           </div>
         
