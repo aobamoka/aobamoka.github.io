@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>项目学习-json_parse与skiplist总结 | 摩卡&#39;s blog</title>
+  <title>项目学习-跳表 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -403,33 +403,24 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        项目学习-json_parse与skiplist总结
+        项目学习-跳表
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2023-03-12 |
+          <i class="fas fa-calendar"></i> 发表于：2023-03-27 |
         </span>
       
 
-      
-        <span class="post-detail-header_categories">
-          <i class="iconfont iconbookmark1"></i> 分类：
-          
-            <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/" class="post-detail-header_category">
-              项目学习
-            </a>
-          
-        </span>
       
 
       
@@ -450,43 +441,7 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-json-parse"><a href="#1-json-parse" class="headerlink" title="1. json_parse"></a>1. json_parse</h1><p>json：由对象（键值对集合）、数组组合而成。</p>
-<p>json的值可以是null、逻辑值、数字、字符串、对象、数组。</p>
-<p>因为对象键是有序的，所以不能用unordered_map而用map。</p>
-<p>使用C++ 17标准的json解析器。</p>
-<p>variant管理json多种值类型，string_view只读解析json字符流，optional提供异常处理。</p>
-<p>递归下降解析。一种自顶向下的递归分析方法。</p>
-<p>重载了[]操作符支持动态修改。</p>
-<p>知识点：</p>
-<h2 id="1-variant与union"><a href="#1-variant与union" class="headerlink" title="1. variant与union"></a>1. variant与union</h2><p>variant管理json的一个对象、数组或值，通过Node封装管理（重载对象/数组下标取值，以及为数组添加push_back方法）</p>
-<p>为什么用variant替代union：union在有有析构函数的成员时，生命结束时不会自动析构。</p>
-<p>variant的几个方法</p>
-<ul>
-<li><code>get&lt;type&gt;</code>：有该type则返回对应类型值，否则抛出异常。</li>
-<li><code>holds_alternative&lt;type&gt;</code>：有该type返回true，否则返回false。</li>
-<li><code>get_if&lt;type&gt;</code>：有该type返回对应类型指针，否则返回空指针。</li>
-</ul>
-<h2 id="2-optional"><a href="#2-optional" class="headerlink" title="2. optional"></a>2. optional</h2><p>解析成功时则返回正确的Value类型值，其他情况都返回nullopt</p>
-<p>用于处理非法的json字符流时，返回nullopt。</p>
-<p>方法：</p>
-<ul>
-<li><code>value()</code>：获得其中的值，为空时抛出异常。</li>
-<li><code>value_or(default)</code>：获得其中的值，为空时返回默认值。</li>
-<li><code>*/-&gt;</code>：重载了操作符获取值，为空时行为未定义。</li>
-<li><code>has_value()</code>：判断是否有值。</li>
-</ul>
-<p>C++23中有expected，可以用另一种类型代替nullopt</p>
-<h2 id="3-string-view"><a href="#3-string-view" class="headerlink" title="3. string_view"></a>3. string_view</h2><p>作为parser函数的参数，防止修改原本字符串，且不用拷贝字符串。</p>
-<p>优点：作为参数传递时，既能保证只读（引用、指针传递）又不需要拷贝完整字符串（值传递）</p>
-<p>只读、只保存指针和大小、不拷贝。</p>
-<h2 id="4-if-constexpr"><a href="#4-if-constexpr" class="headerlink" title="4. if-constexpr"></a>4. if-constexpr</h2><p>与is_same_v模板配合使用，防止编译器报错，让编译器在编译期判断if走向。</p>
-<h2 id="5-visit"><a href="#5-visit" class="headerlink" title="5. visit"></a>5. visit</h2><p>传入两个参数，将参数2作为参数传入参数1。</p>
-<p>类似于visitor模式</p>
-<h2 id="4-细节"><a href="#4-细节" class="headerlink" title="4. 细节"></a>4. 细节</h2><p>异常处理机制（没有转义的双引号、不符合格式的数字）：</p>
-<ul>
-<li>如果存在，string会被正常解析完毕，只是存储的值不符合期望；但是后续的解析程序会发现非法字符并返回nullopt。</li>
-</ul>
-<h1 id="2-跳表"><a href="#2-跳表" class="headerlink" title="2. 跳表"></a>2. 跳表</h1><p>用在WebServer里了</p>
+        <h1 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h1><p>用在WebServer里了</p>
 <p>维护一个多层的链表，高层链表是底层链表的子集，且层次越高，一次跨越的节点数越多，用于Ologn时间的增删改查。</p>
 <p>实现与红黑树、AVL树相似。用于Redis的Zset实现。</p>
 <p>每个节点由key、value与level大小的指针数组组成。</p>
@@ -550,7 +505,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2023/03/12/项目学习-json_parse与skiplist总结/" target="_blank" title="项目学习-json_parse与skiplist总结">https://aobamoka.github.io/2023/03/12/项目学习-json_parse与skiplist总结/</a>
+    <a href="/2023/03/27/项目学习-跳表/" target="_blank" title="项目学习-跳表">https://aobamoka.github.io/2023/03/27/项目学习-跳表/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -568,42 +523,22 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">学习笔记-SQL语法</div>
-      </div>
-      
-      <!-- <div class="content">
-        1. 基本1234567891011121314151617181920212223242526--selectsele
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/" class="post-nav-link">
+    <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">笔试记录-3-11-美团笔试</div>
+        <div class="title-text">项目学习-CMU-15-445-Lab2-1</div>
       </div>
       <!-- <div class="content">
-        1.题目：一串只有大写字母的字符串，修改其中的字符使得相邻字符互不相等。
-输入：字符串。
-输出：求最小修改次数。
-思路：
+        感觉没必要专门为2-1写篇文章？
+1. BPlusTreePage1. BPlusTreePage根据Lab1-3，Pa
       </div> -->
     </a>
   </div>
@@ -701,7 +636,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-json-parse"><span class="toc-text">1. json_parse</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-variant%E4%B8%8Eunion"><span class="toc-text">1. variant与union</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-optional"><span class="toc-text">2. optional</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-string-view"><span class="toc-text">3. string_view</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-if-constexpr"><span class="toc-text">4. if-constexpr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-visit"><span class="toc-text">5. visit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%86%E8%8A%82"><span class="toc-text">4. 细节</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%B7%B3%E8%A1%A8"><span class="toc-text">2. 跳表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B1%82%E6%95%B0"><span class="toc-text">1. 层数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9F%A5%E6%89%BE"><span class="toc-text">2. 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8F%92%E5%85%A5"><span class="toc-text">3. 插入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4"><span class="toc-text">4. 删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%AF%94%E8%BE%83"><span class="toc-text">5. 比较</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%B3%E8%A1%A8"><span class="toc-text">跳表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B1%82%E6%95%B0"><span class="toc-text">1. 层数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9F%A5%E6%89%BE"><span class="toc-text">2. 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8F%92%E5%85%A5"><span class="toc-text">3. 插入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4"><span class="toc-text">4. 删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%AF%94%E8%BE%83"><span class="toc-text">5. 比较</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -727,6 +662,27 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-27</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/">项目学习-跳表</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -809,27 +765,6 @@
                 
               </div>
               <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
             </div>
           </div>
         

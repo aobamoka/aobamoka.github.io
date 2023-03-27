@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Hello World | 摩卡&#39;s blog</title>
+  <title>项目学习-json解析器 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -403,24 +403,33 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        Hello World
+        项目学习-json解析器
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2022-02-17 |
+          <i class="fas fa-calendar"></i> 发表于：2023-03-12 |
         </span>
       
 
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/" class="post-detail-header_category">
+              项目学习
+            </a>
+          
+        </span>
       
 
       
@@ -441,15 +450,42 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h1 id="json-parse"><a href="#json-parse" class="headerlink" title="json_parse"></a>json_parse</h1><p>json：由对象（键值对集合）、数组组合而成。</p>
+<p>json的值可以是null、逻辑值、数字、字符串、对象、数组。</p>
+<p>因为对象键是有序的，所以不能用unordered_map而用map。</p>
+<p>使用C++ 17标准的json解析器。</p>
+<p>variant管理json多种值类型，string_view只读解析json字符流，optional提供异常处理。</p>
+<p>递归下降解析。一种自顶向下的递归分析方法。</p>
+<p>重载了[]操作符支持动态修改。</p>
+<p>知识点：</p>
+<h2 id="1-variant与union"><a href="#1-variant与union" class="headerlink" title="1. variant与union"></a>1. variant与union</h2><p>variant管理json的一个对象、数组或值，通过Node封装管理（重载对象/数组下标取值，以及为数组添加push_back方法）</p>
+<p>为什么用variant替代union：union在有有析构函数的成员时，生命结束时不会自动析构。</p>
+<p>variant的几个方法</p>
+<ul>
+<li><code>get&lt;type&gt;</code>：有该type则返回对应类型值，否则抛出异常。</li>
+<li><code>holds_alternative&lt;type&gt;</code>：有该type返回true，否则返回false。</li>
+<li><code>get_if&lt;type&gt;</code>：有该type返回对应类型指针，否则返回空指针。</li>
+</ul>
+<h2 id="2-optional"><a href="#2-optional" class="headerlink" title="2. optional"></a>2. optional</h2><p>解析成功时则返回正确的Value类型值，其他情况都返回nullopt</p>
+<p>用于处理非法的json字符流时，返回nullopt。</p>
+<p>方法：</p>
+<ul>
+<li><code>value()</code>：获得其中的值，为空时抛出异常。</li>
+<li><code>value_or(default)</code>：获得其中的值，为空时返回默认值。</li>
+<li><code>*/-&gt;</code>：重载了操作符获取值，为空时行为未定义。</li>
+<li><code>has_value()</code>：判断是否有值。</li>
+</ul>
+<p>C++23中有expected，可以用另一种类型代替nullopt</p>
+<h2 id="3-string-view"><a href="#3-string-view" class="headerlink" title="3. string_view"></a>3. string_view</h2><p>作为parser函数的参数，防止修改原本字符串，且不用拷贝字符串。</p>
+<p>优点：作为参数传递时，既能保证只读（引用、指针传递）又不需要拷贝完整字符串（值传递）</p>
+<p>只读、只保存指针和大小、不拷贝。</p>
+<h2 id="4-if-constexpr"><a href="#4-if-constexpr" class="headerlink" title="4. if-constexpr"></a>4. if-constexpr</h2><p>与is_same_v模板配合使用，防止编译器报错，让编译器在编译期判断if走向。</p>
+<h2 id="5-visit"><a href="#5-visit" class="headerlink" title="5. visit"></a>5. visit</h2><p>传入两个参数，将参数2作为参数传入参数1。</p>
+<p>类似于visitor模式</p>
+<h2 id="4-细节"><a href="#4-细节" class="headerlink" title="4. 细节"></a>4. 细节</h2><p>异常处理机制（没有转义的双引号、不符合格式的数字）：</p>
+<ul>
+<li>如果存在，string会被正常解析完毕，只是存储的值不符合期望；但是后续的解析程序会发现非法字符并返回nullopt。</li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -463,7 +499,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2022/02/17/hello-world/" target="_blank" title="Hello World">https://aobamoka.github.io/2022/02/17/hello-world/</a>
+    <a href="/2023/03/12/项目学习-json解析器/" target="_blank" title="项目学习-json解析器">https://aobamoka.github.io/2023/03/12/项目学习-json解析器/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -485,16 +521,16 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2022/09/17/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%841/" class="post-nav-link">
+    <a href="/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">读书笔记-网络是怎样连接的1</div>
+        <div class="title-text">学习笔记-SQL语法</div>
       </div>
       
       <!-- <div class="content">
-        网络是怎样连接的 读书笔记1前言想卷进外企只能提前多准备点东西了，正好计网学的也不是很行，先整两本入门书看看吧。后续可能
+        1. 基本1234567891011121314151617181920212223242526--selectsele
       </div> -->
     </a>
   </div>
@@ -505,16 +541,18 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2021/09/20/%E5%A4%A7%E8%87%B4%E4%BA%86%E8%A7%A3-java4/" class="post-nav-link">
+    <a href="/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">大致了解-java4</div>
+        <div class="title-text">笔试记录-3-11-美团笔试</div>
       </div>
       <!-- <div class="content">
-        这期学一学java核心类
-字符串StringStringBuilder为了高效拼接字符串，防止直接使用临时对象导致的内存
+        1.题目：一串只有大写字母的字符串，修改其中的字符使得相邻字符互不相等。
+输入：字符串。
+输出：求最小修改次数。
+思路：
       </div> -->
     </a>
   </div>
@@ -612,7 +650,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#json-parse"><span class="toc-text">json_parse</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-variant%E4%B8%8Eunion"><span class="toc-text">1. variant与union</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-optional"><span class="toc-text">2. optional</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-string-view"><span class="toc-text">3. string_view</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-if-constexpr"><span class="toc-text">4. if-constexpr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-visit"><span class="toc-text">5. visit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%86%E8%8A%82"><span class="toc-text">4. 细节</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -638,6 +676,27 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-27</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/">项目学习-跳表</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -720,27 +779,6 @@
                 
               </div>
               <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
             </div>
           </div>
         

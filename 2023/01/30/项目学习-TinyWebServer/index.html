@@ -485,7 +485,7 @@
 </li>
 <li>并发模型中：<ul>
 <li>同步：程序完全按照代码顺序执行。</li>
-<li>异步；程序的执行需要系统事件的驱动，如中断、信号等。</li>
+<li>异步：程序的执行需要系统事件的驱动，如中断、信号等。</li>
 </ul>
 </li>
 </ul>
@@ -500,7 +500,10 @@
 <li>主线程等待数据可写。</li>
 <li>当有数据可写时，主线程往socket写入处理结果，写完后继续注册读事件。</li>
 </ul>
-<p>优点？IO多路复用相较于阻塞IO的优点。</p>
+<p>优点？IO多路复用（单reactor多线程）相较于阻塞IO（单reactor单线程）的优点</p>
+<ul>
+<li>阻塞IO在等待IO完毕时不能干其他事，如监听事件、业务处理，效率低。</li>
+</ul>
 <p>缺点：</p>
 <ul>
 <li>请求队列需要加锁访问，浪费CPU时间。</li>
@@ -554,6 +557,15 @@
 <li>主reactor通过轮询，将连接fd写入子reactor对应的管道。</li>
 <li>子reactor在建立时将管道fd读事件加入epoll监听。</li>
 <li>子reactor接到事件后判断fd是否为管道fd，是则读出管道里的连接fd，为其注册读事件。</li>
+</ul>
+</li>
+<li>优点：<ul>
+<li>逻辑简单：每个线程用一个epoll循环实现，且主线程与子线程耦合度低。</li>
+<li>效率高：<ul>
+<li>主线程与子线程之前通过管道通信，不必像队列那样加锁。</li>
+<li>IO由子线程分摊进行，提高CPU利用率。</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -681,9 +693,9 @@
 </ol>
 <h1 id="11-改进"><a href="#11-改进" class="headerlink" title="11. 改进"></a>11. 改进</h1><ul>
 <li>实现文件上传功能</li>
-<li>定时器改成堆（感觉不太行）<ul>
+<li>定时器改成堆<ul>
 <li>过期定时器都是连续的，需要顺序遍历，用堆一个个弹出反而增加了复杂度</li>
-<li>连接出错需要关闭指定的定时器，堆无法做到</li>
+<li>连接出错需要关闭指定的定时器，堆无法做到（可以增加一个删除标记，懒删除）</li>
 </ul>
 </li>
 <li>c++11重构 muduo库网络编程 + c++11多线程</li>
@@ -1060,6 +1072,27 @@
             
 
             <div class="post-img-box">
+              <a href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-27</span>
+                
+              </div>
+              <a class="post-title" href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/">项目学习-跳表</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
               <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
@@ -1135,27 +1168,6 @@
                 
               </div>
               <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-19</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/">项目学习-CMU-15-445-Lab1-1</a>
             </div>
           </div>
         
