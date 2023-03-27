@@ -494,7 +494,7 @@
 <li>双引号里可以有变量。</li>
 <li>双引号里可以有转义字符。</li>
 </ul>
-<p>反引号：执行命令。</p>
+<p>反引号：执行命令。一般用在等号右边，将命令的标准输出赋给变量。</p>
 <p>拼接：字符串拼接只需要写在一起即可。</p>
 <p>长度：<code>#string</code></p>
 <p>查找：e或o第一个出现的位置</p>
@@ -611,7 +611,7 @@
 <p>&lt;&lt; tag：将开始标记tag和结束标记tag之间的内容作为输出</p>
 <p>标准输入/输出/错误分别为0/1/2</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">command 2&gt;file #重定向stderr</span><br><span class="line">command &gt; file 2&gt;&amp;1 #将stdout与stderr合并后重定向到file</span><br><span class="line">command &lt; file1 &gt; file2 #command将stdin重定向到file1，将stdout重定向到file2.</span><br></pre></td></tr></table></figure>
-<p>here document：将将两个EOF（或其它字符）之间的内容作为输入传递给command。</p>
+<p>here document：将两个EOF（或其它字符）之间的内容作为输入传递给command。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> wc -l &lt;&lt; <span class="string">EOF</span></span></span><br><span class="line">    欢迎来到</span><br><span class="line">    菜鸟教程</span><br><span class="line">    www.runoob.com</span><br><span class="line">EOF</span><br><span class="line">3          # 输出结果为 3 行</span><br><span class="line"><span class="meta">$</span></span><br></pre></td></tr></table></figure>
 <p>/dev/null是黑洞文件，将stdout/stderr重定向到这里不会输出任何结果。</p>
 <h1 id="12-包含"><a href="#12-包含" class="headerlink" title="12. 包含"></a>12. 包含</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. filename</span><br><span class="line">source filename</span><br></pre></td></tr></table></figure>
