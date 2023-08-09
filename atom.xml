@@ -6,7 +6,7 @@
   <link href="https://aobamoka.github.io/atom.xml" rel="self"/>
   
   <link href="https://aobamoka.github.io/"/>
-  <updated>2023-03-27T11:31:49.592Z</updated>
+  <updated>2023-08-06T00:43:46.480Z</updated>
   <id>https://aobamoka.github.io/</id>
   
   <author>
@@ -15,6 +15,372 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习笔记-Unity制作2D卡牌游戏</title>
+    <link href="https://aobamoka.github.io/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/"/>
+    <id>https://aobamoka.github.io/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/</id>
+    <published>2023-07-29T03:20:29.000Z</published>
+    <updated>2023-08-06T00:43:46.480Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;杂项&quot;&gt;&lt;a href=&quot;#杂项&quot; class=&quot;headerlink&quot; title=&quot;杂项&quot;&gt;&lt;/a&gt;杂项&lt;/h1&gt;&lt;h2 id=&quot;1、管理物体&quot;&gt;&lt;a href=&quot;#1、管理物体&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-计算机图形学</title>
+    <link href="https://aobamoka.github.io/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
+    <id>https://aobamoka.github.io/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/</id>
+    <published>2023-06-24T13:59:19.000Z</published>
+    <updated>2023-06-24T15:33:15.008Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-渲染&quot;&gt;&lt;a href=&quot;#1-渲染&quot; class=&quot;headerlink&quot; title=&quot;1. 渲染&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-docker与k8s</title>
+    <link href="https://aobamoka.github.io/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/"/>
+    <id>https://aobamoka.github.io/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/</id>
+    <published>2023-05-21T04:23:40.000Z</published>
+    <updated>2023-05-22T06:36:27.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-docker&quot;&gt;&lt;a href=&quot;#1-docker&quot; class=&quot;headerlink&quot; title=&quot;1. docker&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-Muduo库核心代码学习</title>
+    <link href="https://aobamoka.github.io/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://aobamoka.github.io/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/</id>
+    <published>2023-05-18T02:35:18.000Z</published>
+    <updated>2023-05-18T08:20:37.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-Multi-Reactor&quot;&gt;&lt;a href=&quot;#1-Multi-Reactor&quot; class=&quot;headerlink&quot; title=&quot;1. Multi-Reactor&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-CMU-15-445-课程笔记</title>
+    <link href="https://aobamoka.github.io/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/"/>
+    <id>https://aobamoka.github.io/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/</id>
+    <published>2023-05-08T02:22:08.000Z</published>
+    <updated>2023-05-14T06:16:50.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-SQL语言&quot;&gt;&lt;a href=&quot;#1-SQL语言&quot; class=&quot;headerlink&quot; title=&quot;1. SQL语言&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab4-3</title>
+    <link href="https://aobamoka.github.io/2023/05/07/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-3/"/>
+    <id>https://aobamoka.github.io/2023/05/07/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-3/</id>
+    <published>2023-05-07T13:37:46.000Z</published>
+    <updated>2023-05-07T14:15:24.047Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-基础知识&quot;&gt;&lt;a href=&quot;#1-基础知识&quot; class=&quot;headerlink&quot; title=&quot;1. 基础知识&quot;&gt;&lt;/a&gt;1. 基础知识&lt;/h1&gt;&lt;h2 id=&quot;1-并发SQL查询&quot;&gt;&lt;a href=&quot;#1-并发SQL查询&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab4-2</title>
+    <link href="https://aobamoka.github.io/2023/05/06/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-2/"/>
+    <id>https://aobamoka.github.io/2023/05/06/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-2/</id>
+    <published>2023-05-06T07:31:44.000Z</published>
+    <updated>2023-05-06T08:44:18.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-基础知识&quot;&gt;&lt;a href=&quot;#1-基础知识&quot; class=&quot;headerlink&quot; title=&quot;1. 基础知识&quot;&gt;&lt;/a&gt;1. 基础知识&lt;/h1&gt;&lt;h2 id=&quot;1-死锁检测&quot;&gt;&lt;a href=&quot;#1-死锁检测&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab4-1</title>
+    <link href="https://aobamoka.github.io/2023/05/03/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-1/"/>
+    <id>https://aobamoka.github.io/2023/05/03/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-1/</id>
+    <published>2023-05-03T07:10:04.000Z</published>
+    <updated>2023-05-08T11:12:52.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-基础知识&quot;&gt;&lt;a href=&quot;#1-基础知识&quot; class=&quot;headerlink&quot; title=&quot;1. 基础知识&quot;&gt;&lt;/a&gt;1. 基础知识&lt;/h1&gt;&lt;h2 id=&quot;1-锁&quot;&gt;&lt;a href=&quot;#1-锁&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab3-Extra</title>
+    <link href="https://aobamoka.github.io/2023/05/02/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-Extra/"/>
+    <id>https://aobamoka.github.io/2023/05/02/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-Extra/</id>
+    <published>2023-05-02T08:38:53.000Z</published>
+    <updated>2023-05-02T15:45:39.662Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-Optimizer&quot;&gt;&lt;a href=&quot;#1-Optimizer&quot; class=&quot;headerlink&quot; title=&quot;1. Optimizer&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab3-3</title>
+    <link href="https://aobamoka.github.io/2023/05/01/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-3/"/>
+    <id>https://aobamoka.github.io/2023/05/01/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-3/</id>
+    <published>2023-05-01T07:12:31.000Z</published>
+    <updated>2023-05-01T08:13:23.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-数据结构&quot;&gt;&lt;a href=&quot;#1-数据结构&quot; class=&quot;headerlink&quot; title=&quot;1. 数据结构&quot;&gt;&lt;/a&gt;1. 数据结构&lt;/h1&gt;&lt;h2 id=&quot;1-order-bys&quot;&gt;&lt;a href=&quot;#1-order-bys&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab3-2</title>
+    <link href="https://aobamoka.github.io/2023/04/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-2/"/>
+    <id>https://aobamoka.github.io/2023/04/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-2/</id>
+    <published>2023-04-27T11:00:09.000Z</published>
+    <updated>2023-05-01T07:12:59.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;因为整个lab3都是实现算子，所以也没啥其他好说的了。&lt;/p&gt;
+&lt;h1 id=&quot;1-理解与额外的数据结构&quot;&gt;&lt;a href=&quot;#1-理解与额外的数据结构&quot; class=&quot;headerlink&quot; title=&quot;1. 理解与额外的数据结构&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab3-1</title>
+    <link href="https://aobamoka.github.io/2023/04/24/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-1/"/>
+    <id>https://aobamoka.github.io/2023/04/24/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-1/</id>
+    <published>2023-04-24T06:58:53.000Z</published>
+    <updated>2023-05-02T08:58:55.905Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-Bustub架构&quot;&gt;&lt;a href=&quot;#1-Bustub架构&quot; class=&quot;headerlink&quot; title=&quot;1. Bustub架构&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-golang</title>
+    <link href="https://aobamoka.github.io/2023/04/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-golang/"/>
+    <id>https://aobamoka.github.io/2023/04/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-golang/</id>
+    <published>2023-04-18T07:25:08.000Z</published>
+    <updated>2023-05-15T01:56:06.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;鹅实习要转golang，先学着。&lt;/p&gt;
+&lt;h1 id=&quot;1-介绍&quot;&gt;&lt;a href=&quot;#1-介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 介绍&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab2-4</title>
+    <link href="https://aobamoka.github.io/2023/04/10/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-4/"/>
+    <id>https://aobamoka.github.io/2023/04/10/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-4/</id>
+    <published>2023-04-10T07:18:36.000Z</published>
+    <updated>2023-04-23T08:17:02.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-并发控制&quot;&gt;&lt;a href=&quot;#1-并发控制&quot; class=&quot;headerlink&quot; title=&quot;1. 并发控制&quot;&gt;&lt;/a&gt;1. 并发控制&lt;/h1&gt;&lt;h2 id=&quot;1-lock-amp-latch&quot;&gt;&lt;a href=&quot;#1-lock-amp-latch&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab2-3</title>
+    <link href="https://aobamoka.github.io/2023/04/09/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-3/"/>
+    <id>https://aobamoka.github.io/2023/04/09/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-3/</id>
+    <published>2023-04-09T09:04:52.000Z</published>
+    <updated>2023-04-09T09:27:11.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-Iterator&quot;&gt;&lt;a href=&quot;#1-Iterator&quot; class=&quot;headerlink&quot; title=&quot;1. Iterator&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>项目学习-CMU-15-445-Lab2-2</title>
+    <link href="https://aobamoka.github.io/2023/04/03/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-2/"/>
+    <id>https://aobamoka.github.io/2023/04/03/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-2/</id>
+    <published>2023-04-03T06:46:17.000Z</published>
+    <updated>2023-04-23T07:41:11.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-BPlusTree&quot;&gt;&lt;a href=&quot;#1-BPlusTree&quot; class=&quot;headerlink&quot; title=&quot;1. BPlusTree&quot;&gt;&lt;/a&gt;1. BPlusTree&lt;/h1&gt;&lt;h2 id=&quot;1-基本特征&quot;&gt;&lt;a href=&quot;#1-基本特征&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>项目学习-跳表</title>
@@ -42,19 +408,20 @@
     <link href="https://aobamoka.github.io/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/"/>
     <id>https://aobamoka.github.io/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/</id>
     <published>2023-03-23T15:48:03.000Z</published>
-    <updated>2023-03-24T02:49:26.000Z</updated>
+    <updated>2023-04-10T06:34:45.000Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;感觉没必要专门为2-1写篇文章？&lt;/p&gt;
-&lt;h1 id=&quot;1-BPlusTreePage&quot;&gt;&lt;a href=&quot;#1-BPlusTreePage&quot; class=&quot;headerlink&quot; title=&quot;1. BPlusTreePage&quot;&gt;&lt;/a&gt;1.</summary>
+    <summary type="html">&lt;h1 id=&quot;1-BPlusTreePage&quot;&gt;&lt;a href=&quot;#1-BPlusTreePage&quot; class=&quot;headerlink&quot; title=&quot;1. BPlusTreePage&quot;&gt;&lt;/a&gt;1. BPlusTreePage&lt;/h1&gt;&lt;h2</summary>
         
       
     
     
+    
+    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
@@ -87,7 +454,7 @@
     <link href="https://aobamoka.github.io/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/"/>
     <id>https://aobamoka.github.io/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/</id>
     <published>2023-03-20T12:16:15.000Z</published>
-    <updated>2023-03-20T12:18:04.502Z</updated>
+    <updated>2023-04-28T01:07:09.716Z</updated>
     
     
       
@@ -99,369 +466,6 @@
       
     
     
-    
-    
-  </entry>
-  
-  <entry>
-    <title>项目学习-CMU-15-445-Lab1-2</title>
-    <link href="https://aobamoka.github.io/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/"/>
-    <id>https://aobamoka.github.io/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/</id>
-    <published>2023-03-20T02:16:08.000Z</published>
-    <updated>2023-03-23T10:32:38.606Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-LRU-K&quot;&gt;&lt;a href=&quot;#1-LRU-K&quot; class=&quot;headerlink&quot; title=&quot;1. LRU-K&quot;&gt;&lt;/a&gt;1. LRU-K&lt;/h1&gt;&lt;h2 id=&quot;1-理论&quot;&gt;&lt;a href=&quot;#1-理论&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>项目学习-CMU-15-445-Lab1-1</title>
-    <link href="https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/"/>
-    <id>https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-1/</id>
-    <published>2023-03-19T08:10:30.000Z</published>
-    <updated>2023-03-23T10:23:10.325Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-ExtendibleHashTable&quot;&gt;&lt;a href=&quot;#1-ExtendibleHashTable&quot; class=&quot;headerlink&quot; title=&quot;1. ExtendibleHashTable&quot;&gt;&lt;/a&gt;1.</summary>
-        
-      
-    
-    
-    
-    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>项目学习-CMU-15-445-Lab0</title>
-    <link href="https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/"/>
-    <id>https://aobamoka.github.io/2023/03/19/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab0/</id>
-    <published>2023-03-19T04:50:53.000Z</published>
-    <updated>2023-03-23T15:20:05.026Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-字典树&quot;&gt;&lt;a href=&quot;#1-字典树&quot; class=&quot;headerlink&quot; title=&quot;1. 字典树&quot;&gt;&lt;/a&gt;1. 字典树&lt;/h1&gt;&lt;h2 id=&quot;1-理论&quot;&gt;&lt;a href=&quot;#1-理论&quot; class=&quot;headerlink&quot; title=&quot;1.</summary>
-        
-      
-    
-    
-    
-    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-Shell编程</title>
-    <link href="https://aobamoka.github.io/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/"/>
-    <id>https://aobamoka.github.io/2023/03/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Shell%E7%BC%96%E7%A8%8B/</id>
-    <published>2023-03-18T06:37:49.000Z</published>
-    <updated>2023-03-27T06:03:24.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-运行原理&quot;&gt;&lt;a href=&quot;#1-运行原理&quot; class=&quot;headerlink&quot; title=&quot;1. 运行原理&quot;&gt;&lt;/a&gt;1.</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-SQL语法</title>
-    <link href="https://aobamoka.github.io/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/"/>
-    <id>https://aobamoka.github.io/2023/03/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SQL%E8%AF%AD%E6%B3%95/</id>
-    <published>2023-03-16T07:22:49.000Z</published>
-    <updated>2023-03-20T12:14:27.769Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-基本&quot;&gt;&lt;a href=&quot;#1-基本&quot; class=&quot;headerlink&quot; title=&quot;1. 基本&quot;&gt;&lt;/a&gt;1. 基本&lt;/h1&gt;&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>项目学习-json解析器</title>
-    <link href="https://aobamoka.github.io/2023/03/12/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-json%E8%A7%A3%E6%9E%90%E5%99%A8/"/>
-    <id>https://aobamoka.github.io/2023/03/12/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-json%E8%A7%A3%E6%9E%90%E5%99%A8/</id>
-    <published>2023-03-12T08:10:02.000Z</published>
-    <updated>2023-03-27T11:30:49.877Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;json-parse&quot;&gt;&lt;a href=&quot;#json-parse&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>笔试记录-3-11-美团笔试</title>
-    <link href="https://aobamoka.github.io/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/"/>
-    <id>https://aobamoka.github.io/2023/03/11/%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95-3-11-%E7%BE%8E%E5%9B%A2%E7%AC%94%E8%AF%95/</id>
-    <published>2023-03-11T13:03:53.000Z</published>
-    <updated>2023-03-11T13:20:59.808Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1&quot;&gt;&lt;a href=&quot;#1&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-研究经历整理</title>
-    <link href="https://aobamoka.github.io/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/"/>
-    <id>https://aobamoka.github.io/2023/03/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%A0%94%E7%A9%B6%E7%BB%8F%E5%8E%86%E6%95%B4%E7%90%86/</id>
-    <published>2023-03-09T07:57:46.000Z</published>
-    <updated>2023-03-27T06:06:07.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;单元测试的意义&quot;&gt;&lt;a href=&quot;#单元测试的意义&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>面试记录-3-7-阿里云网络二面</title>
-    <link href="https://aobamoka.github.io/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/"/>
-    <id>https://aobamoka.github.io/2023/03/07/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-7-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%BA%8C%E9%9D%A2/</id>
-    <published>2023-03-07T08:05:06.000Z</published>
-    <updated>2023-03-07T09:08:19.480Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;就二十分钟。。。必挂了。&lt;/p&gt;
-&lt;h1 id=&quot;1-自我介绍&quot;&gt;&lt;a href=&quot;#1-自我介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 自我介绍&quot;&gt;&lt;/a&gt;1. 自我介绍&lt;/h1&gt;&lt;h1 id=&quot;2-Raft协议&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-多线程笔试题</title>
-    <link href="https://aobamoka.github.io/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/"/>
-    <id>https://aobamoka.github.io/2023/03/01/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AC%94%E8%AF%95%E9%A2%98/</id>
-    <published>2023-03-01T13:38:31.000Z</published>
-    <updated>2023-03-23T04:35:45.579Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1&quot;&gt;&lt;a href=&quot;#1&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>面试记录-3-1-阿里云PolarDB一面</title>
-    <link href="https://aobamoka.github.io/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/"/>
-    <id>https://aobamoka.github.io/2023/03/01/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-3-1-%E9%98%BF%E9%87%8C%E4%BA%91PolarDB%E4%B8%80%E9%9D%A2/</id>
-    <published>2023-03-01T13:06:53.000Z</published>
-    <updated>2023-03-04T08:28:44.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-自我介绍&quot;&gt;&lt;a href=&quot;#1-自我介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 自我介绍&quot;&gt;&lt;/a&gt;1. 自我介绍&lt;/h1&gt;&lt;h1 id=&quot;2-线程和进程的区别&quot;&gt;&lt;a href=&quot;#2-线程和进程的区别&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>面试记录-2.23-阿里云网络一面</title>
-    <link href="https://aobamoka.github.io/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/"/>
-    <id>https://aobamoka.github.io/2023/02/23/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95-2-23-%E9%98%BF%E9%87%8C%E4%BA%91%E7%BD%91%E7%BB%9C%E4%B8%80%E9%9D%A2/</id>
-    <published>2023-02-23T12:29:50.000Z</published>
-    <updated>2023-02-25T08:00:33.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;2-23-阿里云网络一面（虚拟网络相关的组？）&quot;&gt;&lt;a href=&quot;#2-23-阿里云网络一面（虚拟网络相关的组？）&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>读书笔记-深度探索C++对象模型</title>
-    <link href="https://aobamoka.github.io/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/"/>
-    <id>https://aobamoka.github.io/2023/02/15/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/</id>
-    <published>2023-02-15T08:12:03.000Z</published>
-    <updated>2023-03-20T12:01:20.549Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-关于对象&quot;&gt;&lt;a href=&quot;#1-关于对象&quot; class=&quot;headerlink&quot; title=&quot;1. 关于对象&quot;&gt;&lt;/a&gt;1. 关于对象&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;class与struct实际上是不矛盾的。即 &lt;code&gt;struct A; class</summary>
-        
-      
-    
-    
-    
-    <category term="读书笔记" scheme="https://aobamoka.github.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-设计模式</title>
-    <link href="https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    <id>https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</id>
-    <published>2023-02-09T14:03:19.000Z</published>
-    <updated>2023-03-20T12:13:39.469Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-Linux</title>
-    <link href="https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/"/>
-    <id>https://aobamoka.github.io/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/</id>
-    <published>2023-02-09T08:13:34.000Z</published>
-    <updated>2023-03-27T05:55:34.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-内存管理&quot;&gt;&lt;a href=&quot;#1-内存管理&quot; class=&quot;headerlink&quot; title=&quot;1. 内存管理&quot;&gt;&lt;/a&gt;1. 内存管理&lt;/h1&gt;&lt;p&gt;共4G虚拟内存（32位最大寻址空间）。&lt;/p&gt;
-&lt;h2 id=&quot;1-内存各段的意义&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>学习笔记-查漏补缺</title>
-    <link href="https://aobamoka.github.io/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/"/>
-    <id>https://aobamoka.github.io/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</id>
-    <published>2023-02-08T14:08:49.000Z</published>
-    <updated>2023-03-23T08:01:52.016Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;自我介绍&quot;&gt;&lt;a href=&quot;#自我介绍&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>

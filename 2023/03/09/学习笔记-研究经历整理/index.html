@@ -530,6 +530,28 @@
 <p>2）随机采样或变异archive中的一个测试用例。在采样/变异新测试后，计算其适应度。对某一目标k，一旦得到改进，就更有可能被继续选择</p>
 <p>3）基本思想是，为每个目标保留一组候选的测试用例，但是当目标被覆盖时只需要保留最好的那个。</p>
 <p>4）采样/变异控制：算法最开始时，采样生成新的随机测试用例的概率较高，且每个目标的测试群体大小较高，这些值随着算法进行、时间推移而线性减少，即从探索逐渐转变为对原有数据的发掘，最终直到采样概率变为0，且每个目标测试群体大小变为1，退化为进化算法。此外，更关心在某一目标上突出的个体而不是均衡的个体。</p>
+<h1 id="遗传-进化算法"><a href="#遗传-进化算法" class="headerlink" title="遗传/进化算法"></a>遗传/进化算法</h1><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>与问题领域无关的快速搜索能力</li>
+<li>搜索过程简单可解释</li>
+<li>概率交叉变异迭代，有随机性</li>
+<li>可扩展性，可与其他过程结合</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li>交叉率、变异率的参数选择影响效果，但是这些参数只能通过经验设置（类似于机器学习的参数设置）<ul>
+<li>交叉概率为0.75</li>
+<li>变异包括<ul>
+<li>在测试套件中增加一个新的测试用例（函数）</li>
+<li>在测试用例中增删改语句</li>
+<li>增删改一条语句后，有一定概率重复该动作（概率逐渐降低）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>因为精英子代需要等到下一次种群迭代才能参与，导致反馈信息得不到及时利用，搜索慢</li>
+<li>初始种群影响算法效率</li>
+<li>并行潜力（从群体中同时选出多对父母迭代）没有充分利用</li>
+<li>容易早熟收敛</li>
+</ul>
 <h1 id="Type4py"><a href="#Type4py" class="headerlink" title="Type4py"></a>Type4py</h1><p>现有的类型推断工具</p>
 <p>通过深度学习训练类型推断模型：标识符信息（标识符名称，通过自然语言处理获取可能存在的类型信息）、上下文信息（待推断的名称使用过的所有语句）、可见类型提示（通过import构建依赖关系图，区分不同类型），通过embedding生成词向量，然后训练。</p>
 <p>改进点：</p>
@@ -716,7 +738,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">单元测试的意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%86%E7%9B%96%E7%8E%87"><span class="toc-text">覆盖率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%B0%E6%9C%89%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-text">现有测试方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Randoop"><span class="toc-text">Randoop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EvoSuite-WholeSuite"><span class="toc-text">EvoSuite&#x2F;WholeSuite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MOSA"><span class="toc-text">MOSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DynaMOSA"><span class="toc-text">DynaMOSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MIO"><span class="toc-text">MIO</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Type4py"><span class="toc-text">Type4py</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%90%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-text">提出问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6"><span class="toc-text">框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C"><span class="toc-text">工作</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">单元测试的意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A6%86%E7%9B%96%E7%8E%87"><span class="toc-text">覆盖率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%B0%E6%9C%89%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-text">现有测试方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Randoop"><span class="toc-text">Randoop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EvoSuite-WholeSuite"><span class="toc-text">EvoSuite&#x2F;WholeSuite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MOSA"><span class="toc-text">MOSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DynaMOSA"><span class="toc-text">DynaMOSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MIO"><span class="toc-text">MIO</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%81%97%E4%BC%A0-%E8%BF%9B%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-text">遗传&#x2F;进化算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Type4py"><span class="toc-text">Type4py</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%90%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-text">提出问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6"><span class="toc-text">框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C"><span class="toc-text">工作</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -749,49 +771,7 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-27</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/">项目学习-跳表</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-23</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -799,10 +779,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-23</span>
+                  <span class="post-date">07-29</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
             </div>
           </div>
         
@@ -812,18 +792,18 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="post-img " style="background-size: cover; 
+              <a href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">06-24</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">项目学习-Raft一致性协议</a>
+              <a class="post-title" href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">学习笔记-计算机图形学</a>
             </div>
           </div>
         
@@ -833,7 +813,49 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/" class="post-img " style="background-size: cover; 
+              <a href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-21</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/">学习笔记-docker与k8s</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-18</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -841,10 +863,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">05-08</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
+              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
             </div>
           </div>
         

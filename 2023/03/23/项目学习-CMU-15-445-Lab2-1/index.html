@@ -422,6 +422,15 @@
       
 
       
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/" class="post-detail-header_category">
+              项目学习
+            </a>
+          
+        </span>
+      
 
       
     
@@ -441,8 +450,7 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p>感觉没必要专门为2-1写篇文章？</p>
-<h1 id="1-BPlusTreePage"><a href="#1-BPlusTreePage" class="headerlink" title="1. BPlusTreePage"></a>1. BPlusTreePage</h1><h2 id="1-BPlusTreePage-1"><a href="#1-BPlusTreePage-1" class="headerlink" title="1. BPlusTreePage"></a>1. BPlusTreePage</h2><p>根据Lab1-3，Page有这些metadata：</p>
+        <h1 id="1-BPlusTreePage"><a href="#1-BPlusTreePage" class="headerlink" title="1. BPlusTreePage"></a>1. BPlusTreePage</h1><h2 id="1-BPlusTreePage-1"><a href="#1-BPlusTreePage-1" class="headerlink" title="1. BPlusTreePage"></a>1. BPlusTreePage</h2><p>根据Lab1-3，Page有这些metadata：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> data_[BUSTUB_PAGE_SIZE]&#123;&#125;;  <span class="comment">// 存储数据，大小为4096即4K</span></span><br><span class="line"><span class="keyword">page_id_t</span> page_id_ = INVALID_PAGE_ID;  <span class="comment">// 映射的物理页号</span></span><br><span class="line"><span class="keyword">int</span> pin_count_ = <span class="number">0</span>;  <span class="comment">// 引用计数</span></span><br><span class="line"><span class="keyword">bool</span> is_dirty_ = <span class="literal">false</span>;  <span class="comment">// 脏页标志</span></span><br><span class="line">ReaderWriterLatch rwlatch_;  <span class="comment">// 读写锁，后面的lab才用到</span></span><br></pre></td></tr></table></figure>
 <p>data_就是我们存放B+树节点的位置，总大小为4K。</p>
 <p>BPlusTreePage实际上是抽象类，分为BPlusTreeInternalPage与BPlusTreeLeafPage两个子类，分别表示非叶子几点与叶子节点。</p>
@@ -453,12 +461,21 @@
 <li>叶子节点由双向链表相连。（本Lab中为单向链表）</li>
 </ul>
 <p>所以两者实现存在差别。</p>
-<h2 id="2-BPlusTreeInternalPage"><a href="#2-BPlusTreeInternalPage" class="headerlink" title="2. BPlusTreeInternalPage"></a>2. BPlusTreeInternalPage</h2><p>BPlusTreeInternalPage只多了个这个，放在最后。</p>
+<h2 id="2-BPlusTreeInternalPage"><a href="#2-BPlusTreeInternalPage" class="headerlink" title="2. BPlusTreeInternalPage"></a>2. BPlusTreeInternalPage</h2><h3 id="1-弹性数组"><a href="#1-弹性数组" class="headerlink" title="1. 弹性数组"></a>1. 弹性数组</h3><p>BPlusTreeInternalPage只多了个这个，放在最后。</p>
 <p>为什么大小为1？使用了弹性数组思想。</p>
 <p>我们不能确定这个数组大小（键值对数目）应该如何设置，但知道整张页的大小，就可以使用弹性数组。</p>
 <p>该数组必须是类最后一个成员，且大小只能为1。为对象分配内存时，它会自动填充，占用未被其他变量使用的内存，来确定自己的长度。</p>
 <p>本Lab中，其所占空间为4KB-24bytes（BPlusTreePage类中放的那些）</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MappingType array_[<span class="number">1</span>];  <span class="comment">// MappingType为pair&lt;K, V&gt;</span></span><br><span class="line"><span class="comment">// InternalPage中，K为索引，V为page_id，指向下一层节点。之前约定了第一个K为空</span></span><br><span class="line"><span class="comment">// K对应的page_id即为大于等于当前K，但小于下一个K的索引所在的page</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-size的问题"><a href="#2-size的问题" class="headerlink" title="2. size的问题"></a>2. size的问题</h3><p>B+树的索引节点有n个键与n+1个值，数量不相等。</p>
+<p>InternalPage对此的设置是：</p>
+<ul>
+<li>键值对数组的第一个键为空，表示小于第二个键所在的Page编号。</li>
+<li>其他每个键对应的值存储的是大于等于该键、小于下一个键的键所在的Page编号。</li>
+</ul>
+<p>那么问题来了，size到底包不包含第一个键值对呢？设置的是<strong>包含</strong>。</p>
+<p>如果设置不包含，Internal与Leaf的Size会出现歧义，写查找等代码容易把自己绕进去。</p>
+<h3 id="3-min-size"><a href="#3-min-size" class="headerlink" title="3. min_size"></a>3. min_size</h3><p>Leaf页n/2向下取整，Internal页n/2向上取整。</p>
 <h2 id="3-BPlusTreeLeafPage"><a href="#3-BPlusTreeLeafPage" class="headerlink" title="3. BPlusTreeLeafPage"></a>3. BPlusTreeLeafPage</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">page_id_t</span> next_page_id_;  <span class="comment">// 链表的next指针</span></span><br><span class="line">MappingType array_[<span class="number">1</span>];</span><br></pre></td></tr></table></figure>
 <p>这里就会发现一个问题：Bustub的所有索引都是非聚簇索引。因为此处设计的V只有一个，且大小固定，意思应该是指向实际数据的recorid_id（RID里是这么写的，暂且不知道要怎么用）。</p>
 <h2 id="4-额外提示"><a href="#4-额外提示" class="headerlink" title="4. 额外提示"></a>4. 额外提示</h2><p>官方给了些额外提示：</p>
@@ -470,6 +487,100 @@
 <li>读写完毕之后再减少引用计数。</li>
 </ul>
 </li>
+</ul>
+<h1 id="2-实现"><a href="#2-实现" class="headerlink" title="2. 实现"></a>2. 实现</h1><p>基本都是后面写着写着再来加的。</p>
+<p>因为key是自定义类型，编译器不一定实现了比较方法，所以传入KeyComparator类型的用于key比较的伪函数。</p>
+<h2 id="1-InternalPage"><a href="#1-InternalPage" class="headerlink" title="1. InternalPage"></a>1. InternalPage</h2><p>设计问题：</p>
+<ul>
+<li>size是否包含第一个空键，之前说过了，是<strong>包含</strong>的。</li>
+</ul>
+<p>实现的一些方法：</p>
+<h3 id="1-根据索引查key-value，或者反过来"><a href="#1-根据索引查key-value，或者反过来" class="headerlink" title="1. 根据索引查key/value，或者反过来"></a>1. 根据索引查key/value，或者反过来</h3><h3 id="2-Lookup"><a href="#2-Lookup" class="headerlink" title="2. Lookup"></a>2. Lookup</h3><p>输入：</p>
+<ul>
+<li>key</li>
+<li>comparator</li>
+</ul>
+<p>输出：key对应的value。因为是InternalPage，含义即为，通过key找到应该跳转到的子页面编号。</p>
+<p>具体逻辑：</p>
+<ul>
+<li>通过lower_bound找到大于等于当前key的第一个位置k。</li>
+<li>如果越界，直接返回最后一个子页面编号。</li>
+<li>否则<ul>
+<li>如果k等于当前key，返回k对应的子页面编号。（因为每个k存储的是所有&gt;=k且&lt;下一个key的索引与数据所在的页面）</li>
+<li>否则，返回k的上一个子页面编号。</li>
+</ul>
+</li>
+</ul>
+<p>有点抽象，感觉应该举个例子？</p>
+<p>比如两个key分别为3和5</p>
+<ul>
+<li>3存储了key在 [3, 5) 之间的索引与数据所在的页面</li>
+<li>5存储了 [5, +∞) 的索引与数据所在的页面</li>
+<li>如果传入的key为4：<ul>
+<li>大于等于4的第一个位置为5，4与5不相等，返回5的上一个3对应的子页面编号，因为4在 [3, 5)</li>
+</ul>
+</li>
+<li>如果传入的key为5：<ul>
+<li>大于等于5的第一个位置为5，5与5相等，返回5对应的子页面编号，因为5在 [5, +∞)</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-MoveHalf-CopyData"><a href="#3-MoveHalf-CopyData" class="headerlink" title="3. MoveHalf/CopyData"></a>3. MoveHalf/CopyData</h3><p>用在Insert的节点分裂中，这里只需要完成分裂逻辑即可，不需要关心如何分裂。</p>
+<p>输入：</p>
+<ul>
+<li>dst_page：src_page就是本页面。</li>
+<li>bpm：缓存池对象，因为需要取出子页面重设parent。</li>
+</ul>
+<p>具体逻辑：</p>
+<ul>
+<li>通过GetMinSize算出本页面留下的键值对数，将剩下的通过CopyData拷贝到新页面。</li>
+<li>CopyData<ul>
+<li>先拷贝键值对，重设新页面的size。</li>
+<li>通过bpm取出新页面的所有子页面，重设其parent，然后unpin。</li>
+</ul>
+</li>
+<li>重设本页面的size。</li>
+</ul>
+<h3 id="4-Insert系列函数"><a href="#4-Insert系列函数" class="headerlink" title="4. Insert系列函数"></a>4. Insert系列函数</h3><p>InternalPage设计比较特殊，所以还要分出头部插入、尾部插入、中间插入这些情况。</p>
+<p>插入后记得把插入的value（子页面编号）拿出来设置一下parent。</p>
+<h2 id="2-LeafPage"><a href="#2-LeafPage" class="headerlink" title="2. LeafPage"></a>2. LeafPage</h2><h3 id="1-根据索引查key-value，或者反过来-1"><a href="#1-根据索引查key-value，或者反过来-1" class="headerlink" title="1. 根据索引查key/value，或者反过来"></a>1. 根据索引查key/value，或者反过来</h3><h3 id="2-Lookup-1"><a href="#2-Lookup-1" class="headerlink" title="2. Lookup"></a>2. Lookup</h3><p>为什么跟InternalPage的不一样？</p>
+<ul>
+<li>InternalPage的key代表的是范围，是一定能找到的，而LeafPage却不一定。</li>
+</ul>
+<p>输入：</p>
+<ul>
+<li>key</li>
+<li>value指针，用来返回查找的value</li>
+<li>comparator</li>
+</ul>
+<p>输出：bool，是否找到</p>
+<p>具体逻辑：</p>
+<ul>
+<li>通过key找到对应的idx<ul>
+<li>如果idx越界，或者idx对应的key不等于key，返回false。</li>
+</ul>
+</li>
+<li>将idx对应的value存入参数value指针中，返回true。</li>
+</ul>
+<h3 id="3-MoveHalf-CopyData-1"><a href="#3-MoveHalf-CopyData-1" class="headerlink" title="3. MoveHalf/CopyData"></a>3. MoveHalf/CopyData</h3><p>为什么跟InternalPage的不一样？</p>
+<ul>
+<li>LeafPage存的是具体数据的位置，不需要设置parent。</li>
+</ul>
+<h3 id="4-Insert"><a href="#4-Insert" class="headerlink" title="4. Insert"></a>4. Insert</h3><p>输入：</p>
+<ul>
+<li>key</li>
+<li>value</li>
+<li>comparator</li>
+</ul>
+<p>输出：插入后本页的size</p>
+<p>具体逻辑：</p>
+<ul>
+<li>先找到key对应的idx。<ul>
+<li>如果越界，说明应该在尾部插入，插入后返回。</li>
+</ul>
+</li>
+<li>否则如果idx对应的key与key相等，说明已经有了该key，插入失败，直接返回。</li>
+<li>否则，将idx及后面位置的元素向后移动一位，然后将k-v插入idx位置。</li>
 </ul>
 
       </div>
@@ -633,7 +744,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-BPlusTreePage"><span class="toc-text">1. BPlusTreePage</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-BPlusTreePage-1"><span class="toc-text">1. BPlusTreePage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-BPlusTreeInternalPage"><span class="toc-text">2. BPlusTreeInternalPage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BPlusTreeLeafPage"><span class="toc-text">3. BPlusTreeLeafPage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%A2%9D%E5%A4%96%E6%8F%90%E7%A4%BA"><span class="toc-text">4. 额外提示</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-BPlusTreePage"><span class="toc-text">1. BPlusTreePage</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-BPlusTreePage-1"><span class="toc-text">1. BPlusTreePage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-BPlusTreeInternalPage"><span class="toc-text">2. BPlusTreeInternalPage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%BC%B9%E6%80%A7%E6%95%B0%E7%BB%84"><span class="toc-text">1. 弹性数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-size%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">2. size的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-min-size"><span class="toc-text">3. min_size</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BPlusTreeLeafPage"><span class="toc-text">3. BPlusTreeLeafPage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%A2%9D%E5%A4%96%E6%8F%90%E7%A4%BA"><span class="toc-text">4. 额外提示</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-InternalPage"><span class="toc-text">1. InternalPage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%B9%E6%8D%AE%E7%B4%A2%E5%BC%95%E6%9F%A5key-value%EF%BC%8C%E6%88%96%E8%80%85%E5%8F%8D%E8%BF%87%E6%9D%A5"><span class="toc-text">1. 根据索引查key&#x2F;value，或者反过来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Lookup"><span class="toc-text">2. Lookup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-MoveHalf-CopyData"><span class="toc-text">3. MoveHalf&#x2F;CopyData</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Insert%E7%B3%BB%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-text">4. Insert系列函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-LeafPage"><span class="toc-text">2. LeafPage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%B9%E6%8D%AE%E7%B4%A2%E5%BC%95%E6%9F%A5key-value%EF%BC%8C%E6%88%96%E8%80%85%E5%8F%8D%E8%BF%87%E6%9D%A5-1"><span class="toc-text">1. 根据索引查key&#x2F;value，或者反过来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Lookup-1"><span class="toc-text">2. Lookup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-MoveHalf-CopyData-1"><span class="toc-text">3. MoveHalf&#x2F;CopyData</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Insert"><span class="toc-text">4. Insert</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -666,49 +777,7 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-27</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/">项目学习-跳表</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-23</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -716,10 +785,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-23</span>
+                  <span class="post-date">07-29</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
             </div>
           </div>
         
@@ -729,18 +798,18 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="post-img " style="background-size: cover; 
+              <a href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">06-24</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">项目学习-Raft一致性协议</a>
+              <a class="post-title" href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">学习笔记-计算机图形学</a>
             </div>
           </div>
         
@@ -750,7 +819,49 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/" class="post-img " style="background-size: cover; 
+              <a href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-21</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/">学习笔记-docker与k8s</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-18</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -758,10 +869,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">05-08</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
+              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
             </div>
           </div>
         

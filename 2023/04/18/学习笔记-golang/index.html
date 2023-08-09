@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>学习笔记-golang | 摩卡&#39;s blog</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    
+        <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    
+
+    
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="摩卡's blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">摩卡&#39;s blog</h3>
+      <h5 class="drawer-box-head_desc">随便写写，记录下都看了些啥</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/yuang01/hexo-theme-bamboo">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">摩卡&#39;s blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/yuang01/hexo-theme-bamboo" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script defer src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        学习笔记-golang
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-04-18 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-detail-header_category">
+              学习笔记
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <p>鹅实习要转golang，先学着。</p>
+<h1 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h1><p>go是一门编译型语言，与cpp类似，先静态编译，然后链接形成可执行文件。</p>
+<p>go通过包（package）组织，类似于库、模块。</p>
+<p>一个包由位于单个目录下的一个或多个.go源代码文件组成。</p>
+<ul>
+<li>每个源文件以一条package声明语句开始，表示该文件属于哪个包。</li>
+<li>紧接着一系列import导入以来的包。</li>
+<li>之后是程序语句。</li>
+</ul>
+<p>main包定义一个独立可执行程序，里面的main函数是整个程序执行的入口。</p>
+<p>特性：</p>
+<ul>
+<li>只允许导入需要的包，否则无法编译通过。</li>
+<li>编译过程没有警告信息。</li>
+<li>编译器会主动将特定符号后的换行符转换为分号，所以：<ul>
+<li>不需要显示添加分号，除非一行多个语句。</li>
+<li>不能随意换行，因为以特定字符结尾可能导致添加分号。</li>
+</ul>
+</li>
+<li>gofmt工具将代码格式化为标准格式，所以go语言在代码格式上很标准。</li>
+</ul>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;Hello, 世界&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2-命令行"><a href="#2-命令行" class="headerlink" title="2. 命令行"></a>2. 命令行</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go run helloworld.go  // 编译并运行</span><br><span class="line">go build helloworld.go  // 编译生成二进制文件，还需要通过./helloworld运行</span><br><span class="line">go get golang.org/x/tools/cmd/goimports  // 安装工具</span><br></pre></td></tr></table></figure>
+<h1 id="3-变量"><a href="#3-变量" class="headerlink" title="3. 变量"></a>3. 变量</h1><h2 id="1-命名"><a href="#1-命名" class="headerlink" title="1. 命名"></a>1. 命名</h2><p>规则：</p>
+<ul>
+<li>以字母或下划线开头，后面跟字母、数字或下划线。</li>
+<li>不能用关键字。</li>
+<li>可以用预定义名字，如内建常量、内建类型和内建函数。</li>
+</ul>
+<p>命名风格：</p>
+<ul>
+<li>开头字母大写，代表它将是导出的，即可以被外部包访问。</li>
+<li>包本身一般用小写字母。</li>
+<li>尽量使用短小名字。</li>
+<li>尽量用驼峰式命名。</li>
+</ul>
+<h2 id="2-声明"><a href="#2-声明" class="headerlink" title="2. 声明"></a>2. 声明</h2><p>四种类型：</p>
+<ul>
+<li>var：变量</li>
+<li>const：常量</li>
+<li>type：类型</li>
+<li>func：函数</li>
+</ul>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> varname <span class="keyword">type</span> = expression  <span class="comment">// 一般语法</span></span><br><span class="line">varname := expression  <span class="comment">// 简短声明</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-一般语法"><a href="#1-一般语法" class="headerlink" title="1. 一般语法"></a>1. 一般语法</h3><p>“type”或“= expression”可以省略其中之一。</p>
+<ul>
+<li>省略类型信息：根据初始化表达式来推导类型。</li>
+<li>省略初始化表达式：用该类型的零值初始化该变量。<ul>
+<li>数值类型：0</li>
+<li>布尔类型：false</li>
+<li>字符串类型：空字符串</li>
+<li>接口或引用类型：nil</li>
+<li>数组或结构体等聚合类型：每个元素或字段对应的零值</li>
+</ul>
+</li>
+</ul>
+<p>有初始化机制的存在，保证go语言中<strong>不存在未初始化的变量</strong>。</p>
+<p>可以在一行初始化多个不同类型的值，类型由初始化表达式推导。</p>
+<p>初始化时机：</p>
+<ul>
+<li>包级别的变量：main执行前。</li>
+<li>局部变量：声明语句被执行到时。</li>
+</ul>
+<h3 id="2-简短变量声明"><a href="#2-简短变量声明" class="headerlink" title="2. 简短变量声明"></a>2. 简短变量声明</h3><p>变量类型根据表达式自动推导。</p>
+<ul>
+<li>简短变量声明中必须至少要声明一个新变量，否则无法编译通过。</li>
+<li>如果左边有已经在同级词法域内声明过的变量，则只会赋值。</li>
+<li>如果变量是在外部词法域声明，那么简短声明会重新声明一个新变量。</li>
+</ul>
+<h3 id="3-指针"><a href="#3-指针" class="headerlink" title="3. 指针"></a>3. 指针</h3><p><code>*type</code>表示type类型的指针。普通变量通过&amp;取地址操作获取其指针。</p>
+<p>★ 返回局部变量的地址也是安全的。</p>
+<p>原因：</p>
+<ul>
+<li><p>编译器会做逃逸分析，分析变量作用域是否跑出了函数范围。</p>
+<ul>
+<li>如果没有跑出，就分配在栈上</li>
+<li>否则分配在堆上。</li>
+</ul>
+</li>
+<li><p>不必担心内存泄漏，因为go语言自带垃圾回收机制。</p>
+</li>
+<li><p>除此之外，new的局部变量也会根据逃逸分析决定分配在栈或堆上。</p>
+</li>
+</ul>
+<h3 id="4-new"><a href="#4-new" class="headerlink" title="4. new"></a>4. new</h3><p><code>new(T)</code>创建一个T类型的匿名变量，初始化为T类型零值，并返回变量地址。</p>
+<p>类大小都是0时，可能有相同的地址。谨慎使用大小为0的类型，可能导致go的自动垃圾回收器有不同行为。</p>
+<p>new只是预定义函数，所以可以定义成别的类型。</p>
+<h3 id="5-生命周期"><a href="#5-生命周期" class="headerlink" title="5. 生命周期"></a>5. 生命周期</h3><p>包一级：与整个程序的运行周期一致。</p>
+<p>局部变量：从创建的声明语句开始，直到该变量不再被引用。</p>
+<p>如何知道一个变量可以被回收：</p>
+<ul>
+<li>从每个包级的变量和每个当前运行函数的每一个局部变量开始。</li>
+<li>通过指针或引用的访问路径遍历，是否可以找到该变量。<ul>
+<li>如果不存在这样的访问路径，说明该变量不可达，也就是说它是否存在不会影响程序后续。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> global *<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> x <span class="keyword">int</span></span><br><span class="line">    x = <span class="number">1</span></span><br><span class="line">    global = &amp;x</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">g</span><span class="params">()</span></span> &#123;</span><br><span class="line">    y := <span class="built_in">new</span>(<span class="keyword">int</span>)</span><br><span class="line">    *y = <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以x为例，f()运行结束后，依然可以通过global访问到x，所以必须分配在堆上。即，局部变量x从函数f中逃逸了。</p>
+<p>以y为例，g()运行结束后，*y不可达，即可以马上被回收。编译器可以选择在栈上或堆上分配。</p>
+<p>逃逸变量需要额外分配内存，同时可能影响性能优化。</p>
+<h1 id="4-赋值"><a href="#4-赋值" class="headerlink" title="4. 赋值"></a>4. 赋值</h1><p>数值变量支持自增/自减。但与C++不同的是，自增自减<strong>是语句而不是表达式，没有返回值，所以不能将结果赋给其他值</strong>。</p>
+<p>支持元组赋值，即类似Python的，等号两边多个变量/表达式。会先将等号右边的表达式都求出值后，统一赋值给左边的变量。</p>
+<p>表达式/函数可能产生多个值，出现在等号右边时，左边变量的数目必须相同。</p>
+<p>与C++类似，可以用_空白标识符占位，丢弃该位置的值。</p>
+<h3 id="1-可赋值性"><a href="#1-可赋值性" class="headerlink" title="1. 可赋值性"></a>1. 可赋值性</h3><p>赋值语句左边的变量和右边最终求到的值必须有相同的数据类型。即右边的值对左边的变量是可赋值的。</p>
+<p>规则：</p>
+<ul>
+<li>类型必须完全匹配。</li>
+<li>nil可赋值给任何指针/引用类型的变量。</li>
+<li>常量规则更为灵活，为了避免不必要的显式类型转换。</li>
+</ul>
+<p>对于值的相等比较，第二个值必须是对第一个值类型对应的变量是可赋值的。</p>
+<h1 id="5-类型"><a href="#5-类型" class="headerlink" title="5. 类型"></a>5. 类型</h1><h2 id="1-类型声明"><a href="#1-类型声明" class="headerlink" title="1. 类型声明"></a>1. 类型声明</h2><p><code>type 类型名字 底层类型</code></p>
+<p>一般出现在包一级，在本包中用类型名字来使用底层类型。</p>
+<p>类似于using与typedef。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Celsius <span class="keyword">float64</span>    <span class="comment">// 摄氏温度</span></span><br><span class="line"><span class="keyword">type</span> Fahrenheit <span class="keyword">float64</span> <span class="comment">// 华氏温度</span></span><br></pre></td></tr></table></figure>
+<p>它们有相同的底层类型float64，但是是不同的数据类型，因此不可相互比较，或混在一个表达式中计算/比较。</p>
+<p>但是，它们各自可以与底层类型float64比较。</p>
+<h1 id="6-包和文件"><a href="#6-包和文件" class="headerlink" title="6. 包和文件"></a>6. 包和文件</h1><p>一个包包含一个或多个go源文件。</p>
+<p>每个包对应一个独立的名字空间。</p>
+<p>名字是大写字母开头，则该名字导出（汉字不区分大小写，所以汉字开头的名字都不导出）。</p>
+<h2 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h2><p>包级别声明的变量，有初始化表达式，则用初始化表达式初始化。</p>
+<p>否则，可以用特殊的init初始化函数初始化。每个文件可包含多个init初始化函数。</p>
+<p>init函数不能被调用或引用，程序开始时每个文件中的init函数按照其声明的顺序被自动调用。</p>
+<p>每个包在解决依赖的前提下，以导入声明的顺序初始化，每个包只初始化一次。</p>
+<h1 id="7-作用域"><a href="#7-作用域" class="headerlink" title="7. 作用域"></a>7. 作用域</h1><p>一个声明语句将程序中的实体和一个名字关联。</p>
+<p>声明语句的作用域指源代码中可以有效使用这个名字的范围。</p>
+<p>作用域≠生命周期。</p>
+<ul>
+<li>作用域：对应一个源代码的文本区域，是编译时属性。</li>
+<li>生命周期：程序运行时变量存在的有效时间段，该时间区域内可以被程序的其他部分引用，是运行时概念。</li>
+</ul>
+<p>★ import导入的包只能在当前文件中访问，也就是说import当前文件的其他文件要访问当前文件import的包，必须自己import。</p>
+<p>与C++的include展开不一样。</p>
+<h2 id="1-句法块-词法块"><a href="#1-句法块-词法块" class="headerlink" title="1. 句法块/词法块"></a>1. 句法块/词法块</h2><p>句法块：花括弧包含的一系列语句。</p>
+<p>句法块内部声明的名字无法被外部块访问，该块决定了内部声明的名字的作用域范围。</p>
+<p>把块的概念推广到包括其他声明的群组，有一些声明在代码中并未显式用花括号包裹，称为词法块。</p>
+<p>（词法块的概念包括句法块）</p>
+<ul>
+<li>对全局源代码，存在一个整体词法块，称为全局词法块。</li>
+<li>对于每个包、每个for、if和switch语句，也有对应的词法块。</li>
+<li>显示书写的词法块（花括号包裹）</li>
+</ul>
+<p>编译器遇到名字引用时，会从当前词法域从内层往外查找。</p>
+<p>如果该名字在多个词法域都声明过，内部的声明首先被找到，因此屏蔽了外部同名的声明，让外部声明的名字无法被找到。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    x := <span class="string">&quot;hello&quot;</span></span><br><span class="line">    <span class="keyword">for</span> _, x := <span class="keyword">range</span> x &#123;</span><br><span class="line">        x := x + <span class="string">&#x27;A&#x27;</span> - <span class="string">&#x27;a&#x27;</span></span><br><span class="line">        fmt.Printf(<span class="string">&quot;%c&quot;</span>, x) <span class="comment">// &quot;HELLO&quot; (one letter per iteration)</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>三个x变量生命在不同的词法域：</p>
+<ul>
+<li>函数体词法域</li>
+<li>for隐式的初始化词法域</li>
+<li>for循环体词法域</li>
+</ul>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> f, err := os.Open(fname); err != <span class="literal">nil</span> &#123; <span class="comment">// compile error: unused: f</span></span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line">f.ReadByte() <span class="comment">// compile error: undefined f</span></span><br><span class="line">f.Close()    <span class="comment">// compile error: undefined f</span></span><br></pre></td></tr></table></figure>
+<p>f的作用域只在if语句内，所以后面的语句无法引入。</p>
+<h1 id="8-基础类型"><a href="#8-基础类型" class="headerlink" title="8. 基础类型"></a>8. 基础类型</h1><h2 id="1-整型"><a href="#1-整型" class="headerlink" title="1. 整型"></a>1. 整型</h2><p>int8、int16、int32、int64：对应bit大小的有符号整数</p>
+<p>uint8、uint16、uint32、uint64：对应bit大小的无符号整数</p>
+<p>rune：Unicode字符类型，表示一个Unicode码点。与int32等价。</p>
+<p>byte：强调数值是一个原始的数据。与int8等价。</p>
+<p>uintpr：没有指定具体bit大小，足以容纳指针。</p>
+<p>int/uint：默认为32bit，但是与int/uint32是不同类型，需要显式转换。</p>
+<p>超出整型范围的浮点数转换为整型，可能发生截断，截断行为依赖于具体实现（菜鸟go在线的工具是取int64的最小值），所以应该避免。</p>
+<h2 id="2-浮点数"><a href="#2-浮点数" class="headerlink" title="2. 浮点数"></a>2. 浮点数</h2><p>float32、float64：对应bit精度的浮点数。</p>
+<p>math.MaxFloat32：约3.4e38</p>
+<p>math.MinFloat32：约1.4e-45</p>
+<p>math.MaxFloat64：约1.8e308</p>
+<p>math.MinFloat64：约4.9e-324</p>
+<h2 id="3-复数"><a href="#3-复数" class="headerlink" title="3. 复数"></a>3. 复数</h2><p>complex64、complex128：分别对应float32、float64。</p>
+<p>real(complex)、imag(complex)返回实部和虚部。</p>
+<p>math/cmplx包提供了许多处理复数的函数，如求平方根、求幂。</p>
+<h2 id="4-布尔型"><a href="#4-布尔型" class="headerlink" title="4. 布尔型"></a>4. 布尔型</h2><p>true、false。</p>
+<p>不能隐式转换为0、1.</p>
+<h2 id="5-字符串"><a href="#5-字符串" class="headerlink" title="5. 字符串"></a>5. 字符串</h2><p>不可修改。该特性意味着多个字符串共享相同的底层数据是安全地，因此复制、切片等操作的代价很低（只需要记录起始位置与长度）。</p>
+<h3 id="1-字符串面值"><a href="#1-字符串面值" class="headerlink" title="1. 字符串面值"></a>1. 字符串面值</h3><p><code>&quot;hello, world&quot;</code></p>
+<p>用双引号包含：可以插入以反斜杠\开头的转义字符。</p>
+<p>用反引号包含：原生的字符串面值，没有转义操作，内容就是字面意思。会删除回车。</p>
+<h3 id="2-Unicode"><a href="#2-Unicode" class="headerlink" title="2. Unicode"></a>2. Unicode</h3><p>用一个int32表示一个Unicode码点。</p>
+<p>简单统一，能表示世界上所有符号系统，但是浪费空间。</p>
+<h3 id="3-UTF-8"><a href="#3-UTF-8" class="headerlink" title="3. UTF-8"></a>3. UTF-8</h3><p>将Unicode码点编码为字节序列的变长编码。用1到4个字节表示每个Unicode码点，ASCII部分字符只用1字节，常用字符2或3字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0xxxxxxx                             runes 0-127    (ASCII)</span><br><span class="line">110xxxxx 10xxxxxx                    128-2047       (values &lt;128 unused)</span><br><span class="line">1110xxxx 10xxxxxx 10xxxxxx           2048-65535     (values &lt;2048 unused)</span><br><span class="line">11110xxx 10xxxxxx 10xxxxxx 10xxxxxx  65536-0x10ffff (other values unused)</span><br></pre></td></tr></table></figure>
+<p>第一个字节的前几位表示该编码占几个字节。</p>
+<p>Go语言源文件采用UTF-8编码。</p>
+<p>通过unicode包或unicode/utf8包处理rune字符、UTF8编码解码。</p>
+<p>因为Unicode字符可能占多个字节，len()返回的是字节数，并不一定与Unicode字符数相等。</p>
+<p>range循环处理字符串时会自动隐式解码UTF8字符串。</p>
+<h3 id="4-常用处理包"><a href="#4-常用处理包" class="headerlink" title="4. 常用处理包"></a>4. 常用处理包</h3><p>bytes：针对[]byte类型。字符串只读，因此一步步增加字符构建字符串会导致很多复制操作。这种情况下使用bytes.Buffer类型更为有效。</p>
+<p>strings：提供字符串查询、替换、比较、拆分、合并等操作。</p>
+<p>strconv：字符串转其他基本类型、双引号转移相关转换。</p>
+<p>unicode：给字符分类。</p>
+<h2 id="6-常量"><a href="#6-常量" class="headerlink" title="6. 常量"></a>6. 常量</h2><p>常量表达式的值在编译器计算，潜在类型为bool、string或数字。</p>
+<p>常量的值不可修改。</p>
+<h3 id="1-iota"><a href="#1-iota" class="headerlink" title="1. iota"></a>1. iota</h3><p>批量声明常量时，除了第一个外其他常量右边的初始化表达式可省略，默认用前面的初始化表达式。</p>
+<p>在一个const声明语句中，在第一个声明的常量所在的行，iota将会被置为0，然后在每一个有常量声明的行加一。</p>
+<h3 id="2-无类型常量"><a href="#2-无类型常量" class="headerlink" title="2. 无类型常量"></a>2. 无类型常量</h3><p>编译期为没有明确基础类型的数字常量提供至少256bit的运算精度。</p>
+<p>如：</p>
+<p><code>fmt.Println(YiB/ZiB)</code></p>
+<p>YiB和ZiB都是超出int范围的编译期常量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var x float32 &#x3D; math.Pi</span><br><span class="line">var y float64 &#x3D; math.Pi</span><br><span class="line">var z complex128 &#x3D; math.Pi</span><br></pre></td></tr></table></figure>
+<p>math.Pi如果被确定为特定类型，结果精度可能不一样。</p>
+<p>只有常量可以是无类型，在被赋值给变量时隐式转换为对应的类型。</p>
+<p>无类型整数常量转换为int，它的内存大小是不确定的，但是无类型浮点数和复数常量则转换为内存大小明确的float64和complex128。</p>
+<h1 id="9-复合类型"><a href="#9-复合类型" class="headerlink" title="9. 复合类型"></a>9. 复合类型</h1><h2 id="1-数组"><a href="#1-数组" class="headerlink" title="1. 数组"></a>1. 数组</h2><p>数组长度是固定的，所以一般使用切片代替。</p>
+<p>初始化方法：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a [<span class="number">3</span>]<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a [<span class="number">3</span>]<span class="keyword">int</span> = [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line"><span class="keyword">var</span> a [<span class="number">3</span>]<span class="keyword">int</span> = [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;  <span class="comment">// 没指定初始值的元素就被初始化为0</span></span><br><span class="line"></span><br><span class="line">a := [...]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;  <span class="comment">// 数组长度根据初始化值的个数计算</span></span><br><span class="line"></span><br><span class="line">a := [...]<span class="keyword">int</span>&#123;<span class="number">99</span>: <span class="number">-1</span>&#125;  <span class="comment">// 指定特定下标的初始值。该语句定义了一个长度为100，最后一个元素为-1的数组</span></span><br></pre></td></tr></table></figure>
+<p>go中相同长度与类型的数组可以比较。</p>
+<h2 id="2-slice"><a href="#2-slice" class="headerlink" title="2. slice"></a>2. slice</h2><p>语法与python类似。</p>
+<p>由指针（起始地址）、长度和容量构成，与cpp的vector类似。</p>
+<p>多个slice可以共享底层的数据，引用区间可能重叠。</p>
+<p>切片操作[]：</p>
+<ul>
+<li>如果超出容量cap，会导致panic异常</li>
+<li>如果超出长度len，则会扩展slice</li>
+</ul>
+<p>向函数传递slice允许在函数内部修改数组元素。换句话说，复制一个slice只是对底层的数组创建了一个新的slice别名。</p>
+<p>与数组不同，slice只能与nil比较，不能互相之间比较。因为slice的元素是间接引用的：</p>
+<ul>
+<li>一个slice甚至可以包含自身。</li>
+<li>一个固定的slice值在不同时刻可能包含不同元素，因为底层数组元素可能被修改。</li>
+</ul>
+<h3 id="1-make"><a href="#1-make" class="headerlink" title="1. make"></a>1. make</h3><p>创建一个匿名数组变量，返回一个slice，只能通过返回的slice引用底层的匿名数组变量。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span>([]T, <span class="built_in">len</span>)</span><br><span class="line"><span class="built_in">make</span>([]T, <span class="built_in">len</span>, <span class="built_in">cap</span>) <span class="comment">// same as make([]T, cap)[:len]</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-append"><a href="#2-append" class="headerlink" title="2. append"></a>2. append</h3><p>向slice追加一个或多个元素。</p>
+<p>与vector的扩容类似，如果cap不够，就再分配一个足够大的slice，然后拷贝到新slice中。</p>
+<p>改进：内置的copy可以使dst与src的slice共享一个底层数组，降低拷贝开销。</p>
+<p>因为append操作可能创建新的slice，不能确认新slice与原始slice是否引用相同空间，所以一般把append返回的结果赋值给输入的slice。</p>
+<h2 id="3-map"><a href="#3-map" class="headerlink" title="3. map"></a>3. map</h2><p>哈希表，无序k-v对。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建方式</span></span><br><span class="line">ages := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">ages := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">ages := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;</span><br><span class="line">	<span class="string">&quot;alice&quot;</span>: <span class="number">31</span>,</span><br><span class="line">	<span class="string">&quot;charlie&quot;</span>: <span class="number">34</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除元素</span></span><br><span class="line"><span class="built_in">delete</span>(ages, <span class="string">&quot;alice&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>与cpp中的unordered_map相似，删除不存在的元素、取不存在的key的值都是安全的。</p>
+<p>不能对map元素取址。map可能随元素数量增长分配更大空间，导致之前的地址无效。</p>
+<p>可通过ranges遍历。</p>
+<p><code>var ages map[string]int</code></p>
+<p>map类型的零值是nil，即没有引用任何哈希表，可安全查找、删除、len、ranges，但不能添加元素。</p>
+<p>添加元素前必须先创建map。</p>
+<p><code>ages := map[string]int&#123;&#125;</code>不等于nil，因为它是一个新创建的空map的引用。</p>
+<p>map也只能与nil比较，不能互相比较。</p>
+<h2 id="4-结构体"><a href="#4-结构体" class="headerlink" title="4. 结构体"></a>4. 结构体</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Employee <span class="keyword">struct</span> &#123;</span><br><span class="line">    ID        <span class="keyword">int</span></span><br><span class="line">    Name      <span class="keyword">string</span></span><br><span class="line">    Address   <span class="keyword">string</span></span><br><span class="line">    DoB       time.Time</span><br><span class="line">    Position  <span class="keyword">string</span></span><br><span class="line">    Salary    <span class="keyword">int</span></span><br><span class="line">    ManagerID <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">EmployeeByID</span><span class="params">(id <span class="keyword">int</span>)</span> *<span class="title">Employee</span></span> &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"></span><br><span class="line">fmt.Println(EmployeeByID(dilbert.ManagerID).Position) <span class="comment">// &quot;Pointy-haired boss&quot;</span></span><br><span class="line"></span><br><span class="line">id := dilbert.ID</span><br><span class="line">EmployeeByID(id).Salary = <span class="number">0</span> <span class="comment">// fired for... no real reason</span></span><br></pre></td></tr></table></figure>
+<p>如果将EmployeeByID()的返回值改为Employee，第6行无法编译通过，因为等号左边可能是一个值而不是变量。</p>
+<p>如果结构体成员名字以大写字母开头，该成员就是导出的。</p>
+<p>初始化：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Point <span class="keyword">struct</span>&#123; X, Y <span class="keyword">int</span> &#125;</span><br><span class="line"></span><br><span class="line">p := Point&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">p := Point&#123;X: <span class="number">1</span>, Y: <span class="number">2</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>两种方法不能混用，并且不能在外部初始化结构体中未导出的成员。</p>
+<p>结构体的比较：全部成员都需要是可比较的。</p>
+<h3 id="1-嵌入"><a href="#1-嵌入" class="headerlink" title="1. 嵌入"></a>1. 嵌入</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Point <span class="keyword">struct</span> &#123;</span><br><span class="line">    X, Y <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Circle <span class="keyword">struct</span> &#123;</span><br><span class="line">    Point</span><br><span class="line">    Radius <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Wheel <span class="keyword">struct</span> &#123;</span><br><span class="line">    Circle</span><br><span class="line">    Spokes <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> w Wheel</span><br><span class="line">w.X = <span class="number">8</span>  <span class="comment">// w.Circle.Point.X = 8</span></span><br><span class="line">w.Radius = <span class="number">5</span>  <span class="comment">// w.Circle.Radius = 5</span></span><br><span class="line">w.Spokes = <span class="number">20</span></span><br></pre></td></tr></table></figure>
+<p>在结构体中只声明成员对应的数据类型而不指名成员的名字，这类成员叫匿名成员。不能包含两个类型相同的匿名成员。</p>
+<p>匿名成员的数据类型必须是命名类型或指向一个命名类型的指针。</p>
+<p>访问的时候可以忽略匿名成员的点操作符部分，直接取到匿名成员包含的成员。</p>
+<p>嵌入类似于cpp的继承机制。</p>
+<p>即使改成circle与wheel，包内部依然能用简短形式访问，但是包外部不行，因为没有导出。</p>
+<p>但是，初始化无法简短。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">w = Wheel&#123;Circle&#123;Point&#123;<span class="number">8</span>, <span class="number">8</span>&#125;, <span class="number">5</span>&#125;, <span class="number">20</span>&#125;</span><br><span class="line"></span><br><span class="line">w = Wheel&#123;</span><br><span class="line">    Circle: Circle&#123;</span><br><span class="line">        Point:  Point&#123;X: <span class="number">8</span>, Y: <span class="number">8</span>&#125;,</span><br><span class="line">        Radius: <span class="number">5</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    Spokes: <span class="number">20</span>, <span class="comment">// <span class="doctag">NOTE:</span> trailing comma necessary here (and at Radius)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-JSON"><a href="#5-JSON" class="headerlink" title="5. JSON"></a>5. JSON</h2><p>编码：json.Marshal将结构体转为JSON，返回一个字节slice。</p>
+<p>可以在结构体成员的后面加Tag，表示在编译阶段关联到该成员的元信息字符串。一般形式为：`key: “value”`</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Year  <span class="keyword">int</span>  <span class="string">`json:&quot;released&quot;`</span>  <span class="comment">// 转JSON时key变为released</span></span><br><span class="line">Color <span class="keyword">bool</span> <span class="string">`json:&quot;color,omitempty&quot;`</span>  <span class="comment">// 转JSON时key变为color，并且如果结构体为空或零值，不生成该JSON对象。</span></span><br></pre></td></tr></table></figure>
+<p>解码：json.Unmarshal。可以选择性解码感兴趣的结构。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> titles []<span class="keyword">struct</span>&#123; Title <span class="keyword">string</span> &#125;</span><br><span class="line"><span class="keyword">if</span> err := json.Unmarshal(data, &amp;titles); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Fatalf(<span class="string">&quot;JSON unmarshaling failed: %s&quot;</span>, err)</span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(titles) <span class="comment">// &quot;[&#123;Casablanca&#125; &#123;Cool Hand Luke&#125; &#123;Bullitt&#125;]&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="6-文本和HTML模板"><a href="#6-文本和HTML模板" class="headerlink" title="6. 文本和HTML模板"></a>6. 文本和HTML模板</h2><p>text/template与html/template提供将变量值填充到文本或HTML格式模板的机制。</p>
+<h1 id="10-函数"><a href="#10-函数" class="headerlink" title="10. 函数"></a>10. 函数</h1><h2 id="1-函数声明"><a href="#1-函数声明" class="headerlink" title="1. 函数声明"></a>1. 函数声明</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">name</span><span class="params">(parameter-list)</span> <span class="params">(result-list)</span></span> &#123;</span><br><span class="line">    body</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul>
+<li>return-list可以省略，只有一个可以省略括号。</li>
+<li>parameter-list可以用下划线代替参数名，表示该参数未使用。</li>
+<li>go语言没有默认参数值，因此也无法通过指定形参名来按名字传参。</li>
+<li>实参是值传递，但可以通过指针、切片等间接引用修改。</li>
+<li>可能有没有函数体的函数声明，表示该函数不是以Go实现的。</li>
+</ul>
+<h2 id="2-递归"><a href="#2-递归" class="headerlink" title="2. 递归"></a>2. 递归</h2><h2 id="3-多返回值"><a href="#3-多返回值" class="headerlink" title="3. 多返回值"></a>3. 多返回值</h2><p>一般用error接口类型作为第二个返回值，来进行错误处理。</p>
+<p>bare return：返回值可以加显式的变量名，return可以省略操作数。</p>
+<h2 id="4-错误"><a href="#4-错误" class="headerlink" title="4. 错误"></a>4. 错误</h2><p>函数运行失败返回的错误信息一般被认为是一种预期的值，而非异常。</p>
+<p>这样设计的原因是，对于某个应该在控制流中处理的错误，以异常形式抛出会混乱对错误的描述。</p>
+<p>所以使用控制流处理错误，使得编码人员更多关注错误处理。</p>
+<h3 id="1-错误处理"><a href="#1-错误处理" class="headerlink" title="1. 错误处理"></a>1. 错误处理</h3><h4 id="1-传播错误"><a href="#1-传播错误" class="headerlink" title="1. 传播错误"></a>1. 传播错误</h4><p>函数中某个子程序的失败会变成函数的失败。</p>
+<p>一般场景：对某个函数调用失败，则直接在错误信息上添加一些当前函数相关信息，作为错误信息返回给调用者。</p>
+<h4 id="2-重试"><a href="#2-重试" class="headerlink" title="2. 重试"></a>2. 重试</h4><p>用于偶发性错误或不可预知的问题导致的错误。</p>
+<p>限制重试次数，通过for循环重试。</p>
+<h4 id="3-结束"><a href="#3-结束" class="headerlink" title="3. 结束"></a>3. 结束</h4><p>输出程序信息并结束程序。</p>
+<p>只应用在main中。在库函数中，除非该错误意味着程序内部不一致性，即出现bug，才能结束。</p>
+<p>可通过log.Fatalf()实现。</p>
+<h4 id="4-输出"><a href="#4-输出" class="headerlink" title="4. 输出"></a>4. 输出</h4><p>只输出错误信息，不需要中断程序运行。</p>
+<h4 id="5-忽略"><a href="#5-忽略" class="headerlink" title="5. 忽略"></a>5. 忽略</h4><p>错误并不影响程序的逻辑。</p>
+<p>比如手动清理临时目录失败，但是系统会定期自动清理。</p>
+<h3 id="2-文件结尾错误EOF"><a href="#2-文件结尾错误EOF" class="headerlink" title="2. 文件结尾错误EOF"></a>2. 文件结尾错误EOF</h3><p>io包保证任何由文件结束引起的读取失败都返回io.EOF错误。</p>
+<h2 id="5-函数值"><a href="#5-函数值" class="headerlink" title="5. 函数值"></a>5. 函数值</h2><p>函数类型有零值nil，调用值为nil的函数会引起panic。</p>
+<p>函数值属于引用类型，之间不可比较。</p>
+<p>可以传入函数作为参数。</p>
+<h2 id="6-匿名函数"><a href="#6-匿名函数" class="headerlink" title="6. 匿名函数"></a>6. 匿名函数</h2><p>函数字面量：可以绕过“函数只能在包级语法块中被声明”的限制，在任何表达式中表示一个没有名字的函数值，函数值被称为匿名函数。</p>
+<p>在函数中定义的内部函数可以引用该函数的变量。这意味着函数值记录了状态，这就是其属于引用类型、不可比较的原因。</p>
+<p>同时，x的生命周期也不由其作用域决定，因为squares返回后，x隐式存在于f中。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">squares</span><span class="params">()</span> <span class="title">func</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> x <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">        x++</span><br><span class="line">        <span class="keyword">return</span> x * x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    f := squares()</span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;1&quot;</span></span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;4&quot;</span></span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;9&quot;</span></span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;16&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-问题：捕获迭代变量"><a href="#1-问题：捕获迭代变量" class="headerlink" title="1. 问题：捕获迭代变量"></a>1. 问题：捕获迭代变量</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rmdirs []<span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line"><span class="keyword">for</span> _, dir := <span class="keyword">range</span> tempDirs() &#123;</span><br><span class="line">    os.MkdirAll(dir, <span class="number">0755</span>)</span><br><span class="line">    rmdirs = <span class="built_in">append</span>(rmdirs, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        os.RemoveAll(dir) <span class="comment">// <span class="doctag">NOTE:</span> incorrect!</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...do some work…</span></span><br><span class="line"><span class="keyword">for</span> _, rmdir := <span class="keyword">range</span> rmdirs &#123;</span><br><span class="line">    rmdir() <span class="comment">// clean up</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>循环变量dir在for循环的词法块中声明，在该循环中生成的所有函数值都共享相同的循环变量。</p>
+<p>而内部函数是引用该词法块中的变量，记录的是dir的内存地址，而不是某一时刻的值。</p>
+<p>dir随着迭代不断更新值，直到最后一个值，所以所有内部函数最终记录的都是dir最后一次的值。</p>
+<p>通常在第3行前加入 <code>dir := dir</code>解决该问题。</p>
+<h2 id="7-可变参数"><a href="#7-可变参数" class="headerlink" title="7. 可变参数"></a>7. 可变参数</h2><p>在函数参数列表的最后一个参数类型前加上省略符号…，表示接收任意数量该类型的参数。</p>
+<p>最后一个参数在函数体中被看作该类型的切片。</p>
+<p>如果要传入切片类型中所有的值，可以在变量名后加入…。</p>
+<h2 id="8-Deferred函数"><a href="#8-Deferred函数" class="headerlink" title="8. Deferred函数"></a>8. Deferred函数</h2><p>在调用普通函数/方法前加上defer。</p>
+<p>在执行该语句时，函数和参数表达式得到计算，但是直到包含该defer语句的函数执行完毕时，defer函数才被执行。</p>
+<p>经常用于处理成对的操作，如打开/关闭连接、加锁/释放锁。释放资源的defer应该紧跟在请求资源之后。</p>
+<h2 id="9-Panic异常"><a href="#9-Panic异常" class="headerlink" title="9. Panic异常"></a>9. Panic异常</h2><p>运行时错误会引起panic异常。</p>
+<p>出现panic异常时，程序会：</p>
+<ul>
+<li>终止运行</li>
+<li>立即执行该goroutine中被延迟的defer函数</li>
+<li>崩溃并输出日志</li>
+</ul>
+<p>一般用于严重错误，一般应该尽量少用，并多用控制流error处理错误。</p>
+<h2 id="10-Recover捕获异常"><a href="#10-Recover捕获异常" class="headerlink" title="10. Recover捕获异常"></a>10. Recover捕获异常</h2><p>在deferred函数中调用recover，且定义该defer语句的函数发生了panic异常，recover会使程序从panic中恢复，并返回panic value。</p>
+<p>导致panic异常的函数不会继续运行，但能正常返回。</p>
+<p>未发生panic时调用recover，recover会返回nil。</p>
+<p>有些情况无法恢复，如内存不足，所以应该有选择性地recover。</p>
+<h1 id="11-方法"><a href="#11-方法" class="headerlink" title="11. 方法"></a>11. 方法</h1><h2 id="1-声明"><a href="#1-声明" class="headerlink" title="1. 声明"></a>1. 声明</h2><p>函数声明时，在其名字前放一个变量，即是一个方法。该附加参数会将该函数附加到这种类型上。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Point <span class="keyword">struct</span>&#123; X, Y <span class="keyword">float64</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// traditional function</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Distance</span><span class="params">(p, q Point)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> math.Hypot(q.X-p.X, q.Y-p.Y)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// same thing, but as a method of the Point type</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p Point)</span> <span class="title">Distance</span><span class="params">(q Point)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> math.Hypot(q.X-p.X, q.Y-p.Y)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>附加的参数p称为方法的接收器。</p>
+<p>Go语言中，可以同一个包内的非指针、interface的任意命名类型定义方法，包括数值、字符串等类型。</p>
+<p>好处：在包外可以直接通过变量.方法的形式调用，方法名可以很简短。</p>
+<h2 id="2-基于指针对象的方法"><a href="#2-基于指针对象的方法" class="headerlink" title="2. 基于指针对象的方法"></a>2. 基于指针对象的方法</h2><p>如果接收器类型太大，也需要用指针声明方法。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Point)</span> <span class="title">ScaleBy</span><span class="params">(factor <span class="keyword">float64</span>)</span></span> &#123;</span><br><span class="line">    p.X *= factor</span><br><span class="line">    p.Y *= factor</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一般约定如果Point类有一个指针作为接收器的方法，那么所有Point的方法都必须有一个指针接收器。</p>
+<p>只有类型和该类型指针，才能出现在接收器声明中。为了避免歧义，如果一个类型名本身是一个指针，不允许出现在接收器中。</p>
+<p>如果接收器与方法声明一个是指针，一个不是指针，可以</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p.ScaleBy(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>编译期会隐式用&amp;p或*p调用方法。只适用于能取到地址的变量，临时值是无法使用的。</p>
+<p>如果一个方法用指针作为接收器，需要避免进行拷贝，因为可能引起多个别名，进而某些别名意外修改了方法内的状态。</p>
+<p>★ 在声明一个method的receiver该是指针还是非指针类型时，你需要考虑两方面的因素，第一方面是这个对象本身是不是特别大，如果声明为非指针变量时，调用会产生一次拷贝；第二方面是如果你用指针类型作为receiver，那么你一定要注意，这种指针类型指向的始终是一块内存地址，就算你对其进行了拷贝。</p>
+<h2 id="3-嵌入结构体"><a href="#3-嵌入结构体" class="headerlink" title="3. 嵌入结构体"></a>3. 嵌入结构体</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;image/color&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Point <span class="keyword">struct</span>&#123; X, Y <span class="keyword">float64</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> ColoredPoint <span class="keyword">struct</span> &#123;</span><br><span class="line">    Point</span><br><span class="line">    Color color.RGBA</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以将ColoredPoint类型当作接收器调用Point里的方法。</p>
+<p>类似于cpp的子类调用父类方法。</p>
+<p>但是，只有接收器可以这样用。其他参数还是得显式指出内嵌的类型。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(p.Distance(q.Point))</span><br></pre></td></tr></table></figure>
+<h2 id="4-方法值和方法表达式"><a href="#4-方法值和方法表达式" class="headerlink" title="4. 方法值和方法表达式"></a>4. 方法值和方法表达式</h2><p>方法的执行可以分为两步：</p>
+<ul>
+<li>选择器：返回一个方法值，即一个将方法绑定到特定接收器变量的函数，如 <code>m := p.ScaleBy</code>。</li>
+<li>向选择器传入需要的参数。<code>m(2)</code>。</li>
+</ul>
+<p>方法表达式：当T是一个类型时，方法表达式可能会写作 <code>T.f</code>或者 <code>(*T).f</code>，会返回一个函数“值”，这种函数会将其第一个参数用作接收器，所以可以用普通函数的形式调用。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">p := Point&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">q := Point&#123;<span class="number">4</span>, <span class="number">6</span>&#125;</span><br><span class="line"></span><br><span class="line">distance := Point.Distance   <span class="comment">// method expression</span></span><br><span class="line">fmt.Println(distance(p, q))  <span class="comment">// &quot;5&quot;</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, distance) <span class="comment">// &quot;func(Point, Point) float64&quot;</span></span><br><span class="line"></span><br><span class="line">scale := (*Point).ScaleBy</span><br><span class="line">scale(&amp;p, <span class="number">2</span>)</span><br><span class="line">fmt.Println(p)            <span class="comment">// &quot;&#123;2 4&#125;&quot;</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, scale) <span class="comment">// &quot;func(*Point, float64)&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-封装"><a href="#5-封装" class="headerlink" title="5. 封装"></a>5. 封装</h2><p>Go语言只有基于名字的封装手段，即：</p>
+<ul>
+<li>大写首字母的标识符会从定义它们的包中被导出，同样适用于struct或类型方法。</li>
+</ul>
+<p>这使得Go语言最小封装单元为package，而不是其它语言的类型。</p>
+<p>封装的优点：</p>
+<ul>
+<li>调用方只需要关注API即可使用。</li>
+<li>隐藏实现细节。</li>
+<li>阻止外部调用方修改对象内部值。</li>
+</ul>
+<h1 id="12-接口"><a href="#12-接口" class="headerlink" title="12. 接口"></a>12. 接口</h1><h2 id="1-接口类型"><a href="#1-接口类型" class="headerlink" title="1. 接口类型"></a>1. 接口类型</h2><p>抽象类型。不会暴露其代表的对象的内部值的结构、对象支持的基础操作集合，只会表现出自己的方法。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> fmt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Fprintf</span><span class="params">(w io.Writer, format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Printf</span><span class="params">(format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Fprintf(os.Stdout, format, args...)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sprintf</span><span class="params">(format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> buf bytes.Buffer</span><br><span class="line">    Fprintf(&amp;buf, format, args...)</span><br><span class="line">    <span class="keyword">return</span> buf.String()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Printf与Sprintf都是调用Fprintf完成：</p>
+<ul>
+<li>Printf第一个参数os.Stdout是*os.File类型。</li>
+<li>Sprintf第一个参数是*bytes.Buffer类型。</li>
+</ul>
+<p>但是，Fprintf第一个参数要求的是io.Writer类型，是一个接口类型</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> io</span><br><span class="line"></span><br><span class="line"><span class="comment">// Writer is the interface that wraps the basic Write method.</span></span><br><span class="line"><span class="keyword">type</span> Writer <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="comment">// Write writes len(p) bytes from p to the underlying data stream.</span></span><br><span class="line">    <span class="comment">// It returns the number of bytes written from p (0 &lt;= n &lt;= len(p))</span></span><br><span class="line">    <span class="comment">// and any error encountered that caused the write to stop early.</span></span><br><span class="line">    <span class="comment">// Write must return a non-nil error if it returns n &lt; len(p).</span></span><br><span class="line">    <span class="comment">// Write must not modify the slice data, even temporarily.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Implementations must not retain p.</span></span><br><span class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>io.Writer类型定义了Fprintf与其调用者的约定，即：</p>
+<ul>
+<li>要求传入的类型都有一个特定签名和行为的Write函数。</li>
+<li>保证Fprintf接受任何满足io.Writer接口的值都能工作。</li>
+</ul>
+<p>一个类型可以自由被另一个满足相同接口的类型替换，被称作可替换性（LSP里氏替换）。</p>
+<p>据此，可以自定义Write方法后，传入这些函数中。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c ByteCounter</span><br><span class="line">c.Write([]<span class="keyword">byte</span>(<span class="string">&quot;hello&quot;</span>))</span><br><span class="line">fmt.Println(c) <span class="comment">// &quot;5&quot;, = len(&quot;hello&quot;)</span></span><br><span class="line">c = <span class="number">0</span>          <span class="comment">// reset the counter</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;Dolly&quot;</span></span><br><span class="line">fmt.Fprintf(&amp;c, <span class="string">&quot;hello, %s&quot;</span>, name)</span><br><span class="line">fmt.Println(c) <span class="comment">// &quot;12&quot;, = len(&quot;hello, Dolly&quot;)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="2-实现接口的条件"><a href="#2-实现接口的条件" class="headerlink" title="2. 实现接口的条件"></a>2. 实现接口的条件</h2><p>一个类型如果拥有一个接口需要的所有方法，这个类型就实现了这个接口。</p>
+<p>尽管某类型的指针可以直接通过点操作符调用方法，但是这只是一个语法糖，本质上该方法的接收器还是该类型的指针变量，所以该类型的变量赋值给接口类型也必须取地址。</p>
+<h2 id="3-接口值"><a href="#3-接口值" class="headerlink" title="3. 接口值"></a>3. 接口值</h2><p>接口的零值：类型和值都是nil。</p>
+<p>接口具有动态类型，所以接口上的调用必须动态分配。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> debug = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> buf *bytes.Buffer</span><br><span class="line">    <span class="keyword">if</span> debug &#123;</span><br><span class="line">        buf = <span class="built_in">new</span>(bytes.Buffer) <span class="comment">// enable collection of output</span></span><br><span class="line">    &#125;</span><br><span class="line">    f(buf) <span class="comment">// <span class="doctag">NOTE:</span> subtly incorrect!</span></span><br><span class="line">    <span class="keyword">if</span> debug &#123;</span><br><span class="line">        <span class="comment">// ...use buf...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// If out is non-nil, output will be written to it.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(out io.Writer)</span></span> &#123;</span><br><span class="line">    <span class="comment">// ...do something...</span></span><br><span class="line">    <span class="keyword">if</span> out != <span class="literal">nil</span> &#123;</span><br><span class="line">        out.Write([]<span class="keyword">byte</span>(<span class="string">&quot;done!\n&quot;</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当debug设置为false时，18行会发生panic，因为out的动态类型是*bytes.Buffer，只是其值为nil，所以判断不为nil。</p>
+<p>改进：一开始只给buf *io.Writer类型，只有debug为true时才设置*bytes.Buffer类型。</p>
+<h1 id="13-协程"><a href="#13-协程" class="headerlink" title="13. 协程"></a>13. 协程</h1><p>位于用户态，类似于轻量级线程，占用内存KB级别。</p>
+<p>可以充分利用多核CPU优势。</p>
+<p>Go通过通信共享内存，而不是通过共享内存实现通信。</p>
+<h2 id="1-channel"><a href="#1-channel" class="headerlink" title="1. channel"></a>1. channel</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">type</span>, [size])</span><br></pre></td></tr></table></figure>
+<p>不加size表示无缓冲通道，加了表示有缓冲通道。</p>
+<h2 id="2-lock"><a href="#2-lock" class="headerlink" title="2. lock"></a>2. lock</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> lock sync.Mutex</span><br></pre></td></tr></table></figure>
+<p>互斥锁，拥有加解锁方法。</p>
+<h2 id="3-waitgroup"><a href="#3-waitgroup" class="headerlink" title="3. waitgroup"></a>3. waitgroup</h2><p>维护计数器，开启协程+1，子协程执行结束-1；主协程阻塞直到计数器为0。</p>
+<p>用于多协程多任务同步。</p>
+<h1 id="14-项目依赖管理"><a href="#14-项目依赖管理" class="headerlink" title="14. 项目依赖管理"></a>14. 项目依赖管理</h1><p>演变：GOPATH-》Go Vendor-》Go Module</p>
+<p>GOPATH弊端：</p>
+<ul>
+<li>无法依赖同一包的不同版本。</li>
+</ul>
+<p>Go Vendor弊端：</p>
+<ul>
+<li>无法控制依赖版本。</li>
+<li>更新版本可能出现依赖冲突，导致编译出错。</li>
+</ul>
+<p>Go Module依赖管理三要素：</p>
+<ul>
+<li>配置文件，描述依赖：go.mod</li>
+<li>中心仓库，管理依赖库：Proxy</li>
+<li>本地工具：go get/mod</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>aoba moka</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/04/18/学习笔记-golang/" target="_blank" title="学习笔记-golang">https://aobamoka.github.io/2023/04/18/学习笔记-golang/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/04/24/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab3-1/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">项目学习-CMU-15-445-Lab3-1</div>
+      </div>
+      
+      <!-- <div class="content">
+        1. Bustub架构Lab1写的是实现缓存池替换的buffer_pool_manager，Lab2写的是B+树的底层实
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/04/10/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-4/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">项目学习-CMU-15-445-Lab2-4</div>
+      </div>
+      <!-- <div class="content">
+        1. 并发控制1. lock &amp; latchlock级别比latch更高
+
+对象：
+lock：事务
+latch：
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/test.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>摩卡</h2>
+        
+        
+          <p>不太会说话</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">摩卡's blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="toc-text">2. 命令行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%98%E9%87%8F"><span class="toc-text">3. 变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%91%BD%E5%90%8D"><span class="toc-text">1. 命名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A3%B0%E6%98%8E"><span class="toc-text">2. 声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%80%E8%88%AC%E8%AF%AD%E6%B3%95"><span class="toc-text">1. 一般语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AE%80%E7%9F%AD%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E"><span class="toc-text">2. 简短变量声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8C%87%E9%92%88"><span class="toc-text">3. 指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-new"><span class="toc-text">4. new</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">5. 生命周期</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E8%B5%8B%E5%80%BC"><span class="toc-text">4. 赋值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%B5%8B%E5%80%BC%E6%80%A7"><span class="toc-text">1. 可赋值性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E7%B1%BB%E5%9E%8B"><span class="toc-text">5. 类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E"><span class="toc-text">1. 类型声明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%8C%85%E5%92%8C%E6%96%87%E4%BB%B6"><span class="toc-text">6. 包和文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">1. 初始化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-text">7. 作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8F%A5%E6%B3%95%E5%9D%97-%E8%AF%8D%E6%B3%95%E5%9D%97"><span class="toc-text">1. 句法块&#x2F;词法块</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B"><span class="toc-text">8. 基础类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B4%E5%9E%8B"><span class="toc-text">1. 整型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-text">2. 浮点数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%8D%E6%95%B0"><span class="toc-text">3. 复数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%B8%83%E5%B0%94%E5%9E%8B"><span class="toc-text">4. 布尔型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">5. 字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%9D%A2%E5%80%BC"><span class="toc-text">1. 字符串面值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Unicode"><span class="toc-text">2. Unicode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-UTF-8"><span class="toc-text">3. UTF-8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%B8%B8%E7%94%A8%E5%A4%84%E7%90%86%E5%8C%85"><span class="toc-text">4. 常用处理包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%B8%B8%E9%87%8F"><span class="toc-text">6. 常量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-iota"><span class="toc-text">1. iota</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%97%A0%E7%B1%BB%E5%9E%8B%E5%B8%B8%E9%87%8F"><span class="toc-text">2. 无类型常量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E5%A4%8D%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="toc-text">9. 复合类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E7%BB%84"><span class="toc-text">1. 数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-slice"><span class="toc-text">2. slice</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-make"><span class="toc-text">1. make</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-append"><span class="toc-text">2. append</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-map"><span class="toc-text">3. map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-text">4. 结构体</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B5%8C%E5%85%A5"><span class="toc-text">1. 嵌入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-JSON"><span class="toc-text">5. JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%96%87%E6%9C%AC%E5%92%8CHTML%E6%A8%A1%E6%9D%BF"><span class="toc-text">6. 文本和HTML模板</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E5%87%BD%E6%95%B0"><span class="toc-text">10. 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E"><span class="toc-text">1. 函数声明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%80%92%E5%BD%92"><span class="toc-text">2. 递归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%9A%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-text">3. 多返回值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%94%99%E8%AF%AF"><span class="toc-text">4. 错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-text">1. 错误处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BC%A0%E6%92%AD%E9%94%99%E8%AF%AF"><span class="toc-text">1. 传播错误</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%87%8D%E8%AF%95"><span class="toc-text">2. 重试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%BB%93%E6%9D%9F"><span class="toc-text">3. 结束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E8%BE%93%E5%87%BA"><span class="toc-text">4. 输出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E5%BF%BD%E7%95%A5"><span class="toc-text">5. 忽略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%96%87%E4%BB%B6%E7%BB%93%E5%B0%BE%E9%94%99%E8%AF%AFEOF"><span class="toc-text">2. 文件结尾错误EOF</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%87%BD%E6%95%B0%E5%80%BC"><span class="toc-text">5. 函数值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0"><span class="toc-text">6. 匿名函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%97%AE%E9%A2%98%EF%BC%9A%E6%8D%95%E8%8E%B7%E8%BF%AD%E4%BB%A3%E5%8F%98%E9%87%8F"><span class="toc-text">1. 问题：捕获迭代变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0"><span class="toc-text">7. 可变参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Deferred%E5%87%BD%E6%95%B0"><span class="toc-text">8. Deferred函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Panic%E5%BC%82%E5%B8%B8"><span class="toc-text">9. Panic异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Recover%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8"><span class="toc-text">10. Recover捕获异常</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E6%96%B9%E6%B3%95"><span class="toc-text">11. 方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A3%B0%E6%98%8E"><span class="toc-text">1. 声明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E6%8C%87%E9%92%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">2. 基于指针对象的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B5%8C%E5%85%A5%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-text">3. 嵌入结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%B9%E6%B3%95%E5%80%BC%E5%92%8C%E6%96%B9%E6%B3%95%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">4. 方法值和方法表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%B0%81%E8%A3%85"><span class="toc-text">5. 封装</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E6%8E%A5%E5%8F%A3"><span class="toc-text">12. 接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B"><span class="toc-text">1. 接口类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="toc-text">2. 实现接口的条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8E%A5%E5%8F%A3%E5%80%BC"><span class="toc-text">3. 接口值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-%E5%8D%8F%E7%A8%8B"><span class="toc-text">13. 协程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-channel"><span class="toc-text">1. channel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-lock"><span class="toc-text">2. lock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-waitgroup"><span class="toc-text">3. waitgroup</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="toc-text">14. 项目依赖管理</span></a></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">07-29</span>
+                
+              </div>
+              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">06-24</span>
+                
+              </div>
+              <a class="post-title" href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">学习笔记-计算机图形学</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-21</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/">学习笔记-docker与k8s</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-18</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-08</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2020 <a target="_blank" rel="noopener" href="https://github.com/yuang01">yuang01</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a> </p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>本站总访问量：<span id="busuanzi_value_site_pv"></span> 次
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>本站访客数：<span id="busuanzi_value_site_uv"></span> 人
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', '')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

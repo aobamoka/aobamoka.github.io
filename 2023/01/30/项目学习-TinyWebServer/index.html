@@ -700,8 +700,7 @@
 </li>
 <li>c++11重构 muduo库网络编程 + c++11多线程</li>
 </ul>
-<h1 id="12-准备"><a href="#12-准备" class="headerlink" title="12. 准备"></a>12. 准备</h1><h2 id="1-项目介绍"><a href="#1-项目介绍" class="headerlink" title="1. 项目介绍"></a>1. 项目介绍</h2><p>为什么做项目：实验室与课程使用的语言偏向于Python、Java等，感觉对于C++项目的实际开发有些薄弱，所以通过这个项目来熟悉C++项目的实际开发，以及在项目中实践学过的计算机网络知识、编程思想等。</p>
-<p>介绍项目：主要由主线程、工作线程和文件系统三部分构成，相邻两个部分通过队列通信。</p>
+<h1 id="12-准备"><a href="#12-准备" class="headerlink" title="12. 准备"></a>12. 准备</h1><h2 id="1-基本知识"><a href="#1-基本知识" class="headerlink" title="1. 基本知识"></a>1. 基本知识</h2><p>简介：主要由主线程、工作线程和文件系统三部分构成，相邻两个部分通过队列通信。</p>
 <ul>
 <li>主线程：通过epoll监听事件，处理客户端连接，读写网络数据，封装数据并通过队列传递给工作线程。</li>
 <li>工作线程：从队列上取数据，解析并生成响应报文，然后通知主线程有写事件。</li>
@@ -875,6 +874,22 @@
 <li>添加cookie或session</li>
 <li>文件上传功能</li>
 </ul>
+<h2 id="10-印象深刻的问题"><a href="#10-印象深刻的问题" class="headerlink" title="10. 印象深刻的问题"></a>10. 印象深刻的问题</h2><p>处理超时事件和处理I/O事件的顺序</p>
+<ul>
+<li>由于超时事件会断开连接，因此如果先处理超时事件，有可能断开了即将要在I/O事件处理函数中处理的连接，因此需要先处理I/O事件再处理超时事件</li>
+</ul>
+<p>定位</p>
+<ul>
+<li>浏览器接收不到回应，但是日志里记录正常生成了响应报文，且日志里没有记录发送报文，确认可能是写报文出现了问题。</li>
+<li>已经处理了缓冲区已满导致的写失败，因此写失败可能是套接字出现的问题，如连接已断开。</li>
+<li>连接已断开可能的原因：<ul>
+<li>读失败：已经生成了响应报文，不可能。</li>
+<li>写失败：在断开前就已经写失败了。</li>
+<li>定时器超时。</li>
+</ul>
+</li>
+<li>定位到定时器超时原因，在循环中，epoll_wait后先处理IO事件再处理超时事件。（将超时事件设置一个标记位，循环后如果标记位为true，统一处理）</li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -1039,7 +1054,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%A1%86%E6%9E%B6"><span class="toc-text">1. 框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">2. I&#x2F;O模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">3. 事件处理模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-reactor%E4%B8%8Eproactor%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. reactor与proactor模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-select-poll%E4%B8%8Eepoll"><span class="toc-text">2. select&#x2F;poll与epoll</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A6%E5%8F%91%E6%96%B9%E5%BC%8F"><span class="toc-text">3. 触发方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-text">4. 具体实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%94%B9%E8%BF%9B"><span class="toc-text">5. 改进</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">4. 线程池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-HTTP%E6%8A%A5%E6%96%87%E5%A4%84%E7%90%86"><span class="toc-text">5. HTTP报文处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">1. 大致流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%8A%B6%E6%80%81"><span class="toc-text">2. 状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-text">3. 解析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%A7%A3%E5%86%B3%E8%AF%BB%E6%8A%A5%E6%96%87%E7%9A%84%E7%B2%98%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-text">4. 解决读报文的粘包问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E7%94%A8%E6%88%B7%E6%A0%A1%E9%AA%8C"><span class="toc-text">6. 用户校验</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E4%BC%98%E5%8C%96%EF%BC%9A%E9%9D%9E%E6%B4%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86"><span class="toc-text">7. 优化：非活动连接处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">8. 单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%87%92%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 懒汉模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%A5%BF%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">2. 饿汉模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E6%97%A5%E5%BF%97"><span class="toc-text">9. 日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="toc-text">1. 条件变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E5%8E%8B%E6%B5%8B-amp-webbench%E5%8E%9F%E7%90%86"><span class="toc-text">10. 压测&amp;webbench原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E6%94%B9%E8%BF%9B"><span class="toc-text">11. 改进</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E5%87%86%E5%A4%87"><span class="toc-text">12. 准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 项目介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">2. 线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 设计模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="toc-text">2. 同步机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-text">3. 工作线程工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E7%9B%AE%E5%BE%88%E5%A4%9A%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%95%B0%E4%B8%8D%E5%A4%9A%EF%BC%8C%E6%80%8E%E4%B9%88%E5%8F%8A%E6%97%B6%E5%93%8D%E5%BA%94"><span class="toc-text">4. 客户端数目很多，线程数不多，怎么及时响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%A2%E6%88%B7%E8%AF%B7%E6%B1%82%E5%8D%A0%E7%94%A8%E5%BE%88%E4%B9%85%E6%97%B6%E9%97%B4"><span class="toc-text">5. 客户请求占用很久时间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-text">3. 并发模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. 并发模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-reactor%E4%B8%8Eproactor"><span class="toc-text">2. reactor与proactor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-epoll-select-poll"><span class="toc-text">3. epoll&#x2F;select&#x2F;poll</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HTTP%E6%8A%A5%E6%96%87%E8%A7%A3%E6%9E%90"><span class="toc-text">4. HTTP报文解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-text">1. 状态机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E5%85%A8%E7%9A%84HTTPS%E5%8D%8F%E8%AE%AE"><span class="toc-text">2. 安全的HTTPS协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-SSL%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B"><span class="toc-text">3. SSL连接过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-GET%E4%B8%8EPOST"><span class="toc-text">4. GET与POST</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-HTTP1-1"><span class="toc-text">5. HTTP1.1</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E5%AD%98%E5%82%A8"><span class="toc-text">5. 用户名密码存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%99%BB%E5%BD%95"><span class="toc-text">1. 登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC"><span class="toc-text">2. 页面跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%8A%B6%E6%80%81%E4%BF%9D%E5%AD%98"><span class="toc-text">3. 状态保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%A7%E9%87%8F%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE"><span class="toc-text">4. 大量用户数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">6. 定时器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BD%9C%E7%94%A8"><span class="toc-text">1. 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">2. 工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BC%98%E5%8C%96"><span class="toc-text">3. 优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%97%A5%E5%BF%97"><span class="toc-text">7. 日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">1. 运行机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%82%E6%AD%A5%E4%B8%8E%E5%90%8C%E6%AD%A5"><span class="toc-text">2. 异步与同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B0%86%E6%97%A5%E5%BF%97%E5%88%86%E5%8F%91%E5%88%B0%E4%B8%8D%E5%90%8C%E6%9C%BA%E5%99%A8%E4%B8%8A"><span class="toc-text">3. 将日志分发到不同机器上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%8E%8B%E6%B5%8B"><span class="toc-text">8. 压测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-webbench%E5%8E%9F%E7%90%86"><span class="toc-text">1. webbench原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E4%BC%98%E5%8C%96"><span class="toc-text">9. 优化</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%A1%86%E6%9E%B6"><span class="toc-text">1. 框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">2. I&#x2F;O模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">3. 事件处理模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-reactor%E4%B8%8Eproactor%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. reactor与proactor模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-select-poll%E4%B8%8Eepoll"><span class="toc-text">2. select&#x2F;poll与epoll</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A6%E5%8F%91%E6%96%B9%E5%BC%8F"><span class="toc-text">3. 触发方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-text">4. 具体实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%94%B9%E8%BF%9B"><span class="toc-text">5. 改进</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">4. 线程池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-HTTP%E6%8A%A5%E6%96%87%E5%A4%84%E7%90%86"><span class="toc-text">5. HTTP报文处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">1. 大致流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%8A%B6%E6%80%81"><span class="toc-text">2. 状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-text">3. 解析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%A7%A3%E5%86%B3%E8%AF%BB%E6%8A%A5%E6%96%87%E7%9A%84%E7%B2%98%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-text">4. 解决读报文的粘包问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E7%94%A8%E6%88%B7%E6%A0%A1%E9%AA%8C"><span class="toc-text">6. 用户校验</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E4%BC%98%E5%8C%96%EF%BC%9A%E9%9D%9E%E6%B4%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86"><span class="toc-text">7. 优化：非活动连接处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">8. 单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%87%92%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 懒汉模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%A5%BF%E6%B1%89%E6%A8%A1%E5%BC%8F"><span class="toc-text">2. 饿汉模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E6%97%A5%E5%BF%97"><span class="toc-text">9. 日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="toc-text">1. 条件变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E5%8E%8B%E6%B5%8B-amp-webbench%E5%8E%9F%E7%90%86"><span class="toc-text">10. 压测&amp;webbench原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E6%94%B9%E8%BF%9B"><span class="toc-text">11. 改进</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E5%87%86%E5%A4%87"><span class="toc-text">12. 准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="toc-text">1. 基本知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">2. 线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 设计模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="toc-text">2. 同步机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-text">3. 工作线程工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E7%9B%AE%E5%BE%88%E5%A4%9A%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%95%B0%E4%B8%8D%E5%A4%9A%EF%BC%8C%E6%80%8E%E4%B9%88%E5%8F%8A%E6%97%B6%E5%93%8D%E5%BA%94"><span class="toc-text">4. 客户端数目很多，线程数不多，怎么及时响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%A2%E6%88%B7%E8%AF%B7%E6%B1%82%E5%8D%A0%E7%94%A8%E5%BE%88%E4%B9%85%E6%97%B6%E9%97%B4"><span class="toc-text">5. 客户请求占用很久时间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-text">3. 并发模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. 并发模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-reactor%E4%B8%8Eproactor"><span class="toc-text">2. reactor与proactor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-epoll-select-poll"><span class="toc-text">3. epoll&#x2F;select&#x2F;poll</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HTTP%E6%8A%A5%E6%96%87%E8%A7%A3%E6%9E%90"><span class="toc-text">4. HTTP报文解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-text">1. 状态机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E5%85%A8%E7%9A%84HTTPS%E5%8D%8F%E8%AE%AE"><span class="toc-text">2. 安全的HTTPS协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-SSL%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B"><span class="toc-text">3. SSL连接过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-GET%E4%B8%8EPOST"><span class="toc-text">4. GET与POST</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-HTTP1-1"><span class="toc-text">5. HTTP1.1</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E5%AD%98%E5%82%A8"><span class="toc-text">5. 用户名密码存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%99%BB%E5%BD%95"><span class="toc-text">1. 登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC"><span class="toc-text">2. 页面跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%8A%B6%E6%80%81%E4%BF%9D%E5%AD%98"><span class="toc-text">3. 状态保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%A7%E9%87%8F%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE"><span class="toc-text">4. 大量用户数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">6. 定时器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BD%9C%E7%94%A8"><span class="toc-text">1. 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">2. 工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BC%98%E5%8C%96"><span class="toc-text">3. 优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%97%A5%E5%BF%97"><span class="toc-text">7. 日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">1. 运行机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%82%E6%AD%A5%E4%B8%8E%E5%90%8C%E6%AD%A5"><span class="toc-text">2. 异步与同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B0%86%E6%97%A5%E5%BF%97%E5%88%86%E5%8F%91%E5%88%B0%E4%B8%8D%E5%90%8C%E6%9C%BA%E5%99%A8%E4%B8%8A"><span class="toc-text">3. 将日志分发到不同机器上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%8E%8B%E6%B5%8B"><span class="toc-text">8. 压测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-webbench%E5%8E%9F%E7%90%86"><span class="toc-text">1. webbench原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E4%BC%98%E5%8C%96"><span class="toc-text">9. 优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%8D%B0%E8%B1%A1%E6%B7%B1%E5%88%BB%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">10. 印象深刻的问题</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -1072,49 +1087,7 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-27</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/">项目学习-跳表</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-23</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -1122,10 +1095,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-23</span>
+                  <span class="post-date">07-29</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
             </div>
           </div>
         
@@ -1135,18 +1108,18 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="post-img " style="background-size: cover; 
+              <a href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">06-24</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">项目学习-Raft一致性协议</a>
+              <a class="post-title" href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">学习笔记-计算机图形学</a>
             </div>
           </div>
         
@@ -1156,7 +1129,49 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/" class="post-img " style="background-size: cover; 
+              <a href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-21</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/">学习笔记-docker与k8s</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-18</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -1164,10 +1179,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">05-08</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
+              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
             </div>
           </div>
         

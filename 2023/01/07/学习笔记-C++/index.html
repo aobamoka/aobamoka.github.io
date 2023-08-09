@@ -456,17 +456,34 @@
 <li>类型安全</li>
 <li>输入输出</li>
 </ul>
-<h1 id="1-关键字-方法"><a href="#1-关键字-方法" class="headerlink" title="1. 关键字/方法"></a>1. 关键字/方法</h1><h2 id="1-new与malloc"><a href="#1-new与malloc" class="headerlink" title="1. new与malloc"></a>1. new与malloc</h2><h3 id="1-new-delete"><a href="#1-new-delete" class="headerlink" title="1. new/delete"></a>1. new/delete</h3><p>new的实现：</p>
+<h1 id="1-关键字-方法"><a href="#1-关键字-方法" class="headerlink" title="1. 关键字/方法"></a>1. 关键字/方法</h1><h2 id="1-new与malloc"><a href="#1-new与malloc" class="headerlink" title="1. new与malloc"></a>1. new与malloc</h2><h3 id="1-new-delete"><a href="#1-new-delete" class="headerlink" title="1. new/delete"></a>1. new/delete</h3><p>new：</p>
+<ul>
+<li><p>实现：</p>
 <ul>
 <li>调用operator new标准库函数，分配内存。</li>
 <li>在该段内存上赋值或执行构造函数（placement new）。</li>
 </ul>
-<p>delete的实现：</p>
+</li>
+<li><p>分类：</p>
 <ul>
+<li>plain new/operator new：普通的new，空间分配失败抛出异常bad_alloc。</li>
+<li>operator new不能满足内存请求时：如果set_new_handler指定了错误处理函数，则调用后再次尝试请求内存；否则抛出异常。</li>
+<li>nothrow new：空间分配失败返回NULL</li>
+<li>placement new：允许在一块已经分配成功的内存上重新构造对象，不分配内存。构造成功的对象要显式调用析构函数销毁，因为构造的对象大小并不一定等于原来分配的内存大小，delete会造成内存泄漏。</li>
+</ul>
+</li>
+</ul>
+<p>STL中，new操作符内部先使用plain new分配空间，然后使用placement new在分配的空间上初始化。</p>
+<p>delete</p>
+<ul>
+<li>实现：<ul>
 <li>对指针指向的对象调用析构函数。</li>
 <li>调用operator delete标准库函数释放所用内存。</li>
 </ul>
-<p>operator new/delete又是封装了malloc/free实现内存分配。</p>
+</li>
+</ul>
+<p>operator new/delete封装了malloc/free实现内存分配。</p>
+<p>new对象数组时C++会额外分配4字节保存数组大小，在delete[]时就能取出保存的大小，从而知道需要析构多少次。</p>
 <h3 id="2-malloc-free"><a href="#2-malloc-free" class="headerlink" title="2. malloc/free"></a>2. malloc/free</h3><p>malloc的实现：判断申请空间大小。</p>
 <p>类似于STL的allocator，8字节为一个单位，分为128个链表，称为bin，链表节点称为chunk。前64个bin为small bin，后面的为large bin。</p>
 <ul>
@@ -503,11 +520,11 @@
 <p>被free释放的内存会被保存在空闲双链表中，下次申请时直接找合适的返回，避免频繁的系统调用。</p>
 <h3 id="3-new与malloc区别"><a href="#3-new与malloc区别" class="headerlink" title="3. new与malloc区别"></a>3. new与malloc区别</h3><p>new实际上封装了malloc。</p>
 <ul>
-<li>new是C++运算符，malloc是C/C++语言标准库函数</li>
-<li>new自动计算分配空间大小，malloc需要手动计算</li>
-<li>new类型安全，即返回的就是构造类型的指针，malloc不是，需要从void*强制转换</li>
-<li>new不仅分配空间，还调用构造函数</li>
-<li>new分配失败会抛出bad_alloc异常，malloc分配失败返回NULL</li>
+<li>类型：new是C++运算符，malloc是C/C++语言标准库函数</li>
+<li>分配空间大小：new自动计算分配空间大小，malloc需要手动计算</li>
+<li>类型安全：new类型安全，即返回的就是构造类型的指针，malloc不是，需要从void*强制转换</li>
+<li>构造：new不仅分配空间，还调用构造函数</li>
+<li>异常处理：new分配失败会抛出bad_alloc异常，malloc分配失败返回NULL</li>
 </ul>
 <h2 id="2-align-结构体对齐"><a href="#2-align-结构体对齐" class="headerlink" title="2. align 结构体对齐"></a>2. align 结构体对齐</h2><p>alignof：传入类型，计算出其对齐方式。</p>
 <p>alignas：用于struct关键字后，指定结构体的对齐方式，如struct alignas(2)指定2字节对齐。但是如果指定的字节小于自然对齐的最小单位，则被忽略（结构体中有int这种大于2字节的）。</p>
@@ -518,10 +535,10 @@
 <li>const (char*) p，忽略括号const修饰p，说明p是const，*p可变。</li>
 <li>const char* const p，常量指针常量。</li>
 </ul>
-<h2 id="4-static与const"><a href="#4-static与const" class="headerlink" title="4. static与const"></a>4. static与const</h2><h3 id="1-static"><a href="#1-static" class="headerlink" title="1. static"></a>1. static</h3><ul>
+<h2 id="4-static"><a href="#4-static" class="headerlink" title="4. static"></a>4. static</h2><ul>
 <li>不在类中<ul>
 <li>隐藏：带static的全局变量和函数只能在该文件所在的编译模块中使用。static函数在整个内存中只有一份，而普通函数在每个调用该函数的编译单元中都有一份拷贝。</li>
-<li>函数内定义的静态变量只能进行一次初始化，函数退出后依然存在，且不能初始化。</li>
+<li>一次初始化：函数内定义的静态变量只能进行一次初始化，函数退出后依然存在，且不能初始化。常用：饱汉式单例模式。</li>
 </ul>
 </li>
 <li>在类中<ul>
@@ -530,8 +547,21 @@
 </ul>
 </li>
 </ul>
-<h3 id="2-const"><a href="#2-const" class="headerlink" title="2. const"></a>2. const</h3><ul>
-<li>不在类中<ul>
+<h2 id="5-const"><a href="#5-const" class="headerlink" title="5. const"></a>5. const</h2><ul>
+<li><p>作用：</p>
+<ul>
+<li>修饰变量：不能被改变。<ul>
+<li>类成员在类内（C++11）或初始化列表初始化。</li>
+<li>默认为文件局部变量，能实现隐藏。其他文件如果使用，需要extern显式声明。</li>
+</ul>
+</li>
+<li>修饰指针：常量指针、指针常量。</li>
+<li>修饰引用：避免拷贝，避免修改。</li>
+<li>修饰成员函数：函数内不能修改成员变量。</li>
+</ul>
+</li>
+<li><p>不在类中</p>
+<ul>
 <li>阻止一个变量被改变</li>
 <li>修饰变量与static有一样的隐藏作用，只能在该文件中出现，其他文件不能引用声明。</li>
 <li>定义时必须初始化</li>
@@ -539,52 +569,47 @@
 <li>const形参可接受const和非const实参</li>
 </ul>
 </li>
-<li>在类中<ul>
+<li><p>在类中</p>
+<ul>
 <li>成员变量：不能在类定义外部初始化、不能在声明时初始化，只能通过构造函数初始化列表初始化，且必须要有构造函数。</li>
 <li>成员函数：const对象不能调用非const成员函数，不可改变非mutable数据的值。</li>
 </ul>
 </li>
 </ul>
-<h2 id="5-final与override"><a href="#5-final与override" class="headerlink" title="5. final与override"></a>5. final与override</h2><h3 id="1-override"><a href="#1-override" class="headerlink" title="1. override"></a>1. override</h3><p>如果父类中使用了虚函数，在子类中重写该虚函数时可以加override，这样如果父类中没有相应的虚函数时，编译器会报错。</p>
+<h2 id="6-override"><a href="#6-override" class="headerlink" title="6. override"></a>6. override</h2><p>如果父类中使用了虚函数，在子类中重写该虚函数时可以加override，这样如果父类中没有相应的虚函数时，编译器会报错。</p>
 <p>防止重写时打错名字。</p>
-<h3 id="2-final"><a href="#2-final" class="headerlink" title="2. final"></a>2. final</h3><p>不希望某个类被继承或某个虚函数被重写。</p>
-<h2 id="6-volatile"><a href="#6-volatile" class="headerlink" title="6. volatile"></a>6. volatile</h2><p>类型修饰符，表明该变量是随时发生变化的，可以被某些编译器未知的因素更改。</p>
+<h2 id="7-final"><a href="#7-final" class="headerlink" title="7. final"></a>7. final</h2><p>不希望某个类被继承或某个虚函数被重写。</p>
+<h2 id="8-volatile"><a href="#8-volatile" class="headerlink" title="8. volatile"></a>8. volatile</h2><p>类型修饰符，表明该变量是随时发生变化的，可以被某些编译器未知的因素更改。</p>
 <p>每次使用值时总是从它所在的内存读取，而不是寄存器、读缓存等。读取的数据立刻被保存。（可能通过汇编代码等偷偷修改变量的值而不被编译器察觉）</p>
 <p>并且编译器不会对它的操作进行优化。</p>
 <p>用途：</p>
 <ul>
 <li>被几个任务共享的变量。</li>
-<li>中断服务程序修改的供其他程序检测的变量。</li>
+<li>中断服务程序修改的供其他程序检测的变量。<ul>
+<li>例：循环判断某个变量的状态，而在本程序中并未修改它，编译器就可能优化为只执行一次判断，而实际上该变量可能会被中断处理程序修改。</li>
+</ul>
+</li>
 <li>存储器映射的硬件寄存器。</li>
 </ul>
 <p>volatile指针和const指针辨认方法类似。</p>
-<p><strong>const与volatile可以一起</strong>。const控制程序本身不改变该值，volatile告诉编译器该值可能被程序之外的方式修改。</p>
-<p>可以把非volatile对象赋给volatile对象，反之不行。</p>
+<p>注意点：</p>
+<ul>
+<li><strong>const与volatile可以一起</strong>。const控制程序本身不改变该值，volatile告诉编译器该值可能被程序之外的方式修改。</li>
+<li>可以把非volatile对象赋给volatile对象，反之不行。</li>
+</ul>
 <p>应用：<code>for (volatile int i = 0; i &lt; 100000; ++i);</code></p>
 <p>不加volatile编译器会优化，不会做这个循环。加了volatile就会循环完。</p>
-<h2 id="7-mutable"><a href="#7-mutable" class="headerlink" title="7. mutable"></a>7. mutable</h2><p>修饰的变量即使在const函数中也可变。</p>
-<h2 id="8-explicit"><a href="#8-explicit" class="headerlink" title="8. explicit"></a>8. explicit</h2><p>修饰只用一个参数的构造函数。（只有一个参数，或其他参数有默认值）</p>
+<h2 id="9-mutable"><a href="#9-mutable" class="headerlink" title="9. mutable"></a>9. mutable</h2><p>修饰的变量即使在const函数中也可变。</p>
+<h2 id="10-explicit"><a href="#10-explicit" class="headerlink" title="10. explicit"></a>10. explicit</h2><p>修饰只用一个参数的构造函数。（只有一个参数，或其他参数有默认值）</p>
 <p>被修饰的类不能发生相应的隐式类型转换（用=号构造），只能显式类型转换。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">P</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">int</span> b;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(<span class="keyword">int</span> a = <span class="number">0</span>, <span class="keyword">int</span> b = <span class="number">0</span>): a(a), b(b) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Point a = <span class="number">1</span>; <span class="comment">// 匹配上了Point(1)，隐式调用了构造函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="9-new"><a href="#9-new" class="headerlink" title="9. new"></a>9. new</h2><ul>
-<li>plain new/operator new：普通的new，空间分配失败抛出异常bad_alloc。<ul>
-<li>operator new不能满足内存请求时：如果set_new_handler指定了错误处理函数，则调用后再次尝试请求内存；否则抛出异常。</li>
-</ul>
-</li>
-<li>nothrow new：空间分配失败返回NULL</li>
-<li>placement new：允许在一块已经分配成功的内存上重新构造对象，不分配内存。构造成功的对象要显式调用析构函数销毁，因为构造的对象大小并不一定等于原来分配的内存大小，delete会造成内存泄漏。</li>
-</ul>
-<p>STL中，new操作符内部先使用plain new分配空间，然后使用placement new在分配的空间上初始化。</p>
-<h2 id="10-allocator-alloc"><a href="#10-allocator-alloc" class="headerlink" title="10. allocator/alloc"></a>10. allocator/alloc</h2><p>allocator与alloc负责封装堆内存管理的对象，在整个标准库中使用，特别是STL。</p>
-<p>allocator只是malloc与free一层包装，而alloc由allocator与constructor组成，不仅负责申请/释放空间还负责调用构造/析构函数。</p>
-<h2 id="11-delete"><a href="#11-delete" class="headerlink" title="11. delete"></a>11. delete</h2><p>new对象数组时C++会额外分配4字节保存数组大小，在delete[]时就能取出保存的大小，从而知道需要析构多少次。</p>
-<h2 id="12-alloc系列函数"><a href="#12-alloc系列函数" class="headerlink" title="12. alloc系列函数"></a>12. alloc系列函数</h2><p>malloc：void *malloc(unsigned int num_bytes)。</p>
+<h2 id="11-alloc系列函数"><a href="#11-alloc系列函数" class="headerlink" title="11. alloc系列函数"></a>11. alloc系列函数</h2><p>malloc：void *malloc(unsigned int num_bytes)。</p>
 <p>num_bytes为要申请的空间大小，需要手动计算。</p>
 <p>calloc：void *calloc(size_t n, size_t size)。</p>
 <p>传入个数n与sizeof(type)即可申请空间，不需要人为计算，申请后将空间的值初始化为0。因为有初始化操作，效率较malloc低。</p>
 <p>realloc：void realloc(void *ptr, size_t new_Size)。</p>
 <p>对动态内存扩充。</p>
-<h2 id="13-cast强制转换"><a href="#13-cast强制转换" class="headerlink" title="13. cast强制转换"></a>13. cast强制转换</h2><p>转换是一种编译器指令，大部分情况下并不改变指针的地址，而只是影响指针指向<strong>内存的大小和内容</strong>的<strong>解释方式</strong></p>
+<h2 id="12-cast强制转换"><a href="#12-cast强制转换" class="headerlink" title="12. cast强制转换"></a>12. cast强制转换</h2><p>转换是一种编译器指令，大部分情况下并不改变指针的地址，而只是影响指针指向<strong>内存的大小和内容</strong>的<strong>解释方式</strong></p>
 <ul>
 <li>reinterpret_cast：普通的强制类型转换（只是对二进制位用新类型重新解释），高度危险但最灵活。可以进行static_cast不能进行的转换。</li>
 <li>const_cast：去除类型的const或volatile属性。常量指针、引用转换成非常量指针、引用，仍然指向原来的对象。</li>
@@ -603,7 +628,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="14-strcpy、sprintf、memcpy"><a href="#14-strcpy、sprintf、memcpy" class="headerlink" title="14. strcpy、sprintf、memcpy"></a>14. strcpy、sprintf、memcpy</h2><p>手撕时要考虑const、判断非空、重叠问题！</p>
+<h2 id="13-strcpy、sprintf、memcpy"><a href="#13-strcpy、sprintf、memcpy" class="headerlink" title="13. strcpy、sprintf、memcpy"></a>13. strcpy、sprintf、memcpy</h2><p>手撕时要考虑const、判断非空、重叠问题！</p>
 <ul>
 <li>操作对象：<ul>
 <li>strcpy操作对象均为字符串</li>
@@ -622,29 +647,34 @@
 </ul>
 </li>
 </ul>
-<h2 id="15-inline内联函数"><a href="#15-inline内联函数" class="headerlink" title="15. inline内联函数"></a>15. inline内联函数</h2><p>取舍：</p>
+<h2 id="14-inline"><a href="#14-inline" class="headerlink" title="14. inline"></a>14. inline</h2><p>编译器的处理：</p>
 <ul>
-<li>替换宏</li>
-<li>作为类成员接口函数来读写类的私有成员或者保护成员（内联函数定义要与类的声明放在同一个文件，否则无法替换）</li>
-<li>inline是编译时嵌入代码，通过增大代码空间消耗换取函数调用消耗，所以增大代码空间/函数执行的代价大于函数调用代价时（函数体过大、函数体内有循环）不应用inline。</li>
+<li>将inline函数体复制到调用点。</li>
+<li>为函数中的局部变量分配内存空间。</li>
+<li>将函数参数和返回值映射到局部变量空间中。</li>
+<li>如果有多个返回点，使用goto。</li>
 </ul>
 <p>编译限制：</p>
 <ul>
-<li>不能有循环、过多条件判断。</li>
-<li>函数体不能太大。</li>
+<li>不能有循环、过多条件判断：执行函数体内代码时间比函数调用开销大。</li>
+<li>函数体不能太大：内存消耗代价高。</li>
 <li>不能递归</li>
 <li>声明必须在调用语句前。</li>
 </ul>
-<p>内联只是建议，编译器并不一定内联，所以将构造函数、析构函数声明为内联函数可以，只是没有用，因为编译器会在这些函数中添加额外的操作。</p>
-<p>指向派生类的指针调用声明为虚函数时，不会展开（多态）；对象本身调用虚函数时且函数不复杂时，会内联展开。</p>
-<h2 id="16-iovec"><a href="#16-iovec" class="headerlink" title="16. iovec"></a>16. iovec</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> &#123;</span></span><br><span class="line">    <span class="keyword">ptr_t</span> iov_base; <span class="comment">/* Starting address */</span></span><br><span class="line">    <span class="keyword">size_t</span> iov_len; <span class="comment">/* Length in bytes */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">readv</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec *<span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">writev</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec *<span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>注意点：</p>
+<ul>
+<li>类中内联时，可以只在定义处加inline关键字。</li>
+<li>内联只是建议，编译器并不一定内联，所以将构造函数、析构函数声明为内联函数可以，只是没有用，因为编译器会在这些函数中添加额外的操作。</li>
+<li>虚函数可以是内联函数，但表现出多态性时内联无效：指向派生类的指针调用声明为虚函数时，不会展开（多态）；对象本身调用虚函数时且函数不复杂时，会内联展开。（即，没有表现多态特性）</li>
+</ul>
+<h2 id="15-iovec"><a href="#15-iovec" class="headerlink" title="15. iovec"></a>15. iovec</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> &#123;</span></span><br><span class="line">    <span class="keyword">ptr_t</span> iov_base; <span class="comment">/* Starting address */</span></span><br><span class="line">    <span class="keyword">size_t</span> iov_len; <span class="comment">/* Length in bytes */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">readv</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec *<span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">writev</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec *<span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>定义向量元素，iov_base指向存放的数据，iov_len表示接收的最大长度/实际写入的长度。</p>
 <p>vector为iovec数组，count为vector大小。</p>
-<h2 id="17-可变形参-vsprintf"><a href="#17-可变形参-vsprintf" class="headerlink" title="17. 可变形参/vsprintf"></a>17. 可变形参/vsprintf</h2><p>可变形参通过宏实现，定义在stdarg.h中。</p>
+<h2 id="16-可变形参-vsprintf"><a href="#16-可变形参-vsprintf" class="headerlink" title="16. 可变形参/vsprintf"></a>16. 可变形参/vsprintf</h2><p>可变形参通过宏实现，定义在stdarg.h中。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> num, ...)</span> </span>&#123;<span class="comment">// num为参数个数，后面的为可变形参</span></span><br><span class="line">        va_list ap;</span><br><span class="line">        va_start(ap, num);</span><br><span class="line">        <span class="keyword">while</span> (num &gt; <span class="number">0</span>) &#123;</span><br><span class="line">               <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, va_arg(ap, <span class="keyword">int</span>));</span><br><span class="line">               num--;</span><br><span class="line">        &#125;</span><br><span class="line">        va_end(ap);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    fun(<span class="number">5</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>int vsprintf(char *str, const char *format, va_list arg)</code></p>
 <p>format和arg与printf类似输入。</p>
-<h2 id="18-fstream"><a href="#18-fstream" class="headerlink" title="18. fstream"></a>18. fstream</h2><p>函数：</p>
+<h2 id="17-fstream"><a href="#17-fstream" class="headerlink" title="17. fstream"></a>17. fstream</h2><p>函数：</p>
 <ul>
 <li>构造函数 <code>fstream()</code></li>
 <li>构造函数 <code>fstream(filename: string, mode)</code>。这样构造时调用open。mode用按位或连接。<ul>
@@ -671,7 +701,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="19-extern"><a href="#19-extern" class="headerlink" title="19. extern"></a>19. extern</h2><p>单定义规则：变量只能有一次定义。</p>
+<h2 id="18-extern"><a href="#18-extern" class="headerlink" title="18. extern"></a>18. extern</h2><p>单定义规则：变量只能有一次定义。</p>
 <p>C++提供了两种变量声明：</p>
 <ul>
 <li>定义声明：简称定义，给变量分配内存空间。</li>
@@ -679,7 +709,11 @@
 </ul>
 <p>引用声明用extern关键字且不初始化，否则视为定义，分配空间。</p>
 <p>在文件中使用其他文件定义的外部变量时，需要extern声明变量。（全局变量一般声明在.c文件中，而include一般作用于.h文件）</p>
-<h2 id="20-union"><a href="#20-union" class="headerlink" title="20. union"></a>20. union</h2><p>作用：</p>
+<p><code>extern &quot;C&quot; &#123; ... &#125;</code></p>
+<p>c和c++中，同一个函数编译生成的符号不同。如在.c文件中定义 <code>add()</code>，然后在.cpp文件中include了该 <code>add()</code>的.h文件，并调用，会报错：无法找到 <code>add()</code>。</p>
+<p>该声明中放入#include或 <code>add()</code>的声明，在链接阶段起作用，告诉链接器寻找c语言符号，而不是经过c++修饰的符号。</p>
+<p>可用于c++调用c函数，或c调用c++函数。</p>
+<h2 id="19-union"><a href="#19-union" class="headerlink" title="19. union"></a>19. union</h2><p>作用：</p>
 <ul>
 <li>强制类型转换</li>
 <li>查看类型分布（用char[]与想查看的类型union）</li>
@@ -687,7 +721,54 @@
 <li>取别名（数组与结构体union，通过数组遍历结构体成员）</li>
 </ul>
 <p>缺点：如果union了多个指针，没法释放被覆盖的指针指向的内存；union含有带析构函数的成员时，不会自动析构。</p>
+<p>特点：</p>
+<ul>
+<li>可以有构造/析构函数</li>
+<li>不能有引用类型成员</li>
+<li>匿名union在定义作用域可直接访问成员，且只能包含public成员</li>
+<li>全局匿名union必须是static</li>
+</ul>
 <p>改进：C++ 17 variant</p>
+<h2 id="20-位域"><a href="#20-位域" class="headerlink" title="20. 位域"></a>20. 位域</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bit_field_name</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    type member_name : width;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>为每个位域成员设置名称并决定宽度，以bit为单位。成员赋值大小不能超过位域成员容量。</p>
+<p>对齐：</p>
+<ul>
+<li>可以不设置成员名称，仅起填充作用。</li>
+<li>一个位域成员不允许跨越两个unsigned的边界，编译器会自动移位，使其按照unsigned边界对齐。<ul>
+<li>为了防止实际与预期不符，可以用未命名成员填充。</li>
+</ul>
+</li>
+</ul>
+<h2 id="21-using"><a href="#21-using" class="headerlink" title="21. using"></a>21. using</h2><ul>
+<li>指定使用的符号<ul>
+<li><code>using ns1::func()</code>或者 <code>using ns2::func()</code>，来通过 <code>func()</code>调用作用域ns1/ns2中的 <code>func()</code>。</li>
+</ul>
+</li>
+<li>改变访问性<ul>
+<li>派生类using可见的基类成员，改变 public/protected/private属性。</li>
+</ul>
+</li>
+<li>函数重载<ul>
+<li>派生类只要定义了基类函数的一个重载版本，其他版本都会不可见。</li>
+<li>在派生类中using基类的重载函数名，然后定义想要重载的函数即可，而无需重新定义其他的。</li>
+</ul>
+</li>
+<li>取代typedef</li>
+</ul>
+<h2 id="22-enum"><a href="#22-enum" class="headerlink" title="22. enum"></a>22. enum</h2><p>枚举类：<code>enum class color &#123; ... &#125;;</code></p>
+<ul>
+<li>作用域不是全局</li>
+<li>不能隐式转换为其他类型</li>
+<li>可以指定继承特定的类型来存储，如 <code>enum class color: char</code></li>
+</ul>
+<p>类中的枚举类型：实现只有类中有效的常量。编译时期求值，不占用对象的存储空间。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">        BOY = <span class="number">0</span>,</span><br><span class="line">        GIRL</span><br><span class="line">    &#125;SexType;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//访问的时候通过，Person::BOY或者Person::GIRL来进行访问。</span></span><br></pre></td></tr></table></figure>
+<h2 id="23-RTTI"><a href="#23-RTTI" class="headerlink" title="23. RTTI"></a>23. RTTI</h2><p>Runtime Type Identification运行时类型检查。</p>
+<p>C++通过以下的两个操作提供RTTI，且只有类中有虚函数时，RTTI才生效：</p>
+<ul>
+<li>typeid运算符，该运算符返回其表达式或类型名的实际类型，封装为type_info类的实例。</li>
+<li>dynamic_cast运算符，该运算符将基类的指针或引用安全地转换为派生类类型的指针或引用。</li>
+</ul>
 <h1 id="2-比较"><a href="#2-比较" class="headerlink" title="2. 比较"></a>2. 比较</h1><h2 id="1-指针和引用"><a href="#1-指针和引用" class="headerlink" title="1. 指针和引用"></a>1. 指针和引用</h2><p>区别：</p>
 <ul>
 <li>存储内容：指针存储地址，引用实际上只是一个别名。</li>
@@ -696,7 +777,7 @@
 <li>更改：指针定义后可以改变指向，而引用不可改变。</li>
 <li>sizeof：指针得到4字节（指针大小），引用得到其引用变量的大小。</li>
 <li>参数传递：指针参数传递本质上还是值传递，指针本身作为值被复制，在函数中改变指针地址并不会影响原指针；任何对于引用参数的处理都会通过间接寻址操作到主调函数的相关变量。</li>
-<li>从汇编的层次看，引用是通过指针实现的。</li>
+<li>从汇编的层次看，引用是通过指针实现的，引用只是指针的一个语法糖，所以两者性能完全相同。</li>
 </ul>
 <h2 id="2-堆和栈"><a href="#2-堆和栈" class="headerlink" title="2. 堆和栈"></a>2. 堆和栈</h2><ul>
 <li>管理方式<ul>
@@ -837,7 +918,7 @@
 <p>基于对象没有继承，因而更谈不上多态。</p>
 <h2 id="2-构造函数"><a href="#2-构造函数" class="headerlink" title="2. 构造函数"></a>2. 构造函数</h2><ul>
 <li>默认构造函数：没有参数</li>
-<li>初始化构造函数：有参数</li>
+<li>初始化构造函数：有参数。14开始，如果类没有定义任何构造函数，编译期会自动生成一个参数个数和成员一样的构造函数，将{}里的内容桉顺序赋值给每一个成员。只支持通过{}构造。</li>
 <li>拷贝构造函数：可自定义深拷贝</li>
 <li>移动构造函数：将被移动对象的空间移动到本对象，本质上是浅拷贝，但是把被拷贝的指针指向NULL，就能避免释放带来的不安全。其参数是右值引用，也就是说只有用右值或将亡值初始化另一个对象时，才会调用</li>
 <li>委托构造函数：使用初始化列表的形式，将部分工作委托给其他构造函数</li>
@@ -879,6 +960,7 @@
 <p>静态绑定绑定的是静态类型，对应的函数或属性依赖于对象的静态类型，发生在编译期；动态绑定绑定的是动态类型，对应的函数或属性依赖于对象的动态类型，发生在运行时。</p>
 <ul>
 <li><strong>继承体系中只有虚函数用的是动态绑定，其他的全是静态绑定</strong>。只能通过<strong>指针与引用</strong>实现。</li>
+<li>虚函数中的默认参数是静态绑定的，只看指针或引用本身的类型。</li>
 </ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">/*virtual*/</span> <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;A::func()\n&quot;</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;B::func()\n&quot;</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;C::func()\n&quot;</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	C* pc = <span class="keyword">new</span> C(); <span class="comment">//pc的静态类型是它声明的类型C*，动态类型也是C*；</span></span><br><span class="line">	B* pb = <span class="keyword">new</span> B(); <span class="comment">//pb的静态类型和动态类型也都是B*；</span></span><br><span class="line">	A* pa = pc;      <span class="comment">//pa的静态类型是它声明的类型A*，动态类型是pa所指向的对象pc的类型C*；</span></span><br><span class="line">	pa = pb;         <span class="comment">//pa的动态类型可以更改，现在它的动态类型是B*，但其静态类型仍是声明时候的A*；</span></span><br><span class="line">	C *pnull = <span class="literal">NULL</span>; <span class="comment">//pnull的静态类型是它声明的类型C*,没有动态类型，因为它指向了NULL；</span></span><br><span class="line">  </span><br><span class="line">    	pa-&gt;func();      <span class="comment">//A::func() pa的静态类型永远都是A*，不管其指向的是哪个子类，都是直接调用A::func()；</span></span><br><span class="line">	pc-&gt;func();      <span class="comment">//C::func() pc的动、静态类型都是C*，因此调用C::func()；</span></span><br><span class="line">	pnull-&gt;func();   <span class="comment">//C::func() 不用奇怪为什么空指针也可以调用函数，因为这在编译期就确定了，和指针空不空没关系；（实际上是调用的C::func(pnull)）</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="1-具体过程"><a href="#1-具体过程" class="headerlink" title="1. 具体过程"></a>1. 具体过程</h3><p>静态绑定的具体过程：编译时发生</p>
@@ -930,6 +1012,7 @@
 <h3 id="2-存放位置"><a href="#2-存放位置" class="headerlink" title="2. 存放位置"></a>2. 存放位置</h3><p>因编译器不同存放位置不同，栈、寄存器或全局变量。</p>
 <h3 id="3-传递方式"><a href="#3-传递方式" class="headerlink" title="3. 传递方式"></a>3. 传递方式</h3><p>大部分指针通过ecx寄数寄存器传递this指针。</p>
 <p>在call之前通过函数参数的首参传递。</p>
+<p>在非const函数中，this指针类型为 <code>A *const</code>；在const函数中，this指针类型为 <code>const A *const</code></p>
 <h2 id="16-成员函数中delete-this"><a href="#16-成员函数中delete-this" class="headerlink" title="16. 成员函数中delete this"></a>16. 成员函数中delete this</h2><p>对象必须是通过new创建的，否则调用delete this会直接报告invalid pointer。</p>
 <p>在成员函数中delete this，在之后进行的任何函数调用，不能访问该对象任何成员变量、虚函数与this指针，否则会出现不可预期的问题：内存空间并不是马上被回收到系统中，此时可以访问，但是其中的值不确定，所以不可预期。</p>
 <p>如果在析构函数中调用，则会导致堆栈溢出，因为delete函数本身就要调用析构函数。</p>
@@ -949,16 +1032,25 @@
 </ul>
 <p>C++中虚函数表位于只读数据段。</p>
 <p>虚表指针初始化在基类成员构造函数调用之后，成员初始化列表之前。</p>
-<h3 id="3-特殊函数能否为虚函数？"><a href="#3-特殊函数能否为虚函数？" class="headerlink" title="3. 特殊函数能否为虚函数？"></a>3. 特殊函数能否为虚函数？</h3><p>析构函数：一般写成虚函数，因为派生类中可能有基类不存在的成员变量，如果不写成虚函数，删除基类指针时只会调用基类的析构函数，只释放基类所用的内存，造成内存泄露。但是，CRTP模板除外。</p>
-<p>inline、static、constructor都不能是虚函数。</p>
-<p>inline必须在编译时展开，而虚函数在运行时才能确定调用的是哪个函数。虚函数不表现多态时，可以inline。</p>
-<p>static函数没有this指针，虚函数必须要通过对象来调用。</p>
-<p>构造函数：不能是虚函数，因为</p>
+<p>引用本质就是指针，所以引用也能实现虚函数，只不过引用不能换绑。</p>
+<h3 id="3-特殊函数能否为虚函数？"><a href="#3-特殊函数能否为虚函数？" class="headerlink" title="3. 特殊函数能否为虚函数？"></a>3. 特殊函数能否为虚函数？</h3><ul>
+<li><p>析构函数：一般写成虚函数，因为派生类中可能有基类不存在的成员变量，如果不写成虚函数，删除基类指针时只会调用基类的析构函数，只释放基类所用的内存，造成内存泄露。但是，CRTP模板除外。</p>
+</li>
+<li><p>static：不能是虚函数。没有this指针</p>
+</li>
+<li><p>inline：必须在编译时展开，而虚函数在运行时才能确定调用的是哪个函数。</p>
+<ul>
+<li>虚函数不表现多态时，可以inline。</li>
+</ul>
+</li>
+<li><p>构造函数：不能是虚函数，因为</p>
 <ul>
 <li>对象不初始化就没有指向虚函数表的指针。</li>
 <li>虚函数在运行时动态确定类型，而在构造对象时对象还未创建成功，编译器无法知道其实际类型。</li>
+<li>也不应该在构造函数中调用虚函数，因为基类的构造函数期间将虚表指针指向基类的虚表，实际还是调用的基类的虚函数。</li>
 </ul>
-<p>也不应该在构造函数中调用虚函数，因为基类的构造函数期间将虚表指针指向基类的虚表，实际还是调用的基类的虚函数。</p>
+</li>
+</ul>
 <h3 id="4-虚函数开销"><a href="#4-虚函数开销" class="headerlink" title="4. 虚函数开销"></a>4. 虚函数开销</h3><p>空间：</p>
 <ul>
 <li>类开头多了4字节的虚函数表指针。</li>
@@ -1014,6 +1106,17 @@
 <li>带有虚函数、虚基类</li>
 </ol>
 <h2 id="24-取类成员偏移"><a href="#24-取类成员偏移" class="headerlink" title="24. 取类成员偏移"></a>24. 取类成员偏移</h2><p>&amp;类名::成员，取到相对于类基址的偏移（而不是取其地址）</p>
+<h2 id="25-和-调用拷贝构造函数"><a href="#25-和-调用拷贝构造函数" class="headerlink" title="25. {}和()调用拷贝构造函数"></a>25. {}和()调用拷贝构造函数</h2><ul>
+<li>类型安全：{}是非强制转换，更安全<ul>
+<li>int(3.14f)不会出错，而int{3.14f}会出错。</li>
+</ul>
+</li>
+<li>可读性：()还可能是函数调用<ul>
+<li>int(3.14)看起来可能是个函数，而int{3.14}没有这种歧义。</li>
+</ul>
+</li>
+<li>需要强制类型转换时，应该用static_cast、reinterpret_cast</li>
+</ul>
 <h1 id="4-C-11"><a href="#4-C-11" class="headerlink" title="4. C++ 11"></a>4. C++ 11</h1><h2 id="1-auto与decltype"><a href="#1-auto与decltype" class="headerlink" title="1. auto与decltype"></a>1. auto与decltype</h2><h3 id="1-auto"><a href="#1-auto" class="headerlink" title="1. auto"></a>1. auto</h3><p>让编译器通过初始值进行类型推演，获得定义类型的变量。</p>
 <ul>
 <li>必须初始化</li>
@@ -1263,6 +1366,21 @@
 </ul>
 <h3 id="9-unique-lock"><a href="#9-unique-lock" class="headerlink" title="9. unique_lock"></a>9. unique_lock</h3><p>与lock_guard的区别：可以中途用unlock解锁，如果析构时发现已经解锁则没有操作。lock_guard只能在析构时解锁。</p>
 <p>需要额外存储锁的状态，效率稍差。</p>
+<p>第二个可选参数：</p>
+<ul>
+<li>std::adpot_lock：在创建unique_lock前，传入的mutex已上锁。<ul>
+<li>必须自己先lock</li>
+</ul>
+</li>
+<li>std::try_to_lock：没有锁定成功也会立即返回，不随阻塞。<ul>
+<li>自己不能先lock</li>
+</ul>
+</li>
+<li>std::defer_lock：初始化不加锁。<ul>
+<li>自己不能先lock。</li>
+</ul>
+</li>
+</ul>
 <h3 id="10-condition-variable"><a href="#10-condition-variable" class="headerlink" title="10. condition_variable"></a>10. condition_variable</h3><p>condition_variable：有默认构造函数，拷贝构造函数被删除。</p>
 <p>方法：</p>
 <ul>
@@ -1602,6 +1720,11 @@
 </ul>
 <p>装入时动态链接：可执行文件中只包含该cpp文件的代码部分，以及记录该可执行文件依赖哪些动态库。<strong>启动可执行文件时</strong>，装载器发现不完整，所以动态链接动态库文件。</p>
 <p>运行时动态链接：可执行文件中只包含该cpp文件的代码部分，以及在某些第三方库的函数调用中记录需要使用这些库。<strong>程序运行到这些位置时</strong>，将第三方库的函数代码链接。</p>
+<h3 id="5-二进制文件执行"><a href="#5-二进制文件执行" class="headerlink" title="5. 二进制文件执行"></a>5. 二进制文件执行</h3><p>最终形成的二进制文件包含了</p>
+<ul>
+<li>程序头：包含供操作系统加载的信息，操作系统根据这些信息加载可执行程序。</li>
+<li>程序主体（二进制机器代码）。程序运行时逐条执行这些机器代码，形成程序运行序列。</li>
+</ul>
 <h2 id="12-垃圾回收机制"><a href="#12-垃圾回收机制" class="headerlink" title="12. 垃圾回收机制"></a>12. 垃圾回收机制</h2><p>实现垃圾回收器会带来额外的时空开销，使得C++不适合进行很多底层操作，所以C++不自带垃圾回收</p>
 <h2 id="13-C-的内存管理"><a href="#13-C-的内存管理" class="headerlink" title="13. C++的内存管理"></a>13. C++的内存管理</h2><p>与Linux类似，从高地址到低地址依次是：</p>
 <ul>
@@ -1635,9 +1758,27 @@
 <li>新定义的变量值依赖于之前定义的变量，不会修改定义顺序。</li>
 </ul>
 <p>C++库提供了内存模型，用于在多线程情况下防止编译器乱序执行。</p>
+<h2 id="18-重载函数匹配机制"><a href="#18-重载函数匹配机制" class="headerlink" title="18. 重载函数匹配机制"></a>18. 重载函数匹配机制</h2><p>编译器使用了命名倾轧技术，将相同作用域下的同名函数以命名空间+函数名长度+函数名+参数类型，命名成不同名加以区分。</p>
+<h3 id="1-确定候选函数集"><a href="#1-确定候选函数集" class="headerlink" title="1. 确定候选函数集"></a>1. 确定候选函数集</h3><p>根据作用域和函数名，选择这两点相同的函数。</p>
+<h3 id="2-选出可行函数集"><a href="#2-选出可行函数集" class="headerlink" title="2. 选出可行函数集"></a>2. 选出可行函数集</h3><p>根据参数列表信息（类型+个数）选出可行函数集。</p>
+<ul>
+<li>每个实参类型要与对应的形参相同，或者可以转换成形参类型</li>
+<li>参数个数相同</li>
+</ul>
+<p>如果没找到，编译器报告无法匹配函数错误</p>
+<h3 id="3-寻找最佳匹配"><a href="#3-寻找最佳匹配" class="headerlink" title="3. 寻找最佳匹配"></a>3. 寻找最佳匹配</h3><p>依次检查可行函数集的每一个函数</p>
+<ul>
+<li>检查每一个函数的形参与被调函数实参</li>
+<li>寻找最匹配的<ul>
+<li>其每个实参匹配都不劣于其他可行函数的匹配</li>
+<li>至少有一个实参匹配优于其他可行函数的匹配</li>
+</ul>
+</li>
+</ul>
+<p>如果有多个可行函数同时满足，编译器报告二义性错误</p>
 <h1 id="问C-14、17、20新特性"><a href="#问C-14、17、20新特性" class="headerlink" title="问C++14、17、20新特性"></a>问C++14、17、20新特性</h1><p>问C++14、17、20的新特性，可以说的：</p>
 <ul>
-<li>string_view：””s操作符、分配在栈上、只存储指针和长度、只读。</li>
+<li>string_view：””s操作符、分配在栈上、只存储指针和长度、只读</li>
 <li>optional、expected</li>
 <li>variant</li>
 <li>共享锁shared_lock、shared_mutex、shared_timed_mutex。配合shared_lock、unique_lock实现RAII的读写锁。</li>
@@ -2050,7 +2191,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#C%E5%92%8CC-%E5%8C%BA%E5%88%AB"><span class="toc-text">C和C++区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%85%B3%E9%94%AE%E5%AD%97-%E6%96%B9%E6%B3%95"><span class="toc-text">1. 关键字&#x2F;方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-new%E4%B8%8Emalloc"><span class="toc-text">1. new与malloc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-new-delete"><span class="toc-text">1. new&#x2F;delete</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-malloc-free"><span class="toc-text">2. malloc&#x2F;free</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-new%E4%B8%8Emalloc%E5%8C%BA%E5%88%AB"><span class="toc-text">3. new与malloc区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-align-%E7%BB%93%E6%9E%84%E4%BD%93%E5%AF%B9%E9%BD%90"><span class="toc-text">2. align 结构体对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-const%E4%B8%8E"><span class="toc-text">3. const与*</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-static%E4%B8%8Econst"><span class="toc-text">4. static与const</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-static"><span class="toc-text">1. static</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-const"><span class="toc-text">2. const</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-final%E4%B8%8Eoverride"><span class="toc-text">5. final与override</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-override"><span class="toc-text">1. override</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-final"><span class="toc-text">2. final</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-volatile"><span class="toc-text">6. volatile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-mutable"><span class="toc-text">7. mutable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-explicit"><span class="toc-text">8. explicit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-new"><span class="toc-text">9. new</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-allocator-alloc"><span class="toc-text">10. allocator&#x2F;alloc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-delete"><span class="toc-text">11. delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-alloc%E7%B3%BB%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-text">12. alloc系列函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-cast%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="toc-text">13. cast强制转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-strcpy%E3%80%81sprintf%E3%80%81memcpy"><span class="toc-text">14. strcpy、sprintf、memcpy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-inline%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="toc-text">15. inline内联函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-iovec"><span class="toc-text">16. iovec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-%E5%8F%AF%E5%8F%98%E5%BD%A2%E5%8F%82-vsprintf"><span class="toc-text">17. 可变形参&#x2F;vsprintf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-fstream"><span class="toc-text">18. fstream</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-extern"><span class="toc-text">19. extern</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-union"><span class="toc-text">20. union</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%AF%94%E8%BE%83"><span class="toc-text">2. 比较</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8"><span class="toc-text">1. 指针和引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A0%86%E5%92%8C%E6%A0%88"><span class="toc-text">2. 堆和栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%8F%E4%B8%8E%E5%87%BD%E6%95%B0-typedef-%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0-const"><span class="toc-text">3. 宏与函数&#x2F;typedef&#x2F;内联函数&#x2F;const</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89"><span class="toc-text">4. 变量声明与变量定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%95%B0%E7%BB%84%E5%90%8D%E5%92%8C%E6%8C%87%E9%92%88"><span class="toc-text">5. 数组名和指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%B5%8B%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%88%90%E5%91%98%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8"><span class="toc-text">6. 赋值初始化与成员初始化列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-vector%E7%9A%84emplace-back%E4%B8%8Epush-back"><span class="toc-text">7. vector的emplace_back与push_back</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%BB%84%E5%90%88%E5%92%8C%E7%BB%A7%E6%89%BF"><span class="toc-text">8. 组合和继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Debug%E4%B8%8ERelease%E7%89%88%E6%9C%AC"><span class="toc-text">9. Debug与Release版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E5%92%8C%E7%B1%BB%E6%A8%A1%E6%9D%BF"><span class="toc-text">10. 函数模板和类模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%87%AA%E7%94%B1%E5%AD%98%E5%82%A8%E5%8C%BA%E4%B8%8E%E5%A0%86"><span class="toc-text">11. 自由存储区与堆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E4%B8%8E%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="toc-text">12. 数组指针与指针数组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%B1%BB"><span class="toc-text">3. 类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="toc-text">1. 面向对象三大特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">2. 构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8B%B7%E8%B4%9D%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">3. 拷贝初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%87%8D%E8%BD%BD%E3%80%81%E9%87%8D%E5%86%99%E3%80%81%E8%A6%86%E7%9B%96%E5%92%8C%E9%9A%90%E8%97%8F"><span class="toc-text">4. 重载、重写、覆盖和隐藏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-NRV%E4%BC%98%E5%8C%96"><span class="toc-text">5. NRV优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E9%9D%99%E6%80%81%E7%BB%91%E5%AE%9A%E4%B8%8E%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A"><span class="toc-text">6. 静态绑定与动态绑定</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%B7%E4%BD%93%E8%BF%87%E7%A8%8B"><span class="toc-text">1. 具体过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A0%B7%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-text">2. 样例分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%AE%9E%E7%8E%B0%E5%8F%AA%E8%83%BD%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-text">7. 实现只能静态&#x2F;动态创建对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%AF%B9%E8%B1%A1%E5%A4%8D%E7%94%A8"><span class="toc-text">8. 对象复用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%A9%BA%E7%B1%BB"><span class="toc-text">9. 空类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E9%98%BB%E6%AD%A2%E7%B1%BB%E8%A2%AB%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="toc-text">10. 阻止类被实例化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E7%A6%81%E6%AD%A2%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">11. 禁止程序自动生成拷贝构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-memset-this-0-sizeof-this"><span class="toc-text">12. memset(this,0,sizeof(*this))</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E5%8F%8B%E5%85%83"><span class="toc-text">13. 友元</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-%E7%B1%BB%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4"><span class="toc-text">14. 类的内存空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-this%E6%8C%87%E9%92%88"><span class="toc-text">15. this指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E6%97%B6%E5%88%BB"><span class="toc-text">1. 创建时刻</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%98%E6%94%BE%E4%BD%8D%E7%BD%AE"><span class="toc-text">2. 存放位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BC%A0%E9%80%92%E6%96%B9%E5%BC%8F"><span class="toc-text">3. 传递方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%B8%ADdelete-this"><span class="toc-text">16. 成员函数中delete this</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-%E5%A4%9A%E6%80%81%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0"><span class="toc-text">17. 多态与虚函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A4%9A%E6%80%81"><span class="toc-text">1. 多态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%99%9A%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">2. 虚函数实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%89%B9%E6%AE%8A%E5%87%BD%E6%95%B0%E8%83%BD%E5%90%A6%E4%B8%BA%E8%99%9A%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="toc-text">3. 特殊函数能否为虚函数？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%99%9A%E5%87%BD%E6%95%B0%E5%BC%80%E9%94%80"><span class="toc-text">4. 虚函数开销</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-CRTP%E6%A8%A1%E6%9D%BF"><span class="toc-text">18. CRTP模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-%E6%A8%A1%E6%9D%BF%E7%89%B9%E4%BE%8B%E5%8C%96"><span class="toc-text">19. 模板特例化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-%E5%A4%9A%E7%BB%A7%E6%89%BF%E4%B8%8E%E8%99%9A%E6%8B%9F%E7%BB%A7%E6%89%BF"><span class="toc-text">20. 多继承与虚拟继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#21-%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">21. 自动生成默认构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22-%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB"><span class="toc-text">22. 抽象基类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#23-%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">23. 自动生成拷贝构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#24-%E5%8F%96%E7%B1%BB%E6%88%90%E5%91%98%E5%81%8F%E7%A7%BB"><span class="toc-text">24. 取类成员偏移</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-C-11"><span class="toc-text">4. C++ 11</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-auto%E4%B8%8Edecltype"><span class="toc-text">1. auto与decltype</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-auto"><span class="toc-text">1. auto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-decltype"><span class="toc-text">2. decltype</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B7%A6%E5%80%BC%E5%8F%B3%E5%80%BC"><span class="toc-text">2. 左值右值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="toc-text">1. 移动语义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91"><span class="toc-text">2. 完美转发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-bind%E5%92%8Cfunction"><span class="toc-text">3. bind和function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-text">4. 智能指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-shared-ptr"><span class="toc-text">1. shared_ptr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-weak-ptr"><span class="toc-text">2. weak_ptr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-unique-ptr"><span class="toc-text">3. unique_ptr</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-default%E3%80%81delete%E4%B8%8Eexplicit"><span class="toc-text">5. default、delete与explicit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-constexpr"><span class="toc-text">6. constexpr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">7. lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-C-14-%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">1. C++ 14 新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%8D%95%E6%8D%89%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">1. 捕捉表达式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%B3%9B%E5%9E%8Blambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">2. 泛型lambda表达式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-nullptr"><span class="toc-text">8. nullptr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">9. 列表初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-array"><span class="toc-text">10. array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-text">11. 多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-thread"><span class="toc-text">1. thread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-mutex"><span class="toc-text">2. mutex</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-atomic"><span class="toc-text">3. atomic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-async"><span class="toc-text">4. async</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-future"><span class="toc-text">5. future</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-promise"><span class="toc-text">6. promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-this-thread"><span class="toc-text">7. this_thread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-lock-guard"><span class="toc-text">8. lock_guard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-unique-lock"><span class="toc-text">9. unique_lock</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-condition-variable"><span class="toc-text">10. condition_variable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-packaged-task"><span class="toc-text">11. packaged_task</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="toc-text">12. 可变参数模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-align"><span class="toc-text">13. align</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-alignof"><span class="toc-text">1. alignof</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-alignas"><span class="toc-text">2. alignas</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-align-storage"><span class="toc-text">3. align_storage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-align"><span class="toc-text">4. align</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-STL"><span class="toc-text">5. STL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93"><span class="toc-text">1. STL标准模板库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E6%B1%A0"><span class="toc-text">2. 内存配置器与内存池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-deque"><span class="toc-text">3. deque</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-hashtable"><span class="toc-text">4. hashtable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-type-traits%E7%B1%BB%E5%9E%8B%E8%90%83%E5%8F%96"><span class="toc-text">5. type traits类型萃取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6-reserve%E4%B8%8Eresize"><span class="toc-text">6. 扩容机制 reserve与resize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-unordered-map%E4%B8%8Emap"><span class="toc-text">7. unordered_map与map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">8. 迭代器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%A4%B1%E6%95%88"><span class="toc-text">9. 迭代器失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-list%E3%80%81slist"><span class="toc-text">10. list、slist</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-uninitialized"><span class="toc-text">11. uninitialized</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E7%AE%97%E6%B3%95"><span class="toc-text">12. 算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="toc-text">13. 红黑树</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%85%B6%E4%BB%96"><span class="toc-text">6. 其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-main%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E5%89%8D%E5%90%8E"><span class="toc-text">1. main函数执行前后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%8C%87%E9%92%88%E7%9A%84sizeof"><span class="toc-text">2. 指针的sizeof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-C-%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8"><span class="toc-text">3. C++的类型安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="toc-text">4. 零拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90"><span class="toc-text">5. 内存对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BC%96%E8%AF%91%E3%80%81%E8%BF%9E%E6%8E%A5%E5%92%8C%E6%A8%A1%E6%9D%BF%E7%B1%BB"><span class="toc-text">6. 编译、连接和模板类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-C-C-%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%BC%93%E5%86%B2%E4%B8%8E%E6%B5%81"><span class="toc-text">7. C&#x2F;C++的输入输出缓冲与流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%BC%95%E7%94%A8%E4%BC%A0%E5%8F%82-%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-text">8. 引用传参&#x2F;返回值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-C-%E6%A0%87%E5%87%86%E5%BA%93"><span class="toc-text">9. C++标准库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="toc-text">10. 回调函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-C-%E4%BB%8E%E4%BB%A3%E7%A0%81%E5%88%B0%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-text">11. C++从代码到可执行程序的流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%A2%84%E7%BC%96%E8%AF%91"><span class="toc-text">1. 预编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E8%AF%91"><span class="toc-text">2. 编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B1%87%E7%BC%96"><span class="toc-text">3. 汇编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%93%BE%E6%8E%A5"><span class="toc-text">4. 链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="toc-text">12. 垃圾回收机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-C-%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">13. C++的内存管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-RAII"><span class="toc-text">14. RAII</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-i%E5%92%8Ci"><span class="toc-text">15. ++i和i++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E5%B8%B8%E5%BC%95%E7%94%A8"><span class="toc-text">16. 常引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C"><span class="toc-text">17. 乱序执行</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AEC-14%E3%80%8117%E3%80%8120%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">问C++14、17、20新特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-C-14"><span class="toc-text">7. C++ 14</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-auto%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC"><span class="toc-text">1. auto函数返回值类型推导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A8%A1%E6%9D%BF"><span class="toc-text">2. 模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-constexpr"><span class="toc-text">3. constexpr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-deprecated"><span class="toc-text">4. [[deprecated]]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%88%86%E9%9A%94%E7%AC%A6"><span class="toc-text">5. 分隔符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-make-unique"><span class="toc-text">6. make_unique</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%AF%BB%E5%86%99%E9%94%81shared-timed-mutex"><span class="toc-text">7. 读写锁shared_timed_mutex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-integer-sequence"><span class="toc-text">8. integer_sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-exchange"><span class="toc-text">9. exchange</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-quoted"><span class="toc-text">10. quoted</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-C-17"><span class="toc-text">8. C++ 17</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E8%87%AA%E5%8A%A8%E6%8E%A8%E5%AF%BC"><span class="toc-text">1. 构造函数模板自动推导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A"><span class="toc-text">2. 结构化绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8A%98%E5%8F%A0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">3. 折叠表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-has-include"><span class="toc-text">4. __has_include</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-attribute"><span class="toc-text">5. attribute</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2"><span class="toc-text">6. 字符串转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-variant"><span class="toc-text">7. variant</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-optional"><span class="toc-text">8. optional</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-any"><span class="toc-text">9. any</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-make-from-tuple"><span class="toc-text">10. make_from_tuple</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-string-view"><span class="toc-text">11. string_view</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-monostate"><span class="toc-text">12. monostate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-scoped-lock"><span class="toc-text">13. scoped_lock</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-C-20"><span class="toc-text">9. C++ 20</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-module"><span class="toc-text">1. module</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ranges"><span class="toc-text">2. ranges</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8D%8F%E7%A8%8Bcoroutine"><span class="toc-text">3. 协程coroutine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-co-await"><span class="toc-text">1. co_await</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-co-return"><span class="toc-text">2. co_return</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-co-yield"><span class="toc-text">3. co_yield</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%A4%BA%E4%BE%8B"><span class="toc-text">4. 示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-concept"><span class="toc-text">4. concept</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-requires"><span class="toc-text">5. requires</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AE%80%E5%8D%95%E7%BA%A6%E6%9D%9F"><span class="toc-text">1. 简单约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F"><span class="toc-text">2. 类型约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B5%8C%E5%A5%97%E7%BA%A6%E6%9D%9F"><span class="toc-text">3. 嵌套约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%90%8C%E6%AD%A5%E5%BA%93%E6%96%B0%E5%A2%9E"><span class="toc-text">6. 同步库新增</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BF%A1%E5%8F%B7%E9%87%8Fsemaphore"><span class="toc-text">1. 信号量semaphore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-atomic%E6%96%B0%E5%A2%9E"><span class="toc-text">2. atomic新增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%94%81%E5%AD%98%E5%99%A8latch"><span class="toc-text">3. 锁存器latch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-barrier"><span class="toc-text">4. barrier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-jthread"><span class="toc-text">5. jthread</span></a></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#C%E5%92%8CC-%E5%8C%BA%E5%88%AB"><span class="toc-text">C和C++区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%85%B3%E9%94%AE%E5%AD%97-%E6%96%B9%E6%B3%95"><span class="toc-text">1. 关键字&#x2F;方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-new%E4%B8%8Emalloc"><span class="toc-text">1. new与malloc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-new-delete"><span class="toc-text">1. new&#x2F;delete</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-malloc-free"><span class="toc-text">2. malloc&#x2F;free</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-new%E4%B8%8Emalloc%E5%8C%BA%E5%88%AB"><span class="toc-text">3. new与malloc区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-align-%E7%BB%93%E6%9E%84%E4%BD%93%E5%AF%B9%E9%BD%90"><span class="toc-text">2. align 结构体对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-const%E4%B8%8E"><span class="toc-text">3. const与*</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-static"><span class="toc-text">4. static</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-const"><span class="toc-text">5. const</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-override"><span class="toc-text">6. override</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-final"><span class="toc-text">7. final</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-volatile"><span class="toc-text">8. volatile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-mutable"><span class="toc-text">9. mutable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-explicit"><span class="toc-text">10. explicit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-alloc%E7%B3%BB%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-text">11. alloc系列函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-cast%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="toc-text">12. cast强制转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-strcpy%E3%80%81sprintf%E3%80%81memcpy"><span class="toc-text">13. strcpy、sprintf、memcpy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-inline"><span class="toc-text">14. inline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-iovec"><span class="toc-text">15. iovec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E5%8F%AF%E5%8F%98%E5%BD%A2%E5%8F%82-vsprintf"><span class="toc-text">16. 可变形参&#x2F;vsprintf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-fstream"><span class="toc-text">17. fstream</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-extern"><span class="toc-text">18. extern</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-union"><span class="toc-text">19. union</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-%E4%BD%8D%E5%9F%9F"><span class="toc-text">20. 位域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#21-using"><span class="toc-text">21. using</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22-enum"><span class="toc-text">22. enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#23-RTTI"><span class="toc-text">23. RTTI</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%AF%94%E8%BE%83"><span class="toc-text">2. 比较</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8"><span class="toc-text">1. 指针和引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A0%86%E5%92%8C%E6%A0%88"><span class="toc-text">2. 堆和栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%8F%E4%B8%8E%E5%87%BD%E6%95%B0-typedef-%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0-const"><span class="toc-text">3. 宏与函数&#x2F;typedef&#x2F;内联函数&#x2F;const</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89"><span class="toc-text">4. 变量声明与变量定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%95%B0%E7%BB%84%E5%90%8D%E5%92%8C%E6%8C%87%E9%92%88"><span class="toc-text">5. 数组名和指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%B5%8B%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%88%90%E5%91%98%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8"><span class="toc-text">6. 赋值初始化与成员初始化列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-vector%E7%9A%84emplace-back%E4%B8%8Epush-back"><span class="toc-text">7. vector的emplace_back与push_back</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%BB%84%E5%90%88%E5%92%8C%E7%BB%A7%E6%89%BF"><span class="toc-text">8. 组合和继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Debug%E4%B8%8ERelease%E7%89%88%E6%9C%AC"><span class="toc-text">9. Debug与Release版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E5%92%8C%E7%B1%BB%E6%A8%A1%E6%9D%BF"><span class="toc-text">10. 函数模板和类模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%87%AA%E7%94%B1%E5%AD%98%E5%82%A8%E5%8C%BA%E4%B8%8E%E5%A0%86"><span class="toc-text">11. 自由存储区与堆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E4%B8%8E%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="toc-text">12. 数组指针与指针数组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%B1%BB"><span class="toc-text">3. 类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="toc-text">1. 面向对象三大特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">2. 构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8B%B7%E8%B4%9D%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">3. 拷贝初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%87%8D%E8%BD%BD%E3%80%81%E9%87%8D%E5%86%99%E3%80%81%E8%A6%86%E7%9B%96%E5%92%8C%E9%9A%90%E8%97%8F"><span class="toc-text">4. 重载、重写、覆盖和隐藏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-NRV%E4%BC%98%E5%8C%96"><span class="toc-text">5. NRV优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E9%9D%99%E6%80%81%E7%BB%91%E5%AE%9A%E4%B8%8E%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A"><span class="toc-text">6. 静态绑定与动态绑定</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%B7%E4%BD%93%E8%BF%87%E7%A8%8B"><span class="toc-text">1. 具体过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A0%B7%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-text">2. 样例分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%AE%9E%E7%8E%B0%E5%8F%AA%E8%83%BD%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-text">7. 实现只能静态&#x2F;动态创建对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%AF%B9%E8%B1%A1%E5%A4%8D%E7%94%A8"><span class="toc-text">8. 对象复用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%A9%BA%E7%B1%BB"><span class="toc-text">9. 空类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E9%98%BB%E6%AD%A2%E7%B1%BB%E8%A2%AB%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="toc-text">10. 阻止类被实例化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E7%A6%81%E6%AD%A2%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">11. 禁止程序自动生成拷贝构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-memset-this-0-sizeof-this"><span class="toc-text">12. memset(this,0,sizeof(*this))</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E5%8F%8B%E5%85%83"><span class="toc-text">13. 友元</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-%E7%B1%BB%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4"><span class="toc-text">14. 类的内存空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-this%E6%8C%87%E9%92%88"><span class="toc-text">15. this指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E6%97%B6%E5%88%BB"><span class="toc-text">1. 创建时刻</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%98%E6%94%BE%E4%BD%8D%E7%BD%AE"><span class="toc-text">2. 存放位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BC%A0%E9%80%92%E6%96%B9%E5%BC%8F"><span class="toc-text">3. 传递方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%B8%ADdelete-this"><span class="toc-text">16. 成员函数中delete this</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-%E5%A4%9A%E6%80%81%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0"><span class="toc-text">17. 多态与虚函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A4%9A%E6%80%81"><span class="toc-text">1. 多态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%99%9A%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">2. 虚函数实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%89%B9%E6%AE%8A%E5%87%BD%E6%95%B0%E8%83%BD%E5%90%A6%E4%B8%BA%E8%99%9A%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="toc-text">3. 特殊函数能否为虚函数？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%99%9A%E5%87%BD%E6%95%B0%E5%BC%80%E9%94%80"><span class="toc-text">4. 虚函数开销</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-CRTP%E6%A8%A1%E6%9D%BF"><span class="toc-text">18. CRTP模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-%E6%A8%A1%E6%9D%BF%E7%89%B9%E4%BE%8B%E5%8C%96"><span class="toc-text">19. 模板特例化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-%E5%A4%9A%E7%BB%A7%E6%89%BF%E4%B8%8E%E8%99%9A%E6%8B%9F%E7%BB%A7%E6%89%BF"><span class="toc-text">20. 多继承与虚拟继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#21-%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">21. 自动生成默认构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22-%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB"><span class="toc-text">22. 抽象基类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#23-%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">23. 自动生成拷贝构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#24-%E5%8F%96%E7%B1%BB%E6%88%90%E5%91%98%E5%81%8F%E7%A7%BB"><span class="toc-text">24. 取类成员偏移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#25-%E5%92%8C-%E8%B0%83%E7%94%A8%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">25. {}和()调用拷贝构造函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-C-11"><span class="toc-text">4. C++ 11</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-auto%E4%B8%8Edecltype"><span class="toc-text">1. auto与decltype</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-auto"><span class="toc-text">1. auto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-decltype"><span class="toc-text">2. decltype</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B7%A6%E5%80%BC%E5%8F%B3%E5%80%BC"><span class="toc-text">2. 左值右值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="toc-text">1. 移动语义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91"><span class="toc-text">2. 完美转发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-bind%E5%92%8Cfunction"><span class="toc-text">3. bind和function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-text">4. 智能指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-shared-ptr"><span class="toc-text">1. shared_ptr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-weak-ptr"><span class="toc-text">2. weak_ptr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-unique-ptr"><span class="toc-text">3. unique_ptr</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-default%E3%80%81delete%E4%B8%8Eexplicit"><span class="toc-text">5. default、delete与explicit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-constexpr"><span class="toc-text">6. constexpr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">7. lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-C-14-%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">1. C++ 14 新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%8D%95%E6%8D%89%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">1. 捕捉表达式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%B3%9B%E5%9E%8Blambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">2. 泛型lambda表达式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-nullptr"><span class="toc-text">8. nullptr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">9. 列表初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-array"><span class="toc-text">10. array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-text">11. 多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-thread"><span class="toc-text">1. thread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-mutex"><span class="toc-text">2. mutex</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-atomic"><span class="toc-text">3. atomic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-async"><span class="toc-text">4. async</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-future"><span class="toc-text">5. future</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-promise"><span class="toc-text">6. promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-this-thread"><span class="toc-text">7. this_thread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-lock-guard"><span class="toc-text">8. lock_guard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-unique-lock"><span class="toc-text">9. unique_lock</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-condition-variable"><span class="toc-text">10. condition_variable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-packaged-task"><span class="toc-text">11. packaged_task</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="toc-text">12. 可变参数模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-align"><span class="toc-text">13. align</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-alignof"><span class="toc-text">1. alignof</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-alignas"><span class="toc-text">2. alignas</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-align-storage"><span class="toc-text">3. align_storage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-align"><span class="toc-text">4. align</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-STL"><span class="toc-text">5. STL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93"><span class="toc-text">1. STL标准模板库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E6%B1%A0"><span class="toc-text">2. 内存配置器与内存池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-deque"><span class="toc-text">3. deque</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-hashtable"><span class="toc-text">4. hashtable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-type-traits%E7%B1%BB%E5%9E%8B%E8%90%83%E5%8F%96"><span class="toc-text">5. type traits类型萃取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6-reserve%E4%B8%8Eresize"><span class="toc-text">6. 扩容机制 reserve与resize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-unordered-map%E4%B8%8Emap"><span class="toc-text">7. unordered_map与map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">8. 迭代器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%A4%B1%E6%95%88"><span class="toc-text">9. 迭代器失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-list%E3%80%81slist"><span class="toc-text">10. list、slist</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-uninitialized"><span class="toc-text">11. uninitialized</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E7%AE%97%E6%B3%95"><span class="toc-text">12. 算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="toc-text">13. 红黑树</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%85%B6%E4%BB%96"><span class="toc-text">6. 其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-main%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E5%89%8D%E5%90%8E"><span class="toc-text">1. main函数执行前后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%8C%87%E9%92%88%E7%9A%84sizeof"><span class="toc-text">2. 指针的sizeof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-C-%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8"><span class="toc-text">3. C++的类型安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="toc-text">4. 零拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90"><span class="toc-text">5. 内存对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BC%96%E8%AF%91%E3%80%81%E8%BF%9E%E6%8E%A5%E5%92%8C%E6%A8%A1%E6%9D%BF%E7%B1%BB"><span class="toc-text">6. 编译、连接和模板类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-C-C-%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%BC%93%E5%86%B2%E4%B8%8E%E6%B5%81"><span class="toc-text">7. C&#x2F;C++的输入输出缓冲与流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%BC%95%E7%94%A8%E4%BC%A0%E5%8F%82-%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-text">8. 引用传参&#x2F;返回值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-C-%E6%A0%87%E5%87%86%E5%BA%93"><span class="toc-text">9. C++标准库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="toc-text">10. 回调函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-C-%E4%BB%8E%E4%BB%A3%E7%A0%81%E5%88%B0%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-text">11. C++从代码到可执行程序的流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%A2%84%E7%BC%96%E8%AF%91"><span class="toc-text">1. 预编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E8%AF%91"><span class="toc-text">2. 编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B1%87%E7%BC%96"><span class="toc-text">3. 汇编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%93%BE%E6%8E%A5"><span class="toc-text">4. 链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E6%89%A7%E8%A1%8C"><span class="toc-text">5. 二进制文件执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="toc-text">12. 垃圾回收机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-C-%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">13. C++的内存管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-RAII"><span class="toc-text">14. RAII</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-i%E5%92%8Ci"><span class="toc-text">15. ++i和i++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E5%B8%B8%E5%BC%95%E7%94%A8"><span class="toc-text">16. 常引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C"><span class="toc-text">17. 乱序执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-%E9%87%8D%E8%BD%BD%E5%87%BD%E6%95%B0%E5%8C%B9%E9%85%8D%E6%9C%BA%E5%88%B6"><span class="toc-text">18. 重载函数匹配机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A1%AE%E5%AE%9A%E5%80%99%E9%80%89%E5%87%BD%E6%95%B0%E9%9B%86"><span class="toc-text">1. 确定候选函数集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%80%89%E5%87%BA%E5%8F%AF%E8%A1%8C%E5%87%BD%E6%95%B0%E9%9B%86"><span class="toc-text">2. 选出可行函数集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AF%BB%E6%89%BE%E6%9C%80%E4%BD%B3%E5%8C%B9%E9%85%8D"><span class="toc-text">3. 寻找最佳匹配</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AEC-14%E3%80%8117%E3%80%8120%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">问C++14、17、20新特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-C-14"><span class="toc-text">7. C++ 14</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-auto%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC"><span class="toc-text">1. auto函数返回值类型推导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A8%A1%E6%9D%BF"><span class="toc-text">2. 模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-constexpr"><span class="toc-text">3. constexpr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-deprecated"><span class="toc-text">4. [[deprecated]]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%88%86%E9%9A%94%E7%AC%A6"><span class="toc-text">5. 分隔符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-make-unique"><span class="toc-text">6. make_unique</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%AF%BB%E5%86%99%E9%94%81shared-timed-mutex"><span class="toc-text">7. 读写锁shared_timed_mutex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-integer-sequence"><span class="toc-text">8. integer_sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-exchange"><span class="toc-text">9. exchange</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-quoted"><span class="toc-text">10. quoted</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-C-17"><span class="toc-text">8. C++ 17</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E8%87%AA%E5%8A%A8%E6%8E%A8%E5%AF%BC"><span class="toc-text">1. 构造函数模板自动推导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A"><span class="toc-text">2. 结构化绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8A%98%E5%8F%A0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">3. 折叠表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-has-include"><span class="toc-text">4. __has_include</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-attribute"><span class="toc-text">5. attribute</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2"><span class="toc-text">6. 字符串转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-variant"><span class="toc-text">7. variant</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-optional"><span class="toc-text">8. optional</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-any"><span class="toc-text">9. any</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-make-from-tuple"><span class="toc-text">10. make_from_tuple</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-string-view"><span class="toc-text">11. string_view</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-monostate"><span class="toc-text">12. monostate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-scoped-lock"><span class="toc-text">13. scoped_lock</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-C-20"><span class="toc-text">9. C++ 20</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-module"><span class="toc-text">1. module</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ranges"><span class="toc-text">2. ranges</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8D%8F%E7%A8%8Bcoroutine"><span class="toc-text">3. 协程coroutine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-co-await"><span class="toc-text">1. co_await</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-co-return"><span class="toc-text">2. co_return</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-co-yield"><span class="toc-text">3. co_yield</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%A4%BA%E4%BE%8B"><span class="toc-text">4. 示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-concept"><span class="toc-text">4. concept</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-requires"><span class="toc-text">5. requires</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AE%80%E5%8D%95%E7%BA%A6%E6%9D%9F"><span class="toc-text">1. 简单约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F"><span class="toc-text">2. 类型约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B5%8C%E5%A5%97%E7%BA%A6%E6%9D%9F"><span class="toc-text">3. 嵌套约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%90%8C%E6%AD%A5%E5%BA%93%E6%96%B0%E5%A2%9E"><span class="toc-text">6. 同步库新增</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BF%A1%E5%8F%B7%E9%87%8Fsemaphore"><span class="toc-text">1. 信号量semaphore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-atomic%E6%96%B0%E5%A2%9E"><span class="toc-text">2. atomic新增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%94%81%E5%AD%98%E5%99%A8latch"><span class="toc-text">3. 锁存器latch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-barrier"><span class="toc-text">4. barrier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-jthread"><span class="toc-text">5. jthread</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -2083,49 +2224,7 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-27</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/">项目学习-跳表</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-23</span>
-                
-              </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/">项目学习-CMU-15-445-Lab2-1</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/" class="post-img " style="background-size: cover; 
+              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -2133,10 +2232,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-23</span>
+                  <span class="post-date">07-29</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/">项目学习-CMU-15-445-Lab1-3</a>
+              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
             </div>
           </div>
         
@@ -2146,18 +2245,18 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="post-img " style="background-size: cover; 
+              <a href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">06-24</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-Raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">项目学习-Raft一致性协议</a>
+              <a class="post-title" href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">学习笔记-计算机图形学</a>
             </div>
           </div>
         
@@ -2167,7 +2266,49 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/" class="post-img " style="background-size: cover; 
+              <a href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-21</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/">学习笔记-docker与k8s</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">05-18</span>
+                
+              </div>
+              <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
@@ -2175,10 +2316,10 @@
             <div class="post-date-title">
               <div>
                 
-                  <span class="post-date">03-20</span>
+                  <span class="post-date">05-08</span>
                 
               </div>
-              <a class="post-title" href="/2023/03/20/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-2/">项目学习-CMU-15-445-Lab1-2</a>
+              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
             </div>
           </div>
         
