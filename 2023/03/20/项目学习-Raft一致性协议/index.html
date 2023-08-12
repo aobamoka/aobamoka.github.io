@@ -493,6 +493,34 @@
 <li>不能太短：新的leader节点心跳包还来不及到达，就已经超时发起选举推翻leader了。</li>
 <li>不能太长：如果选不出leader，所有节点都在等待超时，系统不可用时间会较长。</li>
 </ul>
+<h2 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h2><p>监控选举超时的goroutine：</p>
+<p>将startElection()也作为一个goroutine：如果electionTimer超时时，候选者还未当选，则需要放弃选举，开启新一轮选举。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rf *Raft)</span> <span class="title">ticker</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> !rf.killed() &#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> &lt;-rf.electionTimer.C:</span><br><span class="line">            rf.mu.Lock()</span><br><span class="line">            <span class="keyword">if</span> rf.state == LEADER &#123;</span><br><span class="line">                rf.mu.Unlock()</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            rf.state = CANDIDATE</span><br><span class="line">            rf.mu.Unlock()</span><br><span class="line">            <span class="keyword">go</span> rf.startElection()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>startElection()</p>
+<ul>
+<li>使用n-1个协程并行发送RequestVote请求。</li>
+<li>使用n-1大小的chan接收投票结果。</li>
+<li>统计投票结果<ul>
+<li>如果统计过程中失去了Candidate身份，则停止统计</li>
+<li>如果获得票数过半，则当选leader，启动HeartBeat携程</li>
+<li>如果所有成员已投票且未当选leader，则退出统计</li>
+</ul>
+</li>
+</ul>
+<p>HeartBeat()</p>
+<ul>
+<li>为每个节点分配一个replicator协程，接收两种类型的chan消息<ul>
+<li>wake：唤醒协程发送AppendEntries RPC</li>
+<li>done：中断协程</li>
+</ul>
+</li>
+<li>先进行初始broadcast()，对应Leader刚当选的心跳，通过wake chan唤醒所有replicator协程发送心跳包</li>
+<li>初始化heartbeatTimer，到期时broadcast()<ul>
+<li>如果节点被kill或不再是leader，需要中断heartbeatTimer且释放所有replicator协程</li>
+</ul>
+</li>
+</ul>
+<p>注意点：发送心跳包需要另起一个协程运行，避免在发送过程中，Leader又发送了新的broadcast，或者不再是Leader。</p>
 <h1 id="4-log复制"><a href="#4-log复制" class="headerlink" title="4. log复制"></a>4. log复制</h1><p>客户端不知道leader：如果非leader的节点发送到客户端请求，就会拒绝请求，并提供该节点知道的关于最新leader的信息。如果leader崩溃，客户端请求超时，会选择随机节点重试。</p>
 <p>约束：</p>
 <ul>
@@ -509,23 +537,61 @@
 </ul>
 <p>维护状态：</p>
 <ul>
-<li>leader维护所有节点的NextIndex、MatchIndex，每个节点维护自身的CommitIndex。</li>
-<li>NextIndex表示待发往该节点的Entry Index，初始化为leader的log长度，表示从最后一天开始往前试探</li>
-<li>MatchIndex表示已匹配的Entry Index，初始化为0，表示还不知道匹配进度</li>
-<li>CommitIndex表示当前已提交的EntryIndex</li>
-<li>转为Leader后，MatchIndex、CommitIndex置0，NextIndex为自己最后一条日志Index+1。</li>
+<li><p>leader维护所有节点的NextIndex、MatchIndex，每个节点维护自身的CommitIndex。</p>
+</li>
+<li><p>NextIndex表示待发往该节点的Entry Index，初始化为leader的log长度，表示从最后一天开始往前试探</p>
+<ul>
+<li>NextIndex是对追加位置的一种猜测，是乐观估计</li>
+</ul>
+</li>
+<li><p>MatchIndex表示已匹配的Entry Index，初始化为0，表示还不知道匹配进度</p>
+<ul>
+<li>MatchIndex是对同步情况的保守确认，为了保证安全性</li>
+<li>MatchIndex与NextIndex在一次次心跳中不断靠近，直到MatchIndex=NextIndex-1，表示Follower已经与Leader同步成功</li>
+</ul>
+</li>
+<li><p>CommitIndex表示当前已提交的EntryIndex</p>
+</li>
+<li><p>转为Leader后，MatchIndex、CommitIndex置0，NextIndex为自己最后一条日志Index+1。</p>
+</li>
 </ul>
 <p>leader行动：</p>
 <ul>
 <li>添加log entry。</li>
 <li>在心跳包中附带上log entry与前一条entry信息。Follower收到后校验该entry前一条日志是否匹配（比较自己prevLogIndex位置上的日志的term是否为prevLogTerm），是则直接写入entry，否则删除不匹配的日志，返回失败。</li>
 <li>等待多数响应。每有一条成功的返回消息，更新对应节点的NextIndex和MatchIndex，继续发送后续的Entry。每有一条失败的返回消息，回退NextIndex继续发送（可优化为回退一个term），直到其返回成功。follower更新nextindex及之后的所有log entry。</li>
-<li>如果大多数节点的MatchIndex大于CommitIndex，就更新CommitIndex。对自己的状态机应用log entry。</li>
+<li>如果大多数节点的MatchIndex大于CommitIndex，就更新CommitIndex。对自己的状态机应用log entry。CommitIndex更新条件：<ul>
+<li>存在index值N &gt; CommitIndex</li>
+<li>过半数matchIndex &gt;= N</li>
+<li>log[N].term == currentTerm<ul>
+<li>特性：Leader仅会直接提交其任期内的entry，不在其任期内的则会通过提交之后的entry来间接提交。简化了Leader当选初始化工作、避免了已提交entry被覆盖的问题。</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>回复客户端ACK。</li>
 <li>心跳包中附带上Leader最新的CommitIndex。Follower发现心跳包的CommitIndex大于自身，则应用状态，将自身的CommitIndex更新为自身最新的LogIndex与leader的CommitIndex的最小值。（应设定为<strong>只在没有log同步时才同步commit</strong>）</li>
 <li>等待多数响应。</li>
 </ul>
 <p><strong>只要log entry复制到多数节点，就能保证不会被回滚</strong>。</p>
+<h2 id="go实现"><a href="#go实现" class="headerlink" title="go实现"></a>go实现</h2><p>每个Follower节点具有的后台goroutine：</p>
+<ul>
+<li>alerter：1个。监听electionTimer的超时时间、重置事件。<ul>
+<li>超时事件：转变为Candidate，发起选举。</li>
+</ul>
+</li>
+<li>applier：1个。监听applier chan。节点认为需要apply时，向applier chan发送一次信号。applier接收信号后，将当前lastApplied和commitIndex间所有entry提交。</li>
+<li>heartbeat：1个。监听heartbeatTimer的超时事件，仅在Leader状态工作。<ul>
+<li>超时事件：广播心跳命令。</li>
+</ul>
+</li>
+<li>replicator：n-1个，每一个对应一个peer，监听心跳广播命令，仅在节点为Leader时工作。接收到命令后，向对应的peer发送心跳。</li>
+</ul>
+<p>注意点：</p>
+<ul>
+<li>请求投票和广播是并行异步，各个routine发送RPC的args要完全一致，所以必须在启动routine前准备好。</li>
+<li>reply由于log冲突返回false，可直接告诉leader发生冲突的位置，而不必每次将nextIndex-1多次重试。</li>
+</ul>
 <h1 id="5-集群变更"><a href="#5-集群变更" class="headerlink" title="5. 集群变更"></a>5. 集群变更</h1><p>在系统运行时动态增删节点。</p>
 <p><strong>约定一次只能变更一个节点。</strong></p>
 <p>问题：假设一开始三个节点，假设增加两个节点后触发选举，1、2节点保存的配置只有3个节点，所以节点1获得1、2的选票当选；新节点5获得3、4、5的选票当选，出现两个节点。</p>
@@ -653,7 +719,13 @@
 <p><strong>场景3</strong>：S1 4 Leader S2 466。</p>
 <p>S1返回XTerm=-1，XLen=2。S2根据XLen回退S1的nextIndex到其最后一条条目的下一条，即2。</p>
 <p>因为是线性查找，可使用二分提速。</p>
-<h1 id="8-持久化-日志快照"><a href="#8-持久化-日志快照" class="headerlink" title="8. 持久化/日志快照"></a>8. 持久化/日志快照</h1><p>需要持久化的数据：Log、currentTerm、votedFor。后两者为了确保一个任期内只有一个leader。</p>
+<h1 id="8-持久化-日志快照"><a href="#8-持久化-日志快照" class="headerlink" title="8. 持久化/日志快照"></a>8. 持久化/日志快照</h1><p>需要持久化的数据：</p>
+<ul>
+<li>Log</li>
+<li>currentTerm</li>
+<li>votedFor</li>
+</ul>
+<p>后两者为了确保一个任期内只有一个leader。</p>
 <p>写入频率问题：将数据写入磁盘大概花费10ms，但相对于Raft中的操作太长了，代价很大；运行较久的Raft系统中，Log累积过多，如果持久化需要大量磁盘空间，且恢复需要很长时间。</p>
 <p>解决：快照：当Log大于一定限制时，要求应用程序在Log特定位置对其状态快照（k-v表单与位置，即LogIndex）。然后Raft丢弃该位置之前的所有Log记录。快照在应用程序生成，且Raft需要通过某种方式调用到应用程序，通知其生成与获取快照。</p>
 <p>Raft持久化问题转化为持久化最后一次快照，以及之后的所有Log。</p>
@@ -885,7 +957,7 @@ K-距离定义：
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 基本介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%8A%B6%E6%80%81"><span class="toc-text">2. 状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%80%89%E4%B8%BE"><span class="toc-text">3. 选举</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-log%E5%A4%8D%E5%88%B6"><span class="toc-text">4. log复制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%9B%86%E7%BE%A4%E5%8F%98%E6%9B%B4"><span class="toc-text">5. 集群变更</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9"><span class="toc-text">1. 添加节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9-%E7%89%B9%E4%BE%8B%EF%BC%9A%E5%88%A0%E9%99%A4leader"><span class="toc-text">2. 删除节点-特例：删除leader</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">6. 安全性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%80%89%E4%B8%BE%E5%AE%89%E5%85%A8"><span class="toc-text">1. 选举安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-leader%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-text">2. leader完整性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%8D%E5%88%B6%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">3. 复制安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%89%A9%E5%AE%B9%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">4. 扩容安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%A9%E5%AE%B9%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">5. 缩容安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-text">6. 可用性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D-%E7%94%B1%E9%80%90%E4%B8%AA%E5%8F%98%E4%B8%BA%E9%80%90term"><span class="toc-text">7. 快速恢复-由逐个变为逐term</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E6%8C%81%E4%B9%85%E5%8C%96-%E6%97%A5%E5%BF%97%E5%BF%AB%E7%85%A7"><span class="toc-text">8. 持久化&#x2F;日志快照</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5"><span class="toc-text">9. 特殊情况</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E5%88%86%E5%89%B2%EF%BC%88%E8%84%91%E8%A3%82%EF%BC%89"><span class="toc-text">1. 网络分割（脑裂）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%87%8D%E5%90%AF"><span class="toc-text">2. 重启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E4%B8%8B%E6%96%B0leader%E5%A6%82%E4%BD%95%E5%91%8A%E7%9F%A5%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">3. 特殊情况下新leader如何告知客户端</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E4%B8%8EPaxos"><span class="toc-text">10. 与Paxos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E8%AF%BB"><span class="toc-text">11. 读</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 基本介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%8A%B6%E6%80%81"><span class="toc-text">2. 状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%80%89%E4%B8%BE"><span class="toc-text">3. 选举</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go%E5%AE%9E%E7%8E%B0"><span class="toc-text">Go实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-log%E5%A4%8D%E5%88%B6"><span class="toc-text">4. log复制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#go%E5%AE%9E%E7%8E%B0"><span class="toc-text">go实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%9B%86%E7%BE%A4%E5%8F%98%E6%9B%B4"><span class="toc-text">5. 集群变更</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9"><span class="toc-text">1. 添加节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9-%E7%89%B9%E4%BE%8B%EF%BC%9A%E5%88%A0%E9%99%A4leader"><span class="toc-text">2. 删除节点-特例：删除leader</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">6. 安全性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%80%89%E4%B8%BE%E5%AE%89%E5%85%A8"><span class="toc-text">1. 选举安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-leader%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-text">2. leader完整性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%8D%E5%88%B6%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">3. 复制安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%89%A9%E5%AE%B9%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">4. 扩容安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%A9%E5%AE%B9%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">5. 缩容安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-text">6. 可用性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D-%E7%94%B1%E9%80%90%E4%B8%AA%E5%8F%98%E4%B8%BA%E9%80%90term"><span class="toc-text">7. 快速恢复-由逐个变为逐term</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E6%8C%81%E4%B9%85%E5%8C%96-%E6%97%A5%E5%BF%97%E5%BF%AB%E7%85%A7"><span class="toc-text">8. 持久化&#x2F;日志快照</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5"><span class="toc-text">9. 特殊情况</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E5%88%86%E5%89%B2%EF%BC%88%E8%84%91%E8%A3%82%EF%BC%89"><span class="toc-text">1. 网络分割（脑裂）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%87%8D%E5%90%AF"><span class="toc-text">2. 重启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E4%B8%8B%E6%96%B0leader%E5%A6%82%E4%BD%95%E5%91%8A%E7%9F%A5%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">3. 特殊情况下新leader如何告知客户端</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E4%B8%8EPaxos"><span class="toc-text">10. 与Paxos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E8%AF%BB"><span class="toc-text">11. 读</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -911,6 +983,27 @@ K-距离定义：
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -993,27 +1086,6 @@ K-距离定义：
                 
               </div>
               <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-08</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
             </div>
           </div>
         

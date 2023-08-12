@@ -507,8 +507,11 @@
 <li>可能会改变树，所以需要加写锁。</li>
 <li>可能会改变根节点、树结构，所以可能暂时不能释放Leaf的祖先节点的锁。</li>
 <li>对于insert操作，到Leaf路径上的所有节点可能会因为子节点溢出而需要插入一个新的元素。所以，如果子节点在插入元素后不会溢出，判断该insert操作为安全操作，就可以将子节点的所有祖先节点上的写锁全部释放。</li>
-<li>对于remove操作，到Leaf路径上的所有节点可能会因为子节点移除后不满足minsize合并，而需要修改键值对。所以，如果子节点在移除元素后不需要调整，即size大于minsize，判断该remove操作为安全操作，就可以将子节点的所有祖先节点上的写锁全部释放。</li>
-<li>即使在释放时，有被锁上的不安全的祖先节点，因为当前节点是安全的，所以不会有回溯到祖先节点的操作，所以即使祖先节点不安全，也不会受到波及。</li>
+<li>对于remove操作，到Leaf路径上的所有节点可能会因为子节点移除后不满足min_size合并，而需要修改键值对。所以，如果子节点在移除元素后不需要调整，即size大于minsize，判断该remove操作为安全操作，就可以将子节点的所有祖先节点上的写锁全部释放。<ul>
+<li>需要调整兄弟节点时，因为调整的节点不安全，调整节点的父节点（也即兄弟节点的父节点）一定是被锁住的，所以可以安全调整。</li>
+</ul>
+</li>
+<li>即使在释放时，有被锁上的不安全的祖先节点，因为当前节点是安全的，所以不会再回溯。所以即使祖先节点不安全，也不会受到波及。</li>
 </ul>
 <h1 id="2-实现"><a href="#2-实现" class="headerlink" title="2. 实现"></a>2. 实现</h1><h2 id="1-ReleaseLatch"><a href="#1-ReleaseLatch" class="headerlink" title="1. ReleaseLatch"></a>1. ReleaseLatch</h2><p>作用：释放当前持有的所有锁。</p>
 <p>输入：Transaction *transaction</p>
@@ -516,7 +519,10 @@
 <ul>
 <li>GetPageSet()遍历page_set，每次pop出一个page然后判断：<ul>
 <li>为nullptr，表示是id锁，写释放。</li>
-<li>不为nullptr，表示是页锁，写释放后还需要UnpinPage()。</li>
+<li>不为nullptr，表示是页锁。<ul>
+<li>写释放后还需要UnpinPage()。</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -547,8 +553,8 @@
 <ul>
 <li>FetchPage()取到根页，转换成BPlusTreePage的节点为当前页。（一般在FindLeafRW()调用前就已经加了id锁）</li>
 <li>判断是否可以释放id锁：<ul>
-<li>如果op为SEARCH，释放id锁，并为根页上写锁。</li>
-<li>否则，先为根页上读锁，然后判断操作是否安全（是否会改变根页号），安全才释放id锁</li>
+<li>如果op为SEARCH，释放id锁，并为根页上读锁。</li>
+<li>否则，先为根页上写锁，然后判断操作是否安全（是否会改变根页号），安全才释放id锁</li>
 </ul>
 </li>
 <li>如果当前页不是Leaf页，循环向下，根据key/leftmost/rightmost查找对应的子页：<ul>
@@ -623,6 +629,16 @@
 <li>因为多线程bug不好处理，对照完加解锁实现逻辑与insert用例无误后，猜想可能是size大小的问题。</li>
 <li>查看页的删除逻辑，发现了找不到删除的元素时，没有判断查找的key大于当前节点中所有key的情况。</li>
 <li>导致如果Size处的key（可能是之前remove时残留下来的）恰好与传入的key相等，就会触发Remove成功的操作，<strong>错误减少当前Size</strong>。</li>
+</ul>
+<h2 id="2-死锁分析"><a href="#2-死锁分析" class="headerlink" title="2. 死锁分析"></a>2. 死锁分析</h2><p>一般情况：获取多个锁时，都是从父节点到子节点，从上到下获取，因此不可能存在一个线程先持有子节点锁再申请父节点锁的情况，不会出现死锁．</p>
+<p>一般遍历＋迭代器遍历：删除操作需要获取左兄弟时，是从右往左，而迭代器遍历是从左往右，会出现两个线程同时各持一个兄弟节点的锁，获取另一个兄弟节点的锁的死锁情况。</p>
+<ul>
+<li>因此，需要让一方在获取不到锁时放弃获取，这里设置为让迭代器放弃获取，因为读操作影响比写操作小。</li>
+</ul>
+<h2 id="3、优化"><a href="#3、优化" class="headerlink" title="3、优化"></a>3、优化</h2><p>在增删操作获取锁时，可以乐观认为不会有不安全的操作，像查找一样上读锁并及时释放。</p>
+<ul>
+<li>如果操作确实安全，则直接完成。</li>
+<li>如果发现操作不安全，则放弃持有的所有锁，从根页开始像未优化一样悲观操作。</li>
 </ul>
 
       </div>
@@ -788,7 +804,7 @@ g
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">1. 并发控制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-lock-amp-latch"><span class="toc-text">1. lock &amp; latch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%8E%A7%E5%88%B6%E9%80%BB%E8%BE%91"><span class="toc-text">2. 控制逻辑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-transaction"><span class="toc-text">1. transaction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-root%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">2. root并发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-FindLeaf"><span class="toc-text">3. FindLeaf</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ReleaseLatch"><span class="toc-text">1. ReleaseLatch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-FindLeafRW"><span class="toc-text">2. FindLeafRW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Insert"><span class="toc-text">3. Insert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Remove"><span class="toc-text">4. Remove</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Iterator"><span class="toc-text">5. Iterator</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-debug%E7%BB%8F%E5%8E%86"><span class="toc-text">3. debug经历</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-concurrency-delete-bug"><span class="toc-text">1. concurrency delete bug</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">1. 并发控制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-lock-amp-latch"><span class="toc-text">1. lock &amp; latch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%8E%A7%E5%88%B6%E9%80%BB%E8%BE%91"><span class="toc-text">2. 控制逻辑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-transaction"><span class="toc-text">1. transaction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-root%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">2. root并发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-FindLeaf"><span class="toc-text">3. FindLeaf</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ReleaseLatch"><span class="toc-text">1. ReleaseLatch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-FindLeafRW"><span class="toc-text">2. FindLeafRW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Insert"><span class="toc-text">3. Insert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Remove"><span class="toc-text">4. Remove</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Iterator"><span class="toc-text">5. Iterator</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-debug%E7%BB%8F%E5%8E%86"><span class="toc-text">3. debug经历</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-concurrency-delete-bug"><span class="toc-text">1. concurrency delete bug</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%AD%BB%E9%94%81%E5%88%86%E6%9E%90"><span class="toc-text">2. 死锁分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BC%98%E5%8C%96"><span class="toc-text">3、优化</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -814,6 +830,27 @@ g
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -896,27 +933,6 @@ g
                 
               </div>
               <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-08</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
             </div>
           </div>
         

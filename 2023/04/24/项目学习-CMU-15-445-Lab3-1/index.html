@@ -452,6 +452,7 @@
       <div class="post-content">
         <h1 id="1-Bustub架构"><a href="#1-Bustub架构" class="headerlink" title="1. Bustub架构"></a>1. Bustub架构</h1><p>Lab1写的是实现缓存池替换的buffer_pool_manager，Lab2写的是B+树的底层实现，都是整个数据库的一个局部。</p>
 <p>Lab3需要实现具体的数据库语句逻辑，所以需要先了解数据库整体的架构。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-59c2d164f467b9a3de77546a61dcd6bf_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-59c2d164f467b9a3de77546a61dcd6bf_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 <h2 id="1-Parser"><a href="#1-Parser" class="headerlink" title="1. Parser"></a>1. Parser</h2><p>sql语句通过Parser生成一棵AST抽象语法树。</p>
 <p>一般不会成为性能瓶颈，所以采用第三方库生成。</p>
 <p>bustub采用了libpg_query库生成AST。</p>
@@ -474,12 +475,15 @@
 <p>本项目中，不同的Plan对应着不同的PlanNode类，构造Executor时传入PlanNode作为参数，提供必要的信息。</p>
 <h2 id="4-Optimizer"><a href="#4-Optimizer" class="headerlink" title="4. Optimizer"></a>4. Optimizer</h2><p>初步的查询计划由Optimizer修改优化。主要有两种实现方式：</p>
 <ul>
-<li>（bustub实现）Rule-based：遍历查询计划，根据已定义好的一系列规则对PlanNode进行修改、聚合等操作。Optimizer不需要知道数据的具体内容，只根据预定义规则修改。</li>
+<li>（bustub实现）Rule-based：遍历查询计划，根据已定义好的一系列规则对PlanNode进行修改、聚合等操作。Optimizer不需要知道数据的具体内容，只根据预定义规则修改。<ul>
+<li>即：每一条优化规则对应一个函数，对查询计划按一定顺序依次应用所有优化规则函数。</li>
+</ul>
+</li>
 <li>Cost-based：先读取树，利用统计学模型预测不同形式但结果等价的查询计划的cost，最后选取cost最小的查询计划。</li>
 </ul>
 <p>一般来说，Planner生成Logical Plan Node，代表抽象的计划；而Optimizer生成Physical Plan Node，代表具体的计划。</p>
 <p>抽象计划中，只有Join；具体计划中，会被优化成具体的HashJoin或NestedIndexJoin。</p>
-<p>bustub中，不区分抽象与具体的Node，Planner直接生成具体计划。</p>
+<p>而在bustub中，不区分抽象与具体的Node，Planner直接生成具体计划。</p>
 <h2 id="5-Executor"><a href="#5-Executor" class="headerlink" title="5. Executor"></a>5. Executor</h2><p>本lab主要实现的内容，即为一系列算子。</p>
 <p>遍历查询计划树，将树上的PlanNode替换成Executor。</p>
 <p>算子的执行模型大致分为三种：</p>
@@ -520,12 +524,29 @@
 <h3 id="7-Tuple"><a href="#7-Tuple" class="headerlink" title="7. Tuple"></a>7. Tuple</h3><p>table中的一行数据，由RID唯一标识。</p>
 <p>由value构成，value个数和类型由table info中的schema指定。</p>
 <h3 id="8-IndexInfo"><a href="#8-IndexInfo" class="headerlink" title="8. IndexInfo"></a>8. IndexInfo</h3><p>维护一个索引表的所有元数据，如该索引所在表的名称、索引名称等。</p>
-<h1 id="2-已经实现的Executor"><a href="#2-已经实现的Executor" class="headerlink" title="2. 已经实现的Executor"></a>2. 已经实现的Executor</h1><h2 id="1-AbstractExecutor"><a href="#1-AbstractExecutor" class="headerlink" title="1. AbstractExecutor"></a>1. AbstractExecutor</h2><p>所有Executor的父类</p>
+<h1 id="2-已经实现的Executor"><a href="#2-已经实现的Executor" class="headerlink" title="2. 已经实现的Executor"></a>2. 已经实现的Executor</h1><p>executor自己不保存查询计划信息，而应该通过其成员plan获得如何进行本次计算。</p>
+<h2 id="1-AbstractExecutor"><a href="#1-AbstractExecutor" class="headerlink" title="1. AbstractExecutor"></a>1. AbstractExecutor</h2><p>所有Executor的父类</p>
 <h2 id="2-FilterExecutor"><a href="#2-FilterExecutor" class="headerlink" title="2. FilterExecutor"></a>2. FilterExecutor</h2><p>根据表达式筛选数据，如</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> t1 <span class="keyword">where</span> t1.x <span class="operator">=</span><span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>循环通过child executor的next()获得一条数据。</p>
+<ul>
+<li>如果child executor的next()返回false，代表已经没有数据了，返回false。</li>
+<li>否则即为有数据，通过自己的predicate（谓词，在本executor中即为过滤条件）进行计算<ul>
+<li>如果计算结果为true，表示符合筛选条件，返回true。</li>
+<li>否则，继续循环。</li>
+</ul>
+</li>
+</ul>
 <h2 id="3-MockScanExecutor"><a href="#3-MockScanExecutor" class="headerlink" title="3. MockScanExecutor"></a>3. MockScanExecutor</h2><p>似乎与SeqScan差别不大</p>
 <h2 id="4-ProjectionExecutor"><a href="#4-ProjectionExecutor" class="headerlink" title="4. ProjectionExecutor"></a>4. ProjectionExecutor</h2><p>投影，即从表中选出特定的列，如</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> x, y <span class="keyword">from</span> t1</span><br></pre></td></tr></table></figure>
+<p>过程：</p>
+<ul>
+<li>获得child executor的一条数据tuple</li>
+<li>获取当前节点应该输出的所有表达式，如对于上面的语句，表达式分别为x、y</li>
+<li>将tuple传入每条表达式，计算输出</li>
+<li>将所有输出作为一条tuple，传给父节点</li>
+</ul>
 <h2 id="5-ValuesExecutor"><a href="#5-ValuesExecutor" class="headerlink" title="5. ValuesExecutor"></a>5. ValuesExecutor</h2><p>创建一行新tuple。</p>
 <h1 id="3-实现"><a href="#3-实现" class="headerlink" title="3. 实现"></a>3. 实现</h1><p>bustub使用的是火山模型：</p>
 <ul>
@@ -823,6 +844,27 @@ g
             
 
             <div class="post-img-box">
+              <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
               <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
@@ -898,27 +940,6 @@ g
                 
               </div>
               <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-08</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-CMU-15-445-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">学习笔记-CMU-15-445-课程笔记</a>
             </div>
           </div>
         

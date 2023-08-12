@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>学习笔记-leetcode-master-二叉树2 | 摩卡&#39;s blog</title>
+  <title>归档: 2023/8 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -389,556 +389,106 @@
     
 </header>
         <!-- 内容区域 -->
-        
- <!-- prismjs 代码高亮 -->
- 
-
-
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        学习笔记-leetcode-master-二叉树2
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2021-03-17 |
-        </span>
-      
-
-      
-        <span class="post-detail-header_categories">
-          <i class="iconfont iconbookmark1"></i> 分类：
-          
-            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-leetcode-master/" class="post-detail-header_category">
-              学习笔记-leetcode-master
-            </a>
-          
-        </span>
-      
-
-      
-    
+        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
+<div class="archive-header" style="background-image:url('/medias/20221103_151339.jpg')">
+  <div class="archive-header-title">
+    归档
   </div>
+  <div class="archive-header-desc">
   
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content post-row" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <h2 id="1、二叉树最小深度"><a href="#1、二叉树最小深度" class="headerlink" title="1、二叉树最小深度"></a>1、二叉树最小深度</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/">leetcode 111：二叉树的最小深度</a></p>
-<p>简单题，但是有个坑，不能像求最大深度那么做。因为最小深度是到叶子节点的最小深度，而如果只有一个子节点为空，最大深度的算法就会把该节点最小深度设置为1，而这是不对的。</p>
-<p>只有一个子节点为空时，应返回另一个子节点的最小深度+1。</p>
-<h2 id="2、回溯"><a href="#2、回溯" class="headerlink" title="2、回溯"></a>2、回溯</h2><p>感觉这一章也没啥可讲的，都是考验基本功的</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-bottom-left-tree-value/">leetcode 513.：找树左下角的值</a></p>
-<h2 id="3、二叉树递归函数返回值的取舍问题"><a href="#3、二叉树递归函数返回值的取舍问题" class="headerlink" title="3、二叉树递归函数返回值的取舍问题"></a>3、二叉树递归函数返回值的取舍问题</h2><p>总结：如果需要对二叉树进行遍历，那么无需返回值；如果需要搜索出一条符合要求的路径，那么需要返回值，因为如果搜索到了符合条件的路径就要及时返回。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/path-sum/">leetcode 112：路径总和</a>与<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/path-sum-ii/">leetcode 113：路径总和II</a></p>
-<p>可以对比一下两道题，112的目的是判断是否有一条根到叶节点的路径，使其和为指定值，这种情况下只需要找到一条符合要求的路径，就可以返回，所以需要返回值；而113的目的使找到所有符合条件的路径，所以需要对整棵树进行遍历，所以不要返回值。</p>
-<h2 id="4、根据两序遍历来建立树"><a href="#4、根据两序遍历来建立树" class="headerlink" title="4、根据两序遍历来建立树"></a>4、根据两序遍历来建立树</h2><p>注意前面说到的“循环不变量”，在本题中表现为每次用来建立节点的数组区间开闭问题（不过一般不会出什么大问题）。</p>
-<p>剩下的就是基本操作了，根据前序/后序中根节点在第一个/最后一个的特点，利用根节点对中序数组进行划分，之后利用中序数组的划分再划分前序/后序数组，之后对每一个划分后的子数组都做递归操作。</p>
-<p>每次递归的时候可以不建立新的数组，而是在参数中引入下标来进行数组划分（不过我一直都是下标划分，所以貌似也没啥要注意的……）</p>
-<p>用前序数组与后序数组是不能建立二叉树的，因为左右没法分开。</p>
-<h2 id="5、二叉搜索树"><a href="#5、二叉搜索树" class="headerlink" title="5、二叉搜索树"></a>5、二叉搜索树</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/validate-binary-search-tree/">leetcode 98：验证二叉搜索树</a></p>
-<p>我一开始以为返回值记录区间的起终点，再将左右子节点的返回值与根节点作比较，最后得出合并后的区间并返回。结果是我想的太复杂了，其实可以很简单。</p>
-<ul>
-<li>方法一：因为中序遍历的顺序是左中右，所以对二叉搜索树进行中序遍历得到的就会是有序数组。</li>
-<li>方法二：通过记录中序遍历中的上一个节点，实质跟方法一一样，只是节省了存储数组的空间</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TreeNode* pre &#x3D; NULL; &#x2F;&#x2F; 用来记录前一个节点 </span><br><span class="line">bool isValidBST(TreeNode* root) &#123;</span><br><span class="line">    if (root &#x3D;&#x3D; NULL) return true;</span><br><span class="line">    bool left &#x3D; isValidBST(root-&gt;left);</span><br><span class="line">    if (pre !&#x3D; NULL &amp;&amp; pre-&gt;val &gt;&#x3D; root-&gt;val) return false;</span><br><span class="line">    pre &#x3D; root; &#x2F;&#x2F; 记录前一个节点</span><br><span class="line">    bool right &#x3D; isValidBST(root-&gt;right);</span><br><span class="line">    return left &amp;&amp; right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>记住这个通过记录前一个节点来遍历二叉树的方法，很多时候可以将二叉树问题转化为数组问题。</p>
-<h2 id="6、删除二叉搜索树中某个节点"><a href="#6、删除二叉搜索树中某个节点" class="headerlink" title="6、删除二叉搜索树中某个节点"></a>6、删除二叉搜索树中某个节点</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/delete-node-in-a-bst/">leetcode 450：删除二叉搜索树中的节点</a></p>
-<p>考虑删除节点后其左右子节点该如何处理的问题：</p>
-<ul>
-<li>左右节点均为空，可以直接删除</li>
-<li>左空右非空，可以用右节点代替删除节点</li>
-<li>左非空右空，可以用左节点代替删除节点</li>
-<li>左右皆非空，可以将左节点为根节点的二叉树作为一个整体，移到当前节点在中序遍历下的后继的左子节点上</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/trim-a-binary-search-tree/">leetcode 669：修剪二叉搜索树</a></p>
-<p>删除多个节点时，也是类似的思想</p>
-<h2 id="7、简简单单总个结"><a href="#7、简简单单总个结" class="headerlink" title="7、简简单单总个结"></a>7、简简单单总个结</h2><p>做了这么多二叉树，人快做麻了。我认为对我来说，二叉树这一章关键的几个点在：二叉搜索树节点的删除，以及带返回值的二叉树递归方法。</p>
-
-      </div>
-      <div class="post-tags-categories">
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>作者:  </strong>aoba moka</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>文章链接:  </strong>
-    <a href="/2021/03/17/leetcode-master学习笔记-二叉树2/" target="_blank" title="学习笔记-leetcode-master-二叉树2">https://aobamoka.github.io/2021/03/17/leetcode-master学习笔记-二叉树2/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>版权声明:   </strong>
-      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      许可协议。转载请注明出处!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
-    
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2021/03/18/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9B%9E%E6%BA%AF/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">学习笔记-leetcode-master-回溯</div>
-      </div>
-      
-      <!-- <div class="content">
-        一、简单的基础知识回溯算法本质就是穷举，是一种低效的暴力解法。
-回溯算法可以看作dfs，回溯的过程就是一种树形结构。
-①
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2021/03/16/leetcode-master%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91/" class="post-nav-link">
-      <div class="title">
-        下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">学习笔记-leetcode-master-二叉树1</div>
-      </div>
-      <!-- <div class="content">
-        一、简单知识一些概念：满二叉树、完全二叉树、二叉搜索树、平衡二叉搜索树
-C++中map、set、multimap，mul
-      </div> -->
-    </a>
-  </div>
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
+  <span class="title" id="archive-header-desc"></span>
+  <script>
+  function typedFn() {
+    const el = '#archive-header-desc';
+    const type = 'archive';
+    let desc = '归档'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
   }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
-      <div id="gitment-container"></div>
-
-    
+  typedFn();
+</script>
+  
   </div>
-
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
-
-
-  </div>
-
-  <!-- 目录 -->
-  <aside id='l_side'>
-  
-    
-      <section class="widget side_blogger">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img src='/medias/test.png'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-          <h2>摩卡</h2>
-        
-        
-          <p>不太会说话</p>
-
-        
-        
-          <p><span id="jinrishici-sentence">摩卡's blog</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-  </div>
-</section>
-
-    
-  
-  
-  
-
-  <div class="layout_sticky">    
-    
-      
-<section class="widget side_toc">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91%E6%9C%80%E5%B0%8F%E6%B7%B1%E5%BA%A6"><span class="toc-text">1、二叉树最小深度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%9B%9E%E6%BA%AF"><span class="toc-text">2、回溯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%8F%96%E8%88%8D%E9%97%AE%E9%A2%98"><span class="toc-text">3、二叉树递归函数返回值的取舍问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E6%A0%B9%E6%8D%AE%E4%B8%A4%E5%BA%8F%E9%81%8D%E5%8E%86%E6%9D%A5%E5%BB%BA%E7%AB%8B%E6%A0%91"><span class="toc-text">4、根据两序遍历来建立树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="toc-text">5、二叉搜索树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%88%A0%E9%99%A4%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E6%9F%90%E4%B8%AA%E8%8A%82%E7%82%B9"><span class="toc-text">6、删除二叉搜索树中某个节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81%E7%AE%80%E7%AE%80%E5%8D%95%E5%8D%95%E6%80%BB%E4%B8%AA%E7%BB%93"><span class="toc-text">7、简简单单总个结</span></a></li></ol> -->
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
+  <div class="mask-box"></div>
 </div>
 
+<div class="archive-video">
+  <video class="full-video" autoplay loop muted>
+      <source style="width: 100%;height: 100vh;" src="/">
+  </video>
+  <div class="video-header-title">
+    归档
+  </div>
+  <div class="video-header-desc">
+  
+      <span class="title" id="archive-video-header-desc"></span>
+      <script>
+  function typedFn() {
+    const el = '#archive-video-header-desc';
+    const type = 'archive';
+    let desc = '归档'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
+  }
+  typedFn();
+</script>
       
-  <section class="widget side_recent_post">
-    
-  <header>
-    
-      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
-    
-  </header>
+  </div>
+  <div class="mask-box"></div>
+</div>
+
+<!-- hash算法 -->
 
 
-    <div class='content'>
-      
-      <!-- hash算法 -->
-      
-      <div class="aside-list">
+<div class="archive-main">
+  <section class="archive">
+    <div class="archive-content">
+      <ul class="post-archive">
         
-          <div class="aside-list-item">
+        
+          
             
+            <div class="year" data-aos="zoom-in-up">
+                <div class="bullet"></div>
+                <a href="/archives/2023">2023</a>
+            </div>
+          
+          <li class="post-item" data-aos="fade-left">
             
-            
-
             <div class="post-img-box">
               <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                
-                  <span class="post-date">08-11</span>
-                
+                <span class="post-date">08-11</span>
               </div>
               <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
             </div>
-          </div>
+          </li>
         
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">07-29</span>
-                
-              </div>
-              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">06-24</span>
-                
-              </div>
-              <a class="post-title" href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">学习笔记-计算机图形学</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-21</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/">学习笔记-docker与k8s</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
-            </div>
-          </div>
-        
-      </div>
+      </ul>
     </div>
   </section>
-
+  <div class="w-70">
     
   </div>
-</aside>
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
 </div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
-  <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
-  
-</script>
-
 
       </main>
     </div>
