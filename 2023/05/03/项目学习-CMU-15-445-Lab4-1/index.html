@@ -624,7 +624,10 @@
 <ul>
 <li>不需要再判断是否有未释放的行锁。</li>
 </ul>
-<h1 id="3-debug经历"><a href="#3-debug经历" class="headerlink" title="3. debug经历"></a>3. debug经历</h1><p>heap_use_after_free：表示使用了野指针。<br>因此bug一定是跟指针或者引用相关，并且在其作用域内有erase、remove等操作。<br>通过搜索erase/remove发现，锁更新时，查找已有的锁是通过foreach遍历的，在找到并且检查无误后需要删掉原来的锁，但是foreach是const auto&amp;常引用的锁，所以删掉锁后再使用该常引用会导致报错。</p>
+<h1 id="3-debug经历"><a href="#3-debug经历" class="headerlink" title="3. debug经历"></a>3. debug经历</h1><p>heap_use_after_free：表示使用了野指针。<br>因此bug一定是跟指针或者引用相关，并且在其作用域内有erase、remove等操作。<br>通过搜索erase/remove发现，锁更新时，查找已有的锁是通过foreach遍历的。</p>
+<p>在找到并且检查无误后，需要删掉原来的锁，但是在请求队列中删除该锁后，还需要在事务对象的锁映射到表、行的哈希表中删除，用于后面的死锁打破算法。</p>
+<p>但是foreach是const auto&amp;常引用的锁，所以删掉锁后再使用该常引用会导致报错。</p>
+<p>修改：修改为 auto request，复制一份request用于后面使用。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -821,6 +824,69 @@
             
 
             <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/">学习笔记-Tomcat&amp;Servlet</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/">学习笔记-Spring</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">学习笔记-Java基础知识</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
               <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
@@ -854,69 +920,6 @@
                 
               </div>
               <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">06-24</span>
-                
-              </div>
-              <a class="post-title" href="/2023/06/24/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">学习笔记-计算机图形学</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-21</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-docker%E4%B8%8Ek8s/">学习笔记-docker与k8s</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-18</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Muduo%E5%BA%93%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">学习笔记-Muduo库核心代码学习</a>
             </div>
           </div>
         

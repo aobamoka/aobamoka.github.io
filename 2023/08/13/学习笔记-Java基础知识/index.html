@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>学习笔记-Java基础知识 | 摩卡&#39;s blog</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    
+        <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    
+
+    
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="摩卡's blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">摩卡&#39;s blog</h3>
+      <h5 class="drawer-box-head_desc">随便写写，记录下都看了些啥</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/yuang01/hexo-theme-bamboo">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">摩卡&#39;s blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/yuang01/hexo-theme-bamboo" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script defer src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        学习笔记-Java基础知识
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-08-13 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-detail-header_category">
+              学习笔记
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <p>1、层次结构<br>层次结构<br>● JDK<br>  ○ JRE<br>    ■ JVM：Java虚拟机，运行Java字节码，有针对不同系统的特定实现，目的是使用相同的字节码给出相同结果。<br>    ■ Java Class Library：Java基础类库。<br>  ○ Java开发工具，如javadoc、jdb等。某些应用程序可能需要这些工具来使用Java特性，所以即使不开发Java程序也可能需要安装JDK。<br>字节码：JVM可以理解的代码，即.class文件<br>2、编译过程<br>.java文件-&gt;javac编译-&gt;.class文件-&gt;解释器&amp;JIT-&gt;机器可理解的代码-&gt;机器执行<br>解释器这一步，JVM类加载器首先加载字节码文件，然后通过解释器逐步揭示执行，速度相对较慢，而且有些热点代码需要经常调用。<br>JIT编译器：热点方法/代码块会被编译，下次执行时直接从缓存中读取机器码执行，而非读取字节码解释执行。<br>AOT：直接将字节码编译成机器码，避免了JIT预热等各方面开销。但是为了支持一些动态特性，还是选择使用JIT即时编译器。<br>源程序-&gt;词法分析-&gt;语法分析-&gt;抽象语法树-&gt;填充符号表-&gt;注解处理-&gt;指令流-&gt;class文件<br>class文件+解释器-&gt;解释执行-&gt;代码优化-（判断热点代码）-&gt;Jit编译-&gt;优化、缓存机器码-&gt;执行<br>1、编译与解释并存的语言<br>编程语言按照程序的执行方式分类：<br>● 编译型：通过编译器将源代码一次性翻译成可被该平台执行的机器码（一次编译完后再执行），一般执行速度快、开发效率低。<br>● 解释性：通过解释器一句句将代码解释为机器代码后再执行（一边解释一边执行），一般开发效率快、执行速度慢。<br>Java语言同时具有两类语言的特征。<br>2、JVM中的编译器<br>两种编译器Client Compiler和Server Compiler。<br>1、Client Compiler/C1<br>注重启动速度与局部优化。<br>● 局部简单可靠的优化，如方法内联、常量传播等。<br>● 将字节码构造成高级中间表示HIR<br>● 将HRI转换成低级中间表示LIR，其基础上进行寄存器分配、窥孔优化等。<br>优化方法：<br>● 方法内联（展开set、get等方法）<br>● 去虚拟化：如果类中的方法只提供了一个实现类，就进行方法内联<br>● 冗余消除：去掉永真的条件、循环等<br>2、Server Compiler/C2<br>注重全局优化。<br>逃逸分析：根据运行状况判断方法中的变量是否会被外部读取，即是否逃逸到外部。<br>优化方法：<br>● 标量替换：直接用基本数据类型替换类成员，不创建类<br>● 栈上分配（创建更快、自动回收）<br>● 同步削除：如果未逃逸，且作为synchronized代码块的条件，则将synchronized关键字去掉<br>3、基本数据类型<br>8种基本数据类型：<br>● 6种数字类型：<br>  ○ 4种整数型：byte、short、int、long<br>  ○ 2种浮点型：float、double<br>● 1种字符类型：char（2字节）<br>● 1种布尔型：boolean（1bit）<br>long类型用字面量赋值时，一定要在后面加L，否则会作为整型解析。<br>包装类型<br>基本类型都有对应的包装类型。<br>与基本类型的区别：<br>● 用途：包装类型可用于泛型。<br>● 存储方式：包装类型属于对象类型，一般存在于堆中。JIT优化会进行逃逸分析，如果发现某一对象没有逃逸，就可能通过标量替换实现栈上分配。<br>● 占用空间：包装类型较大。<br>● 默认值：包装类型为null，基本类型有非空默认值。<br>● 比较方式：包装类型==比较的是内存地址，比较值用equals方法。<br>缓存机制<br>Byte、Short、Integer、Long4种包装类默认创建数值[-128, 127]相应类型的缓存数据，Character创建了数值[0, 127]范围的缓存数据，Boolean直接缓存并返回True/False两个对象。<br>缓存获取的对象地址相同，所以会影响==的结果。<br>4、字面量<br>特殊：<br>● 制表符\t：补空格，将前面的字符串补到长度8。<br>● 空null<br>5、运算符<br>隐式转换提升规则：<br>● 取值范围不同的类型运算，范围小的类型会转换为范围大的类型。<br>● byte、short、char运算时，会先转换为int。<br>字符串的+：+操作出现字符串时，+就是字符串连接符，只会将前后数据拼接，形成新的字符串。<br>6、String<br>1、String、StringBuffer、StringBuilder<br>● 可变性：String不可变，后两者可变。<br>● 线程安全型：<br>  ○ String不可变，所以线程安全。<br>  ○ StringBuffer对方法加了同步锁，所以线程安全。<br>  ○ StringBuilder没加同步锁，所以线程不安全。<br>2、字符串拼接<br>Java9之前，每一次+拼接字符串都会单独创建一个StringBuilder，会导致创建过多的对象。<br>3、intern()<br>native方法，将指定的字符串对象的引用保存在字符串常量池：<br>● 如果字符串常量池中保存了对应的字符串对象引用，直接返回该引用。<br>● 否则，在常量池中创建一个指向该字符串对象的引用并返回。<br>4、常量折叠<br>编译期优化，会把常量表达式的值求出来作为常量嵌在最终生成的代码中。<br>适用范围：<br>● 基本数据类型、字符串常量<br>● final修饰的基本数据类型、字符串变量<br>● 字符串通过+拼接得到的字符串、基本数据类型之间算术运算、位运算<br>7、异常类<br>Throwable<br>● Exception：程序本身可以处理、通过catch捕获的异常。<br>  ○ Checked Exception：受检查异常，必须通过catch捕获，不然无法通过编译，如IOException、ClassNotFoundException等<br>  ○ Unchecked Exception：不受检查异常，可以不处理也能正常通过编译，为RuntimeException及其子类，如ArithmeticException、ClassCastException等<br>● Error：程序无法处理的错误，不建议通过catch捕获。<br>  ○ OOMError、VMError等<br>通过try-catch-finally语句块进行流程控制<br>● try：语句块中出现的异常会被捕获，其后可接0个或多个catch块，0个catch块则必须跟一个finally块。<br>● catch：处理try捕获到的异常。<br>● finally：无论是否捕获或处理异常，都会执行该语句块。<br>  ○ 当try或catch块中遇到return语句时，返回前会执行finally语句块；此时如果finally语句块也有return，会忽略try/catch语句块中的return（try/catch语句块的返回值会先被暂存在一个本地变量，执行到finally语句块中的return后，该本地变量被finally的返回值覆盖）<br>  ○ 如果finally前虚拟机终止运行/程序所在的线程死亡/关闭CPU，那么finally不会被执行。<br>try-with-resources：<br>● 适用范围：任何实现了java.lang.AutoCloseable或java.io.Closeable的对象。<br>● catch/finally块在声明的资源关闭后运行。<br>8、泛型<br>类似于C++的模板？<br>不同语言实现方式：<br>● Code specialization：实例化泛型类/方法时产生一份新的目标代码。C/C++<br>  ○ 代码膨胀<br>  ○ 引用类型浪费空间，因为本质都是指针<br>● Code sharing：对每个泛型类只生成唯一一份目标代码，将多种泛型类型实例通过类型擦除映射到唯一的字节码，需要时类型检查与类型转换。Java<br>泛型擦除：只在编译时检查，编译成字节码以后就没有泛型了。<br>● 将所有泛型参数用最左边界（最顶级的父类型）替换<br>● 移除所有类型参数<br>1、泛型方法<br>泛型方法在调用时接收不同类型的参数，根据传递的参数类型，编译器适当处理每一个方法调用。<br>定义规则：<br>● 类型参数声明部分（尖括号），在方法返回类型前。<br>● 类型参数声明部分包含一个或多个类型参数，用逗号隔开。<br>● 泛型参数能用来声明返回值类型，且能作为泛型方法得到的实际参数类型的占位符。<br>● 泛型参数只能代表引用型类型，不能是原始类型（原始类型可以用其包装类型）。<br>  ○ 数据在放入后变为Object类型，取出时再转为原类型，而原始类型不能与Object类型转换。<br>泛型标记符：<br>● E-Element（集合中使用）<br>● T-Type<br>● K-Key<br>● V-Value<br>● N-Number（数值类型）<br>● ？-不确定的Java类型<br>有界的泛型参数：限制传到一个泛型参数的类型范围，比如只接受数值类型。<br>public class MaximumTest<br>{<br>   // 比较三个值并返回最大值<br>   public static &lt;T extends Comparable<code>&lt;T&gt;</code>&gt; T maximum(T x, T y, T z)<br>   {<br>    T max = x; // 假设x是初始最大值<br>      if ( y.compareTo( max ) &gt; 0 ){<br>         max = y; //y 更大<br>      }<br>      if ( z.compareTo( max ) &gt; 0 ){<br>         max = z; // 现在 z 更大<br>    }<br>      return max; // 返回最大对象<br>   }<br>   public static void main( String args[] )<br>   {<br>      System.out.printf( “%d, %d 和 %d 中最大的数为 %d\n\n”,<br>                   3, 4, 5, maximum( 3, 4, 5 ) );</p>
+<pre><code>System.out.printf( &quot;%.1f, %.1f 和 %.1f 中最大的数为 %.1f\n\n&quot;,
+               6.6, 8.8, 7.7, maximum( 6.6, 8.8, 7.7 ) );
+
+System.out.printf( &quot;%s, %s 和 %s 中最大的数为 %s\n&quot;,&quot;pear&quot;,
+     &quot;apple&quot;, &quot;orange&quot;, maximum( &quot;pear&quot;, &quot;apple&quot;, &quot;orange&quot; ) );</code></pre>
+<p>   }<br>}<br>2、泛型类<br>在类名后添加泛型参数声明部分。<br>3、泛型接口<br>4、类型通配符<br>通过extends/super定义上限/下限：<br>● ? extends Number：接受Number及其下层子类类型。<br>● ? super Number：接收Number及其上层父类类型。<br>9、反射<br>可以在运行时获取任意类的所有属性和方法，并且进行调用。<br>应用：动态代理、注解<br>优缺点：<br>● 优：代码更灵活、为各种框架提供开箱即用的功能<br>● 缺：安全问题、性能很差<br>反射的含义：正常方式是根据类名new实例化，并操作实例化对象；反射相当于颠倒正常方式，通过实例化对象获取类名，进而获取类的信息。<br>1、获取Class对象<br>● 知道具体类：Class c = TargetObject.class。但是，一般不知道具体类，都是通过遍历包下面的类获取Class对象，这样获取的对象不会初始化。<br>● 传入类的全路径：Class c = Class.forName(“cn.javaguide.TargetObject”)<br>● 对象实例：Class c = o.getClass()<br>● 类加载器：ClassLoader.getSystemClassLoader().loadClass(“cn.javaguide.TargetObject”)<br>Class类的特点：<br>● Class对象只能由系统建立<br>● 一个加载的类在JVM中只有一个Class实例，对应一个.class文件<br>● 可通过Class完整得到一个类中所有被加载的结构<br>2、获取类的方法与参数<br>参数：Filed；方法：Method。<br>private成员可以通过setAccessible(true)取消安全检查。<br>3、获取泛型<br>泛型擦除：Java泛型只在编译期有效，所有泛型参数会在编译后被清除。<br>● 泛型类class对象相同<br>● 不能对泛型数组初始化<br>● instance of不允许存在泛型参数<br>反射可获得泛型参数类型。<br>10、注解<br>=修饰器。<br>本质是一个继承了Annotation的特殊接口。<br>解析方法：<br>● 编译器直接扫描<br>● 运行期通过反射处理<br>即，注解在源码中保留，编译后注解就会删除，编译期间根据注解增强源码。<br>1、内置注解<br>● @Override：作用于方法，生命周期SOURCE，表示重写了父类方法。<br>● @Deprecated：生命周期RUNTIME，表示不鼓励使用，但是可以使用。<br>● @SuppressWarnings：生命周期SOUCE，抑制编译期警告信息，必须加参数<br>2、元注解<br>修饰注解的注解。<br>● @Documented：修饰的注解类会被JavaDoc工具提取成文档。<br>● @Target：通过{ElementType.XX}指定注解使用范围，如CONSTRUCTOR、FIELD、METHOD等<br>● @Retention：描述注解的生命周期，即注解在什么时候仍有效，通过RetentionPolicy设置<br>  ○ SOURCE：到源文件中时仍有效，如检查操作override等<br>  ○ CLASS：到class文件中时仍有效，如编译时进行预处理操作，如生成辅助代码<br>  ○ RUNTIME：到运行时仍有效，如运行时通过反射动态获取注解信息<br>● @Inherited：指定该注解可被继承，即某个类的子类可继承该注解。<br>3、自定义注解<br>@Target({ElementType.TYPE, ElementType.METHOD})<br>@Retention(RetentionPolicy.RUNTIME)<br>@interface testAnno {<br>    String name() default “”;  // 参数名称为name，后面要带括号，default规定默认值为空字符串””<br>    int id() default -1; // 默认值为-1，代表不存在<br>}<br>● 后面要带括号<br>● 默认值为-1代表不存在，赋值时可忽略<br>4、读取注解<br>通过反射机制读取信息。<br>getAnnotation获取类/方法/成员的注解。<br>11、SPI<br>服务提供者的接口Service Provider Interface。<br>优点：<br>● 分离服务接口和具体服务实现，解耦服务调用方和服务实现者。<br>● 提升程序扩展性、可维护性。<br>缺点：<br>● 需要遍历加载所有的实现类，无法按需加载。<br>● 多个ServiceLoader同时load，会有并发问题。<br>实现方式：<br>● 每次类加载时先找到class相对目录下META-INF/services下的文件<br>● 根据其文件名（接口名）和内容（具体实现类的路径+全类名）找到相应接口的具体实现类<br>● 通过反射生成对应对象，保存在list中<br>● 通过迭代拿到对应的实例对象，生成不同实现<br>与API：</p>
+<p>12、序列化<br>1、基本信息<br>序列化：将数据结构/对象转换成二进制字节流。<br>反序列化：将序列化得到的二进制字节流转换成数据结构/对象。<br>目的：IO操作：网络传输、文件存储等。<br>2、transient关键字<br>阻止修饰的变量序列化，反序列化时也不会恢复：<br>● 只能修饰变量<br>● 反序列化时会被置为变量类型的默认值<br>● static变量不属于任何对象，所以无论有无修饰，都不会被序列化<br>3、JDK自带的序列化<br>不推荐的原因：<br>● 不支持跨语言调用<br>● 性能差：序列化后字节数组体积较大，传输成本大<br>● 安全性差：反序列化数据可被用户控制，可构造恶意输入<br>13、接口和抽象类<br>共同点：<br>● 不能被实例化<br>● 可以包含抽象方法<br>● 可以有默认实现的方法<br>区别：<br>● 接口约束类行为；抽象类用于代码复用，强调所属关系。<br>● 一个类只能继承一个类，但可以实现多个接口。<br>● 接口成员变量只能是public static final类型，不能被修改且必须有初值；抽象类成员变量默认default，可在子类中被重新定义，也可被重新赋值。<br>14、代理<br>扩展目标对象的功能，在目标对象方法执行前后增加一些额外操作。<br>1、静态代理<br>手动实现代理类，代理类内部组合被代理类。<br>JVM：编译时将接口、实现类、代理类变成class文件。<br>2、动态代理<br>直接代理实现类。<br>JVM：运行时动态生成字节码，加载到JVM中。<br>● JDK：只能代理实现了接口的类或直接代理接口<br>● CGLIB：可以代理未实现任何接口的类；通过直接生成一个被代理类的子类来拦截被代理类的方法调用，所以不能代理声明为final的类和方法<br>1、JDK动态代理类<br>使用步骤：<br>● 定义接口与实现类。<br>● 自定义InvocationHandler，重写invoke方法，在其中调用原生方法，并增加处理逻辑。<br>● 通过 Proxy.newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h) 方法创建代理对象。<br>● 一般把代理对象强转为被代理对象类型，像使用被代理对象一样，使用代理对象。<br>代理过程：动态代理对象调用方法时，转发到自定义InvocationHandler的invoke方法调用。<br>2、CGLIB动态代理<br>使用步骤：<br>● 定义类<br>● 自定义MethodInterceptor类，重写intercept方法，其中调用原生方法并增加处理逻辑。<br>● 创建Enhancer类，设置类加载器、被代理类、拦截器后，调用create()创建代理类。<br>15、BigDecimal<br>BigDecimal可实现对浮点数的运算，不会造成精度丢失。<br>构造方法：<br>● BigDecimal(String val)构造方法<br>● BigDecimal.valueOf(double val)静态方法。不建议用，因为会造成精度丢失。<br>比较：使用compareTo()而不用equals()，因为equals会额外比较精度。<br>16、Unsafe类<br>用于执行一些低级别、不安全的操作，如直接访问系统内存资源、自主管理内存资源。<br>依赖native方法实现：<br>● 需要用到Java中不具备的依赖操作系统的特性。<br>● 程序对时间敏感或性能要求高。<br>只有由Bootstrap classLoader加载的类才能调用getUnsafe方法，否则会抛出异常。一般通过反射直接获取Unsafe类的theUnsafe成员调用。<br>17、IO流<br>根据数据处理方式，分为字节流和字符流。<br>所有IO流类都是从4个抽象基类中派生：<br>● InputStream/Reader：字节输入流/字符输入流<br>● OutputStream/Writer：字节输出流/字符输出流<br>1、字节流<br>1、InputStream<br>从源头读取数据到内存。<br>1、常用方法<br>● read()：返回输入流下一个字节的数据，如果没有读到则返回-1，表示文件结束。<br>● read(byte b[])：从输入流读取一些字节存储到数组b。<br>  ○ 没有可用字节，返回-1<br>  ○ 有可用字节，最多读取b.length个字节，返回读取的字节数<br>● read(byte b[], int off, int len)：<br>  ○ off：偏移量<br>  ○ len：要读取的最大字节数<br>● skip(long n)：忽略输入流n个字节，返回实际忽略的字节数。<br>● available()：返回输入流中可读取的字节数。<br>● close()：关闭输入流，释放相应的系统资源<br>Java9新增：<br>● readAllBytes()：读取输入流所有字节，返回数组。<br>● readNBytes(byte[] b, int off, int len)：阻塞直到读取len个字节。<br>● transferTo(OutputStream out)：将所有字节传递到一个输出流。<br>FileInputStream一般用来读取文件。<br>DataInputStream用于读取指定类型数据，不能单独使用，必须结合FileInputStream。用FileInputStream初始化，调用readBoolean、readInt等方法读取指定类型数据。<br>ObjectInputStream用于从输入流中读取Java对象（反序列化），该对象必须实现Serializable接口。（如果有属性不想被序列化，用transient修饰）<br>2、OutputStream<br>将数据写入到目的地<br>1、常用方法<br>● write(int b)：写入特定字节。<br>● write(byte b[])：写入数组b。<br>● write(byte []b, int off, int len)：<br>  ○ off：偏移量<br>  ○ len：要写的最大字节数<br>● flush()：刷新此输出流，强制写出所有缓冲的输出字节。<br>● close()：关闭输出流。<br>FileOutputStream<br>DataOutputStream<br>ObjectOutputStream<br>2、字符流<br>分开字符流的原因：<br>● 字符流是由Java虚拟机转换字节的到，较为耗时。<br>● 不知道编码类型容易出现乱码问题。<br>字符流默认采用Unicode编码。<br>1、Reader<br>从源头读取数据到内存。用于读取文本。<br>方法与InputStream类似。<br>InputStreamReader-&gt;FileReader<br>2、Writer<br>将数据写入到目的地。<br>多出来的方法：<br>● write(String str)<br>● write(String str, int off, int len)<br>● append(CharSequence csq)：将指定的字符序列附加到指定Writer对象，返回该Writer对象。<br>● append(char c)<br>OutputStreamWriter-&gt;FileWriter<br>3、字节缓冲流<br>将数据加载至缓冲区，一次性读取/写入多个字节，避免频繁IO操作，提升流传输效率。<br>4、字符缓冲流<br>5、打印流<br>System.out实际是获取一个PrintStream对象，print方法实际调用PrintStream的write方法。<br>6、随机访问流<br>RandomAccessFile支持随意跳转到文件任意位置进行读写。<br>读写模式：<br>● r：只读<br>● rw：读写<br>● rws：同步更新对文件内容、元数据修改到外部存储设备<br>● rwd：同步跟新对文件内容修改到外部存储设备<br>有一个文件指针表示下一个将被读取/写入的字节位置，可通过seek设置偏移量。<br>应用：实现大文件断点续传，帮助合并文件分片。<br>18、IO模型<br>1、NIO<br>NIO与BIO的区别：<br>● BIO面向流，阻塞，直连（每个请求给一条线程处理）<br>● NIO面向缓冲，非阻塞，基于反应堆处理，读写数据准备好才通知相应的线程处理<br>1、关键数据结构<br>1、Buffer<br>抽象类，是所有具体缓存类的基类。<br>有读写两种模式，且可以互相切换。<br>属性：<br>● capacity：buffer元素最大数量<br>● limit：第一个不应该被读/写的索引位置。即第一个没有数据的位置。<br>  ○ 写模式：最多能写入的数据，一般=capacity。<br>  ○ 读模式：写模式下写入的数据大小。<br>● position：下一个要被读/写的索引。<br>● mark：调用reset会将position的值设置为mark，可重新读/写buffer数据。<br>● remaining：position与limit的差，即未读/写的数据数量。<br>读写切换：<br>● flip：写切读。limit设置为position，position置0。<br>● clear：读切写。清空缓冲区，position置0，limit设置为capacity。<br>capacity &gt;= limit &gt;= position &gt;= mark &gt;= 0<br>2、Channel<br>对原IO包中流的模拟。<br>所有数据必须通过一个Channel对象传输。<br>包含socket、file、pipe三种管道。<br>是双向的。<br>3、Selector<br>多路复用器，负责统一各个处理程序的消息注册，统一接收客户端或服务器消息，再分发给不同的时间处理程序处理。<br>监听的事件类型：接收连接、完成连接、读、写。<br>一个Selector实例保存三个SelectionKey集合：<br>● 所有注册在Selector上的channel，通过keys()方法获取。<br>● 所有有IO事件的channel，通过selectedKeys()方法获取。<br>● 所有被取消注册关系的channel，下一次执行select()方法时，对应的SelectionKey将被彻底删除。<br>2、AIO<br>即NIO2，基于事件和回调机制，即应用操作后直接返回不阻塞，后台处理完成时，操作系统通知相应线程进行后续操作。<br>19、类<br>1、类文件结构<br>JVM可理解的代码就叫字节码（.class）文件，不面向任何特定处理器，只面向虚拟机。<br>Java通过字节码解决了传统解释型语言执行效率低的问题，同时保留解释型语言可移植的特点。<br>字节码不针对任何一种机器，所以Java程序无需重新编译即可在多种不同操作系统上运行。<br>Class文件通过ClassFile定义，有如下结构：<br>● 魔数：头4个字节，确定文件是否为一个能被虚拟机接收的Class文件<br>● Class文件版本号<br>● 常量池：主要存放字面量和符号引用<br>● 访问标志：识别类或接口层次的访问信息，如Class为类/接口、是否为public/abstract类型等<br>● 当前类、父类、接口索引集合<br>● 字段表集合<br>● 方法表集合<br>● 属性表集合<br>2、类加载过程<br>1、类的生命周期<br>加载、验证、准备、解析、初始化、使用、卸载。2-4个阶段统称为链接。<br>● 加载：加载.class字节码内容到内存中，并将静态数据转换成方法区的运行时数据结构，然后生成一个代表该类的java.lang.Class对象（在堆中）。<br>● 链接：将Java类的二进制代码合并到JVM运行状态之中。<br>● 初始化：执行类构造器。<br>1、加载<br>● 通过全类名获取定义此类的二进制字节流<br>● 将字节流代表的静态存储结构转换为方法区的运行时数据结构<br>● 在内存中生成一个代表该类的Class对象，作为方法区数据的访问入口<br>加载与连接阶段部分动作交叉进行。<br>2、验证<br>确保Class文件字节流包含的信息符合《Java虚拟机规范》的全部要求，保证信息被当作代码运行后不会危害VM安全。<br>● 文件格式验证：Class文件格式检查<br>● 元数据验证：字节码语义检查<br>● 字节码验证：程序语义检查<br>● 符号引用验证：类的正确性检查<br>3、准备<br>正式为类变量分配内存并设置类变量初始值。<br>● 仅分配静态变量。<br>● 类变量使用的内存都应在方法区中分配。<br>● 初始值一般为默认零值。<br>4、解析<br>VM将常量池内的符号引用替换为直接引用。（类似于C的重定向）<br>5、初始化<br>执行<code>&lt;clinit&gt;</code>()方法<br>6、卸载<br>即该类Class对象被GC，需要满足：<br>● 该类所有实例对象都已被GC<br>● 该类没有在其他地方被引用<br>● 该类类加载器的实例被GC<br>3、类加载器<br>加载.class字节码文件到JVM中。除加载类外还可加载其他资源。<br>类加载器在需要时动态加载类。<br>1、内置加载器<br>● BootstrapClassLoader(启动类加载器)：最顶层的加载类，由 C++实现，通常表示为 null，并且没有父级，主要用来加载 JDK 内部的核心类库（ %JAVA_HOME%/lib目录下的 rt.jar、resources.jar、charsets.jar等 jar 包和类）以及被 -Xbootclasspath参数指定的路径下的所有类。<br>● ExtensionClassLoader(扩展类加载器)：主要负责加载 %JRE_HOME%/lib/ext 目录下的 jar 包和类以及被 java.ext.dirs 系统变量所指定的路径下的所有类。<br>● AppClassLoader(应用程序类加载器)：面向我们用户的加载器，负责加载当前应用 classpath 下的所有 jar 包和类。<br>用户还可加入自定义类加载器。除了第一个是JVM一部分，其他所有类加载器都在JVM外部实现。<br>获取到ClassLoader为null的类就是启动类加载器加载的，因为它由C++实现，在Java中没有对应的类。<br>4、双亲委派模型<br>每个ClassLoader实例都有一个相关的父类加载器。需要查找类/资源时，ClassLoader实例在试图亲自查找类/资源前，将查找任务委派给其父类加载器。<br>类加载器的父子关系一般以组合关系实现。<br>1、执行流程<br>● 类加载时，先判断当前类是否被加载过，已加载则直接返回<br>● 类加载器首先不自己尝试加载，而调用父加载器方法来加载类。所有请求最终都被传送到顶层的BootstrapClassLoader中<br>● 只有父加载器反馈无法完成请求时，子加载器才尝试自己加载<br>2、好处<br>保证Java程序稳定运行、避免类重复加载、保证了Java核心API不被篡改。<br>5、类初始化<br>类的主动引用一定会发生类初始化<br>● 虚拟机启动，初始化main方法所在的类<br>● new类对象<br>● 调用类静态成员和静态方法<br>● 对类反射调用<br>● 初始化一个类时，如果其父类没有被初始化，会先初始化其父类<br>类的被动引用不会发生类的初始化<br>● 访问静态域时，真正声明这个域的类才会被初始化。如通过子类访问父类静态成员<br>● 通过数组定义类引用<br>● 引用常量<br>6、JVM参数<br>● -Xms/-Xmx：显式指定最小和最大堆大小。<br>● -XX:NewSize/-XX:MaxNewSize：显式指定新生代内存大小。<br>● -XX:MetaspaceSize/-XX:MaxMetaspaceSize：显式指定元空间内存大小。<br>● -XX:+UseXXGC：指定垃圾回收器<br>20、内存<br>1、运行时数据区域</p>
+<p>线程私有：<br>● 程序计数器：唯一不会出现OOM的内存区域<br>● 虚拟机栈：由一个个栈帧组成，每个栈帧都有：<br>  ○ 局部变量表：存放编译器可知的数据类型、对象引用。<br>  ○ 操作数栈：存放方法执行产生的中间计算结果。<br>  ○ 动态链接：将符号引用转换为调用方法的直接引用。<br>  ○ 方法返回地址。<br>  ○ 可能出现的错误：<br>    ■ StackOverFlowError：栈内存大小不允许动态扩展，线程请求栈深度超过当前Java虚拟机栈最大深度。<br>    ■ OutOfMemoryError：栈内存大小可以动态扩展，但是在扩展时无法申请到足够内存空间。<br>● 本地方法栈：为虚拟机使用的Native方法服务。<br>线程共享：<br>● 堆/GC堆：包含字符串常量池<br>  ○ JDK7及以前，分为三部分：新生代内存（分为Eden、Survivor0、Survivor1区）、老生代、永久代（JDK8后被本地内存的元空间取代）<br>  ○ 对象首先在Eden区分配，在一次新生代GC后如果还存活，进入S0/S1，年龄+1；年龄增加到一定程度（默认15），晋升到老年代。<br>● 方法区（1.7前在运行时数据区域，1.8后为元空间，在本地内存）：保存class、static信息。<br>  ○ 方法区类似于接口，永久代和元空间实现了方法区概念。<br>  ○ 永久代为什么变成元空间：<br>    ■ 永久代有JVM设置的固定大小上限，无法调整，元空间使用本地内存，溢出几率小很多<br>    ■ 元空间存放类的元数据，加载多少类的元数据由系统实际可用空间控制，能加载的类更多<br>● 直接内存（非运行时数据区）：特殊的内存缓冲区，通过JNI方式在本地内存上分配<br>2、HotSpot虚拟机对象<br>1、对象创建<br>● 类加载检查：遇到new指令时，先检查该指令参数能否在常量池中定位到该类的符号引用，且检查符号引用代表的类是否已被加载、解析和初始化过。如果没有，必须先执行类加载过程。<br>● 分配内存：根据堆内存是否规整决定分配方式。堆内存是否规整取决于GC算法是标记-清除还是标记-整理。分配方式为：<br>  ○ 指针碰撞：适用堆内存规整、无内存碎片的情况。用过的内存全部整合到一边，没用过的放在另一边，中间有一个分界指针，只需向没用过的内存方向移动对象内存大小的位置。<br>  ○ 空闲列表：使用堆内存不规整的情况。虚拟机维护空闲链表。<br>● 初始化零值：将分配到的内存空间初始化为零值。<br>● 设置对象头：在对象头中设置必要信息，如对象所属类、如何找到类的元数据信息、对象哈希码、GC分代等。<br>● 执行init方法：按程序的意愿初始化。<br>2、对象内存布局<br>● 对象头：<br>  ○ 存储对象自身的运行时数据<br>  ○ 类型指针，指向其类元数据的指针<br>● 实例数据：有效信息<br>● 对齐填充<br>3、对象访问定位<br>Java程序通过栈上的reference数据操作堆上的具体对象。对象的访问方式：<br>● 句柄：堆中划分出句柄池，局部变量表中的reference存储对象句柄地址，句柄中包含对象实例数据于对象类型各自的具体地址信息。<br>● 直接指针：reference中直接存储对象的地址。<br>3、垃圾回收<br>1、内存分配和回收原则<br>● 对象优先在Eden区分配。Eden区空间不足时，发起一次Minor GC。Minor GC清空Eden区，绝大部分对象被回收，存活对象进入S1区（如果S1区不够，直接进入老年代）<br>● 大对象（字符串、数组等需要大量连续内存的对象）直接进入老年代。<br>● 长期存活对象进入老年代。<br>● 空间分配担保：Minor GC前，VM必须先检查老年代最大可用连续空间是否大于新生代对象总空间：<br>  ○ 如果成立，本次Minor GC可确保安全。<br>  ○ 否则，虚拟机先查看参数设置值是否允许担保失败：<br>    ■ 如果允许，继续检查老年代最大可用连续空间是否大于历次晋升到老年代对象的平均大小：<br>      ● 如果大于，尝试Minor GC<br>      ● 如果小于，或不允许担保失败，改为Full GC<br>  ○ JDK6 Update24后将该参数作用去掉，且两个比较满足其一即可Minor GC。<br>2、GC分类<br>部分收集（Partial）<br>● 新生代收集（Minor/Young）：只对新生代进行垃圾收集。<br>● 老年代收集（Major/Old）：只对老年代进行垃圾收集。<br>● 混合收集（Mixed）：对整个新生代和部分老年代进行垃圾收集。<br>整堆收集（Full）：收集整个Java堆和方法区。<br>3、死亡对象判断方法<br>● 引用计数法：简单、效率高。难解决循环引用。<br>● 可达性分析：从GC Roots出发通过引用链判断对象是否可用<br>  ○ 可作为GC Root的对象：<br>    ■ Java虚拟机栈中本地变量引用对象<br>    ■ 方法区中静态变量引用对象<br>    ■ 方法区中常量引用对象<br>    ■ 本地方法栈中JNI引用对象<br>  ○ 收集模式：<br>    ■ 保守式：线性扫描栈，判断每一串数字是不是引用<br>    ■ 准确式：所有对象存放在OopMap中，GC发生时直接从map寻找GC Root<br>三色标记法判断可达性：<br>● 三色：<br>  ○ 白色：尚未被GC访问过的对象<br>  ○ 黑色：GC访问过，且其所有引用均扫描过<br>  ○ 灰色：GC访问过，但至少有一个引用的对象没有扫描过<br>● 解决标记过程中改变引用导致的误删/野指针问题<br>  ○ 增量更新：黑色对象增加了对白色对象的引用时，将黑色改为灰色<br>  ○ 原始快照：灰色对象删除了白色对象的引用时，将其记录在线程独占的SATB Queue中，标记阶段结束后被再次扫描<br>4、引用类型<br>● 强引用：绝不会被GC<br>● 软引用：与引用队列联合使用，如果软引用所引用的对象被垃圾回收，VM将该引用加入与之关联的引用队列<br>● 弱引用：只具有弱引用的对象生命周期更短暂，GC只要发现只具有弱引用的对象，不管内存空间是否足够都会回收<br>● 虚引用：任何时候都可能被GC，主要用于跟走对象被垃圾回收的活动，必须和引用队列联合使用。<br>5、废弃常量<br>运行时常量池回收废弃常量。如果一个常量当前没有被任何该类对象引用，说明其为废弃常量。<br>6、无用类<br>● 该类所有实例都被回收<br>● 加载该类的ClassLoader已被回收<br>● 该类对应的Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类方法<br>7、垃圾回收算法<br>1、标记-清除<br>先标记所有不需要回收的对象，之后统一回收所有没被标记的对象。<br>● 效率问题：两个过程效率都不高<br>● 空间问题：清除后产生大量不连续内存碎片<br>2、复制<br>将内存分为大小相同两块，每次使用其中一块，这块内存用完后，将还存活的对象复制到另一块去，再清理使用的空间。<br>● 可用内存变小：可用内存缩小为一半<br>● 不适合老年代：如果存活对象数量较大，复制性能很差<br>3、标记-整理<br>标记-清除后让所有存活对象向一端移动，并直接清理掉端边界以外的内存。<br>● 整理效率也不高。<br>4、分代收集<br>按代选择不同算法。新生代每次收集都有大量对象死去，所以选择“标记-复制”算法；老年代对象存活几率高，且没有额外空间担保，所以选择“标记-清除”/“标记-整理”算法。<br>4、垃圾收集器<br>对垃圾收集算法的具体实现<br>1、Serial<br>单线程收集，新生代标记-复制，老年代标记-整理<br>2、ParNew<br>Serial的多线程版<br>3、Parallel Scavenge<br>JDK1.8默认收集器，提供参数供用户找到最合适的停顿时间/最大吞吐量<br>4、Serial Old<br>Serial老年代版本。用于JDK1.5前与Parallel Scanvenge搭配使用；作为CMS收集器后备方案<br>5、Parallel Old<br>Parallel Scanvenge老年代版本，多线程+标记-整理<br>6、CMS<br>以获取最短回收停顿时间为目标。标记-清除<br>● 初始标记：暂停所有其他线程，记录直接与root相连的对象<br>● 并发标记：同时开启GC与用户线程，用闭包记录可达对象，但在阶段结束时，闭包并不保证包含所有可达对象。<br>● 重新标记：修正并发标记期间因为程序运行而变动的标记的对象，停顿时间比初始标记阶段稍长。<br>● 并发清除：清扫未标记区域。<br>缺点：<br>● 对CPU资源敏感<br>● 无法处理浮动垃圾<br>● 标记-清除产生大量垃圾碎片<br>7、G1<br>面向服务器，具备高吞吐量性能特征。<br>特点：<br>● 并行、并发<br>● 分代收集<br>● 空间整合：整体基于标记-整理；局部基于标记-复制<br>● 可预测的停顿<br>大致过程跟CMS相似。后代维护了优先列表，每次根据允许的收集时间，优先选择回收价值最大的Region。<br>JDK1.9起为默认收集器。<br>21、Java8新特性<br>1、Interface<br>interface方法可以用default或static修饰，进而在interface中实现方法。<br>● static修饰的方法不能被子类继承，只能用接口名调用。<br>2、函数式接口<br>在接口上注解@FunctionalInterface。编译器会强制检查该接口，保证仅有一个抽象方法。（不用该注解也可以是函数式接口，只要符合要求）<br>例子：<br>@FunctionalInterface<br>public interface MessageBuilder {<br>    String buildMessage();<br>}<br>public class Demo02LoggerLambda {<br>    private static void log(int level, MessageBuilder builder) {<br>        if (level == 1) {<br>            System.out.println(builder.buildMessage());// 实际上利用内部类 延迟的原理,代码不相关 无需进入到启动代理执行<br>        }<br>    }<br>    public static void main(String[] args) {<br>        String msgA = “Hello”;<br>        String msgB = “World”;<br>        String msgC = “Java”;<br>       log(2,()-&gt;{<br>                System.out.println(“lambda 是否执行了”);<br>                return msgA + msgB + msgC;<br>        });<br>    }<br>}<br>3、lambda表达式<br>格式<br>(parameters) -&gt; expression<br>(parameters) -&gt;{ statements; }<br>4、Stream<br>流式编程。对Stream进行的操作返回Stream，可以连续进行多次集合操作。<br>● filter()：传入返回值为boolean的lambda，表示筛选返回true的集合项。<br>● forEach()：传入lambda，表示对每个集合项应用lambda。<br>● limit()：传入int，表示获取多少个元素的stream。<br>● sorted()：排序。<br>● ……<br>延迟执行：执行返回Stream的方法时，并不立即执行，而是等返回一个非Stream方法后才执行。<br>5、Optional<br>解决空指针异常<br>Zoo zoo = getZoo();<br>if(zoo != null){<br>   Dog dog = zoo.getDog();<br>   if(dog != null){<br>      int age = dog.getAge();<br>      System.out.println(age);<br>   }<br>}<br>Optional.ofNullable(zoo).map(o -&gt; o.getDog()).map(d -&gt; d.getAge()).ifPresent(age -&gt;<br>    System.out.println(age)<br>);<br>方法：<br>● ofNullable()：传入对象，为null则返回Empty。<br>● of()：传入对象，为null则抛出空指针异常。<br>● map()：传入lambda，获取value的成员 。<br>● orElse(T)：如果value不为空，返回value，否则返回T。<br>● filter()：传入lambda，筛选为true的。<br>杂项<br>1、与C++区别<br>● Java不提供指针直接访问内存，内存更安全。<br>● Java类单继承，接口可多继承。<br>● Java有GC。<br>● Java只支持方法重载，不支持操作符重载。<br>2、自动装箱拆箱<br>装箱：将基本类型用对应的引用类型包装起来。调用了包装类的valueOf方法。<br>拆箱：将包装类型转换为基本数据类型。调用了xxxValue方法。</p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>aoba moka</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/08/13/学习笔记-Java基础知识/" target="_blank" title="学习笔记-Java基础知识">https://aobamoka.github.io/2023/08/13/学习笔记-Java基础知识/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">学习笔记-Spring</div>
+      </div>
+      
+      <!-- <div class="content">
+        1、基本知识1、特性
+非侵入式：基于Spring开发的应用中的对象可不依赖于Spring API
+控制反转：IOC-In
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">项目学习-基于Raft的kv数据库</div>
+      </div>
+      <!-- <div class="content">
+        1、基本介绍在Raft层上实现一个容错kv存储服务，满足线性一致性，具有以下特征：
+
+读写不是瞬间完成，而是在一个时间段
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/test.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>摩卡</h2>
+        
+        
+          <p>不太会说话</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">摩卡's blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!--  -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/">学习笔记-Tomcat&amp;Servlet</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/">学习笔记-Spring</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">学习笔记-Java基础知识</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">07-29</span>
+                
+              </div>
+              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2020 <a target="_blank" rel="noopener" href="https://github.com/yuang01">yuang01</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a> </p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>本站总访问量：<span id="busuanzi_value_site_pv"></span> 次
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>本站访客数：<span id="busuanzi_value_site_uv"></span> 人
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', '')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

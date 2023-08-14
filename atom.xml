@@ -6,7 +6,7 @@
   <link href="https://aobamoka.github.io/atom.xml" rel="self"/>
   
   <link href="https://aobamoka.github.io/"/>
-  <updated>2023-08-12T07:32:56.275Z</updated>
+  <updated>2023-08-13T09:00:23.742Z</updated>
   <id>https://aobamoka.github.io/</id>
   
   <author>
@@ -15,6 +15,75 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习笔记-Tomcat&amp;Servlet</title>
+    <link href="https://aobamoka.github.io/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/"/>
+    <id>https://aobamoka.github.io/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/</id>
+    <published>2023-08-13T03:43:37.000Z</published>
+    <updated>2023-08-13T09:00:23.742Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1、Servlet&quot;&gt;&lt;a href=&quot;#1、Servlet&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-Spring</title>
+    <link href="https://aobamoka.github.io/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/"/>
+    <id>https://aobamoka.github.io/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/</id>
+    <published>2023-08-13T03:43:03.000Z</published>
+    <updated>2023-08-13T08:51:16.125Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1、基本知识&quot;&gt;&lt;a href=&quot;#1、基本知识&quot; class=&quot;headerlink&quot; title=&quot;1、基本知识&quot;&gt;&lt;/a&gt;1、基本知识&lt;/h1&gt;&lt;h2 id=&quot;1、特性&quot;&gt;&lt;a href=&quot;#1、特性&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>学习笔记-Java基础知识</title>
+    <link href="https://aobamoka.github.io/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <id>https://aobamoka.github.io/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
+    <published>2023-08-13T03:41:57.000Z</published>
+    <updated>2023-08-13T03:42:42.813Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;1、层次结构&lt;br&gt;层次结构&lt;br&gt;● JDK&lt;br&gt;  ○ JRE&lt;br&gt;    ■ JVM：Java虚拟机，运行Java字节码，有针对不同系统的特定实现，目的是使用相同的字节码给出相同结果。&lt;br&gt;    ■ Java Class</summary>
+        
+      
+    
+    
+    
+    <category term="学习笔记" scheme="https://aobamoka.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>项目学习-基于Raft的kv数据库</title>
@@ -203,7 +272,7 @@
     <link href="https://aobamoka.github.io/2023/05/03/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-1/"/>
     <id>https://aobamoka.github.io/2023/05/03/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab4-1/</id>
     <published>2023-05-03T07:10:04.000Z</published>
-    <updated>2023-05-08T11:12:52.000Z</updated>
+    <updated>2023-08-12T09:00:11.595Z</updated>
     
     
       
@@ -397,73 +466,6 @@
         
         
     <summary type="html">&lt;h1 id=&quot;1-BPlusTree&quot;&gt;&lt;a href=&quot;#1-BPlusTree&quot; class=&quot;headerlink&quot; title=&quot;1. BPlusTree&quot;&gt;&lt;/a&gt;1. BPlusTree&lt;/h1&gt;&lt;h2 id=&quot;1-基本特征&quot;&gt;&lt;a href=&quot;#1-基本特征&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>项目学习-跳表</title>
-    <link href="https://aobamoka.github.io/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/"/>
-    <id>https://aobamoka.github.io/2023/03/27/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E8%B7%B3%E8%A1%A8/</id>
-    <published>2023-03-27T11:31:08.000Z</published>
-    <updated>2023-03-27T11:31:49.592Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;跳表&quot;&gt;&lt;a href=&quot;#跳表&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>项目学习-CMU-15-445-Lab2-1</title>
-    <link href="https://aobamoka.github.io/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/"/>
-    <id>https://aobamoka.github.io/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab2-1/</id>
-    <published>2023-03-23T15:48:03.000Z</published>
-    <updated>2023-08-12T05:06:25.165Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-BPlusTreePage&quot;&gt;&lt;a href=&quot;#1-BPlusTreePage&quot; class=&quot;headerlink&quot; title=&quot;1. BPlusTreePage&quot;&gt;&lt;/a&gt;1. BPlusTreePage&lt;/h1&gt;&lt;h2</summary>
-        
-      
-    
-    
-    
-    <category term="项目学习" scheme="https://aobamoka.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>项目学习-CMU-15-445-Lab1-3</title>
-    <link href="https://aobamoka.github.io/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/"/>
-    <id>https://aobamoka.github.io/2023/03/23/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-CMU-15-445-Lab1-3/</id>
-    <published>2023-03-23T02:27:16.000Z</published>
-    <updated>2023-03-23T15:32:11.694Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;1-BufferPoolManagerInstance&quot;&gt;&lt;a href=&quot;#1-BufferPoolManagerInstance&quot; class=&quot;headerlink&quot; title=&quot;1. BufferPoolManagerInstance&quot;&gt;&lt;/a&gt;1.</summary>
         
       
     

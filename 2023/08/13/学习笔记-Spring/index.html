@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>学习笔记-Spring | 摩卡&#39;s blog</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    <link href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" rel="stylesheet">
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script defer src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+    
+    <!-- 依赖于jquery和vue -->
+    
+        <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    
+
+    
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="摩卡's blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">摩卡&#39;s blog</h3>
+      <h5 class="drawer-box-head_desc">随便写写，记录下都看了些啥</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/yuang01/hexo-theme-bamboo">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">摩卡&#39;s blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/yuang01/hexo-theme-bamboo" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script defer src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        学习笔记-Spring
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-08-13 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-detail-header_category">
+              学习笔记
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="1、基本知识"><a href="#1、基本知识" class="headerlink" title="1、基本知识"></a>1、基本知识</h1><h2 id="1、特性"><a href="#1、特性" class="headerlink" title="1、特性"></a>1、特性</h2><ul>
+<li>非侵入式：基于Spring开发的应用中的对象可不依赖于Spring API</li>
+<li>控制反转：IOC-Inversion of Control，将对象的创建权交给Spring</li>
+<li>依赖注入：DI-Dependency Injection，依赖的对象不需要手动调用SetXX方法赋值，而是通过配置赋值</li>
+<li>面向切面编程：AOP-Aspect Oriented Programming</li>
+<li>容器：Spring是一个容器，包含并管理应用对象的生命周期</li>
+<li>组件化：Spring使用简单的组件配置组合成一个复杂应用，可使用XML和Java注解组合这些对象</li>
+<li>一站式：在IOC、AOP基础上可整合各种开源框架、第三方类库</li>
+</ul>
+<h2 id="2、好处"><a href="#2、好处" class="headerlink" title="2、好处"></a>2、好处</h2><ul>
+<li>在一个单元模式中有组织，即使包和类数量庞大，只需要担心需要的</li>
+<li>不需要重复造轮子</li>
+<li>封装了JavaEE开发中难用的API</li>
+<li>轻量级</li>
+<li>提供了一执行的事务管理接口，可向下扩展到本地事务，并扩展到全局事物</li>
+</ul>
+<h2 id="3、分层架构"><a href="#3、分层架构" class="headerlink" title="3、分层架构"></a>3、分层架构</h2><ul>
+<li>Entity层：存放实体类，与数据库属性值基本一致，实现getter、setter方法。一般数据库一张表对应一个实体类。</li>
+<li>DAO层：对应数据库实体，主要做数据持久层的工作，封装一些数据库增删改查操作。一般以接口形式实现，里面写的方法都交给Service层调用。</li>
+<li>Service层：负责业务模块的逻辑，是业务层。一般先写一个interface，在类中定义需要的方法，然后写实现类实现该接口的方法。</li>
+<li>Controller层：负责具体的业务模块流程的控制。调用Service层的业务控制业务流程。</li>
+</ul>
+<h2 id="4、Spring架构"><a href="#4、Spring架构" class="headerlink" title="4、Spring架构"></a>4、Spring架构</h2><h3 id="1、Core-Container"><a href="#1、Core-Container" class="headerlink" title="1、Core Container"></a>1、Core Container</h3><ul>
+<li>Beans：框架基础部分，包括控制反转、依赖注入</li>
+<li>Core：封装了框架底层部分，包括资源访问、类型转换、常用工具类</li>
+<li>Context：集成Beans模块功能，添加资源绑定、数据验证、容器生命周期、事件传播等，焦点为ApplicationContext接口</li>
+<li>SpEL：提供表达式语言支持，支持访问和修改属性值，方法调用，支持访问及修改容器，从Spring容器获取Bean，支持列表投影、选择和列表聚合等</li>
+</ul>
+<h3 id="2、Data-Access-Integration"><a href="#2、Data-Access-Integration" class="headerlink" title="2、Data Access/Integration"></a>2、Data Access/Integration</h3><ul>
+<li>JDBC：提供JDBC样例模板，消除传统冗长JDBC编码与必须的事物控制，还能享受Spring管理事务</li>
+<li>ORM：提供与流行的“对象-关系”映射框架无缝集成的API，包括JPA、JDO、Hibernate、MaBatis等，还能享受Spring事务管理</li>
+<li>OXM：提供支持Object/XML映射的抽象层实现，如JAXB、Castor、XMLBeans等，Java对象与XML数据相互映射</li>
+<li>JMS：Java消息服务，提供生产者-消费者模板，用于异步通信<br>● Transaction：支持编程和声明式事务管理</li>
+</ul>
+<h3 id="3、Web"><a href="#3、Web" class="headerlink" title="3、Web"></a>3、Web</h3><ul>
+<li>Web：提供基本的Web开发集成特性，如多文件上传、Servlet监听器的IOC容器初始化、Web应用上下文</li>
+<li>Servlet：提供Spring MVC Web框架实现，提供基于注解的请求资源注入、更简单的数据绑定、数据验证以及一套易用的JSP标签</li>
+<li>WebSocket：提供简单接口搭建WebSocket Server，实现双向通讯</li>
+<li>Webflux：5.x中引入的响应式web框架，不需要Servlet API，完全异步非阻塞</li>
+</ul>
+<h3 id="4、AOP、Aspects、Instrumentation、Messaging"><a href="#4、AOP、Aspects、Instrumentation、Messaging" class="headerlink" title="4、AOP、Aspects、Instrumentation、Messaging"></a>4、AOP、Aspects、Instrumentation、Messaging</h3><ul>
+<li>AOP：面向切片编程，如日志记录、权限控制、性能统计等通用功能和业务逻辑分离的技术</li>
+<li>Aspects：与AspectJ集成，AOP框架</li>
+<li>Instrumentation：类工具支持和类加载器实现</li>
+<li>messaging：4.0后新增，对消息传递体系结构和协议的支持</li>
+<li>jcl：5.x新增，日志框架集成</li>
+</ul>
+<h3 id="5、Test"><a href="#5、Test" class="headerlink" title="5、Test"></a>5、Test</h3><p>Junit和TestNG测试框架，额外提供了基于Spring的测试功能，如测试Web框架时模拟Http请求</p>
+<h1 id="2、IOC-控制反转"><a href="#2、IOC-控制反转" class="headerlink" title="2、IOC-控制反转"></a>2、IOC-控制反转</h1><p>传统Java程序设计，直接在对象内部new创建对象，由程序主动创建依赖对象；IoC有一个专门IoC容器控制对象创建，并且帮忙注入依赖对象。<br>好处：对象与对象之间松散耦合，方便测试，利于功能复用。<br>IoC与DI（依赖注入）</p>
+<ul>
+<li>IoC：设计思想</li>
+<li>DI：实现方式</li>
+</ul>
+<h2 id="1、配置方式"><a href="#1、配置方式" class="headerlink" title="1、配置方式"></a>1、配置方式</h2><ul>
+<li>xml配置：把bean信息配置在xml文件里，Spring加载文件创建bean。<ul>
+<li>优：使用场景广泛，清晰易懂</li>
+<li>缺：配置繁琐，不易维护，扩展性差</li>
+</ul>
+</li>
+<li>Java配置：配置JavaConfig类完成类的创建<ul>
+<li>优：使用场景广泛，配置方便。纯Java代码，扩展性高，十分灵活</li>
+<li>缺：声明不明显，大量配置可读性差</li>
+</ul>
+</li>
+<li>注解配置：在类上加注解，声明一个类交给Spring管理。Spring自动扫描带@Component、@Controller、@Service、@Repository注解的类，帮我们创建并管理。需要先配置Spring的注解扫描器。<ul>
+<li>优：开发边界，可读性好，方便维护</li>
+<li>缺：具有局限性，对第三方资源无法添加注解</li>
+</ul>
+</li>
+</ul>
+<h2 id="2、创建对象的方式"><a href="#2、创建对象的方式" class="headerlink" title="2、创建对象的方式"></a>2、创建对象的方式</h2><h3 id="1、xml文件创建Bean"><a href="#1、xml文件创建Bean" class="headerlink" title="1、xml文件创建Bean"></a>1、xml文件创建Bean</h3><ul>
+<li><p>通过setter方法创建：xml文件中设置 <code>&lt;property name&gt;</code>，Java类中实现相应的setter方法<br>○ 使用无参构造函数创建，没有定义会报错<br>○ 创建实例后通过setter方法注入成员</p>
+</li>
+<li><p>通过构造函数创建：xml文件中设置 <code>&lt;construct-arg&gt;</code>，Java类中在构造函数中添加相应参数<br>○ 可以通过index、type、name等构造<br>xml注入的其他标签：<br>○ 别名：<code>&lt;alias&gt;</code>添加别名，可以在getBeans通过别名获取类实例。也可以在 <code>&lt;bean&gt;</code>中添加name属性取别名。<br>○ 导入：<code>&lt;import resource=&quot;xx&quot;&gt;</code>导入其他xml。</p>
+</li>
+<li><p>特殊注入：</p>
+<ul>
+<li><code>&lt;array&gt;</code>、<code>&lt;list&gt;</code>、<code>&lt;map&gt;</code>、<code>&lt;set&gt;</code>、<code>&lt;props&gt;</code>注入特殊类型。</li>
+<li>p命名空间注入：可以在 <code>&lt;bean&gt;</code>里通过p:name直接注入属性。</li>
+<li>c命名空间注入：在 <code>&lt;construct-arg&gt;</code>里通过c:name注入构造函数参数。</li>
+</ul>
+</li>
+<li><p><code>&lt;bean&gt;</code>里的scope</p>
+<ul>
+<li>单例模式：singleton：默认模式</li>
+<li>原型模式：prototype：每次get产生一个新对象</li>
+</ul>
+</li>
+<li><p><code>&lt;bean&gt;</code>里的autowire：</p>
+<ul>
+<li>byName：自动在容器上下文中查找与set方法后面的名字对应的beanid。</li>
+<li>byType：类似。必须唯一类型。</li>
+</ul>
+</li>
+</ul>
+<p>构造注入的优点</p>
+<ul>
+<li>依赖不可变：final关键字。</li>
+<li>依赖不为空：实例化时，由于自己实现了有参数的构造函数，所以不会调用默认构造函数，需要Spring容器传入需要的参数：有该类型参数则传入；否则报错。</li>
+<li>完全初始化：如果初始化不完全则会像2中一样报错。</li>
+</ul>
+<h3 id="2、-Autowired注解创建"><a href="#2、-Autowired注解创建" class="headerlink" title="2、@Autowired注解创建"></a>2、@Autowired注解创建</h3><p>注解注入实现自动装配：需要先导入context约束。</p>
+<ul>
+<li>@Autowired直接修饰属性，默认按byType注入。<ul>
+<li>constructor：通过构造方法自动注入，spring匹配与构造方法参数类型一致的bean注入</li>
+<li>byName：被注入bean的id名必须与set方法后半截匹配，且id名称第一个单词首字母必须小写</li>
+<li>byType：查找所有set方法，将符合参数类型的bean注入</li>
+</ul>
+</li>
+<li>通过反射实现，不需要set方法，前提是自动装配属性在IOC容器中存在。</li>
+<li>也可以在set方法上使用。</li>
+</ul>
+<p>可以用在CONSTRUCTOR、METHOD、PARAMETER、FIELD、ANNOTATION_TYPE。</p>
+<p>默认byType装配，如果有多个类型一样，需要byName装配，则需要配合@Qualifier(“xxxName”)。</p>
+<p>通过反射实现，不需要set方法，前提是自动装配属性在IOC容器中存在。</p>
+<p>也可以在set方法上使用。</p>
+<p>其他注入注解：</p>
+<ul>
+<li>@Resource：<ul>
+<li>作用在TYPE、FIELD、METHOD</li>
+<li>默认byName，如果有多个类型一样的Bean，可通过@Resource(name=”xxxName”)指定注入</li>
+</ul>
+</li>
+<li>@Inject：<ul>
+<li>作用在CONSTRUCTOR、METHOD、FIELD</li>
+<li>默认byType，可配合@Named(“xxxName”)按名称装配</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、特殊注解"><a href="#3、特殊注解" class="headerlink" title="3、特殊注解"></a>3、特殊注解</h3><ul>
+<li><p>@Nullable：字段可以为null</p>
+</li>
+<li><p>@Component：组件，在类上注解，说明这个类被Spring管理了，是一个bean。其有衍生注解，功能都是一样的，都代表将某个类放在Spring容器中管理。</p>
+<ul>
+<li>dao：@Repository</li>
+<li>service：@Service</li>
+<li>controller：@Controller</li>
+</ul>
+</li>
+<li><p>@Value：在类成员上注解，为其初始化值</p>
+</li>
+<li><p>@Scope(“xx”)：使用的模式</p>
+</li>
+</ul>
+<h3 id="4、纯Java方式-无xml方式配置"><a href="#4、纯Java方式-无xml方式配置" class="headerlink" title="4、纯Java方式/无xml方式配置"></a>4、纯Java方式/无xml方式配置</h3><p>JavaConfig实现，该项目在Spring4后成为核心模块。<br>单独实现xxxCofig类，类用@Configuration注释，获得新Bean对象的方法名用@Bean注释（Bean的id），返回值即为bean的class属性。<br>main函数中，ApplicationContext改为AnnotationConfigApplicationContext ，传入xxConfig.class。<br>getBean传入注释了@Bean的方法名。<br>xxxConfig类可以通过@ComponentScan(“path”)显式扫描。<br>xxxConfig类可通过@Import(“xxConfig”)获取其他配置类。</p>
+<h2 id="3、注解分类"><a href="#3、注解分类" class="headerlink" title="3、注解分类"></a>3、注解分类</h2><p>注册Bean的注解：Component、Repository、Controller、Service、Configuration、Bean。</p>
+<p>使用Bean的注解：Autowired、Resource</p>
+<p>Bean只能使用在方法上，指示返回值为bean的方法，并交给Spring容器管理。</p>
+<p>优点：</p>
+<ul>
+<li>可以将jar包第三方库加入IOC容器</li>
+<li>可以动态获取Bean对象</li>
+</ul>
+<h1 id="3、代理模式"><a href="#3、代理模式" class="headerlink" title="3、代理模式"></a>3、代理模式</h1><p>AOP前置。<br>通过代理在要做的动作前后完成一些附属操作。</p>
+<ul>
+<li>真实对象与代理对象都要实现同一个接口。</li>
+<li>代理对象必须代理真实对象。</li>
+</ul>
+<p>好处：</p>
+<p>使真实角色操作更加纯粹，不用关注公共业务</p>
+<ul>
+<li>公共业务交给代理角色，实现了业务分工</li>
+<li>公共业务发生扩展时，方便集中管理</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>一个真实角色就产生一个代理角色，代码量翻倍</li>
+</ul>
+<h2 id="1、静态代理"><a href="#1、静态代理" class="headerlink" title="1、静态代理"></a>1、静态代理</h2><ul>
+<li>抽象角色：使用接口/抽象类</li>
+<li>真实角色：被代理的角色</li>
+<li>代理角色：代理真实角色，代理前后一般做一些附属操作</li>
+<li>客户：访问代理对象的人</li>
+</ul>
+<h2 id="2、动态代理"><a href="#2、动态代理" class="headerlink" title="2、动态代理"></a>2、动态代理</h2><p>角色与静态代理一样，但是代理类是动态生成的。本质用反射机制实现。</p>
+<p>分为两大类：基于接口的动态代理（JDK）、基于类的动态代理（cglib）。</p>
+<p>InvocationHandler：调用处理程序需要实现的接口。有invoke方法，用于处理被代理的实例，并返回结果。</p>
+<p>每个代理都有一个关联的handler。</p>
+<p>实现InvocationHandler的Handler：</p>
+<ul>
+<li>private方法：被代理的类实例</li>
+<li>getProxy：通过Proxy.newProxyInstance动态获取代理类。需要传入handler的类加载器、被代理角色的所有接口、this。<br>○ 获得后将proxy强转为抽象角色类型，可调用抽象角色接口来调用被代理的真实角色方法。<br>○ 反射获取类加载器、接口。</li>
+<li>invoke：调用被代理的类实例获取方法<br>○ invoke可以增加方法，来实现在真实角色方法前后进行额外处理。</li>
+</ul>
+<p>额外好处：</p>
+<ul>
+<li>一个动态代理类可代理一类业务。可代理多个类，只要实现了同一个接口。</li>
+</ul>
+<p>创建方式：</p>
+<ul>
+<li>JDK：只能为接口创建代理实例</li>
+<li>CGLib：采用底层字节码技术，可以为类创建子类代理</li>
+<li>异同：<ul>
+<li>异：CGLib创建的动态代理性能比JDK的高约10倍，但是创建时间高约8倍，所以更适用单例模式或实例池模式。</li>
+<li>同：<ul>
+<li>目标类所有方法都添加了横切逻辑，但有时候只希望为某些方法添加。</li>
+<li>只能适用于执行方法前后有相同逻辑的类，不能通用。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="4、AOP"><a href="#4、AOP" class="headerlink" title="4、AOP"></a>4、AOP</h1><p>将分散在各个业务逻辑代码中相同的代码通过横向切割的方式抽取到一个独立模块中。</p>
+<p>Spring的AOP底层实现即为动态代理，运行期为目标类添加增强生成子类。</p>
+<ul>
+<li><code>&lt;bean&gt;</code>里的scope</li>
+<li>○ 单例模式：singleton：默认模式<br>○ 原型模式：prototype：每次get产生一个新对象<br><code>&lt;bean&gt;</code>里的autowire：<br>○ byName：自动在容器上下文中查找与set方法后面的名字对应的beanid。<br>○ byType：类似。必须唯一类型。</li>
+</ul>
+<p>构造注入的优点</p>
+<ul>
+<li>依赖不可变：final关键字。</li>
+<li>依赖不为空：实例化时，由于自己实现了有参数的构造函数，所以不会调用默认构造函数，需要Spring容器传入需要的参数：有该类型参数则传入；否则报错。</li>
+<li>完全初始化：如果初始化不完全则会像2中一样报错。</li>
+</ul>
+<p><code>&lt;bean&gt;</code>里的scope</p>
+<ul>
+<li>单例模式：singleton：默认模式</li>
+<li>原型模式：prototype：每次get产生一个新对象</li>
+</ul>
+<p><code>&lt;bean&gt;</code>里的autowire：</p>
+<ul>
+<li>byName：自动在容器上下文中查找与set方法后面的名字对应的beanid。</li>
+<li>byType：类似。必须唯一类型。</li>
+</ul>
+<h2 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h2><ul>
+<li>连接点：在哪里插入，Spring只支持方法执行。</li>
+<li>切入点：连接点集合。</li>
+<li>通知：在连接点上执行的行为，即插入的行为。=代理额外实现的方法。</li>
+<li>方法/切面：切入点和通知集合。=handler。</li>
+<li>引入/内部类型声明：为已有的类添加新字段/方法。Spring允许引入新的接口到所有被代理对象。</li>
+<li>目标对象：被插入的对象。=被代理对象。</li>
+<li>织入：在什么时机将通知切入到切入点。Spring在运行时完成织入。</li>
+<li>AOP代理</li>
+</ul>
+<h2 id="2、通知类型"><a href="#2、通知类型" class="headerlink" title="2、通知类型"></a>2、通知类型</h2><ul>
+<li>前置通知：某连接点前执行通知</li>
+<li>后置通知：某连接点正常完成后执行通知</li>
+<li>异常通知：方法抛出异常退出时执行通知</li>
+<li>最终通知：某连接点退出时执行通知</li>
+<li>环绕通知：包围一个连接点的通知</li>
+</ul>
+<h2 id="3、织入"><a href="#3、织入" class="headerlink" title="3、织入"></a>3、织入</h2><ul>
+<li>动态织入：运行时动态将要增强的代码织入目标类，一般通过动态代理技术完成，Spring AOP采用。</li>
+<li>静态织入：编译期织入，ApectJ使用acj编译期将aspect类编译成class字节码后，在java目标类编译时织入。</li>
+</ul>
+<h2 id="4、AspectJ注解"><a href="#4、AspectJ注解" class="headerlink" title="4、AspectJ注解"></a>4、AspectJ注解</h2><ul>
+<li>@Aspect：定义一个切面（通知类）</li>
+<li>@Pointcut：定义切入点表达式，使用时还需要定义一个包含名字和任意参数的方法签名表示切入点名称</li>
+<li>@Before：定义前置通知，使用时需要传入一个参数，指定切入点表达式</li>
+<li>@AfterReturning：定义后置通知，使用时可指定pointcut和returning属性</li>
+<li>@Around：定义环绕通知，使用时指定切入点表达式</li>
+<li>@After-Throwing：定义异常通知，使用时可指定pointcut和throwing属性</li>
+<li>@After：定义最终通知，使用时指定切入点表达式</li>
+</ul>
+<h1 id="5、声明式事务"><a href="#5、声明式事务" class="headerlink" title="5、声明式事务"></a>5、声明式事务</h1><p>Spring支持两种事务：</p>
+<ul>
+<li>编程式事务：通过 TransactionTemplate或者TransactionManager手动管理事务，需要修改代码使得这两个类包裹代码块。</li>
+<li>声明式事务：使用AOP实现，本质是在目标方法执行前后进行拦截。</li>
+</ul>
+<p>优：不需要在业务逻辑中编写事务相关代码，没有侵入性。</p>
+<p>缺：最细粒度只能为方法。</p>
+<p>使用：</p>
+<ul>
+<li>类中Autowired注入事务管理器。</li>
+<li>需要实现事务的方法添加@Transactional注解。</li>
+<li>调用事务管理器的commit()/rollback()实现事务提交/回滚。</li>
+</ul>
+<p>事务属性：</p>
+<ul>
+<li>隔离级别：isolation属性。一个事务可能受其他并发事务影响的程度。</li>
+<li>传播行为：propogation属性。事务嵌套调用的处理规则。<br>● 回滚规则：rollbackFor/noRollbackFor属性。配置程序抛出不同异常时是否回滚事务。<br>● 事务超时：timeout属性。配置超时时自动回滚。<br>● 只读：readOnly属性。配置只读时修改会抛异常。</li>
+</ul>
+<p>只对public方法有效。</p>
+<h1 id="6、SpringBoot"><a href="#6、SpringBoot" class="headerlink" title="6、SpringBoot"></a>6、SpringBoot</h1><h2 id="1、约定大于配置"><a href="#1、约定大于配置" class="headerlink" title="1、约定大于配置"></a>1、约定大于配置</h2><p>开发人员仅需要规定应用中不符合约定的部分，如果约定与期望相符即可省去配置。</p>
+<h3 id="1、文件位置"><a href="#1、文件位置" class="headerlink" title="1、文件位置"></a>1、文件位置</h3><p>● 配置文件的位置与名称固定<br>● resources、target文件夹默认存在</p>
+<h3 id="2、自动载入配置"><a href="#2、自动载入配置" class="headerlink" title="2、自动载入配置"></a>2、自动载入配置</h3><p>EnableAutoConfiguration注解：自动载入应用程序所需的默认配置。</p>
+<h1 id="7、ExceptionHandler异常处理"><a href="#7、ExceptionHandler异常处理" class="headerlink" title="7、ExceptionHandler异常处理"></a>7、ExceptionHandler异常处理</h1><p>一个controller中有方法添加了@ExceptionHandler之后，该controller其他方法中没有捕获的异常就会以参数形式传入加了该注解的方法之中。<br>有三种方式用一个异常处理类处理其他所有controller的异常</p>
+<h2 id="1、基类"><a href="#1、基类" class="headerlink" title="1、基类"></a>1、基类</h2><p>将异常处理类作为需要处理异常的controller的基类。<br>缺点：极其不灵活。</p>
+<h2 id="2、接口"><a href="#2、接口" class="headerlink" title="2、接口"></a>2、接口</h2><p>提供异常处理方法的默认实现，需要处理异常的controller类实现该接口。<br>缺点：与基类类似。</p>
+<h2 id="3、加强Controller"><a href="#3、加强Controller" class="headerlink" title="3、加强Controller"></a>3、加强Controller</h2><p>@ControllerAdvice注解：注解在类上，类中的方法的某些注解会应用到所有Controller里。一般只配合@ExceptionHandler使用。<br>其中的方法用@ExceptionHandler(xxException.class)注解，可以处理异常。</p>
+<h1 id="8、ControllerAdvice注解"><a href="#8、ControllerAdvice注解" class="headerlink" title="8、ControllerAdvice注解"></a>8、ControllerAdvice注解</h1><h2 id="1、全局异常处理"><a href="#1、全局异常处理" class="headerlink" title="1、全局异常处理"></a>1、全局异常处理</h2><p>类中使用ExceptionHandler注解方法，指定该方法处理的异常类。</p>
+<h2 id="2、全局数据绑定"><a href="#2、全局数据绑定" class="headerlink" title="2、全局数据绑定"></a>2、全局数据绑定</h2><p>类中使用ModelAttribute类注解方法，方法会返回一个全局数据，默认key为返回变量名、value为方法返回值。<br>在Controller接口中传入Model类型参数获取该数据。</p>
+<h2 id="3、全局数据预处理"><a href="#3、全局数据预处理" class="headerlink" title="3、全局数据预处理"></a>3、全局数据预处理</h2><p>Controller方法中两个不同类有同名成员变量时，可以预处理添加不同前缀，实现参数区分。</p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h2 id="1、包含的模块"><a href="#1、包含的模块" class="headerlink" title="1、包含的模块"></a>1、包含的模块</h2><p>两大特性（IoC+AOP）、数据库、Web、测试</p>
+<ul>
+<li>core container（IoC）：基础模块</li>
+<li>AOP</li>
+<li>Data Access/Integration（数据库操作）</li>
+<li>Spring Web（Web应用）</li>
+<li>Messaging（报文传送）</li>
+<li>Spring Test（测试）</li>
+</ul>
+<h2 id="2、Spring-amp-Spring-MVC-amp-SpringBoot"><a href="#2、Spring-amp-Spring-MVC-amp-SpringBoot" class="headerlink" title="2、Spring&amp;Spring MVC&amp;SpringBoot"></a>2、Spring&amp;Spring MVC&amp;SpringBoot</h2><p>SpringMVC：Spring中的一个模块，赋予Spring快速构建MVC架构的Web程序的能力。<br>SpringBoot：简化Spring开发。<br>SpringBoot &gt; Spring &gt; SpringMVC</p>
+<h2 id="3、控制反转IoC"><a href="#3、控制反转IoC" class="headerlink" title="3、控制反转IoC"></a>3、控制反转IoC</h2><p>思想：将原本用户在程序中手动创建对象的控制权，转交给Spring框架来管理。<br>用户只需要在xml文件中进行设置，Spring框架救会在启动时自动创建对象，用户通过getBean从Spring框架中获取对象。<br>好处：只需要在xml文件中配置，而不需要自己创建对象。类依赖关系复杂时，不需要搞清楚所有依赖类的创建方式。</p>
+<h2 id="4、将一个类声明为Bean的注解"><a href="#4、将一个类声明为Bean的注解" class="headerlink" title="4、将一个类声明为Bean的注解"></a>4、将一个类声明为Bean的注解</h2><ul>
+<li>@Component：通用。</li>
+<li>@Repository：持久层/Dao层，直接对数据库操作。</li>
+<li>@Service：服务层，调用持久层API。</li>
+<li>@Controller：控制层，接收用户请求，调用服务层。</li>
+</ul>
+<h2 id="5、-Component与-Bean"><a href="#5、-Component与-Bean" class="headerlink" title="5、@Component与@Bean"></a>5、@Component与@Bean</h2><ul>
+<li>作用域<ul>
+<li>Component用于类</li>
+<li>Bean用于方法</li>
+</ul>
+</li>
+<li>装配方式：<ul>
+<li>Component：通过类路径扫描自动装配。可通过ComponentScan注解定义扫描的路径。</li>
+<li>Bean：告诉Spring该方法返回某个类的实例。</li>
+</ul>
+</li>
+<li>自定义性：Bean更强。引用第三方库的类装配到Spring容器时，只能通过Bean实现。</li>
+</ul>
+<h2 id="6、注入Bean的注解"><a href="#6、注入Bean的注解" class="headerlink" title="6、注入Bean的注解"></a>6、注入Bean的注解</h2><ul>
+<li>Autowired：<ul>
+<li>Spring提供的注解</li>
+<li>默认byType匹配，一个接口存在多个实现类时byName匹配。</li>
+<li>可通过Qualifier注解value属性显式指定名称。</li>
+</ul>
+</li>
+<li>Resource<ul>
+<li>JDK提供的注解</li>
+<li>默认byName匹配。</li>
+<li>可通过name属性显式指定名称，type属性显式指定类型。</li>
+</ul>
+</li>
+<li>Inject<ul>
+<li>可以为类成员和方法参数注入。</li>
+</ul>
+</li>
+</ul>
+<h2 id="7、Bean作用域"><a href="#7、Bean作用域" class="headerlink" title="7、Bean作用域"></a>7、Bean作用域</h2><ul>
+<li>singleton：容器中只有单例。</li>
+<li>prototype：每次获取都会创建新的bean实例。</li>
+<li>request（仅web应用可用）：每次HTTP请求都会产生新的bean，仅在当前HTTP请求有效。</li>
+<li>session（仅web应用可用）：每次来自新session的HTTP请求都会产生新的bean，仅在当前HTTP session有效。</li>
+<li>application/global-session（仅web应用可用）：每个Web应用启动时创建Bean，仅在当前应用启动时间内有效。</li>
+<li>websocket（仅web应用可用）：每次WebSocket会话产生新的Bean。</li>
+</ul>
+<p>配置方式：</p>
+<ul>
+<li>xml：scope</li>
+<li>注解：Scope的value属性</li>
+</ul>
+<h2 id="8、Bean线程安全"><a href="#8、Bean线程安全" class="headerlink" title="8、Bean线程安全"></a>8、Bean线程安全</h2><ul>
+<li>prototype：安全，没有资源竞争问题</li>
+<li>singleton：大部分Bean都无状态，如Dao、Service，安全。如果有状态则不安全。</li>
+</ul>
+<p>解决：</p>
+<ul>
+<li>Bean中尽量避免定义可变的成员。</li>
+<li>类中定义ThreadLocal成员。</li>
+</ul>
+<h2 id="9、AOP"><a href="#9、AOP" class="headerlink" title="9、AOP"></a>9、AOP</h2><p>面向切片编程，将那些与特定业务无关，但是多个不同业务共同调用的逻辑（事务处理、权限控制、日志）封装起来。</p>
+<p>好处：</p>
+<ul>
+<li>降低耦合</li>
+<li>减少重复代码</li>
+<li>可扩展、可维护</li>
+</ul>
+<p>实现方式：</p>
+<ul>
+<li>Spring AOP（JDK Proxy/Cglib）：基于动态代理，运行时增强<ul>
+<li>JDK Proxy：利用拦截器+反射机制生成代理接口的匿名类，调用具体方法前调用自己实现的InvocationHandler处理。<ul>
+<li>只能对实现了接口的类生成代理。</li>
+</ul>
+</li>
+<li>Cglib：利用ASM框架，加载代理对象类生成的class文件，修改其字节码生成子类。<ul>
+<li>使用继承，无法代理final类/方法。</li>
+</ul>
+</li>
+<li>Spring AOP只使用了Aspect的Annotation，但并没有使用其编译器和织入器。</li>
+</ul>
+</li>
+<li>AspectJ AOP：基于字节码操作，编译时增强<ul>
+<li>织入时机：<ul>
+<li>编译期织入：类B引用类A使用AspectJ添加的新属性。</li>
+<li>编译后织入：生成class文件或打成jar包后，需要增强处理。</li>
+<li>类加载后织入：</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>自定义类加载器</li>
+<li>JVM启动时指定AspectJ提供的agent。<ul>
+<li>在实际运行前就完成了织入，所以没有额外运行开销。</li>
+</ul>
+</li>
+</ul>
+<h2 id="10、Spring-MVC"><a href="#10、Spring-MVC" class="headerlink" title="10、Spring MVC"></a>10、Spring MVC</h2><p>具体实现</p>
+<ul>
+<li>M（Model）：<ul>
+<li>Service</li>
+<li>Repository</li>
+</ul>
+</li>
+<li>V（View）：前端网页页面</li>
+<li>C（Controller）：<ul>
+<li>DispatcherServlet：前端控制器</li>
+<li>Controller：后端控制器</li>
+</ul>
+</li>
+</ul>
+<p>流程：由DispatcherServlet完成</p>
+<ul>
+<li>处理request</li>
+<li>根据配置使用HandlerMapping查找可处理request的处理器</li>
+<li>拿到返回的处理器链HandlerExecutionChain，包含拦截器和处理</li>
+<li>将处理器适配为HandlerAdapter</li>
+<li>使用拦截器进行请求前置处理</li>
+<li>使用处理器进行请求处理</li>
+<li>使用拦截器进行请求后置处理</li>
+<li>从拦截器/处理器中提取模型及视图ModelAndView</li>
+<li>使用视图解析器ViewResolver解析出视图View</li>
+<li>渲染视图，响应请求</li>
+</ul>
+<h2 id="11、统一异常处理"><a href="#11、统一异常处理" class="headerlink" title="11、统一异常处理"></a>11、统一异常处理</h2><p>编写异常处理Handler，使用注解：</p>
+<ul>
+<li>@ControllerAdvice：注解在异常处理Handler的类上。</li>
+<li>@ExceptionHandler：注解在处理特定异常的方法上，参数为该方法处理的异常类。</li>
+</ul>
+<p>会给Controller织入异常处理的逻辑，当Controller中的方法抛出异常后，由被@ExceptionHandler注解修饰的方法处理。</p>
+<h2 id="12、注解"><a href="#12、注解" class="headerlink" title="12、注解"></a>12、注解</h2><h3 id="1、Spring-Bean相关"><a href="#1、Spring-Bean相关" class="headerlink" title="1、Spring Bean相关"></a>1、Spring Bean相关</h3><ul>
+<li>SpringBootApplication：以下三个注解的结合<ul>
+<li>EnableAutoConfiguration：启动SpringBoot自动配置机制</li>
+<li>ComponentScan：扫描被Component注解的bean</li>
+<li>Configuration：允许在Spring上下文中注册额外的bean/导入其他配置类</li>
+</ul>
+</li>
+<li>Autowired：将被管理的bean自动注入类中的成员</li>
+<li>Component、Repository、Service、Controller：标注类为Bean</li>
+<li>RestController：Controller + ResponseBody<ul>
+<li>Controller一般返回一个视图（页面），RestController返回JSON或XML形式的数据</li>
+</ul>
+</li>
+<li>Scope：跟Bean注解一起用，声明其作用域</li>
+<li>Configuration：声明配置类</li>
+</ul>
+<h3 id="2、HTTP请求与前后端"><a href="#2、HTTP请求与前后端" class="headerlink" title="2、HTTP请求与前后端"></a>2、HTTP请求与前后端</h3><ul>
+<li>Mapping系列：将前端方法类型、路径映射到后端处理方法</li>
+<li>PathVariable、RequestParam：获取前端传值：<ul>
+<li>PathVariable：获取路径参数。路径中用{id}形式捕获参数，PathVariable传入id获取。</li>
+<li>RequestParam：获取查询参数，即？后面的k=v参数。</li>
+</ul>
+</li>
+<li>RequestBody：读取Request请求的body部分且Content-Type为application/json格式的数据，绑定到HttpMessageConverter类型的参数中。一个请求方法只能有一个。</li>
+</ul>
+<h3 id="3、读取配置信息"><a href="#3、读取配置信息" class="headerlink" title="3、读取配置信息"></a>3、读取配置信息</h3><ul>
+<li>Value：注解在成员上，属性${name}获取name属性的信息。</li>
+<li>ConfigurationProperties：注解在类上，属性prefix指定yml前缀，根据类成员名自动绑定相应数据。</li>
+</ul>
+<h3 id="4、参数校验"><a href="#4、参数校验" class="headerlink" title="4、参数校验"></a>4、参数校验</h3><ul>
+<li>NotEmpty：注释字符串参数，不能为null、空</li>
+<li>NotBlank：注释字符串参数，不能为null，必须包含一个非空白字符</li>
+<li>Null：必须为null</li>
+<li>……</li>
+</ul>
+<h3 id="5、全局处理"><a href="#5、全局处理" class="headerlink" title="5、全局处理"></a>5、全局处理</h3><ul>
+<li>ControllerAdvice：处理所有的Controller</li>
+<li>ExceptionHandler：注解异常处理方法</li>
+</ul>
+<h3 id="6、事务"><a href="#6、事务" class="headerlink" title="6、事务"></a>6、事务</h3><ul>
+<li>Transactional：注解类/方法，方法的事物配置覆盖类的事物配置</li>
+</ul>
+<h2 id="13、设计模式"><a href="#13、设计模式" class="headerlink" title="13、设计模式"></a>13、设计模式</h2><ul>
+<li>IoC：控制反转</li>
+<li>工厂模式：BeanFactory、ApplicationContext</li>
+<li>代理模式：AOP</li>
+<li>单例模式：Bean默认单例</li>
+<li>模板方法：Template结尾的对数据库操作的类</li>
+<li>适配器模式：AOP的增强/通知、MVC中的Controller</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>aoba moka</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/08/13/学习笔记-Spring/" target="_blank" title="学习笔记-Spring">https://aobamoka.github.io/2023/08/13/学习笔记-Spring/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">学习笔记-Tomcat&amp;Servlet</div>
+      </div>
+      
+      <!-- <div class="content">
+        1、Servlet运行在Web服务器/应用服务器上的程序，作为客户端网络请求和服务器上应用的中间层。作用：
+
+创建并填充
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">学习笔记-Java基础知识</div>
+      </div>
+      <!-- <div class="content">
+        1、层次结构层次结构● JDK  ○ JRE    ■ JVM：Java虚拟机，运行Java字节码，有针对不同系统的特定
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <aside id='l_side'>
+  
+    
+      <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/test.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>摩卡</h2>
+        
+        
+          <p>不太会说话</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">摩卡's blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+  </div>
+</section>
+
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="toc-text">1、基本知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E7%89%B9%E6%80%A7"><span class="toc-text">1、特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%A5%BD%E5%A4%84"><span class="toc-text">2、好处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="toc-text">3、分层架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81Spring%E6%9E%B6%E6%9E%84"><span class="toc-text">4、Spring架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81Core-Container"><span class="toc-text">1、Core Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81Data-Access-Integration"><span class="toc-text">2、Data Access&#x2F;Integration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Web"><span class="toc-text">3、Web</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81AOP%E3%80%81Aspects%E3%80%81Instrumentation%E3%80%81Messaging"><span class="toc-text">4、AOP、Aspects、Instrumentation、Messaging</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81Test"><span class="toc-text">5、Test</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81IOC-%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="toc-text">2、IOC-控制反转</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="toc-text">1、配置方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-text">2、创建对象的方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81xml%E6%96%87%E4%BB%B6%E5%88%9B%E5%BB%BABean"><span class="toc-text">1、xml文件创建Bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81-Autowired%E6%B3%A8%E8%A7%A3%E5%88%9B%E5%BB%BA"><span class="toc-text">2、@Autowired注解创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E7%89%B9%E6%AE%8A%E6%B3%A8%E8%A7%A3"><span class="toc-text">3、特殊注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E7%BA%AFJava%E6%96%B9%E5%BC%8F-%E6%97%A0xml%E6%96%B9%E5%BC%8F%E9%85%8D%E7%BD%AE"><span class="toc-text">4、纯Java方式&#x2F;无xml方式配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E6%B3%A8%E8%A7%A3%E5%88%86%E7%B1%BB"><span class="toc-text">3、注解分类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%E3%80%81%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">3、代理模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E9%9D%99%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-text">1、静态代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-text">2、动态代理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%E3%80%81AOP"><span class="toc-text">4、AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E6%A6%82%E5%BF%B5"><span class="toc-text">1、概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B"><span class="toc-text">2、通知类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E7%BB%87%E5%85%A5"><span class="toc-text">3、织入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81AspectJ%E6%B3%A8%E8%A7%A3"><span class="toc-text">4、AspectJ注解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">5、声明式事务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%E3%80%81SpringBoot"><span class="toc-text">6、SpringBoot</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E7%BA%A6%E5%AE%9A%E5%A4%A7%E4%BA%8E%E9%85%8D%E7%BD%AE"><span class="toc-text">1、约定大于配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="toc-text">1、文件位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E8%87%AA%E5%8A%A8%E8%BD%BD%E5%85%A5%E9%85%8D%E7%BD%AE"><span class="toc-text">2、自动载入配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7%E3%80%81ExceptionHandler%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">7、ExceptionHandler异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%9F%BA%E7%B1%BB"><span class="toc-text">1、基类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%8E%A5%E5%8F%A3"><span class="toc-text">2、接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%8A%A0%E5%BC%BAController"><span class="toc-text">3、加强Controller</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%E3%80%81ControllerAdvice%E6%B3%A8%E8%A7%A3"><span class="toc-text">8、ControllerAdvice注解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">1、全局异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A"><span class="toc-text">2、全局数据绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">3、全局数据预处理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-text">题目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%8C%85%E5%90%AB%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="toc-text">1、包含的模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81Spring-amp-Spring-MVC-amp-SpringBoot"><span class="toc-text">2、Spring&amp;Spring MVC&amp;SpringBoot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%ACIoC"><span class="toc-text">3、控制反转IoC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E5%B0%86%E4%B8%80%E4%B8%AA%E7%B1%BB%E5%A3%B0%E6%98%8E%E4%B8%BABean%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="toc-text">4、将一个类声明为Bean的注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81-Component%E4%B8%8E-Bean"><span class="toc-text">5、@Component与@Bean</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E6%B3%A8%E5%85%A5Bean%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="toc-text">6、注入Bean的注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81Bean%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-text">7、Bean作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%81Bean%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">8、Bean线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9%E3%80%81AOP"><span class="toc-text">9、AOP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E3%80%81Spring-MVC"><span class="toc-text">10、Spring MVC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11%E3%80%81%E7%BB%9F%E4%B8%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">11、统一异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12%E3%80%81%E6%B3%A8%E8%A7%A3"><span class="toc-text">12、注解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81Spring-Bean%E7%9B%B8%E5%85%B3"><span class="toc-text">1、Spring Bean相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81HTTP%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF"><span class="toc-text">2、HTTP请求与前后端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-text">3、读取配置信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C"><span class="toc-text">4、参数校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E5%85%A8%E5%B1%80%E5%A4%84%E7%90%86"><span class="toc-text">5、全局处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E4%BA%8B%E5%8A%A1"><span class="toc-text">6、事务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">13、设计模式</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/">学习笔记-Tomcat&amp;Servlet</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/">学习笔记-Spring</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-13</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">学习笔记-Java基础知识</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">07-29</span>
+                
+              </div>
+              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2020 <a target="_blank" rel="noopener" href="https://github.com/yuang01">yuang01</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a> </p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>本站总访问量：<span id="busuanzi_value_site_pv"></span> 次
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>本站访客数：<span id="busuanzi_value_site_uv"></span> 人
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的图片标签(getPhotoOnline)里的内容 -->
+<script>
+  function loadPhotoOnlineJS() {
+    if ($(".post-detail").find(".getJsonPhoto-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getPhotoOnline/index.js');
+  };
+  $(function () {
+    loadPhotoOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getPhotoJson == "undefined") {
+      loadPhotoOnlineJS();
+    }
+  })
+</script>
+
+<!-- 渲染远程json加载的site-card标签(getSiteOnline)里的内容 -->
+<script>
+  function loadSiteOnlineJS() {
+    if ($(".post-detail").find(".getJsonSite-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/getSiteOnline/index.js');
+  };
+  $(function () {
+    loadSiteOnlineJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof getSiteJson == "undefined") {
+      loadSiteOnlineJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', '')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
