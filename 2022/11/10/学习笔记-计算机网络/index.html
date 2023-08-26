@@ -845,9 +845,11 @@
 <ol>
 <li>HTTP主要用于b(rowser)/s(erver)架构，而RPC主要用于c(lient)/s(erver)架构。因为之前的软件大部分作为客户端只需要跟自家的服务端建立连接，因此可以使用自家造的RPC协议，而浏览器需要访问不同公司的服务器，所以需要统一的标准，即HTTP。</li>
 <li>两者区别：<ol>
-<li>服务发现：找到服务对应的IP端口：HTTP通过DNS服务找IP地址，端口默认80（DNS也是一种服务发现）；RPC有专门的中间服务保存服务名和IP信息。</li>
-<li>底层连接形式：都是建立长连接。HTTP通过keep alive保持连接并复用；RPC一般有连接池，复用连接。</li>
-<li>传输消息：RPC采用体积更小的序列化协议保存结构体数据，因此性能比HTTP1.1更好一些。</li>
+<li>通信协议：HTTP文本协议，RPC二进制协议</li>
+<li>调用方式：HTTP用URL调用，RPC用函数调用</li>
+<li>参数传递方式：HTTP用URL参数或请求体传递参数，RPC用函数参数传递</li>
+<li>接口描述：HTTP接口通常用RESTful架构描述接口，RPC用接口定义语言描述</li>
+<li>性能：RPC用二进制协议通信，而且使用了一些性能优化技术，因此通常更快；RPC接口通常支持异步调用，可以更好处理高并发场景。</li>
 </ol>
 </li>
 </ol>
@@ -895,6 +897,19 @@
 <li>port：主机端口号</li>
 <li>path：服务器上的路径</li>
 <li>filename：文档/资源名称（省略则为服务器设置的默认文件）</li>
+</ul>
+<p>使用UDP/TCP场景：</p>
+<ul>
+<li>UDP：<ul>
+<li>查询的数据包较小、机制简单</li>
+<li>额外开销小，性能更好</li>
+</ul>
+</li>
+<li>TCP：<ul>
+<li>由于DNSSEC和IPv6引入，DNS包迅速膨胀，导致响应经常超过MTU造成数据分片和丢失，需要更可靠的TCP协议。</li>
+<li>数据增加导致TCP协议头与三次握手的额外开销比例降低，不再成为主要影响原因。</li>
+</ul>
+</li>
 </ul>
 <h2 id="17-DNS负载均衡"><a href="#17-DNS负载均衡" class="headerlink" title="17. DNS负载均衡"></a>17. DNS负载均衡</h2><p>DNS服务器为同一个主机名配置多个IP地址，在应答DNS查询时，根据每台机器的负载量、距离用户的位置等因素，将不同的用户引导到不同的机器。</p>
 <p>详见25 Nginx</p>
@@ -1194,6 +1209,11 @@
 <li>队头阻塞：字节流协议。</li>
 <li>网络迁移需要重新建立TCP连接。</li>
 </ol>
+<p>为什么TCP实现了长连接，HTTP还要实现一遍：</p>
+<ul>
+<li>TCP长连接超时断开时间过长，HTTP应用需要细粒度</li>
+<li>HTTP底层可能不为TCP，避免与底层协议过度耦合。</li>
+</ul>
 <h3 id="18-QUIC"><a href="#18-QUIC" class="headerlink" title="18. QUIC"></a>18. QUIC</h3><p>基于UDP在应用层实现的可靠传输。QUIC是传输层协议。</p>
 <ol>
 <li><p>三层Header：UDP头部与HTTP消息之间，由外到内依次为：</p>

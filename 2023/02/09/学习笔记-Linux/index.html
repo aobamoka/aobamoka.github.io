@@ -561,10 +561,28 @@
 <li>!*：替换成上一次命令所有文件路径</li>
 <li>环境变量CDPATH中加入工作目录，cd在当前目录找不到时会自动到CDPATH中找</li>
 </ul>
-<h2 id="6-命令相关"><a href="#6-命令相关" class="headerlink" title="6. 命令相关"></a>6. 命令相关</h2><ul>
-<li>!!：替换成上一次使用的命令</li>
-<li>history | grep ‘cmd’：找到所有包含cmd的历史命令</li>
-<li>!cmdid：找到历史命令后，使用id运行</li>
+<h2 id="6-echo与"><a href="#6-echo与" class="headerlink" title="6. echo与!"></a>6. echo与!</h2><p>echo：打印后面跟着的字符</p>
+<p>参数：</p>
+<ul>
+<li>-e：启动反斜杠转义字符</li>
+<li>-n：不换行</li>
+</ul>
+<p>是否加引号：</p>
+<ul>
+<li>单引号：不翻译任何东西，原样输出</li>
+<li>双引号：无视文件通配符，但是翻译$、\</li>
+<li>无引号：翻译所有可以翻译的</li>
+</ul>
+<p>！：</p>
+<ul>
+<li>!!：上一条命令</li>
+<li>!$：上一条命令最后一个参数</li>
+<li>!^：上一条命令第一个参数</li>
+<li>!:-：上一条命令去掉最后一个参数</li>
+<li>!*：上一条命令所有参数</li>
+<li>!cp:n：上一条命令与指定参数</li>
+<li>!n：history中编号为n的命令</li>
+<li>!com：上一条以com开头的命令</li>
 </ul>
 <h2 id="7-★-查找"><a href="#7-★-查找" class="headerlink" title="7. ★ 查找"></a>7. ★ 查找</h2><p>find/grep区别：</p>
 <ul>
@@ -575,6 +593,10 @@
 <ul>
 <li>find [path] -选项 参数：根据选项的参数要求在path中寻找文件。支持-and、-or、！表示与或非。<ul>
 <li>find [path] -name filename/“re”：根据path（绝对/相对路径）查找文件名为filename/文件名匹配re正则表达式的文件。</li>
+<li>-type：按类型查找。f文件、d目录、l链接</li>
+<li>-user：按用户查找</li>
+<li>-group：按组查找</li>
+<li>-time：按修改时间查找</li>
 </ul>
 </li>
 <li>grep (-额外选项) pattern path：在path（没有子目录）中找包含pattern的文件与行，且输出符合额外选项的规范<ul>
@@ -587,6 +609,7 @@
 <li>-s：不显示不存在或无匹配的错误信息</li>
 <li>-v：反转查找</li>
 <li>-r：要求搜索子目录</li>
+<li>-E：用正则表达式匹配</li>
 </ul>
 </li>
 <li>特别的用法：带输出的命令 | grep (-选项) “pattern”。在输出中查找匹配pattern的行。相当于将命令的标准输出，通过匿名管道传入grep，作为grep的标准输入。</li>
@@ -637,23 +660,34 @@
 <li>-e/-f：以选项中指定的script处理输入文本文件（也可以省略，带双引号就行了？）</li>
 <li>-h：help</li>
 <li>-n：只显示处理后的结果</li>
-<li>-i：修改文件</li>
+<li>-i：修改文件，在后面增加参数如-ie，会在文件名后面添加e，保存原来的内容，作为备份文件</li>
 </ul>
 <p>动作：n动作string：指定第n行，指定动作，如果是写入动作则写入string，没有则不带string</p>
 <ul>
-<li>a：新增</li>
-<li>c：取代</li>
-<li>d：删除</li>
-<li>i：插入，在上一行出现</li>
-<li>p：打印，与-n一起</li>
-<li>s：取代，可搭配正则表达式</li>
-<li>‘/oo/p或d或{一组动作}’：所有包含oo的行</li>
-<li>‘s/old/new/g’：查找与替换（如果old与new中有/，可以用#等分隔符代替）<ul>
+<li><p>a：新增</p>
+</li>
+<li><p>c：取代</p>
+</li>
+<li><p>d：删除</p>
+</li>
+<li><p>i：插入，在上一行出现</p>
+</li>
+<li><p>p：打印，与-n一起</p>
+</li>
+<li><p>s：取代，可搭配正则表达式</p>
+</li>
+<li><p>‘/oo/p或d或{一组动作}’：所有包含oo的行</p>
+</li>
+<li><p>‘s/old/new/g’：查找与替换（如果old与new中有/，可以用#等分隔符代替）</p>
+<ul>
+<li>不加g表示局部替换，只替换每一行第一个</li>
 <li>加了g表示全局替换，将所有匹配的都替换掉</li>
 </ul>
 </li>
-<li>动作前加a,b表示指定的行范围，$为最后一行。</li>
-<li>可用分号连接多个动作。</li>
+<li><p>动作前加a,b表示指定的行范围，$为最后一行。</p>
+</li>
+<li><p>可用分号连接多个动作。</p>
+</li>
 </ul>
 <p>示例：</p>
 <ul>
@@ -738,6 +772,7 @@
 <li>-p：还复制修改时间和访问权限</li>
 <li>-l：不复制，只生成链接文件</li>
 <li>-d：复制时保留链接</li>
+<li>-v：将文件复制到指定目录下</li>
 <li>-a：-dpr</li>
 <li>scp：远程拷贝</li>
 </ul>
@@ -764,9 +799,16 @@
 </ul>
 <p>head/tail：头/尾显示文件，默认10行</p>
 <ul>
-<li>-f：循环读取</li>
+<li>监视文件：只有tail有<ul>
+<li>-f：监视文件，持续读取</li>
+<li>-F：即使文件位置移动、名字变了也能监视到</li>
+</ul>
+</li>
 <li>-c n：显示n字节</li>
-<li>-n n：显示n行</li>
+<li>-n n：显示n行<ul>
+<li>tail -n +n：从第n行开始显示到最后一行</li>
+</ul>
+</li>
 <li>–pid=PID：与-f合用，在PID进程死掉后结束</li>
 </ul>
 <p>bg/fg</p>
@@ -812,6 +854,11 @@
 <li>-c：在每列旁显示该行重复出现的次数。</li>
 <li>-d：只显示重复出现的行列。</li>
 <li>-u：只显示出现一次的行列。</li>
+</ul>
+<p>xargs：将标准输出转换为参数</p>
+<p>ln：硬链接。单独创建一个inode记录</p>
+<ul>
+<li>-s：软链接，只记录链接文件的索引，通过索引访问源文件</li>
 </ul>
 <h1 id="6-调试"><a href="#6-调试" class="headerlink" title="6. 调试"></a>6. 调试</h1><h2 id="1-段错误"><a href="#1-段错误" class="headerlink" title="1. 段错误"></a>1. 段错误</h2><p>由于内存问题引起</p>
 <ul>
@@ -1012,7 +1059,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">1. 内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E5%90%84%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">1. 内存各段的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E9%A1%B5%E7%9A%84%E6%84%8F%E4%B9%89-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E9%A1%B5"><span class="toc-text">2. 分页的意义&#x2F;为什么分页</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E4%BF%A1%E5%8F%B7"><span class="toc-text">2. 信号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Linux%E8%AE%BE%E8%AE%A1"><span class="toc-text">3. Linux设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4. I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. I&#x2F;O模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">1. 阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">2. 非阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">3. IO多路复用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8IO"><span class="toc-text">4. 信号驱动IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%BC%82%E6%AD%A5IO"><span class="toc-text">5. 异步IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%AB%98%E6%95%88%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9Aepoll"><span class="toc-text">6. 高效多路复用：epoll</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%8E%A7%E5%88%B6%E5%8F%B0-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">5. 控制台&#x2F;常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">命令实现的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C"><span class="toc-text">2. 后台运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sudo"><span class="toc-text">3. sudo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E5%90%8D%E7%BB%84%E5%90%88"><span class="toc-text">4. 文件名组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%B7%AF%E5%BE%84%E7%9B%B8%E5%85%B3"><span class="toc-text">5. 路径相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%91%BD%E4%BB%A4%E7%9B%B8%E5%85%B3"><span class="toc-text">6. 命令相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E2%98%85-%E6%9F%A5%E6%89%BE"><span class="toc-text">7. ★ 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ls"><span class="toc-text">8. ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E2%98%85-chmod"><span class="toc-text">9. ★ chmod</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="toc-text">10. 查看文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E2%98%85-sed"><span class="toc-text">11. ★ sed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-awk"><span class="toc-text">12. awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">13. 正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%97%E7%AC%A6%E5%8C%B9%E9%85%8D"><span class="toc-text">1. 字符匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8C%B9%E9%85%8D%E6%AC%A1%E6%95%B0"><span class="toc-text">2. 匹配次数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BD%8D%E7%BD%AE%E9%94%9A%E5%AE%9A"><span class="toc-text">3. 位置锚定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%8E%E5%90%91%E5%BC%95%E7%94%A8"><span class="toc-text">4. 后向引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-expr"><span class="toc-text">14. expr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-%E2%98%85-top"><span class="toc-text">15. ★ top</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88"><span class="toc-text">综合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%B0%83%E8%AF%95"><span class="toc-text">6. 调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="toc-text">1. 段错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-core"><span class="toc-text">2. core</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-gdb"><span class="toc-text">3. gdb</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">1. 内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%86%85%E5%AD%98%E5%90%84%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">1. 内存各段的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E9%A1%B5%E7%9A%84%E6%84%8F%E4%B9%89-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E9%A1%B5"><span class="toc-text">2. 分页的意义&#x2F;为什么分页</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E4%BF%A1%E5%8F%B7"><span class="toc-text">2. 信号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Linux%E8%AE%BE%E8%AE%A1"><span class="toc-text">3. Linux设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4. I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">1. I&#x2F;O模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">1. 阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FIO"><span class="toc-text">2. 非阻塞式IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">3. IO多路复用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8IO"><span class="toc-text">4. 信号驱动IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%BC%82%E6%AD%A5IO"><span class="toc-text">5. 异步IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%AB%98%E6%95%88%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9Aepoll"><span class="toc-text">6. 高效多路复用：epoll</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%8E%A7%E5%88%B6%E5%8F%B0-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">5. 控制台&#x2F;常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">命令实现的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">1. 标准输入和参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C"><span class="toc-text">2. 后台运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sudo"><span class="toc-text">3. sudo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E5%90%8D%E7%BB%84%E5%90%88"><span class="toc-text">4. 文件名组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%B7%AF%E5%BE%84%E7%9B%B8%E5%85%B3"><span class="toc-text">5. 路径相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-echo%E4%B8%8E"><span class="toc-text">6. echo与!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E2%98%85-%E6%9F%A5%E6%89%BE"><span class="toc-text">7. ★ 查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ls"><span class="toc-text">8. ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E2%98%85-chmod"><span class="toc-text">9. ★ chmod</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="toc-text">10. 查看文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E2%98%85-sed"><span class="toc-text">11. ★ sed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-awk"><span class="toc-text">12. awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">13. 正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%97%E7%AC%A6%E5%8C%B9%E9%85%8D"><span class="toc-text">1. 字符匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8C%B9%E9%85%8D%E6%AC%A1%E6%95%B0"><span class="toc-text">2. 匹配次数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BD%8D%E7%BD%AE%E9%94%9A%E5%AE%9A"><span class="toc-text">3. 位置锚定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%8E%E5%90%91%E5%BC%95%E7%94%A8"><span class="toc-text">4. 后向引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-expr"><span class="toc-text">14. expr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-%E2%98%85-top"><span class="toc-text">15. ★ top</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88"><span class="toc-text">综合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%B0%83%E8%AF%95"><span class="toc-text">6. 调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="toc-text">1. 段错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-core"><span class="toc-text">2. core</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-gdb"><span class="toc-text">3. gdb</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
