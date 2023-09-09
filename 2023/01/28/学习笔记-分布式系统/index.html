@@ -638,6 +638,84 @@
 <li>混合技术栈：可使用不同语言和技术为同一个应用构建不同服务</li>
 <li>按粒度扩展：可根据需求扩展某一个组件</li>
 </ul>
+<h1 id="8、分布式限流"><a href="#8、分布式限流" class="headerlink" title="8、分布式限流"></a>8、分布式限流</h1><h2 id="1、概念方案"><a href="#1、概念方案" class="headerlink" title="1、概念方案"></a>1、概念方案</h2><ul>
+<li>计数器</li>
+<li>滑动窗口</li>
+<li>漏桶：生产者FIFO队列满了则直接返回失败，消费者固定从队列中拉取数据<ul>
+<li>提供一定的冗余能力，对下游保护更好</li>
+</ul>
+</li>
+<li>令牌桶：令牌以固定速率填充，一个请求移除一个令牌，没有令牌则不通过请求<ul>
+<li>遇到激增流量更从容</li>
+</ul>
+</li>
+</ul>
+<h2 id="2、单机限流方案"><a href="#2、单机限流方案" class="headerlink" title="2、单机限流方案"></a>2、单机限流方案</h2><ul>
+<li>容器<ul>
+<li>Tomcat：配置连接器最大线程数</li>
+<li>Nginx：配置单位时间内请求数、并发连接数</li>
+</ul>
+</li>
+<li>服务端<ul>
+<li>信号量</li>
+<li>RateLimiter：基于令牌桶的限流工具</li>
+<li>Sentinel：基于滑动窗口</li>
+</ul>
+</li>
+</ul>
+<h2 id="3、分布式限流方案"><a href="#3、分布式限流方案" class="headerlink" title="3、分布式限流方案"></a>3、分布式限流方案</h2><ul>
+<li>tair：基于计数自增实现简单窗口</li>
+<li>Redis基于lua脚本实现窗口、令牌桶</li>
+</ul>
+<h1 id="9、分布式ID"><a href="#9、分布式ID" class="headerlink" title="9、分布式ID"></a>9、分布式ID</h1><h2 id="1、要求"><a href="#1、要求" class="headerlink" title="1、要求"></a>1、要求</h2><p>全局唯一、高性能、高可用</p>
+<h2 id="2、基础算法"><a href="#2、基础算法" class="headerlink" title="2、基础算法"></a>2、基础算法</h2><ul>
+<li>UUID<ul>
+<li>全球唯一、生成简单</li>
+<li>没有意义、太长、不自增</li>
+</ul>
+</li>
+<li>数据库自增<ul>
+<li>生成简单、自增、查询快</li>
+<li>高并发性能差、单点宕机、容易被找规律</li>
+</ul>
+</li>
+<li>数据库集群：每台数据库设置起始值和自增步长，保证不重复<ul>
+<li>解决单点宕机</li>
+<li>不利于扩容、高并发性能差</li>
+</ul>
+</li>
+<li>数据库号段：一次从数据库批量获取一批ID，用完再申请</li>
+<li>Redis incr自增<ul>
+<li>生成简单</li>
+<li>需要考虑持久化问题：<ul>
+<li>RDB持久化间隔长，容易出现重复</li>
+<li>AOF不会重复，但恢复时连续incr容易导致恢复时间过长</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3、雪花算法与改进"><a href="#3、雪花算法与改进" class="headerlink" title="3、雪花算法与改进"></a>3、雪花算法与改进</h2><p>生成Long类型的ID，64bit分为四部分</p>
+<ul>
+<li>第一位（1bit）：0，默认正数</li>
+<li>时间戳（41bit）：毫秒级时间，一般用相对时间</li>
+<li>工作机器id（10bit）：机房号、机器号等</li>
+<li>序列号部分（12bit）：自增值，同一毫秒同一节点内自增</li>
+</ul>
+<p>uid-generator（百度）。可自定义后三个部分位数。</p>
+<p>leaf（美团）：支持号段、雪花算法。工作机器ID基于ZK生成顺序ID。</p>
+<h1 id="10、分布式服务接口请求顺序性保证"><a href="#10、分布式服务接口请求顺序性保证" class="headerlink" title="10、分布式服务接口请求顺序性保证"></a>10、分布式服务接口请求顺序性保证</h1><p>场景：CRUD顺序不一致可能导致数据库状态、查询结果与期望不符。</p>
+<ul>
+<li>一致性hash + 内存队列<ul>
+<li>相同id的请求分发到同一台机器</li>
+<li>相同id的请求放到同一内存队列，有序消费</li>
+</ul>
+</li>
+<li>分布式锁<ul>
+<li>每个请求执行前先获取锁</li>
+</ul>
+</li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -800,7 +878,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">1. 基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-CAP%E5%AE%9A%E7%90%86"><span class="toc-text">1. CAP定理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">1. 数据一致性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9C%8D%E5%8A%A1%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-text">2. 服务可用性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%86%E5%8C%BA%E5%AE%B9%E9%94%99%E6%80%A7"><span class="toc-text">3. 分区容错性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">2. 数据一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%A6%81%E6%B1%82"><span class="toc-text">1. 基本要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">2. 强一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">1. 线性一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">2. 顺序一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%9B%A0%E6%9E%9C%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">3. 因果一致性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B8%A6%E7%BA%A6%E6%9D%9F%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">3. 带约束的一致性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%85%B1%E8%AF%86%E6%80%A7"><span class="toc-text">4. 一致性与共识性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%AB%98%E5%B9%B6%E5%8F%91%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-text">2. 高并发系统设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8B%86%E5%88%86%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-text">1. 拆分子系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%93%E5%AD%98"><span class="toc-text">2. 缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-text">3. 消息队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="toc-text">4. 分库分表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="toc-text">5. 读写分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E9%AB%98%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B9%E6%A1%88"><span class="toc-text">6. 高并发服务器方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98"><span class="toc-text">3. 分布式缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">1. 应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9-%E5%87%BB%E7%A9%BF"><span class="toc-text">2. 缓存雪崩&#x2F;击穿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-text">3. 缓存穿透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E9%A2%84%E7%83%AD"><span class="toc-text">4. 缓存预热</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0"><span class="toc-text">5. 缓存淘汰</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BC%93%E5%AD%98%E9%99%8D%E7%BA%A7"><span class="toc-text">6. 缓存降级</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">4. 分布式锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Redis-Redlock%E7%AE%97%E6%B3%95"><span class="toc-text">1. Redis Redlock算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">5. 分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2PC-XA%E6%96%B9%E6%A1%88"><span class="toc-text">1. 2PC&#x2F;XA方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-TCC%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88"><span class="toc-text">2. TCC强一致性方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8F%AF%E9%9D%A0%E6%B6%88%E6%81%AF%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88"><span class="toc-text">3. 可靠消息最终一致性方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9C%80%E5%A4%A7%E5%8A%AA%E5%8A%9B%E9%80%9A%E7%9F%A5%E6%96%B9%E6%A1%88"><span class="toc-text">4. 最大努力通知方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-text">6. 消息队列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BD%9C%E7%94%A8"><span class="toc-text">1. 作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%BA%E9%99%B7"><span class="toc-text">2. 缺陷</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="toc-text">7. 微服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88"><span class="toc-text">1. 为什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%8E%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2. 与单体架构的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%89%B9%E7%82%B9"><span class="toc-text">3. 特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BC%98%E5%8A%BF"><span class="toc-text">4. 优势</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">1. 基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-CAP%E5%AE%9A%E7%90%86"><span class="toc-text">1. CAP定理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">1. 数据一致性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9C%8D%E5%8A%A1%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-text">2. 服务可用性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%86%E5%8C%BA%E5%AE%B9%E9%94%99%E6%80%A7"><span class="toc-text">3. 分区容错性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">2. 数据一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%A6%81%E6%B1%82"><span class="toc-text">1. 基本要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">2. 强一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">1. 线性一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">2. 顺序一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%9B%A0%E6%9E%9C%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">3. 因果一致性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B8%A6%E7%BA%A6%E6%9D%9F%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">3. 带约束的一致性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%85%B1%E8%AF%86%E6%80%A7"><span class="toc-text">4. 一致性与共识性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%AB%98%E5%B9%B6%E5%8F%91%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-text">2. 高并发系统设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8B%86%E5%88%86%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-text">1. 拆分子系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%93%E5%AD%98"><span class="toc-text">2. 缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-text">3. 消息队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="toc-text">4. 分库分表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="toc-text">5. 读写分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E9%AB%98%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B9%E6%A1%88"><span class="toc-text">6. 高并发服务器方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98"><span class="toc-text">3. 分布式缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">1. 应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9-%E5%87%BB%E7%A9%BF"><span class="toc-text">2. 缓存雪崩&#x2F;击穿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-text">3. 缓存穿透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E9%A2%84%E7%83%AD"><span class="toc-text">4. 缓存预热</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0"><span class="toc-text">5. 缓存淘汰</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BC%93%E5%AD%98%E9%99%8D%E7%BA%A7"><span class="toc-text">6. 缓存降级</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">4. 分布式锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Redis-Redlock%E7%AE%97%E6%B3%95"><span class="toc-text">1. Redis Redlock算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">5. 分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2PC-XA%E6%96%B9%E6%A1%88"><span class="toc-text">1. 2PC&#x2F;XA方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-TCC%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88"><span class="toc-text">2. TCC强一致性方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8F%AF%E9%9D%A0%E6%B6%88%E6%81%AF%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88"><span class="toc-text">3. 可靠消息最终一致性方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9C%80%E5%A4%A7%E5%8A%AA%E5%8A%9B%E9%80%9A%E7%9F%A5%E6%96%B9%E6%A1%88"><span class="toc-text">4. 最大努力通知方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-text">6. 消息队列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BD%9C%E7%94%A8"><span class="toc-text">1. 作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%BA%E9%99%B7"><span class="toc-text">2. 缺陷</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="toc-text">7. 微服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88"><span class="toc-text">1. 为什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%8E%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2. 与单体架构的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%89%B9%E7%82%B9"><span class="toc-text">3. 特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BC%98%E5%8A%BF"><span class="toc-text">4. 优势</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%99%90%E6%B5%81"><span class="toc-text">8、分布式限流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E6%A6%82%E5%BF%B5%E6%96%B9%E6%A1%88"><span class="toc-text">1、概念方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%8D%95%E6%9C%BA%E9%99%90%E6%B5%81%E6%96%B9%E6%A1%88"><span class="toc-text">2、单机限流方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%99%90%E6%B5%81%E6%96%B9%E6%A1%88"><span class="toc-text">3、分布式限流方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8FID"><span class="toc-text">9、分布式ID</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E8%A6%81%E6%B1%82"><span class="toc-text">1、要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95"><span class="toc-text">2、基础算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E4%B8%8E%E6%94%B9%E8%BF%9B"><span class="toc-text">3、雪花算法与改进</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3%E8%AF%B7%E6%B1%82%E9%A1%BA%E5%BA%8F%E6%80%A7%E4%BF%9D%E8%AF%81"><span class="toc-text">10、分布式服务接口请求顺序性保证</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -826,6 +904,27 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-02</span>
+                
+              </div>
+              <a class="post-title" href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/">经验分享-如何在阿里云ECS上部署自己的应用程序</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -908,27 +1007,6 @@
                 
               </div>
               <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">07-29</span>
-                
-              </div>
-              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
             </div>
           </div>
         

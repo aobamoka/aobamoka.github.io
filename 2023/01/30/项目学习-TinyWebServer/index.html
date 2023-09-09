@@ -693,12 +693,7 @@
 </ol>
 <h1 id="11-改进"><a href="#11-改进" class="headerlink" title="11. 改进"></a>11. 改进</h1><ul>
 <li>实现文件上传功能</li>
-<li>定时器改成堆<ul>
-<li>过期定时器都是连续的，需要顺序遍历，用堆一个个弹出反而增加了复杂度</li>
-<li>连接出错需要关闭指定的定时器，堆无法做到（可以增加一个删除标记，懒删除）</li>
-</ul>
-</li>
-<li>c++11重构 muduo库网络编程 + c++11多线程</li>
+<li>内存池自主管理内存空间</li>
 </ul>
 <h1 id="12-准备"><a href="#12-准备" class="headerlink" title="12. 准备"></a>12. 准备</h1><h2 id="1-基本知识"><a href="#1-基本知识" class="headerlink" title="1. 基本知识"></a>1. 基本知识</h2><p>简介：主要由主线程、工作线程和文件系统三部分构成，相邻两个部分通过队列通信。</p>
 <ul>
@@ -762,6 +757,13 @@
 <li>主线程和子线程交互简单，主线程只要传递新连接，子线程处理完业务后直接发回而不经过主线程。</li>
 </ul>
 <p>reactor与proactor的区别：IO操作在主线程则为proactor、在工作线程为reactor。</p>
+<p>主从线程通信方式：</p>
+<ul>
+<li>主线程随机选择到一个从线程指针，创建channel，将从线程指针绑定到channel</li>
+<li>调用channel的Update</li>
+<li>channel Update中更新其感兴趣的事件，并调用从线程Update</li>
+<li>从线程Update将channel封装的文件描述符注册到从线程监听的事件中</li>
+</ul>
 <h3 id="3-epoll-select-poll"><a href="#3-epoll-select-poll" class="headerlink" title="3. epoll/select/poll"></a>3. epoll/select/poll</h3><h2 id="4-HTTP报文解析"><a href="#4-HTTP报文解析" class="headerlink" title="4. HTTP报文解析"></a>4. HTTP报文解析</h2><h3 id="1-状态机"><a href="#1-状态机" class="headerlink" title="1. 状态机"></a>1. 状态机</h3><p>使用状态机主要是为了封装逻辑。因为HTTP报文由很多部分组成，一步步解析的话十分复杂。使用状态机，服务器可以根据不同状态或者消息类型进行相应的逻辑处理，这样可以使得程序清晰易懂，可读性与可理解性强。</p>
 <h3 id="2-安全的HTTPS协议"><a href="#2-安全的HTTPS协议" class="headerlink" title="2. 安全的HTTPS协议"></a>2. 安全的HTTPS协议</h3><p>连接阶段使用了TLS四次握手，能验证对方的身份并交换密钥；</p>
 <p>数据交互阶段使用交换的密钥进行交互，能防止篡改与窃听。</p>
@@ -1087,6 +1089,27 @@
             
 
             <div class="post-img-box">
+              <a href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-02</span>
+                
+              </div>
+              <a class="post-title" href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/">经验分享-如何在阿里云ECS上部署自己的应用程序</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
               <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
@@ -1162,27 +1185,6 @@
                 
               </div>
               <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">07-29</span>
-                
-              </div>
-              <a class="post-title" href="/2023/07/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Unity%E5%88%B6%E4%BD%9C2D%E5%8D%A1%E7%89%8C%E6%B8%B8%E6%88%8F/">学习笔记-Unity制作2D卡牌游戏</a>
             </div>
           </div>
         
