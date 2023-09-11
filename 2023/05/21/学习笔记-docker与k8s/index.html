@@ -450,101 +450,394 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-docker"><a href="#1-docker" class="headerlink" title="1. docker"></a>1. docker</h1><p>应用打包、分发、部署的工具。类似于轻量级虚拟机</p>
+        <h1 id="1-docker"><a href="#1-docker" class="headerlink" title="1. docker"></a>1. docker</h1><h2 id="1、与虚拟机的区别"><a href="#1、与虚拟机的区别" class="headerlink" title="1、与虚拟机的区别"></a>1、与虚拟机的区别</h2><ul>
+<li>虚拟化技术依赖物理CPU和内存，是硬件级别的；Docker构建在操作系统层面，利用操作系统的容器化技术。</li>
+<li>Docker较为轻量级，部署的应用完全隔离。</li>
+<li>传统虚拟化技术通过快照保存状态；Docker使用类似源码管理的机制，保存容器的快照历史版本并切换，成本低。</li>
+<li>传统虚拟化技术构建系统复杂；Docker可通过Dockerfile文件构建容器，且文件可手动编写，利于持续交付。</li>
+</ul>
+<p>优势：</p>
 <ul>
-<li>打包：把软件运行所需的依赖、第三方库、软件打包，变成一个安装包。</li>
-<li>分发：把打包好的安装包上传到镜像仓库，其他人可以方便获取安装。</li>
-<li>部署：拿着安装包就可以一个命令运行应用，自动模拟出一模一样的运行环境。</li>
+<li>灵活：可装箱复杂应用</li>
+<li>轻量级：共享主机内核</li>
+<li>可互换：即时部署、更新和升级</li>
+<li>便携式：本地构建、部署到云、任何地方运行</li>
 </ul>
-<h2 id="1-基本特征"><a href="#1-基本特征" class="headerlink" title="1. 基本特征"></a>1. 基本特征</h2><h3 id="1-优点"><a href="#1-优点" class="headerlink" title="1. 优点"></a>1. 优点</h3><p>解决不同机器运行环境差异的问题。确保不同机器上跑都是一致的运行环境。</p>
-<p>常规应用开发部署：windows上开发测试-》linux服务器配置运行部署环境。</p>
-<p>docker开发部署：windows上开发测试-》打包为docker镜像-》linux服务器上一个命令部署好。</p>
-<h3 id="2-作用"><a href="#2-作用" class="headerlink" title="2. 作用"></a>2. 作用</h3><ul>
-<li>应用分发部署</li>
-<li>快速安装测试/学习软件（用完就丢），如redis、mongodb、elasticsearch</li>
-<li>多个版本软件共存，如python2/3</li>
-</ul>
-<h3 id="3-重要概念"><a href="#3-重要概念" class="headerlink" title="3. 重要概念"></a>3. 重要概念</h3><p>镜像：类似软件安装包，可以便捷传播安装。</p>
-<p>容器：软件安装后的状态，每个软件运行环境独立隔离。</p>
-<h2 id="2-目录挂载"><a href="#2-目录挂载" class="headerlink" title="2. 目录挂载"></a>2. 目录挂载</h2><p>docker制作自己的镜像，存在两个问题：</p>
+<p>好记版：</p>
 <ul>
-<li>修改项目代码不会立刻生效，必须重新制作镜像并且运行。</li>
-<li>容器产生的log、备份等文件，容器删除后就丢失了。</li>
+<li>产品：产品交付方便</li>
+<li>开发：简化环境配置</li>
+<li>测试：多版本测试</li>
+<li>运维：环境一致性</li>
+<li>架构：自动化扩容</li>
 </ul>
-<p>通过目录挂载来解决。</p>
-<p>目录挂载方式：</p>
+<h2 id="2、架构"><a href="#2、架构" class="headerlink" title="2、架构"></a>2、架构</h2><p>大致是C/S架构<br>Client端：</p>
 <ul>
-<li><code>bind mount</code>直接把宿主机目录映射到容器内，适合挂代码目录和配置文件。可挂到多个容器。</li>
-<li><code>volume</code>由容器创建在宿主机中并管理，删除容器不会丢失。官方推荐，更高效。可挂到多个容器。</li>
-<li><code>tmpfs mount</code>适合存储临时文件，存在宿主机内存中。不可多容器共享。</li>
+<li>命令行CLI接口，与REST API Server交互（用户使用的Docker命令）</li>
+<li>REST API Server，与Dockerd交互</li>
 </ul>
-<p><img src="https://sjwx.easydoc.xyz/46901064/files/kv96dc4q.png" class="lazyload placeholder" data-srcset="https://sjwx.easydoc.xyz/46901064/files/kv96dc4q.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<p>挂载后，windows修改的代码在容器中也会同步，如果要生效需要重启容器。</p>
-<h2 id="3-多容器通信"><a href="#3-多容器通信" class="headerlink" title="3. 多容器通信"></a>3. 多容器通信</h2><p>多容器互通，每个容器运行一个独立的软件，方便管理依赖软件的问题。</p>
-<p>如，某项目依赖redis，可以先创建一个redis容器，然后在同一个网络中创建一个项目容器，从项目容器访问redis容器。</p>
+<p>后端：</p>
 <ul>
-<li><code>docker network create [network name]</code>创建虚拟网络</li>
-<li><code>--network</code>选项指定容器运行的网络</li>
-<li><code>--network-alais</code>选项指定运行网络的别名</li>
-</ul>
-<h2 id="4-docker-compose"><a href="#4-docker-compose" class="headerlink" title="4. docker-compose"></a>4. docker-compose</h2><p>项目如果依赖多个第三方软件，一个个管理容器、配置运行、指定网络很麻烦。</p>
-<p>使用docker-compose可以集合项目多个服务器。</p>
-<h2 id="5-镜像发布和部署"><a href="#5-镜像发布和部署" class="headerlink" title="5. 镜像发布和部署"></a>5. 镜像发布和部署</h2><ul>
-<li>创建镜像库</li>
-<li>命令行登录</li>
-<li>新建tag，关联本地镜像与远程仓库</li>
-<li>将本地镜像push到远程仓库</li>
-<li>利用远程仓库镜像直接部署容器</li>
-</ul>
-<p>也可以用国内镜像托管服务。</p>
-<h2 id="6-迁移和备份数据"><a href="#6-迁移和备份数据" class="headerlink" title="6. 迁移和备份数据"></a>6. 迁移和备份数据</h2><p>如果用 <code>bind mount</code>直接挂载宿主机的目录到容器，直接复制目录即可迁移。</p>
-<p>如果用 <code>volume</code>挂载，由于数据是由容器创建和管理，需要用特殊的方式把数据弄出来。</p>
-<p>备份：</p>
-<ul>
-<li>运行一个ubuntu容器，挂载需要备份的volume到容器，并且挂载宿主机目录到容器里的备份目录。</li>
-<li>运行tar命令将数据压缩为一个文件。</li>
-<li>把备份文件复制到需要导入的机器。</li>
-</ul>
-<p>导入：</p>
-<ul>
-<li>运行ubuntu容器，挂载容器的volume，并且挂载宿主机备份文件所在目录到容器。</li>
-<li>运行tar命令解压备份文件到指定目录。</li>
-</ul>
-<h1 id="2-kubernetes"><a href="#2-kubernetes" class="headerlink" title="2. kubernetes"></a>2. kubernetes</h1><h2 id="1-基本特征-1"><a href="#1-基本特征-1" class="headerlink" title="1. 基本特征"></a>1. 基本特征</h2><h3 id="1-特性"><a href="#1-特性" class="headerlink" title="1. 特性"></a>1. 特性</h3><ul>
-<li>高可用，自动灾难恢复</li>
-<li>灰度更新，不影响业务正常运转<ul>
-<li>灰度更新：项目版本更新时，先将部分流量导引到新版本上测试，如果可以再全面推广，否则撤回上一个版本。</li>
-<li>使用容器技术时，不需要滚动式更新，而是借助弹性资源平台，直接把原服务全部更新掉。</li>
+<li>Docker Daemon<ul>
+<li>Docker Server：C/S的服务端，接受并调度分发Client发送的请求（路由），找到相应的Handler执行。</li>
+<li>Engine：运行引擎，存储container并通过执行job来管理它们。通过handler对象来执行特定job。</li>
+<li>Job：Engine的工作单元，所有工作的抽象表示。类似于Unix的进程。</li>
 </ul>
 </li>
-<li>一键回滚</li>
-<li>方便的伸缩扩展、提供负载均衡</li>
-<li>生态完善</li>
+<li>Docker Registry：注册中心，作为云端镜像仓库使用。</li>
+<li>Graph：存储模块<ul>
+<li>Repository：保管已下载的镜像。同一repository内镜像为同一类，通过tag区分版本。</li>
+<li>GraphDB：记录已下载镜像关系。</li>
 </ul>
-<h3 id="2-不同的部署方案"><a href="#2-不同的部署方案" class="headerlink" title="2. 不同的部署方案"></a>2. 不同的部署方案</h3><p><img src="https://sjwx.easydoc.xyz/46901064/files/kwmxgxwp.svg" class="lazyload placeholder" data-srcset="https://sjwx.easydoc.xyz/46901064/files/kwmxgxwp.svg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+</li>
+<li>Driver：执行模块，实现对容器执行环境的定制。<ul>
+<li>graphdriver：管理镜像，包括存储与获取。即与graph交互。</li>
+<li>networkdriver：配置容器网络环境。docker启动时创建网桥、专属虚拟网卡、分配IP、端口并与宿主机做端口映射、设置容器防火墙。</li>
+<li>execdriver：创建容器运行namespace，统计、限制资源使用，真正运行容器内部进程。</li>
+</ul>
+</li>
+<li>libcontainer：函数库，封装接口满足上层对容器管理的需求。希望该库可以不依靠任何依赖，直接访问内核中容器相关API。Docker通过调用库操纵容器的namespace、cgroups、网络设备等。</li>
+<li>container：服务交付的最终体现形式。</li>
+</ul>
+<p>容器层记录对镜像的修改，所有镜像层都是只读的。镜像可以被多个容器共享。</p>
+<h2 id="3、Dockerfile"><a href="#3、Dockerfile" class="headerlink" title="3、Dockerfile"></a>3、Dockerfile</h2><p>用于构建镜像的脚本</p>
+<h3 id="1、FROM"><a href="#1、FROM" class="headerlink" title="1、FROM"></a>1、FROM</h3><p>必须是第一条指令，指定基础镜像。<br>特殊镜像scratch：虚拟概念，表示一个空白的镜像</p>
+<h3 id="2、RUN"><a href="#2、RUN" class="headerlink" title="2、RUN"></a>2、RUN</h3><p>执行命令行命令，有两种格式。</p>
 <ul>
-<li>传统：应用直接在物理机上部署，机器资源分配不好控制，且无法做到应用隔离。</li>
-<li>虚拟机：单个物理机上运行多个虚拟机，每个虚拟机都是完整系统，性能损耗大。</li>
-<li>容器：所有容器共享主机系统，轻量级虚拟机，性能损耗小，资源隔离，CPU和资源可按需分配。</li>
+<li>shell格式：RUN &lt;命令&gt;，像直接在命令行中输入命名一样。</li>
+<li>exec格式：RUN [“可执行文件”, “参数1”, “参数2”]。</li>
 </ul>
-<h3 id="3-需要场合"><a href="#3-需要场合" class="headerlink" title="3. 需要场合"></a>3. 需要场合</h3><p>应用访问量大、机器数多，每次集群更新、软件更新、版本回滚十分麻烦。</p>
-<p>k8s可以提供集中式的管理集群机器和应用，确保高可用、高性能、高扩展。</p>
-<h2 id="2-集群架构"><a href="#2-集群架构" class="headerlink" title="2. 集群架构"></a>2. 集群架构</h2><p><img src="https://sjwx.easydoc.xyz/46901064/files/kwob90mh.png" class="lazyload placeholder" data-srcset="https://sjwx.easydoc.xyz/46901064/files/kwob90mh.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p>区别：exec格式可以接受参数，而shell格式忽略参数。shell格式相当于在前面还要添加/bin/sh -c，所以app启动进程ID不是1。<br>Dockerfile中每个指令都会建立一层，在其上执行命令，然后commit该层修改，构成新的镜像。所以应该避免创建过多层。</p>
+<h3 id="3、操作"><a href="#3、操作" class="headerlink" title="3、操作"></a>3、操作</h3><ul>
+<li>create：初建状态<ul>
+<li>为只读文件系统添加一层可读写层，即静态容器</li>
+</ul>
+</li>
+<li>start：运行状态<ul>
+<li>为可读写文件系统添加一个进程空间，生成动态容器</li>
+</ul>
+</li>
+<li>run：create + start</li>
+<li>stop：停止状态<ul>
+<li>发送SIGTERM信号，停止所有进程。清理完进程后再SIGKILL退出</li>
+</ul>
+</li>
+<li>kill：停止状态<ul>
+<li>发送SIGKILL，快速强制关闭</li>
+</ul>
+</li>
+<li>pause：暂停状态<ul>
+<li>暂停所有进程</li>
+</ul>
+</li>
+<li>unpause：运行状态</li>
+<li>delete：删除</li>
+<li>commit：<ul>
+<li>把容器的可读写层转化为只读层</li>
+</ul>
+</li>
+<li>build：run + 进程修改数据 + commit。不断循环直到生成所需镜像</li>
+</ul>
+<h2 id="4、数据共享与持久化"><a href="#4、数据共享与持久化" class="headerlink" title="4、数据共享与持久化"></a>4、数据共享与持久化</h2><h3 id="1、数据卷"><a href="#1、数据卷" class="headerlink" title="1、数据卷"></a>1、数据卷</h3><p>一个可供一个或多个容器使用的特殊目录，绕过UFS，主要特性包括：</p>
 <ul>
-<li>master：主节点，控制平台。</li>
-<li>worker：工作节点，可以是虚拟机或物理计算机，由主节点管理。</li>
+<li>可以在容器间共享和重用</li>
+<li>修改立马生效</li>
+<li>更新不会影响镜像</li>
+<li>默认一直存在，即使容器被删除</li>
 </ul>
-<p><img src="https://sjwx.easydoc.xyz/46901064/files/kwoccq7d" class="lazyload placeholder" data-srcset="https://sjwx.easydoc.xyz/46901064/files/kwoccq7d" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<p>pod/豆荚：k8s调度管理的最小单位，一个pod可包含一个或多个容器，每个pod有自己的虚拟ip。一个工作节点可以有多个pod，主节点考量负载自动调度pod到哪个节点运行。</p>
-<p><img src="https://sjwx.easydoc.xyz/46901064/files/kwonmx7e.png" class="lazyload placeholder" data-srcset="https://sjwx.easydoc.xyz/46901064/files/kwonmx7e.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<p>组件：</p>
+<h3 id="2、挂载主机目录"><a href="#2、挂载主机目录" class="headerlink" title="2、挂载主机目录"></a>2、挂载主机目录</h3><p>可以挂在一个本地主机的目录到容器中去。</p>
+<h2 id="5、网络模式"><a href="#5、网络模式" class="headerlink" title="5、网络模式"></a>5、网络模式</h2><h3 id="1、Bridge模式"><a href="#1、Bridge模式" class="headerlink" title="1、Bridge模式"></a>1、Bridge模式</h3><p>Docker进程启动时，会在主机上创建名为docker0的虚拟网桥，此主机上启动的Docker容器会连接到该虚拟网桥上。<br>虚拟网桥工作方式和物理交换机类似，主机上所有容器就通过交换机连接在了一个二层网络中。<br>从docker0子网中分配一个IP给容器用，并设置docker0的IP地址为容器默认网关。<br>在主机上创建一对虚拟网卡veth pair设备，Docker将设备一端放在新创建的容器中，并命名为eth0（容器网卡），另一端放在主机中，命名类似vethxxx，并将该网络设备加入docker0网桥中。</p>
+<h3 id="2、Host模式"><a href="#2、Host模式" class="headerlink" title="2、Host模式"></a>2、Host模式</h3><p>容器不会获得独立的Network Namespace，而是和宿主机共用一个。容器使用宿主机的IP和端口，但是其他方面，如文件系统、进程列表还是和宿主机隔离。</p>
+<h3 id="3、Container"><a href="#3、Container" class="headerlink" title="3、Container"></a>3、Container</h3><p>指定新创建的容器和已存在的容器共享Network Namespace。两个容器可以通过网卡通信。</p>
+<h3 id="4、None"><a href="#4、None" class="headerlink" title="4、None"></a>4、None</h3><p>Docker容器拥有自己的Network Namespace，但是并不添加任何网络配置。</p>
+<h2 id="6、实现原理"><a href="#6、实现原理" class="headerlink" title="6、实现原理"></a>6、实现原理</h2><p>资源隔离：借助Linux内核的Namespace技术实现，通过在新的Namespace下通过mount重新挂载对应的文件夹（Linux的一切皆文件思想）来屏蔽父进程信息。</p>
 <ul>
-<li><code>kube-apiserver</code> API 服务器，公开了 Kubernetes API</li>
-<li><code>etcd</code> 键值数据库，可以作为保存 Kubernetes 所有集群数据的后台数据库</li>
-<li><code>kube-scheduler</code> 调度 Pod 到哪个节点运行</li>
-<li><code>kube-controller</code> 集群控制器</li>
-<li><code>cloud-controller</code> 与云服务商交互</li>
+<li>进程隔离：一个docker相当于宿主机的一个进程。在子进程内部重新挂载proc目录（存储当前内核运行状态的一系列特殊文件），屏蔽父进程的进程信息。</li>
+<li>文件隔离：将根目录挂载到了另一个目录。</li>
 </ul>
+<p>资源限制：通过Linux内核的cgroups（control groups）机制实现，对cpu、内存等资源实现精细化控制。</p>
+<ul>
+<li>api以伪文件系统的实现方式，用户程序可通过文件系统实现cgroup组件管理。</li>
+<li>组件管理操作单元可以细粒度到线程级别，用户可创建/销毁cgroup来实现资源再分配。</li>
+<li>所有资源管理功能都以子系统方式实现。</li>
+</ul>
+<p>cgroup功能：</p>
+<ul>
+<li>资源限制：控制任务使用的资源总额。</li>
+<li>优先级分配：通过分配cpu时间片数量与磁盘IO带宽，控制任务运行优先级。</li>
+<li>资源统计：统计系统的资源使用量。</li>
+<li>任务控制：挂起、恢复任务。</li>
+</ul>
+<h1 id="2-kubernetes"><a href="#2-kubernetes" class="headerlink" title="2. kubernetes"></a>2. kubernetes</h1><p>提供集中式管理集群机器、应用，实现命令管理集群增减、版本变更，不停机灰度更新，确保高可用、高性能、高扩展。</p>
+<ul>
+<li>服务发现和负载均衡：使用DNS名称或自己的IP地址来暴露容器。负载均衡并分配网络流量，从而稳定部署。</li>
+<li>存储编排：允许自动挂载选择的存储系统。</li>
+<li>自动部署和回滚：可以将已部署容器的实际状态更改为用户描述的期望状态。</li>
+<li>自动完成装箱计算：告诉K8s每个容器需要的CPU和内存，K8s可以将这些容器按实际情况调度到节点上，最佳利用资源。</li>
+<li>自我修复：重启失败容器、替换容器、杀死不响应用户定义的运行状态检查的容器。</li>
+<li>密钥与配置管理：允许存储和管理敏感信息，可在不重建容器镜像的情况下部署和更新密钥和应用程序配置。</li>
+</ul>
+<h2 id="1、集群架构"><a href="#1、集群架构" class="headerlink" title="1、集群架构"></a>1、集群架构</h2><h3 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h3><ul>
+<li>master：主节点，控制平台，通常一个<ul>
+<li>API Server：K8s所有组件都依赖其进行消息传送。</li>
+<li>Controller：管理集群状态，如自动修复、水平扩张。</li>
+<li>Scheduler：调度器，自动寻找合适的Pod防止container。</li>
+<li>etcd：分布式存储系统，存储API Server的原信息。</li>
+</ul>
+</li>
+<li>worker：工作节点，运行具体任务，由主节点管理<ul>
+<li>Pod</li>
+<li>kubelet：通过API Server接收到所需要Pod运行的状态，提交到Container Runtime组件中。</li>
+<li>Storage Plugin：配置存储。  </li>
+<li>Network Plugin：配置网络。  </li>
+<li>kube-proxy：利用iptable的能力组件k8s的network，即cluster network。</li>
+</ul>
+</li>
+<li>Pod：K8s调度、管理的最小单位，一个主节点控制多个Node，一个Node运行多个Pod，一个Pod可包含多个容器，主节点考量负载自动调度pod到哪个节点运行。</li>
+</ul>
+<h3 id="2、架构-1"><a href="#2、架构-1" class="headerlink" title="2、架构"></a>2、架构</h3><ul>
+<li>核心层：对外提供API构建高层应用，对内提供插件式应用执行环境</li>
+<li>应用层：部署和路由（服务发现、DNS解析等）</li>
+<li>管理层：系统度量（基础设施、容器和网络度量）、自动化、策略管理</li>
+<li>接口层：kubectl命令行工具、客户端SDK、集群联邦</li>
+<li>生态系统：<ul>
+<li>K8s外部：日志、监控、配置管理等  </li>
+<li>K8s内部：    <ul>
+<li>CRI：容器运行时接口，定义了容器和镜像的服务接口    </li>
+<li>CNI：容器网络接口，定义了Linux容器的网络接口规范和库    </li>
+<li>CVI：容器存储接口：使容器编排系统可将任意存储系统暴露给自己的容器工作负载</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、大致流程"><a href="#3、大致流程" class="headerlink" title="3、大致流程"></a>3、大致流程</h3><p>用户提交Pod给K8s部署</p>
+<ul>
+<li>Pod请求提交给API Server</li>
+<li>API Server将信息写入etcd</li>
+<li>Scheduler通过API Server的notification机制得到调度信息</li>
+<li>Scheduler根据内存状态调度，然后通知API Server调度的节点</li>
+<li>API Server将调度信息写入etcd中，通知相应的节点启动Pod</li>
+<li>节点的kubelet收到通知<ul>
+<li>调Container runtime启动配置容器和容器的运行环境</li>
+<li>调Storage Plugin配置存储</li>
+<li>调Network Plugin配置网络</li>
+</ul>
+</li>
+</ul>
+<h2 id="2、核心概念"><a href="#2、核心概念" class="headerlink" title="2、核心概念"></a>2、核心概念</h2><h3 id="1、资源"><a href="#1、资源" class="headerlink" title="1、资源"></a>1、资源</h3><p>组成结构与yaml文件描述的对应部分pod的内容都是通过json/yaml文件表达的，描述该pod资源的组成部分。</p>
+<ul>
+<li>apiVersion：描述正在操作的资源</li>
+<li>kind：资源类型，如pod、deployment等</li>
+<li>metadata：元信息，如创建时间、标签、名字、namespace等。  <ul>
+<li>labels：资源标签，为key：value型元数据，主要用于筛选资源和组合资源  </li>
+<li>annotations：存储资源的非标示性信息，用于扩展资源的spec/status描述</li>
+</ul>
+</li>
+<li>spec：希望资源达到的预期状态，如内部需要运行的container、storage、volume等  <ul>
+<li>replicas：期望的pod数目，默认1  </li>
+<li>selector：可选字段，指定deployment管理的pod范围，必须匹配spec.template.metadata.labels  </li>
+<li>template：跟pod的yaml文件格式一样，不需要apiVersion、kind字段，指示了最终创建出来的Pod采用的Pod.spec  </li>
+<li>strategy：更新策略，默认RollingUpdate</li>
+</ul>
+</li>
+<li>status：资源当前观测到的状态，如pod可能正被调度、running等</li>
+</ul>
+<h3 id="2、Pod"><a href="#2、Pod" class="headerlink" title="2、Pod"></a>2、Pod</h3><p>容器是单进程模型，Pod可类比为进程组管理容器。Pod是K8s集群中运行部署应用或服务的最小单元。</p>
+<ul>
+<li>同一个Pod内为超亲密关系、紧密协作 的容器，无法单独调度。  <ul>
+<li>进程间文件交换，如读写日志  </li>
+<li>进程间通过localhost通信  </li>
+<li>进程间RPC调用频繁  </li>
+<li>进程间共享linux namespace支持多个容器在一个Pod中共享网络地址、文件系统。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、controller-manager"><a href="#3、controller-manager" class="headerlink" title="3、controller manager"></a>3、controller manager</h3><p>通过API Server监控整个集群的状态，并确保集群处于预期工作状态。</p>
+<h3 id="4、ReplicaSet"><a href="#4、ReplicaSet" class="headerlink" title="4、ReplicaSet"></a>4、ReplicaSet</h3><p>适合无状态服务部署。</p>
+<p>用户创建指定数量pod，确保数量符合预期，且支持滚动式自动扩容缩容。</p>
+<p>很少单独使用，一般用于deployment中，被其使用。</p>
+<h3 id="5、Deployment"><a href="#5、Deployment" class="headerlink" title="5、Deployment"></a>5、Deployment</h3><p>适合无状态服务部署。</p>
+<p>一个deployment对应多个pod，表示用户对K8s集群的一次更新操作，如创建一个新服务、更新一个新服务、滚动升级一个服务等。</p>
+<p>在Depolyment中描述想要的目标状态，controller就会将pod和RS的实际状态改变到目标状态。</p>
+<p>工作在ReplicaSet上，用于管理tomcat、nginx等无状态应用。</p>
+<p>Deplooyment只负责管理不同版本的ReplicaSet，由ReplicaSet管理具体Pod书，每个ReplicaSet对应Deployment template的一个版本。</p>
+<p>版本更新方式：</p>
+<ul>
+<li>蓝绿部署：不停老版本，部署新版本测试，测试完成后将流量切到新版本，同时老版本升级。无需停机，风险小。</li>
+<li>滚动发布：服务器轮流停机，更新后再投入使用。相对于蓝绿部署更节约资源。</li>
+<li>灰度发布：让一部分用户开始用新版本，如果没有明显问题再逐步扩大范围，迁移用户。  <ul>
+<li>金丝雀发布</li>
+<li>版本回退：更改spec中的template部分。默认情况下k8s保存前两次deployment的历史记录，可以随时回退。扩容缩容时更改的是spec中的replicas数目，因此不会记录。</li>
+</ul>
+</li>
+</ul>
+<h3 id="6、DaemonSet"><a href="#6、DaemonSet" class="headerlink" title="6、DaemonSet"></a>6、DaemonSet</h3><p>后台支撑服务集（无状态）。</p>
+<p>存储、日志、监控等在每个节点上支持K8s集群运行的服务。保证每个Node都有一个此类Pod运行。</p>
+<h3 id="7、StatefulSet"><a href="#7、StatefulSet" class="headerlink" title="7、StatefulSet"></a>7、StatefulSet</h3><p>适合有状态服务部署。</p>
+<p>无状态服务中，控制的Pod名字随机设置，出故障则被丢弃，在另一个地方重启一个新pod。重要的只是Pod总数。</p>
+<p>StatefulSet控制有状态服务，每个Pod名字事先确定不能更改，关联与该Pod对应的状态。重启Pod时需要挂载上原Pod的存储继续其状态。</p>
+<p>StatefulSet直接管理下属Pod，而不使用ReplicaSet。</p>
+<p>适合其的业务包括数据库服务、集群化管理服务等有状态服务，如mysql。、</p>
+<p>特性：</p>
+<ul>
+<li>每个Pod都有稳定、唯一的网络标识</li>
+<li>Pod副本启停顺序受控</li>
+<li>Pod采用稳定的持久化存储</li>
+</ul>
+<p>控制流程：</p>
+<ul>
+<li>注册Informer的Event Handler，处理StatefulSet和Pod的变化</li>
+<li>StatefulSet Controller中，每次收到StatefulSet/Pod的变化，都会找到对应的StatefulSet放到队列。</li>
+<li>从队列中取出处理时，先查看拿到的StatefulSet的template有无对应的Controller Revision，没有则说明更新过，就创建一个新版本的Revision。</li>
+<li>Controller拿出所有版本号，按序号整理一遍，并创建/删除冲突的Pod。</li>
+<li>Controller查看是否需要更新Pod。</li>
+</ul>
+<h3 id="8、Job"><a href="#8、Job" class="headerlink" title="8、Job"></a>8、Job</h3><p>定时执行任务（无状态）用来控制批处理型任务的API对象。</p>
+<p>Job管理的Pod根据用户的设置，成功完成任务后自动退出。可通过参数设置失败时重启次数、并行数等。</p>
+<p>Job一次性，Cronjob用于周期性执行任务。</p>
+<h3 id="9、Volume-存储卷"><a href="#9、Volume-存储卷" class="headerlink" title="9、Volume-存储卷"></a>9、Volume-存储卷</h3><p>管理K8s存储，声明在Pod的容器可以访问文件目录。</p>
+<ul>
+<li>容器异常退出恢复时恢复数据</li>
+<li>Pod内多个容器共享数据</li>
+</ul>
+<p>本身是抽象概念，可以支持多种后端存储。生命周期和作用范围为一个Pod。</p>
+<p>阶段：</p>
+<ul>
+<li>create：创建PVC对象、真正的存储PV对象并绑定</li>
+<li>attach：将存储挂载到node上</li>
+<li>mount：将存储挂载到node可使用的路径上</li>
+</ul>
+<h4 id="1、StorageClass"><a href="#1、StorageClass" class="headerlink" title="1、StorageClass"></a>1、StorageClass</h4><p>存储类PV的配置文件。</p>
+<h4 id="2、PV（Persistent-Volume）-持久存储卷"><a href="#2、PV（Persistent-Volume）-持久存储卷" class="headerlink" title="2、PV（Persistent Volume）-持久存储卷"></a>2、PV（Persistent Volume）-持久存储卷</h4><p>用于解耦Pod和Volume之间生命周期的关联，使得Pod删除后，其使用的PV仍然存在。</p>
+<p>产生方式：</p>
+<ul>
+<li>静态Provisioning：集群管理员预创建一些PV，用户提交PVC时找到合适的PV绑定。</li>
+<li>动态Provisioning：集群管理员编写模板文件，用户提交PVC时指定使用的存储模板（StorageClass），K8s根据这些动态生成PV并绑定。</li>
+</ul>
+<p>Yaml的spec中可规定：存储大小、访问模式（单/多node读写/只读访问）、PVC删除后PV的处理等。</p>
+<p>状态流转：</p>
+<ul>
+<li>创建PV后短暂pending</li>
+<li>available</li>
+<li>绑定PVC后bound</li>
+<li>PVC删除后released：此时没办法直接变回available  <ul>
+<li>将该PV对象信息填到一个新建的PV对象  </li>
+<li>使用完后不删除PVC</li>
+</ul>
+</li>
+</ul>
+<h4 id="3、PVC（Persistent-Volume-Claim）"><a href="#3、PVC（Persistent-Volume-Claim）" class="headerlink" title="3、PVC（Persistent Volume Claim）"></a>3、PVC（Persistent Volume Claim）</h4><p>用户通过PVC使用PV，在PVC中声明所需的存储大小以及访问模式，PV由集群管理员与存储团队统一管控。</p>
+<p>类似于类的封装。</p>
+<h3 id="10、Service-服务"><a href="#10、Service-服务" class="headerlink" title="10、Service-服务"></a>10、Service-服务</h3><p>作用：</p>
+<ul>
+<li>负载均衡：一个deployment可能有多个相同Pod，在外部访问时做一次负载均衡。</li>
+<li>固定外部IP：不同Pod有不同IP、Pod重启时IP和端口号会变化，因此不能以确定的IP和端口号提供服务。  <ul>
+<li>ervice相当于把Pod的可变IP映射到一个固定IP供外部访问</li>
+</ul>
+</li>
+</ul>
+<h3 id="11、Federation-集群联邦"><a href="#11、Federation-集群联邦" class="headerlink" title="11、Federation-集群联邦"></a>11、Federation-集群联邦</h3><p>提供跨Region跨服务商的K8s集群服务。</p>
+<p>每个联邦有自己的分布式存储、API Server、Controller Manager。</p>
+<h3 id="12、Namespace-命名空间"><a href="#12、Namespace-命名空间" class="headerlink" title="12、Namespace-命名空间"></a>12、Namespace-命名空间</h3><p>集群内部隔离，K8s每个资源都属于一个Namespace。</p>
+<p>初始默认命名空间default和系统命名空间kube-system。</p>
+<p>一般可根据项目属性，如生产、测试、开发划分。</p>
+<h2 id="3、声明式API-amp-控制器模式"><a href="#3、声明式API-amp-控制器模式" class="headerlink" title="3、声明式API &amp; 控制器模式"></a>3、声明式API &amp; 控制器模式</h2><p>控制器模式的核心为控制循环概念，包括三个组件：控制器、被控制系统、观测系统的传感器。</p>
+<p>大概流程：</p>
+<ul>
+<li>外界修改资源spec</li>
+<li>控制器比较spec与status，计算diff</li>
+<li>diff被用来决定执行对系统进行怎样的控制操作</li>
+<li>控制操作使得系统产生新输出，传感器以status形式上报</li>
+<li>系统不断向spec趋近</li>
+</ul>
+<p>命令式API告诉系统要执行的操作，而声明式API只告诉系统最终需要达到的状态，不管系统具体执行的操作。</p>
+<p>优劣：</p>
+<ul>
+<li>错误处理：命令式API错误时重试可能导致系统执行多次、执行命令错误等问题。</li>
+<li>巡检系统：为了处理命令超时导致的数据不一致问题，往往会设置一个巡检系统。</li>
+<li>并发访问：多方并发操作资源时，难以保证操作生效情况，而加锁又降低效率。</li>
+</ul>
+<h2 id="4、网络"><a href="#4、网络" class="headerlink" title="4、网络"></a>4、网络</h2><h3 id="1、约束"><a href="#1、约束" class="headerlink" title="1、约束"></a>1、约束</h3><ul>
+<li>任意两个pod可直接通信</li>
+<li>node和pod可直接通信</li>
+<li>pod看到自己的IP跟别人看见它的应该一致</li>
+</ul>
+<h3 id="2、Network-Namespace"><a href="#2、Network-Namespace" class="headerlink" title="2、Network Namespace"></a>2、Network Namespace</h3><p>实现网络虚拟化的基础，创建了隔离的网络空间。</p>
+<p>每个pod有独立的网络空间，pod net container共享这个网络空间，K8s通过接口在pod net container之间通信。</p>
+<p>所有的container通过pod的ip对外提供服务。</p>
+<h3 id="3、Service"><a href="#3、Service" class="headerlink" title="3、Service"></a>3、Service</h3><p>集群网络存在的问题：</p>
+<ul>
+<li>Pod容易重启，IP地址会发生变化，不能用固定IP地址访问</li>
+<li>Pod组需要提供统一的访问入口、进行负载均衡</li>
+</ul>
+<p>通过service实现。</p>
+<p>Service的yaml文件中，通过spec.selector选择目标pod，通过spec.ports字段指定协议、端口以及目标端口等信息。</p>
+<p>创建完毕后，Service就会对Pod组外部提供一个虚拟IP，集群中其他Pod可以通过该虚拟IP访问Service。</p>
+<p>Headless Service创建时可以告诉K8s不需要clusterIP-虚拟IP，访问时直接通过service_name用DNS方式解析到所有后端的IP地址，由客户端自己选择一个IP地址访问。向外暴露Service</p>
+<ul>
+<li>NodePort：在集群Node上暴露节点的一个端口，相当于多一次转发</li>
+<li>LoadBalancer：在NodePort上再做一次转发，即在所有节点前又挂一个SLB</li>
+</ul>
+<h2 id="5、调度"><a href="#5、调度" class="headerlink" title="5、调度"></a>5、调度</h2><h3 id="1、资源调度"><a href="#1、资源调度" class="headerlink" title="1、资源调度"></a>1、资源调度</h3><p>填在pod.spec.containers.resources里。</p>
+<ul>
+<li>request：对pod基本保底的资源要求</li>
+<li>limits：对pod可用能力上限的限制</li>
+</ul>
+<p>四大类资源：</p>
+<ul>
+<li>CPU</li>
+<li>memory</li>
+<li>临时存储</li>
+<li>通用扩展资源，如GPU</li>
+</ul>
+<h3 id="2、关系调度"><a href="#2、关系调度" class="headerlink" title="2、关系调度"></a>2、关系调度</h3><ul>
+<li>Pod亲和调度：PodAffinity</li>
+<li>Pod反亲和调度：PodAntAffinity</li>
+</ul>
+<p>有两种策略：</p>
+<ul>
+<li>required：必须这样，否则调度失败</li>
+<li>preferred：优先调度</li>
+</ul>
+<h3 id="3、优先级调度"><a href="#3、优先级调度" class="headerlink" title="3、优先级调度"></a>3、优先级调度</h3><p>创建priorityClass，再为每个Pod配置不同的priorityClassName。</p>
+<h2 id="6、容器设计模式：sidecar"><a href="#6、容器设计模式：sidecar" class="headerlink" title="6、容器设计模式：sidecar"></a>6、容器设计模式：sidecar</h2><p>在Pod里定义一些专门的容器，执行主业务容器所需要的一些辅助工作。</p>
+<p>只是设计模式，不是k8s官方提出的概念。</p>
+<p>特点：</p>
+<ul>
+<li>运行环境和编程语言与主程序独立。</li>
+<li>资源访问权限与主程序相同。</li>
+<li>靠近主程序，所以通信没有明显延迟。</li>
+<li>通过作为自己的进程附加到住应用所在的主机/子容器中，可扩展不提供扩展机制的程序。</li>
+</ul>
+<p>适用场合/优势：</p>
+<ul>
+<li>与主程序使用不同框架/语言开发</li>
+<li>抽象功能到不同层，降低微服务代码复杂性，降低耦合度，提升重用度</li>
+<li>独立升级更新</li>
+</ul>
+<p>如：</p>
+<ul>
+<li>日志：Volume在Pod里共享，业务容器将日志写在Volume里，日志容器再共享读日志，存到remote write中或转发。</li>
+<li>代理容器：Pod中是一个集群，通过proxy容器访问外部服务。</li>
+<li>适配器：Adapter容器在系统内外传输消息时做格式转换。</li>
+</ul>
+<p>不适用：</p>
+<ul>
+<li>需要优化进程通信。</li>
+<li>小型应用，sidecar部署资源成本可能超过应用本身。</li>
+<li>服务需要独立伸缩。</li>
+</ul>
+<p>所有设计模式的本质都是：解耦和重用。</p>
+<p>与DaemonSet方式的对比</p>
+<ul>
+<li>部署成本：Sidecar对每个Pod都需要部署，DaemonSet只需要部署并维护DaemonSet</li>
+<li>定制化：Sidecar可对每个Pod单独配置，DaemonSet受限，可通过容器/路径等映射</li>
+<li>多租户隔离：Sidecar通过容器隔离，可单独分配资源，DaemonSet只能通过配置隔离</li>
+<li>支持集群规模：Sidecar无限制，DaemonSet只支持中小型规模</li>
+<li>资源占用：Sidecar每个Pod运行一个容器，较高，DaemonSet每个节点运行一个容器，较低</li>
+</ul>
+<p>总结：Sidecar适合大型、混合型的PaaS集群，隔离型、灵活性好；而DaemonSet适合功能较单一（部门内部/产品自建）的集群，资源占用低。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -709,7 +1002,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-docker"><span class="toc-text">1. docker</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81"><span class="toc-text">1. 基本特征</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BC%98%E7%82%B9"><span class="toc-text">1. 优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%9C%E7%94%A8"><span class="toc-text">2. 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%87%8D%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="toc-text">3. 重要概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD"><span class="toc-text">2. 目录挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%9A%E5%AE%B9%E5%99%A8%E9%80%9A%E4%BF%A1"><span class="toc-text">3. 多容器通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-docker-compose"><span class="toc-text">4. docker-compose</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83%E5%92%8C%E9%83%A8%E7%BD%B2"><span class="toc-text">5. 镜像发布和部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%81%E7%A7%BB%E5%92%8C%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE"><span class="toc-text">6. 迁移和备份数据</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-kubernetes"><span class="toc-text">2. kubernetes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81-1"><span class="toc-text">1. 基本特征</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%89%B9%E6%80%A7"><span class="toc-text">1. 特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%8D%E5%90%8C%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88"><span class="toc-text">2. 不同的部署方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%9C%80%E8%A6%81%E5%9C%BA%E5%90%88"><span class="toc-text">3. 需要场合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%9B%86%E7%BE%A4%E6%9E%B6%E6%9E%84"><span class="toc-text">2. 集群架构</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-docker"><span class="toc-text">1. docker</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%B8%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1、与虚拟机的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%9E%B6%E6%9E%84"><span class="toc-text">2、架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81Dockerfile"><span class="toc-text">3、Dockerfile</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81FROM"><span class="toc-text">1、FROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81RUN"><span class="toc-text">2、RUN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E6%93%8D%E4%BD%9C"><span class="toc-text">3、操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E6%95%B0%E6%8D%AE%E5%85%B1%E4%BA%AB%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">4、数据共享与持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-text">1、数据卷</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%8C%82%E8%BD%BD%E4%B8%BB%E6%9C%BA%E7%9B%AE%E5%BD%95"><span class="toc-text">2、挂载主机目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F"><span class="toc-text">5、网络模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81Bridge%E6%A8%A1%E5%BC%8F"><span class="toc-text">1、Bridge模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81Host%E6%A8%A1%E5%BC%8F"><span class="toc-text">2、Host模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Container"><span class="toc-text">3、Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81None"><span class="toc-text">4、None</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">6、实现原理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-kubernetes"><span class="toc-text">2. kubernetes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E9%9B%86%E7%BE%A4%E6%9E%B6%E6%9E%84"><span class="toc-text">1、集群架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%A6%82%E5%BF%B5"><span class="toc-text">1、概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%9E%B6%E6%9E%84-1"><span class="toc-text">2、架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">3、大致流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-text">2、核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E8%B5%84%E6%BA%90"><span class="toc-text">1、资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81Pod"><span class="toc-text">2、Pod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81controller-manager"><span class="toc-text">3、controller manager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81ReplicaSet"><span class="toc-text">4、ReplicaSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81Deployment"><span class="toc-text">5、Deployment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81DaemonSet"><span class="toc-text">6、DaemonSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81StatefulSet"><span class="toc-text">7、StatefulSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81Job"><span class="toc-text">8、Job</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81Volume-%E5%AD%98%E5%82%A8%E5%8D%B7"><span class="toc-text">9、Volume-存储卷</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81StorageClass"><span class="toc-text">1、StorageClass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81PV%EF%BC%88Persistent-Volume%EF%BC%89-%E6%8C%81%E4%B9%85%E5%AD%98%E5%82%A8%E5%8D%B7"><span class="toc-text">2、PV（Persistent Volume）-持久存储卷</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81PVC%EF%BC%88Persistent-Volume-Claim%EF%BC%89"><span class="toc-text">3、PVC（Persistent Volume Claim）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81Service-%E6%9C%8D%E5%8A%A1"><span class="toc-text">10、Service-服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11%E3%80%81Federation-%E9%9B%86%E7%BE%A4%E8%81%94%E9%82%A6"><span class="toc-text">11、Federation-集群联邦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12%E3%80%81Namespace-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-text">12、Namespace-命名空间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8FAPI-amp-%E6%8E%A7%E5%88%B6%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">3、声明式API &amp; 控制器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E7%BD%91%E7%BB%9C"><span class="toc-text">4、网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%BA%A6%E6%9D%9F"><span class="toc-text">1、约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81Network-Namespace"><span class="toc-text">2、Network Namespace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Service"><span class="toc-text">3、Service</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E8%B0%83%E5%BA%A6"><span class="toc-text">5、调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6"><span class="toc-text">1、资源调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%85%B3%E7%B3%BB%E8%B0%83%E5%BA%A6"><span class="toc-text">2、关系调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E8%B0%83%E5%BA%A6"><span class="toc-text">3、优先级调度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%AE%B9%E5%99%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9Asidecar"><span class="toc-text">6、容器设计模式：sidecar</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -742,6 +1035,90 @@
             
 
             <div class="post-img-box">
+              <a href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8F%AF%E8%A7%82%E6%B5%8B/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8F%AF%E8%A7%82%E6%B5%8B/">学习笔记 可观测</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-InfluxDB/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-InfluxDB/">学习笔记 InfluxDB</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SpringMVC/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-SpringMVC/">学习笔记 SpringMVC</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-ZooKeeper/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-11</span>
+                
+              </div>
+              <a class="post-title" href="/2023/09/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-ZooKeeper/">学习笔记 ZooKeeper</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
               <a href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
@@ -754,90 +1131,6 @@
                 
               </div>
               <a class="post-title" href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/">经验分享-如何在阿里云ECS上部署自己的应用程序</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-13</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/">学习笔记-Tomcat&amp;Servlet</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-13</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/">学习笔记-Spring</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-13</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">学习笔记-Java基础知识</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-11</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
             </div>
           </div>
         
