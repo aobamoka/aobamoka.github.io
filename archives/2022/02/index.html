@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>学习笔记-查漏补缺 | 摩卡&#39;s blog</title>
+  <title>归档: 2022/2 | 摩卡&#39;s blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/icons/icon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -389,798 +389,106 @@
     
 </header>
         <!-- 内容区域 -->
-        
- <!-- prismjs 代码高亮 -->
- 
-
-
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        学习笔记-查漏补缺
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2023-02-08 |
-        </span>
-      
-
-      
-        <span class="post-detail-header_categories">
-          <i class="iconfont iconbookmark1"></i> 分类：
-          
-            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-detail-header_category">
-              学习笔记
-            </a>
-          
-        </span>
-      
-
-      
-    
+        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
+<div class="archive-header" style="background-image:url('/medias/20221103_151339.jpg')">
+  <div class="archive-header-title">
+    归档
   </div>
+  <div class="archive-header-desc">
   
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content post-row" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><ul>
-<li>面试官您好，我的名字是xxx，今年23岁，来自湖南。（基本信息）</li>
-<li>我本科和硕士阶段都就读于南京大学的计算机科学与技术系，硕士阶段的主要研究方向是自动化单元测试。（学历）</li>
-<li>实验室方面，目前主要在做有关于Python自动化单元测试工具的工作，就是输入待测文件，通过随机算法、遗传算法等自动测试生成算法获得随机生成的测试用例输出，以及对应的覆盖率。我的工作主要是对这个工具进行实证研究，以及在原有的基础上进行一些改进，比如测试生成算法、结合类型标注等。（科研）</li>
-<li>项目方面，做了一个webserver，它的主要功能是，用户在浏览器端输入网址，登陆验证后可请求服务器端的资源。服务器端接受连接、解析报文并做出响应。（项目）</li>
-<li>基础知识方面，我对C++的一些语言特性、数据结构、算法与计算机网络方面的知识比较熟悉，目前主要使用C++来进行编程。（基础）</li>
-</ul>
-<h1 id="反问"><a href="#反问" class="headerlink" title="反问"></a>反问</h1><ul>
-<li>我们这个部门主要做的业务是什么？</li>
-<li>对我的建议？学习方向？</li>
-</ul>
-<h1 id="1-C-C"><a href="#1-C-C" class="headerlink" title="1. C/C++"></a>1. C/C++</h1><ol>
-<li><p>epoll_wait可通过timeout参数空值是否阻塞。-1表示永远等待，0表示不等待直接返回，其他表示在超时事件内如果没有事件发生，返回0。</p>
-</li>
-<li><p>memcpy实现：满足四字节对齐时进行四字节拷贝，否则进行单字节拷贝。注意dst与src拷贝后是否有重叠。注意类型。</p>
-</li>
-<li><p>socket函数：socket是一种特殊的文件，socket函数就是对其进行的操作。</p>
-<ol>
-<li><code>int socket(int domain, int type, int protocol);</code><ol>
-<li>domain：协议族。AF_INET、AF_INET6。用于本机通信的为AF_UNIX。</li>
-<li>type：socket类型。SOCK_STREAM、SOCK_DGRAM。</li>
-<li>protocol：指定协议。IPPROTO_TCP、IPPROTO_UDP。</li>
-<li>返回值：<ol>
-<li>非负：成功，代表文件描述符</li>
-<li>-1：出错</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><code>int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</code><ol>
-<li>sockfd：创建的socket描述字。</li>
-<li>addr：指向绑定给sockfd的协议地址，储存了地址类型、IP地址和端口号。</li>
-<li>addrlen：地址长度。</li>
-<li>返回值：<ol>
-<li>0：成功</li>
-<li>-1：出错</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><code>int listen(int sockfd, int backlog);</code><ol>
-<li>sockfd：要监听的socket描述字。</li>
-<li>backlog：全连接队列长度。</li>
-<li>listen将socket变为被动类型，等待客户连接请求。</li>
-<li>返回值：<ol>
-<li>0：成功</li>
-<li>-1：出错</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><code>int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen); </code><ol>
-<li>sockfd：客户端的socket描述字。</li>
-<li>addr：服务器的socket地址。</li>
-<li>addrlen：socket地址长度。</li>
-<li>返回值：<ol>
-<li>0：成功</li>
-<li>-1：出错</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><code>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</code><ol>
-<li>sockfd：服务器的socket描述字。</li>
-<li>addr：返回客户端的协议地址。</li>
-<li>addrlen：客户端协议地址的长度。</li>
-<li>返回值：<ol>
-<li>非负：成功，代表已连接套接字</li>
-<li>-1：出错</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><code>ssize_t send(int sockfd, const void *buf, size_t len, int flags);</code><ol>
-<li>sockfd：发送端套接字。</li>
-<li>buf：存放要发送数据的缓冲区。</li>
-<li>len：要发送的字节数。</li>
-<li>flags：参数。</li>
-<li>返回值：<ol>
-<li>非负：成功拷贝至发送缓冲区的字节数</li>
-<li>-1：出错并置错误号errno（len大于缓冲区长度、拷贝时出错、网络断开）</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><code>ssize_t recv(int sockfd, void *buf, size_t len, int flags);</code><ol>
-<li>返回值：<ol>
-<li>非负：成功拷贝的字节数</li>
-<li>-1：出错并置错误号errno（拷贝时出错、网络断开）</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>write返回值：</p>
-<ol>
-<li>&gt;0且等于给定字节数：正常。</li>
-<li>小于给定字节数：底层物理介质空间不够；文件大小不够；被中断信号打断。</li>
-<li>0：<ol>
-<li>有errno设定：相应的失败情况。</li>
-<li>无：指定写入0字节。</li>
-</ol>
-</li>
-<li>-1：出错，查看errno</li>
-</ol>
-</li>
-<li><p>read返回值：</p>
-<ol>
-<li>&gt;0且等于给定字节数：正常。</li>
-<li>小于给定字节数：读到EOF；被信号打断。</li>
-<li>0：读到EOF，或socket对端关闭。</li>
-<li>-1：出错，查看errno。</li>
-</ol>
-</li>
-<li><p>内存对齐：计算机系统对基本类型在数据中的存放位置有限制，要求其首地址从某个数的倍数开始，一般是4或8.</p>
-<ol>
-<li>原因：<ol>
-<li>平台原因：某些硬件平台只能在某些地址处取某些特定类型的数据。</li>
-<li>性能原因：访问未对齐的内存需要通过其他的辅助手段来获得这个位置的具体类型，不仅耗时且可能还有额外空间消耗。</li>
-</ol>
-</li>
-<li>规则：<ol>
-<li>每个特定平台的编译器都有对齐系数，可通过pragma pack预编译命令改变。</li>
-<li>有效对齐值：pragma和结构体最长数据类型中较小的那个。</li>
-<li>结构体第一个成员的偏移量为0，所有成员的偏移量与结构体的总大小都是有效对齐值的整数倍。</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>pthread_cond_wait：内部会先有一个解锁操作。一般的流程为，线程获得互斥锁后判断条件是否满足，不满足则调用该函数阻塞自己。此时如果不解锁，那线程就会带着互斥锁阻塞，其他线程无法获得互斥锁。被唤醒后，会先获得互斥锁再返回。</p>
-</li>
-<li><p>epoll函数：</p>
-<ol>
-<li><p><code>int epoll_create(size_t size)</code>：这个参数不起作用，只需要大于0就可以，内核会自动调整大小。返回epdf，epoll文件描述符。</p>
-</li>
-<li><p><code>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)</code>：</p>
-<ol>
-<li><p>epfd：create创建的描述符</p>
-</li>
-<li><p>op：</p>
-<ol>
-<li>EPOLL_CTL_ADD：注册新的fd</li>
-<li>EPOLL_CTL_MOD：修改已经注册的fd的监听事件</li>
-<li>EPOLL_CTL_DEL：删除fd</li>
-</ol>
-</li>
-<li><p>event：待监听的事件，可用<strong>按位或</strong>表示监听多个事件 <code>struct epoll_event &#123; __uint32_t events;  epoll_data_t data; &#125;;</code></p>
-<ol>
-<li>EPOLLIN：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）</li>
-<li>EPOLLOUT：表示对应的文件描述符可以写</li>
-<li>EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）</li>
-<li>EPOLLERR：表示对应的文件描述符发生错误</li>
-<li>EPOLLHUP：表示对应的文件描述符被挂断；</li>
-<li>EPOLLET：将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)而言的</li>
-<li>EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p><code>int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)</code>：返回就绪的文件描述符个数，时间到返回0，出错返回-1</p>
-<ol>
-<li>events：得到就绪事件集合。</li>
-<li>maxevents：告知events有多大，不能大于size。</li>
-<li>timeout：<ol>
-<li>-1：阻塞</li>
-<li>0：立即返回</li>
-<li>&gt;0：等待timeout秒返回</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h1 id="2-操作系统"><a href="#2-操作系统" class="headerlink" title="2. 操作系统"></a>2. 操作系统</h1><ol>
-<li>惊群现象：多个线程等待同一资源时，只要有一个资源到来，所有线程都来竞争资源。<ol>
-<li>后果：无效调度、上下文频繁切换，影响系统性能；为确保只有一个线程得到资源，需要加锁，产生额外开销。</li>
-<li>典型：socket accept，多个用户线程监听同一个端口。</li>
-<li>解决：<ol>
-<li>Linux2.6前：监听同一个socket的线程挂在一个等待队列上，请求到来时唤醒所有子线程，使用锁解决。</li>
-<li>后：引入标记位。<ol>
-<li>进程加入等待队列时，如果有标记位，被添加到队列尾部，否则到队列首部。</li>
-<li>wake唤醒第一个有标记的进程后停止。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>grep和find<ol>
-<li>find：根据文件的属性进行查找</li>
-<li>grep：根据文件的内容进行查找，对文件的每一行按照给定的模式进行匹配查找。</li>
-</ol>
-</li>
-<li>Linux文件权限：针对三类对象：owner属主，group属组，other其他。每个文件针对每个访问者定义三种权限：read读、write写、execute执行。<ol>
-<li>针对文件：读写、x为执行权限，对除二进制程序以外的文件没意义。</li>
-<li>针对目录：r：查看目录下的文件列表、w：删除创建文件、x：cd、查看文件详细属性、访问目录下文件内容。</li>
-<li>chmod XXX file：三个X分别对三类对象给的权限。X如果=7，二进制表示为111，表示r、w、x权限都开放。以此类推。</li>
-</ol>
-</li>
-<li>Core dump：<ol>
-<li>概念：程序运行过程中异常终止或崩溃，操作系统就会将程序当时的内存状态记录下来，保存在一个文件中。core保存寄存器信息、内存管理信息、其他处理器和操作系统状态和信息等。</li>
-<li>产生原理：信号处理函数。</li>
-</ol>
-</li>
-<li>Buddy系统：<ol>
-<li>伙伴块定义：<ol>
-<li>大小相同</li>
-<li>地址连续</li>
-<li>从同一个大块分离出来</li>
-<li>用一位二进制数表示其伙伴关系，为1表示其中一块在使用，为0表示都空闲或都在使用。系统每次分配和回收伙伴块时都对其伙伴位与1进行异或。</li>
-</ol>
-</li>
-<li>管理：由链表管理，类似于STL，每个链表节点为2次幂大小的freelist</li>
-<li>分配：<ol>
-<li>查对应的freelist，如果有空闲块就直接摘下分配。</li>
-<li>如果没有就向上查找，直到找到空闲块。</li>
-<li>不断等分这个空闲块，直到恰好为满足条件的大小，把其他分下来的空闲块挂在相应freelist上。</li>
-<li>如果找不到则放弃分配。</li>
-</ol>
-</li>
-<li>释放：<ol>
-<li>查对应的freelist，如果没有伙伴块就直接挂上。</li>
-<li>如果有则摘下伙伴合并，然后向上查找是否可合并。</li>
-<li>直到不能合并或已经合并到最大块。</li>
-</ol>
-</li>
-<li>缺点：<ol>
-<li>小块阻碍大块合并</li>
-<li>按2的幂次分块，有一定浪费</li>
-<li>拆分和合并涉及较多链表和位图操作，开销大</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h1 id="3-计网"><a href="#3-计网" class="headerlink" title="3. 计网"></a>3. 计网</h1><ol>
-<li>中间人攻击：客户端发起HTTPS请求时，被假基站转发到了中间人服务器。中间人分别冒充对方，与双方完成TLS握手。<ol>
-<li>前提是用户点击接受了中间人服务器的证书，这种证书浏览器能识别出来是非法的，并提醒用户。</li>
-</ol>
-</li>
-<li>正向代理与反向代理<ol>
-<li>正向代理：在客户端部署代理服务器，代替客户端对外收发消息。主要用途：<ol>
-<li>突破访问控制：VPN。</li>
-<li>提高访问速度：代理服务器有缓冲区，保存请求的响应。</li>
-<li>隐藏客户端真实的IP。</li>
-</ol>
-</li>
-<li>反向代理：在服务端部署代理服务器，替代原服务器接收请求发送响应。<ol>
-<li>隐藏服务器真实IP。</li>
-<li>负载均衡。代理服务器根据负载将请求发送到某台服务器。</li>
-<li>提高访问速度：缓存。</li>
-<li>安全保障：代理服务器作为防火墙。</li>
-</ol>
-</li>
-<li>相同：<ol>
-<li>提升访问速度。</li>
-<li>隐藏IP。</li>
-<li>都是转发请求与响应。</li>
-</ol>
-</li>
-<li>区别：<ol>
-<li>部署位置不同。</li>
-<li>作用不同：正向代理帮助突破访问控制；反向代理提供安全保障与负载均衡。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h1 id="4-MySQL"><a href="#4-MySQL" class="headerlink" title="4. MySQL"></a>4. MySQL</h1><h1 id="5-Redis"><a href="#5-Redis" class="headerlink" title="5. Redis"></a>5. Redis</h1>
-      </div>
-      <div class="post-tags-categories">
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>作者:  </strong>aoba moka</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>文章链接:  </strong>
-    <a href="/2023/02/08/学习笔记-查漏补缺/" target="_blank" title="学习笔记-查漏补缺">https://aobamoka.github.io/2023/02/08/学习笔记-查漏补缺/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>版权声明:   </strong>
-      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      许可协议。转载请注明出处!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
-    
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/02/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Linux/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">学习笔记-Linux</div>
-      </div>
-      
-      <!-- <div class="content">
-        1. 内存管理共4G虚拟内存（32位最大寻址空间）。
-1. 内存各段的意义从下向上为：
-
-.text程序文件段：程序的二
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2023/02/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Git/" class="post-nav-link">
-      <div class="title">
-        下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">学习笔记-Git</div>
-      </div>
-      <!-- <div class="content">
-        1. 基本原理git整个数据库存储在.git/目录下.
-1. 数据结构Git object：
-
-blob类型：只储存一个
-      </div> -->
-    </a>
-  </div>
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
+  <span class="title" id="archive-header-desc"></span>
+  <script>
+  function typedFn() {
+    const el = '#archive-header-desc';
+    const type = 'archive';
+    let desc = '归档'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
   }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
-      <div id="gitment-container"></div>
-
-    
+  typedFn();
+</script>
+  
   </div>
-
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
-
-
-  </div>
-
-  <!-- 目录 -->
-  <aside id='l_side'>
-  
-    
-      <section class="widget side_blogger">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img src='/medias/test.png'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-          <h2>摩卡</h2>
-        
-        
-          <p>不太会说话</p>
-
-        
-        
-          <p><span id="jinrishici-sentence">摩卡's blog</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-  </div>
-</section>
-
-    
-  
-  
-  
-
-  <div class="layout_sticky">    
-    
-      
-<section class="widget side_toc">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name' style="color: ">本文目录</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D"><span class="toc-text">自我介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E9%97%AE"><span class="toc-text">反问</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-C-C"><span class="toc-text">1. C&#x2F;C++</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-text">2. 操作系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%AE%A1%E7%BD%91"><span class="toc-text">3. 计网</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-MySQL"><span class="toc-text">4. MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Redis"><span class="toc-text">5. Redis</span></a></li></ol> -->
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
+  <div class="mask-box"></div>
 </div>
 
+<div class="archive-video">
+  <video class="full-video" autoplay loop muted>
+      <source style="width: 100%;height: 100vh;" src="/">
+  </video>
+  <div class="video-header-title">
+    归档
+  </div>
+  <div class="video-header-desc">
+  
+      <span class="title" id="archive-video-header-desc"></span>
+      <script>
+  function typedFn() {
+    const el = '#archive-video-header-desc';
+    const type = 'archive';
+    let desc = '归档'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
+  }
+  typedFn();
+</script>
       
-  <section class="widget side_recent_post">
-    
-  <header>
-    
-      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
-    
-  </header>
+  </div>
+  <div class="mask-box"></div>
+</div>
+
+<!-- hash算法 -->
 
 
-    <div class='content'>
-      
-      <!-- hash算法 -->
-      
-      <div class="aside-list">
+<div class="archive-main">
+  <section class="archive">
+    <div class="archive-content">
+      <ul class="post-archive">
         
-          <div class="aside-list-item">
+        
+          
             
+            <div class="year" data-aos="zoom-in-up">
+                <div class="bullet"></div>
+                <a href="/archives/2022">2022</a>
+            </div>
+          
+          <li class="post-item" data-aos="fade-left">
             
-            
-
             <div class="post-img-box">
-              <a href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="post-img " style="background-size: cover; 
+              <a href="/2022/02/17/hello-world/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                
-                  <span class="post-date">09-02</span>
-                
+                <span class="post-date">02-17</span>
               </div>
-              <a class="post-title" href="/2023/09/02/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E5%A6%82%E4%BD%95%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91ECS%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/">经验分享-如何在阿里云ECS上部署自己的应用程序</a>
+              <a class="post-title" href="/2022/02/17/hello-world/">Hello World</a>
             </div>
-          </div>
+          </li>
         
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-13</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Tomcat-Servlet/">学习笔记-Tomcat&amp;Servlet</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-13</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Spring/">学习笔记-Spring</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-13</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/13/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">学习笔记-Java基础知识</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-11</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/11/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0-%E5%9F%BA%E4%BA%8ERaft%E7%9A%84kv%E6%95%B0%E6%8D%AE%E5%BA%93/">项目学习-基于Raft的kv数据库</a>
-            </div>
-          </div>
-        
-      </div>
+      </ul>
     </div>
   </section>
-
+  <div class="w-70">
     
   </div>
-</aside>
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
 </div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
-  <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
-  
-</script>
-
 
       </main>
     </div>
