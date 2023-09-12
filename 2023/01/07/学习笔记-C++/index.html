@@ -1886,7 +1886,7 @@
 <h2 id="10-quoted"><a href="#10-quoted" class="headerlink" title="10. quoted"></a>10. quoted</h2><p>给字符串加双引号。</p>
 <h1 id="8-C-17"><a href="#8-C-17" class="headerlink" title="8. C++ 17"></a>8. C++ 17</h1><p>比较熟悉的特性：结构化绑定、string_view</p>
 <h2 id="1-构造函数模板自动推导"><a href="#1-构造函数模板自动推导" class="headerlink" title="1. 构造函数模板自动推导"></a>1. 构造函数模板自动推导</h2><p>pair、vector等。</p>
-<h2 id="2-结构化绑定"><a href="#2-结构化绑定" class="headerlink" title="2. 结构化绑定"></a>2. 结构化绑定</h2><p>应用于public成员、C-Style数组、pair、tuple、array对象，通过 <code>auto [v1, v2] = p</code>获取值。</p>
+<h2 id="2-结构化绑定"><a href="#2-结构化绑定" class="headerlink" title="2. 结构化绑定"></a>2. 结构化绑定</h2><p>应用于struct、class、C-Style数组、pair、tuple、array对象，通过 <code>auto [v1, v2] = p</code>获取值。</p>
 <ul>
 <li>不能加constexpr，可以通过引用直接改变被绑定的值。</li>
 <li>不会发生类型退化，如char[]退化为char*。</li>
@@ -1894,6 +1894,7 @@
 <li>不适用于继承，所有非静态数据成员必须在一个类。</li>
 </ul>
 <p>要对自定义类型实现结构化绑定，需要实现类似tuple的get&lt;i&gt;API。</p>
+<p>原理：生成一个匿名对象，然后绑定该匿名对象。</p>
 <h2 id="3-折叠表达式"><a href="#3-折叠表达式" class="headerlink" title="3. 折叠表达式"></a>3. 折叠表达式</h2><p>用于可变参数模板。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ... Ts&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">sum</span><span class="params">(Ts ... ts)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (ts + ...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="4-has-include"><a href="#4-has-include" class="headerlink" title="4. __has_include"></a>4. __has_include</h2><p><code>#if __has_include(&lt;package&gt;)</code>判断是否有某个头文件。</p>
